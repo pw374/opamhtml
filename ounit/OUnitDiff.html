@@ -1,0 +1,53 @@
+<div class="ocaml_toplevel_module"><div class="info">Unit tests for collection of elements<br/>    This module allows to define a more precise way to display differences
+    between collection of elements. When collection differ, the tester is 
+    interested by what are the missing/extra elements. This module provides
+    a <code class="code">diff</code> operation to spot the difference quickly between two sets of
+    elements.<br/>    Example:
+<pre class="codepre"><code class="code">
+open OUnit;;
+
+module EInt = 
+struct 
+  type t = int
+  let compare = ( - )
+  let pp_print = Format.pp_print_int
+  let pp_print_sep = OUnitDiff.comma_separator
+end
+
+module ListInt = OUnitDiff.ListSimpleMake(EInt);;
+
+let test_diff () = 
+  ListInt.assert_equal
+    [1; 2; 3; 4; 5]
+    [1; 2; 5; 4]
+;;
+
+let _ = 
+  run_test_tt_main (&quot;test_diff&quot; &gt;:: test_diff)
+;;
+</code></pre><br/>when run this test outputs:
+<pre class="codepre"><code class="code">
+OUnit: expected: 1, 2, 3, 4, 5 but got: 1, 2, 5, 4
+differences: element number 2 differ (3 &lt;&gt; 5)
+</code></pre><div class="authors"><b>Author(s): </b><span class="author">Sylvain Le Gall</span></div> <b>Since</b> 1.1.0</div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Signatures</h2></div></div>
+<div class="ocaml_module sig" name="DIFF_ELEMENT"><pre><span class="keyword">module type</span> <a href="?package=ounit&amp;module=OUnitDiff.DIFF_ELEMENT">DIFF_ELEMENT</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Definition of an element</div></div><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">Type of an element</div></div>
+<pre><span class="VALpp_printer"><span class="keyword">val</span> pp_printer</span> : <code class="type"><a href="?package=ocaml&amp;module=Format&amp;type=formatter">Format.formatter</a> -&gt; <a href="?package=ounit&amp;module=OUnitDiff.DIFF_ELEMENT&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Pretty printer for an element</div></div>
+<pre><span class="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="?package=ounit&amp;module=OUnitDiff.DIFF_ELEMENT&amp;type=t">t</a> -&gt; <a href="?package=ounit&amp;module=OUnitDiff.DIFF_ELEMENT&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">Element comparison</div></div>
+<pre><span class="VALpp_print_sep"><span class="keyword">val</span> pp_print_sep</span> : <code class="type"><a href="?package=ocaml&amp;module=Format&amp;type=formatter">Format.formatter</a> -&gt; unit -&gt; unit</code></pre><div class="info"><div class="info">Pretty print element separator</div></div></div></div>
+<div class="ocaml_module sig" name="S"><pre><span class="keyword">module type</span> <a href="?package=ounit&amp;module=OUnitDiff.S">S</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Definition of standard operations</div></div><div class="ocaml_module_content">
+<pre><span class="TYPEe"><span class="keyword">type</span> e</span> </pre><div class="info"><div class="info">Type of an element</div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">Type of a collection of element</div></div>
+<pre><span class="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="?package=ounit&amp;module=OUnitDiff.S&amp;type=t">t</a> -&gt; <a href="?package=ounit&amp;module=OUnitDiff.S&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">Compare a collection of element</div></div>
+<pre><span class="VALpp_printer"><span class="keyword">val</span> pp_printer</span> : <code class="type"><a href="?package=ocaml&amp;module=Format&amp;type=formatter">Format.formatter</a> -&gt; <a href="?package=ounit&amp;module=OUnitDiff.S&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Pretty printer a collection of element</div></div>
+<pre><span class="VALpp_diff"><span class="keyword">val</span> pp_diff</span> : <code class="type"><a href="?package=ocaml&amp;module=Format&amp;type=formatter">Format.formatter</a> -&gt; <a href="?package=ounit&amp;module=OUnitDiff.S&amp;type=t">t</a> * <a href="?package=ounit&amp;module=OUnitDiff.S&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Pretty printer for collection differences</div></div>
+<pre><span class="VALassert_equal"><span class="keyword">val</span> assert_equal</span> : <code class="type">?msg:string -&gt; <a href="?package=ounit&amp;module=OUnitDiff.S&amp;type=t">t</a> -&gt; <a href="?package=ounit&amp;module=OUnitDiff.S&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"> <a href="#assert_equal">assert_equal</a> with <code class="code">~diff</code>, <code class="code">~cmp</code> and <code class="code">~printer</code> predefined for
+        this collection events</div></div>
+<pre><span class="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type"><a href="?package=ounit&amp;module=OUnitDiff.S&amp;type=e">e</a> list -&gt; <a href="?package=ounit&amp;module=OUnitDiff.S&amp;type=t">t</a></code></pre><div class="info"><div class="info">Create <code class="code">t</code> using of list</div></div></div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Implementations</h2></div></div>
+<div class="ocaml_module ident" name="SetMake" path="?package=ounit&amp;module=OUnitDiff.S"><pre><span class="keyword">module</span> <a href="?package=ounit&amp;module=OUnitDiff.SetMake">SetMake</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">D</code><code class="code"> : </code><code class="code"><a href="?package=ounit&amp;module=OUnitDiff.DIFF_ELEMENT">DIFF_ELEMENT</a></code><code class="code">) -&gt; </code><code class="code"><a href="?package=ounit&amp;module=OUnitDiff.S">S</a></code> with type <a href="?package=ounit&amp;module=OUnitDiff.S&amp;type=e">e</a> = D.t</div></code></pre><div class="info"><div class="info">Collection of elements based on a Set, elements order doesn't matter</div></div></div>
+<div class="ocaml_module ident" name="ListSimpleMake" path="?package=ounit&amp;module=OUnitDiff.S"><pre><span class="keyword">module</span> <a href="?package=ounit&amp;module=OUnitDiff.ListSimpleMake">ListSimpleMake</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">D</code><code class="code"> : </code><code class="code"><a href="?package=ounit&amp;module=OUnitDiff.DIFF_ELEMENT">DIFF_ELEMENT</a></code><code class="code">) -&gt; </code><code class="code"><a href="?package=ounit&amp;module=OUnitDiff.S">S</a></code> with type <a href="?package=ounit&amp;module=OUnitDiff.S&amp;type=t">t</a> = D.t list and type <a href="?package=ounit&amp;module=OUnitDiff.S&amp;type=e">e</a> = D.t</div></code></pre><div class="info"><div class="info">Collection of elements based on a List, order matters but difference display
+    is very simple. It stops at the first element which differs.</div></div></div>
+<pre><span class="VALpp_comma_separator"><span class="keyword">val</span> pp_comma_separator</span> : <code class="type"><a href="?package=ocaml&amp;module=Format&amp;type=formatter">Format.formatter</a> -&gt; unit -&gt; unit</code></pre>
+</div>

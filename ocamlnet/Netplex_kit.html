@@ -1,0 +1,61 @@
+<div class="ocaml_toplevel_module"><div class="info">Netplex toolkit</div>
+<div class="ocaml_class sig" name="v_processor"><pre><span class="TYPEv_processor"><span class="keyword">class type</span> <span class="keyword">virtual </span><a href="?package=ocamlnet&amp;module=Netplex_kit&amp;class=v_processor">v_processor</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Same as <code class="code">processor</code>, but the methods <code class="code">process</code> and <code class="code">supported_ptypes</code>
+ are flagged as <code class="code">virtual</code></div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field"><pre><span class="keyword">inherit</span> <code class="type"/>Netplex_types.processor_hooks</pre></div>
+
+<pre><span class="METHODprocess"><span class="keyword">method</span> <span class="keyword">virtual</span> process</span> : <code class="code">when_done:(unit -&gt; unit) -&gt;
+Netplex_types.container -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; string -&gt; unit</code></pre>
+
+<pre><span class="METHODsupported_ptypes"><span class="keyword">method</span> <span class="keyword">virtual</span> supported_ptypes</span> : <code class="code">Netplex_types.parallelization_type list</code></pre>
+</div></div>
+<div class="ocaml_class ident" name="empty_processor_hooks"><pre><span class="TYPEempty_processor_hooks"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netplex_kit&amp;class=empty_processor_hooks">empty_processor_hooks</a></span> : <code class="type">unit -&gt; </code>Netplex_types.processor_hooks</pre></div>
+<div class="ocaml_class ident" name="processor_hooks_delegation"><pre><span class="TYPEprocessor_hooks_delegation"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netplex_kit&amp;class=processor_hooks_delegation">processor_hooks_delegation</a></span> : <code class="type">Netplex_types.processor_hooks -&gt; </code>Netplex_types.processor_hooks</pre></div>
+<div class="ocaml_class ident" name="processor_base" path="?package=ocamlnet&amp;module=Netplex_kit&amp;class=v_processor"><pre><span class="TYPEprocessor_base"><span class="keyword">class</span> <span class="keyword">virtual </span><a href="?package=ocamlnet&amp;module=Netplex_kit&amp;class=processor_base">processor_base</a></span> : <code class="type">Netplex_types.processor_hooks -&gt; </code><a href="?package=ocamlnet&amp;module=Netplex_kit&amp;class=v_processor">v_processor</a></pre><div class="info"><div class="info">A virtual (incomplete) base class for processors. As argument the
+ user-supplied hooks are passed in. Use this class as in:<br/> <pre class="codepre"><code class="code">
+    class my_processor hooks =
+    object(self)
+      inherit Netplex_kit.processor_base hooks
+      method process ~when_done container fd proto_name = ...
+      method supported_ptypes = ...
+    end
+ </code></pre><br/> In order to run actions from hooks, redefine the hook methods as in:<br/> <pre class="codepre"><code class="code">
+    class my_processor hooks =
+    object(self)
+      inherit Netplex_kit.processor_base hooks as super
+      method process ~when_done container fd proto_name = ...
+      method supported_ptypes = ...
+      method post_start_hook container =
+        ... (* my action *);
+        super # post_start_hook container
+    end
+ </code></pre></div></div></div>
+<div class="ocaml_class ident" name="protocol_switch_processor"><pre><span class="TYPEprotocol_switch_processor"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netplex_kit&amp;class=protocol_switch_processor">protocol_switch_processor</a></span> : <code class="type">(string * Netplex_types.processor) list -&gt; </code>Netplex_types.processor</pre></div>
+<div class="ocaml_class ident" name="protocol_switch_factory"><pre><span class="TYPEprotocol_switch_factory"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netplex_kit&amp;class=protocol_switch_factory">protocol_switch_factory</a></span> : <code class="type">string -&gt; (string * Netplex_types.processor_factory) list -&gt; </code>Netplex_types.processor_factory</pre></div>
+<pre><span class="VALadd_helper_service"><span class="keyword">val</span> add_helper_service</span> : <code class="type">Netplex_types.controller -&gt; string -&gt; Netplex_types.processor_hooks -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">add_helper_service ctrl name hooks</code>: Adds a helper service <code class="code">name</code> to
+      the controller
+      <code class="code">ctrl</code>. The helper service does not have any externally
+      accessible socket, but starts a single regular container that looks
+      like any other container. Whatever needs to be initialized must be
+      done in the <code class="code">pre_start_hook</code> or the <code class="code">post_start_hook</code>.<br/>      This function must be called in controller context, for example
+      in the <code class="code">late_initializer</code> of  <a href="#Netplex_main.startup">Netplex_main.startup</a>, but it can
+      also be started later.<br/>      For an example, look at <code class="code">examples/netplex/helper_container.ml</code> in
+      the distributed source tarball.<br/>      For multi-threaded programs,  <a href="#Netplex_cenv.run_in_controller_context">Netplex_cenv.run_in_controller_context</a>
+      is the required companion function to start helper threads at any
+      time. Multi-processing programs do not have such an easy way to 
+      add helpers. They should it at program startup time.<br/>      <b>Known bug.</b> The the helper component will be in &quot;starting&quot; state as 
+      long as the <code class="code">post_start_hook</code> runs.</div></div>
+<pre><span class="VALcreate_protocol"><span class="keyword">val</span> create_protocol</span> : <code class="type">?lstn_backlog:int -&gt;
+?lstn_reuseaddr:bool -&gt;
+?so_keepalive:bool -&gt;
+?tcp_nodelay:bool -&gt;
+?configure_slave_socket:(<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; unit) -&gt;
+string -&gt; Netplex_types.extended_address array -&gt; Netplex_types.protocol</code></pre><div class="info"><div class="info"><code class="code">create_protocol name addresses</code>: Creates a <code class="code">protocol</code> object
+      from the passed arguments</div></div>
+<pre><span class="VALcreate_socket_service_config"><span class="keyword">val</span> create_socket_service_config</span> : <code class="type">?startup_timeout:float -&gt;
+?change_user_to:int * int -&gt;
+?gc_when_idle:bool -&gt;
+?conn_limit:int -&gt;
+string -&gt;
+Netplex_types.protocol list -&gt;
+Netplex_types.controller_config -&gt; Netplex_types.socket_service_config</code></pre><div class="info"><div class="info"><code class="code">create_socket_service_config name protos ctrl_conf</code>: Creates a
+      <code class="code">socket_service_config</code> object from the passed arguments</div></div>
+</div>

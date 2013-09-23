@@ -1,0 +1,90 @@
+<div class="ocaml_toplevel_module"><div class="info">A Netbuffer.t is a buffer that can grow and shrink dynamically.</div>
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -&gt; <a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a></code></pre><div class="info"><div class="info">Creates a netbuffer which allocates initially this number of bytes. 
+ The logical length is zero.</div></div>
+<pre><span class="VALcontents"><span class="keyword">val</span> contents</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; string</code></pre><div class="info"><div class="info">Returns the contents of the buffer as fresh string.</div></div>
+<pre><span class="VALlength"><span class="keyword">val</span> length</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">Returns the logical length of the buffer</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Extracting strings</h2></div></div>
+<pre><span class="VALget"><span class="keyword">val</span> get</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; int -&gt; char</code></pre><div class="info"><div class="info"><code class="code">get nb pos</code>: Get the character at <code class="code">pos</code></div></div>
+<pre><span class="VALnth"><span class="keyword">val</span> nth</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; int -&gt; char</code></pre><div class="info"><div class="info">Alias for <code class="code">get</code></div></div>
+<pre><span class="VALsub"><span class="keyword">val</span> sub</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; int -&gt; int -&gt; string</code></pre><div class="info"><div class="info"><code class="code">sub nb k n</code>: returns the n characters starting at position <code class="code">n</code> from 
+ netbuffer <code class="code">nb</code> as fresh string</div></div>
+<pre><span class="VALblit_to_string"><span class="keyword">val</span> blit_to_string</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; int -&gt; string -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">blit_to_string nb srcpos dest destpos len</code>: Copies the <code class="code">len</code> bytes at
+ position <code class="code">srcpos</code> from <code class="code">nb</code> to the string <code class="code">dest</code> at position <code class="code">destpos</code>.</div></div>
+<pre><span class="VALblit"><span class="keyword">val</span> blit</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; int -&gt; string -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">Compatibility name for <code class="code">blit_to_string</code>, now deprecated</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Appending strings</h2></div></div>
+<pre><span class="VALadd_string"><span class="keyword">val</span> add_string</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; string -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">add_string nb s</code>: Adds a copy of the string <code class="code">s</code> to the logical end of
+ the netbuffer <code class="code">nb</code>. If necessary, <code class="code">nb</code> grows.</div></div>
+<pre><span class="VALadd_sub_string"><span class="keyword">val</span> add_sub_string</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; string -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">add_sub_string nb s k n</code>: Adds the substring of <code class="code">s</code> starting at position
+ <code class="code">k</code> with length <code class="code">n</code> to the logical end of the netbuffer <code class="code">nb</code>. If necessary,
+ <code class="code">nb</code> grows.<br/> This is semantically the same as
+ <code class="code">add_string nb (String.sub s k n)</code>, but the extra copy is avoided.</div></div>
+<pre><span class="VALadd_substring"><span class="keyword">val</span> add_substring</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; string -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">Alias for add_sub_string</div></div>
+<pre><span class="VALadd_char"><span class="keyword">val</span> add_char</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; char -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">add_char nb c</code>: Adds a single char at the end of the buffer</div></div>
+<pre><span class="VALadd_char_2"><span class="keyword">val</span> add_char_2</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; char -&gt; char -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">add_char_2 nb c1 c2</code>: Adds two chars at the end of the buffer</div></div>
+<pre><span class="VALadd_char_4"><span class="keyword">val</span> add_char_4</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; char -&gt; char -&gt; char -&gt; char -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">add_char_4 nb c1 c2 c3 c4</code>: Adds four chars at the end of the buffer</div></div>
+<pre><span class="VALadd_inplace"><span class="keyword">val</span> add_inplace</span> : <code class="type">?len:int -&gt; <a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; (string -&gt; int -&gt; int -&gt; int) -&gt; int</code></pre><div class="info"><div class="info"><code class="code">add_inplace nb f</code>: Calls the function <code class="code">f</code> to add bytes to the
+ netbuffer <code class="code">nb</code>. The arguments of <code class="code">f</code> are the buffer, the position
+ in the buffer, and the maximum length. The function <code class="code">f</code> must return
+ the actual number of added bytes; this number is also returned by
+ <code class="code">add_inplace</code>.<br/> Example: let n = add_inplace nb (Pervasives.input ch)<br/> The argument <code class="code">len</code> is the number of bytes to add (second argument of
+ <code class="code">f</code>). It defaults to the number of free bytes in the buffer after space
+ for at least one byte has been allocated.</div></div>
+<pre><span class="VALadd_buffer"><span class="keyword">val</span> add_buffer</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">add_buffer nb1 nb2</code>: Adds the contents of <code class="code">nb2</code> to the end of <code class="code">nb1</code></div></div>
+<pre><span class="VALarea_for_additions"><span class="keyword">val</span> area_for_additions</span> : <code class="type">?len:int -&gt; <a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; string * int * int</code></pre>
+<pre><span class="VALadvance"><span class="keyword">val</span> advance</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">These two functions work together, so that the effect of <code class="code">add_inplace</code>
+      can be obtained in two steps. First, the user calls
+      <pre class="codepre"><code class="code">
+        let (s,pos,len) = area_for_additions nb
+      </code></pre>
+      to get the area where to put new data of length <code class="code">n</code>, with <code class="code">n &lt;= len</code>.
+      After this the data is made valid by
+      <pre class="codepre"><code class="code">
+        advance n
+      </code></pre></div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Inserting strings</h2></div></div>
+<pre><span class="VALinsert_string"><span class="keyword">val</span> insert_string</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; int -&gt; string -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">insert_string nb p s</code>: Inserts the value of string <code class="code">s</code> at position
+ <code class="code">p</code> into the netbuffer <code class="code">nb</code></div></div>
+<pre><span class="VALinsert_sub_string"><span class="keyword">val</span> insert_sub_string</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; int -&gt; string -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">insert_string nb p s k n</code>: Inserts a substring of string <code class="code">s</code> at position
+ <code class="code">p</code> into the netbuffer <code class="code">nb</code>. The substring is denoted by position <code class="code">k</code>
+ and has length <code class="code">n</code></div></div>
+<pre><span class="VALinsert_char"><span class="keyword">val</span> insert_char</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; int -&gt; char -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">insert_char nb p c</code>: Inserts character <code class="code">c</code> at position <code class="code">p</code> into
+ the netbuffer <code class="code">nb</code></div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Overwriting strings</h2></div></div>
+<pre><span class="VALset"><span class="keyword">val</span> set</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; int -&gt; char -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">set nb pos c</code>: Sets the character at <code class="code">pos</code> to <code class="code">c</code></div></div>
+<pre><span class="VALput_string"><span class="keyword">val</span> put_string</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; int -&gt; string -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">put_string nb pos s</code>: Copies the string <code class="code">s</code> to the position <code class="code">pos</code>
+        of netbuffer <code class="code">nb</code></div></div>
+<pre><span class="VALblit_from_string"><span class="keyword">val</span> blit_from_string</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">blit_from_string src srcpos dest destpos len</code>: Copies the <code class="code">len</code> bytes
+ at position <code class="code">srcpos</code> from the string <code class="code">src</code> to the netbuffer <code class="code">dest</code> at
+ position <code class="code">destpos</code>.<br/> It is possible to copy the string beyond the end of the buffer. The
+ buffer is automatically enlarged in this case.</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Deleting</h2></div></div>
+<pre><span class="VALdelete"><span class="keyword">val</span> delete</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">delete nb k n</code>: Deletes the <code class="code">n</code> bytes at position <code class="code">k</code> of netbuffer 
+ <code class="code">nb</code> in-place.<br/> The netbuffer does not shrink, however, i.e. the free space is not
+ given back to the memory manager.</div></div>
+<pre><span class="VALclear"><span class="keyword">val</span> clear</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Deletes all contents from the buffer. As <code class="code">delete</code>, the netbuffer does
+ not shrink.</div></div>
+<pre><span class="VALreset"><span class="keyword">val</span> reset</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Empty the buffer, deallocate the internal string, and replace it
+        with a new string of length <code class="code">n</code> that was allocated by
+         <a href="#Netbuffer.create">Netbuffer.create</a> <code class="code">n</code>.</div></div>
+<pre><span class="VALtry_shrinking"><span class="keyword">val</span> try_shrinking</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">try_shrinking nb</code>: If the length of the buffer is less than half of
+ the allocated space, the netbuffer is reallocated in order to save
+ memory.</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Searching</h2></div></div>
+<pre><span class="VALindex_from"><span class="keyword">val</span> index_from</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; int -&gt; char -&gt; int</code></pre><div class="info"><div class="info"><code class="code">index_from nb k c</code>: Searches the character <code class="code">c</code> in the netbuffer beginning
+ at position <code class="code">k</code>. If found, the position of the left-most occurence is
+ returned. Otherwise, <code class="code">Not_found</code> is raised.</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Memory</h2></div></div>
+<pre><span class="VALblit_to_memory"><span class="keyword">val</span> blit_to_memory</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">Netsys_mem.memory</a> -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">blit_to_memory nb srcpos dest destpos len</code>: Copies the <code class="code">len</code> bytes at
+  position <code class="code">srcpos</code> from <code class="code">nb</code> to the membuffer <code class="code">dest</code> at position
+	<code class="code">destpos</code>.</div></div>
+<pre><span class="VALadd_sub_memory"><span class="keyword">val</span> add_sub_memory</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">Netsys_mem.memory</a> -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">Same as <code class="code">add_sub_string</code>, but gets data from a memory buffer</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Miscelleneous</h2></div></div>
+<pre><span class="VALunsafe_buffer"><span class="keyword">val</span> unsafe_buffer</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; string</code></pre><div class="info"><div class="info"><b>Warning! This is a low-level function!</b>
+ Returns the current string that internally holds the buffer.
+ The byte positions 0 to length - 1 actually store the contents of
+ the buffer. You can directly read and modify the buffer. Note that
+ there is no protection if you read or write positions beyond the
+ length of the buffer.</div></div>
+<pre><span class="VALprint_buffer"><span class="keyword">val</span> print_buffer</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">For the toploop</div></div>
+</div>

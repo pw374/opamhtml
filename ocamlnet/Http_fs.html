@@ -1,0 +1,53 @@
+<div class="ocaml_toplevel_module"><pre><span class="TYPEread_flag"><span class="keyword">type</span> read_flag</span> = <code class="type">[ `Binary
+| `Dummy
+| `Header of (string * string) list
+| `Skip of int64
+| `Streaming ]</code></pre>
+<pre><span class="TYPEread_file_flag"><span class="keyword">type</span> read_file_flag</span> = <code class="type">[ `Binary | `Dummy | `Header of (string * string) list ]</code></pre>
+<pre><span class="TYPEwrite_flag"><span class="keyword">type</span> write_flag</span> = <code class="type">[ `Binary
+| `Create
+| `Dummy
+| `Exclusive
+| `Header of (string * string) list
+| `Streaming
+| `Truncate ]</code></pre>
+<pre><span class="TYPEwrite_file_flag"><span class="keyword">type</span> write_file_flag</span> = <code class="type">[ `Binary
+| `Create
+| `Dummy
+| `Exclusive
+| `Header of (string * string) list
+| `Link
+| `Truncate ]</code></pre>
+<div class="ocaml_class sig" name="http_stream_fs"><pre><span class="TYPEhttp_stream_fs"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Http_fs&amp;class=http_stream_fs">http_stream_fs</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><pre><span class="METHODread"><span class="keyword">method</span> read</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Http_fs&amp;type=read_flag">read_flag</a> list -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=in_obj_channel">Netchannels.in_obj_channel</a></code></pre>
+<pre><span class="METHODread_file"><span class="keyword">method</span> read_file</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Http_fs&amp;type=read_file_flag">read_file_flag</a> list -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Netfs&amp;type=local_file">Netfs.local_file</a></code></pre>
+<pre><span class="METHODwrite"><span class="keyword">method</span> write</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Http_fs&amp;type=write_flag">write_flag</a> list -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=out_obj_channel">Netchannels.out_obj_channel</a></code></pre>
+<pre><span class="METHODwrite_file"><span class="keyword">method</span> write_file</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Http_fs&amp;type=write_file_flag">write_file_flag</a> list -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Netfs&amp;type=local_file">Netfs.local_file</a> -&gt; unit</code></pre>
+<pre><span class="METHODlast_response_header"><span class="keyword">method</span> last_response_header</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Nethttp&amp;type=http_header">Nethttp.http_header</a></code></pre>
+<pre><span class="METHODlast_response_status"><span class="keyword">method</span> last_response_status</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Nethttp&amp;type=http_status">Nethttp.http_status</a> * int * string</code></pre>
+<pre><span class="METHODpipeline"><span class="keyword">method</span> pipeline</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Http_client&amp;type=pipeline">Http_client.pipeline</a></code></pre>
+<pre><span class="METHODtranslate"><span class="keyword">method</span> translate</span> : <code class="code">string -&gt; string</code></pre>
+<pre><span class="METHODpath_encoding"><span class="keyword">method</span> path_encoding</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> option</code></pre>
+<pre><span class="METHODpath_exclusions"><span class="keyword">method</span> path_exclusions</span> : <code class="code">(int * int) list</code></pre>
+<pre><span class="METHODnominal_dot_dot"><span class="keyword">method</span> nominal_dot_dot</span> : <code class="code">bool</code></pre>
+<pre><span class="METHODsize"><span class="keyword">method</span> size</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netfs&amp;type=size_flag">Netfs.size_flag</a> list -&gt; string -&gt; int64</code></pre>
+<pre><span class="METHODtest"><span class="keyword">method</span> test</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netfs&amp;type=test_flag">Netfs.test_flag</a> list -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Netfs&amp;type=test_type">Netfs.test_type</a> -&gt; bool</code></pre>
+<pre><span class="METHODtest_list"><span class="keyword">method</span> test_list</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netfs&amp;type=test_flag">Netfs.test_flag</a> list -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Netfs&amp;type=test_type">Netfs.test_type</a> list -&gt; bool list</code></pre>
+<pre><span class="METHODremove"><span class="keyword">method</span> remove</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netfs&amp;type=remove_flag">Netfs.remove_flag</a> list -&gt; string -&gt; unit</code></pre>
+<pre><span class="METHODrename"><span class="keyword">method</span> rename</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netfs&amp;type=rename_flag">Netfs.rename_flag</a> list -&gt; string -&gt; string -&gt; unit</code></pre>
+<pre><span class="METHODsymlink"><span class="keyword">method</span> symlink</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netfs&amp;type=symlink_flag">Netfs.symlink_flag</a> list -&gt; string -&gt; string -&gt; unit</code></pre>
+<pre><span class="METHODreaddir"><span class="keyword">method</span> readdir</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netfs&amp;type=readdir_flag">Netfs.readdir_flag</a> list -&gt; string -&gt; string list</code></pre>
+<pre><span class="METHODreadlink"><span class="keyword">method</span> readlink</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netfs&amp;type=readlink_flag">Netfs.readlink_flag</a> list -&gt; string -&gt; string</code></pre>
+<pre><span class="METHODmkdir"><span class="keyword">method</span> mkdir</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netfs&amp;type=mkdir_flag">Netfs.mkdir_flag</a> list -&gt; string -&gt; unit</code></pre>
+<pre><span class="METHODrmdir"><span class="keyword">method</span> rmdir</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netfs&amp;type=rmdir_flag">Netfs.rmdir_flag</a> list -&gt; string -&gt; unit</code></pre>
+<pre><span class="METHODcopy"><span class="keyword">method</span> copy</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netfs&amp;type=copy_flag">Netfs.copy_flag</a> list -&gt; string -&gt; string -&gt; unit</code></pre>
+<pre><span class="METHODcancel"><span class="keyword">method</span> cancel</span> : <code class="code">unit -&gt; unit</code></pre></div></div>
+<div class="ocaml_class ident" name="http_fs" path="?package=ocamlnet&amp;module=Http_fs&amp;class=http_stream_fs"><pre><span class="TYPEhttp_fs"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Http_fs&amp;class=http_fs">http_fs</a></span> : <code class="type">(<a href="?package=ocamlnet&amp;module=Http_client&amp;type=pipeline">Http_client.pipeline</a> -&gt; unit) option -&gt; bool option -&gt; string option -&gt; string option -&gt; <a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> option -&gt; bool option -&gt; bool option -&gt; string -&gt; </code><a href="?package=ocamlnet&amp;module=Http_fs&amp;class=http_stream_fs">http_stream_fs</a></pre></div>
+<pre><span class="VALhttp_fs"><span class="keyword">val</span> http_fs</span> : <code class="type">?config_pipeline:(<a href="?package=ocamlnet&amp;module=Http_client&amp;type=pipeline">Http_client.pipeline</a> -&gt; unit) -&gt;
+?streaming:bool -&gt;
+?tmp_directory:string -&gt;
+?tmp_prefix:string -&gt;
+?path_encoding:<a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> -&gt;
+?enable_read_for_directories:bool -&gt;
+?enable_ftp:bool -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Http_fs&amp;type=http_stream_fs">http_stream_fs</a></code></pre>
+<pre><span class="VALfind_flag"><span class="keyword">val</span> find_flag</span> : <code class="type">('a -&gt; 'b option) -&gt; 'a list -&gt; 'b</code></pre>
+</div>

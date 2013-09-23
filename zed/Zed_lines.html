@@ -1,0 +1,24 @@
+<div class="ocaml_toplevel_module"><div class="info">Sets of line positions.</div>
+<div class="info"><div class="info">This module implement sets of line positions. They allow to
+    efficiently find the beginning of a line and to convert offset to
+    line and column number.</div></div>
+<pre><span class="EXCEPTIONOut_of_bounds"><span class="keyword">exception</span> Out_of_bounds</span></pre><div class="info"><div class="info">Exception raised when trying to access a position outside the
+      bounds of a set.</div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">Type of sets of line positions.</div></div>
+<pre><span class="VALlength"><span class="keyword">val</span> length</span> : <code class="type"><a href="?package=zed&amp;module=Zed_lines&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">Returns the length of the set, i.e. the number of characters in
+      the set.</div></div>
+<pre><span class="VALcount"><span class="keyword">val</span> count</span> : <code class="type"><a href="?package=zed&amp;module=Zed_lines&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">Returns the number of newlines in the set.</div></div>
+<pre><span class="VALof_rope"><span class="keyword">val</span> of_rope</span> : <code class="type"><a href="?package=zed&amp;module=Zed_rope&amp;type=t">Zed_rope.t</a> -&gt; <a href="?package=zed&amp;module=Zed_lines&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">of_rope rope</code> returns the set of newline positions in <code class="code">rope</code>.</div></div>
+<pre><span class="VALempty"><span class="keyword">val</span> empty</span> : <code class="type"><a href="?package=zed&amp;module=Zed_lines&amp;type=t">t</a></code></pre><div class="info"><div class="info">The empty set.</div></div>
+<pre><span class="VALline_index"><span class="keyword">val</span> line_index</span> : <code class="type"><a href="?package=zed&amp;module=Zed_lines&amp;type=t">t</a> -&gt; int -&gt; int</code></pre><div class="info"><div class="info"><code class="code">line_index set ofs</code> returns the line number of the line
+      containing <code class="code">ofs</code>.</div></div>
+<pre><span class="VALline_start"><span class="keyword">val</span> line_start</span> : <code class="type"><a href="?package=zed&amp;module=Zed_lines&amp;type=t">t</a> -&gt; int -&gt; int</code></pre><div class="info"><div class="info"><code class="code">line_start set idx</code> returns the offset of the beginning of the
+      <code class="code">idx</code>th line of <code class="code">set</code> .</div></div>
+<pre><span class="VALappend"><span class="keyword">val</span> append</span> : <code class="type"><a href="?package=zed&amp;module=Zed_lines&amp;type=t">t</a> -&gt; <a href="?package=zed&amp;module=Zed_lines&amp;type=t">t</a> -&gt; <a href="?package=zed&amp;module=Zed_lines&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">append s1 s2</code> concatenates two sets of line positions.</div></div>
+<pre><span class="VALinsert"><span class="keyword">val</span> insert</span> : <code class="type"><a href="?package=zed&amp;module=Zed_lines&amp;type=t">t</a> -&gt; int -&gt; <a href="?package=zed&amp;module=Zed_lines&amp;type=t">t</a> -&gt; <a href="?package=zed&amp;module=Zed_lines&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">insert set offset set'</code> inserts <code class="code">set</code> at given positon in
+      <code class="code">set'</code>.</div></div>
+<pre><span class="VALremove"><span class="keyword">val</span> remove</span> : <code class="type"><a href="?package=zed&amp;module=Zed_lines&amp;type=t">t</a> -&gt; int -&gt; int -&gt; <a href="?package=zed&amp;module=Zed_lines&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">remove set offet length</code> removes <code class="code">length</code> characters at
+      <code class="code">offset</code> in set.</div></div>
+<pre><span class="VALreplace"><span class="keyword">val</span> replace</span> : <code class="type"><a href="?package=zed&amp;module=Zed_lines&amp;type=t">t</a> -&gt; int -&gt; int -&gt; <a href="?package=zed&amp;module=Zed_lines&amp;type=t">t</a> -&gt; <a href="?package=zed&amp;module=Zed_lines&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">replace set offset length repl</code> replaces the subset at offset
+      <code class="code">offset</code> and length <code class="code">length</code> by <code class="code">repl</code> in <code class="code">set</code>.</div></div>
+</div>

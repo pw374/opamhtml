@@ -1,0 +1,91 @@
+<div class="ocaml_toplevel_module"><div class="ocaml_module sig" name="Make'PMAP"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Rpc_portmapper_clnt.Make'PMAP">Make'PMAP</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">U'C</code><code class="code"> : </code><code class="code"><a href="?package=ocamlnet&amp;module=Rpc_client.USE_CLIENT">Rpc_client.USE_CLIENT</a></code><code class="code">) -&gt; </code><code class="code">sig</code> .. <code class="code">end</code></div></code></pre><div class="ocaml_module_content">
+<div class="ocaml_module sig" name="V2"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Rpc_portmapper_clnt.Make'PMAP.V2">V2</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type">U'C.t</code></pre>
+<pre><span class="VAL_program"><span class="keyword">val</span> _program</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_program&amp;type=t">Rpc_program.t</a></code></pre>
+<pre><span class="VALpmapproc_null"><span class="keyword">val</span> pmapproc_null</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_null'arg">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_null'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_null'res">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_null'res</a></code></pre>
+<pre><span class="VALpmapproc_null'async"><span class="keyword">val</span> pmapproc_null'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_null'arg">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_null'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_null'res">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_null'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALpmapproc_set"><span class="keyword">val</span> pmapproc_set</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_set'arg">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_set'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_set'res">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_set'res</a></code></pre>
+<pre><span class="VALpmapproc_set'async"><span class="keyword">val</span> pmapproc_set'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_set'arg">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_set'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_set'res">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_set'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALpmapproc_unset"><span class="keyword">val</span> pmapproc_unset</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_unset'arg">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_unset'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_unset'res">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_unset'res</a></code></pre>
+<pre><span class="VALpmapproc_unset'async"><span class="keyword">val</span> pmapproc_unset'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_unset'arg">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_unset'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_unset'res">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_unset'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALpmapproc_getport"><span class="keyword">val</span> pmapproc_getport</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_getport'arg">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_getport'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_getport'res">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_getport'res</a></code></pre>
+<pre><span class="VALpmapproc_getport'async"><span class="keyword">val</span> pmapproc_getport'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_getport'arg">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_getport'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_getport'res">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_getport'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALpmapproc_dump"><span class="keyword">val</span> pmapproc_dump</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_dump'arg">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_dump'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_dump'res">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_dump'res</a></code></pre>
+<pre><span class="VALpmapproc_dump'async"><span class="keyword">val</span> pmapproc_dump'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_dump'arg">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_dump'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_dump'res">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_dump'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALpmapproc_callit"><span class="keyword">val</span> pmapproc_callit</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_callit'arg">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_callit'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_callit'res">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_callit'res</a></code></pre>
+<pre><span class="VALpmapproc_callit'async"><span class="keyword">val</span> pmapproc_callit'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_callit'arg">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_callit'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_callit'res">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_callit'res</a>) -&gt; unit) -&gt; unit</code></pre></div></div></div></div>
+<div class="ocaml_module sig" name="PMAP"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Rpc_portmapper_clnt.PMAP">PMAP</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<div class="ocaml_module sig" name="V2"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Rpc_portmapper_clnt.PMAP.V2">V2</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a></code></pre>
+<pre><span class="VALcreate_client"><span class="keyword">val</span> create_client</span> : <code class="type">?esys:<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt;
+?program_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt;
+?version_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=connector">Rpc_client.connector</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a></code></pre>
+<pre><span class="VALcreate_portmapped_client"><span class="keyword">val</span> create_portmapped_client</span> : <code class="type">?esys:<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt;
+?program_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt;
+?version_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a></code></pre>
+<pre><span class="VALcreate_client2"><span class="keyword">val</span> create_client2</span> : <code class="type">?esys:<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt;
+?program_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt;
+?version_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=mode2">Rpc_client.mode2</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a></code></pre>
+<pre><span class="VAL_program"><span class="keyword">val</span> _program</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_program&amp;type=t">Rpc_program.t</a></code></pre>
+<pre><span class="VALpmapproc_null"><span class="keyword">val</span> pmapproc_null</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_null'arg">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_null'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_null'res">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_null'res</a></code></pre>
+<pre><span class="VALpmapproc_null'async"><span class="keyword">val</span> pmapproc_null'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_null'arg">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_null'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_null'res">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_null'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALpmapproc_set"><span class="keyword">val</span> pmapproc_set</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_set'arg">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_set'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_set'res">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_set'res</a></code></pre>
+<pre><span class="VALpmapproc_set'async"><span class="keyword">val</span> pmapproc_set'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_set'arg">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_set'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_set'res">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_set'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALpmapproc_unset"><span class="keyword">val</span> pmapproc_unset</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_unset'arg">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_unset'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_unset'res">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_unset'res</a></code></pre>
+<pre><span class="VALpmapproc_unset'async"><span class="keyword">val</span> pmapproc_unset'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_unset'arg">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_unset'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_unset'res">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_unset'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALpmapproc_getport"><span class="keyword">val</span> pmapproc_getport</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_getport'arg">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_getport'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_getport'res">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_getport'res</a></code></pre>
+<pre><span class="VALpmapproc_getport'async"><span class="keyword">val</span> pmapproc_getport'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_getport'arg">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_getport'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_getport'res">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_getport'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALpmapproc_dump"><span class="keyword">val</span> pmapproc_dump</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_dump'arg">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_dump'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_dump'res">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_dump'res</a></code></pre>
+<pre><span class="VALpmapproc_dump'async"><span class="keyword">val</span> pmapproc_dump'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_dump'arg">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_dump'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_dump'res">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_dump'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALpmapproc_callit"><span class="keyword">val</span> pmapproc_callit</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_callit'arg">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_callit'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_callit'res">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_callit'res</a></code></pre>
+<pre><span class="VALpmapproc_callit'async"><span class="keyword">val</span> pmapproc_callit'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_callit'arg">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_callit'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_portmapper_aux&amp;type=t_PMAP'V2'pmapproc_callit'res">Rpc_portmapper_aux.t_PMAP'V2'pmapproc_callit'res</a>) -&gt; unit) -&gt; unit</code></pre></div></div></div></div>
+</div>

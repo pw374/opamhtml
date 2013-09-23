@@ -1,0 +1,37 @@
+<div class="ocaml_toplevel_module"><div class="info">Shared 2-dimensional arrays (matrices)</div>
+<pre><span class="TYPEsarray2"><span class="keyword">type</span> <code class="type">('e, 'h) </code>sarray2</span> </pre><div class="info"><div class="info">Arrays where the elements have type <code class="code">'e</code> and the header has
+      type <code class="code">'h</code></div></div>
+<pre><span class="TYPEsarray2_descr"><span class="keyword">type</span> <code class="type">('e, 'h) </code>sarray2_descr</span> </pre><div class="info"><div class="info">The marshallable descriptor of a shared matrix</div></div>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; int -&gt; 'e array array -&gt; 'h -&gt; ('e, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_matrix&amp;type=sarray2">sarray2</a></code></pre><div class="info"><div class="info"><code class="code">create pool_id n2 a h</code>:
+      Creates a matrix by deeply copying a normal array <code class="code">a</code>
+      and using the copy of <code class="code">h</code> as header. In <code class="code">n2</code> one has
+      to pass the second dimension.</div></div>
+<pre><span class="VALmake"><span class="keyword">val</span> make</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; int -&gt; int -&gt; 'e -&gt; 'h -&gt; ('e, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_matrix&amp;type=sarray2">sarray2</a></code></pre><div class="info"><div class="info"><code class="code">make pool_id n1 n2 x h</code>:
+      Creates a matrix of the passed number of elements (n1 * n2), 
+      copies the element <code class="code">x</code>, and initializes each element of the new array
+      with the single copy of <code class="code">x</code>. The value <code class="code">h</code> is copied and used
+      as header.</div></div>
+<pre><span class="VALinit"><span class="keyword">val</span> init</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; int -&gt; int -&gt; (int -&gt; int -&gt; 'e) -&gt; 'h -&gt; ('e, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_matrix&amp;type=sarray2">sarray2</a></code></pre><div class="info"><div class="info"><code class="code">init pool_id n1 n2 f h</code>:
+      Creates a matrix of the passed number of elements (n1 * n2),
+      and for getting the element at position <code class="code">k</code> the function
+      <code class="code">f k</code> is run, and the copy of the result is written to the
+      position. The header is set to the copy of <code class="code">h</code>.</div></div>
+<pre><span class="VALset"><span class="keyword">val</span> set</span> : <code class="type">('e, 'a) <a href="?package=ocamlnet&amp;module=Netmcore_matrix&amp;type=sarray2">sarray2</a> -&gt; int -&gt; int -&gt; 'e -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">set sa k1 k2 x</code>: Sets the <code class="code">(k1,k2)-th</code> element of the matrix <code class="code">sa</code> to a
+      deep copy of <code class="code">x</code>.</div></div>
+<pre><span class="VALget_ro"><span class="keyword">val</span> get_ro</span> : <code class="type">('e, 'a) <a href="?package=ocamlnet&amp;module=Netmcore_matrix&amp;type=sarray2">sarray2</a> -&gt; int -&gt; int -&gt; 'e</code></pre><div class="info"><div class="info"><code class="code">get_ro sa k1 k2</code>: Gets the <code class="code">(k1,k2)</code>-th element of the matrix <code class="code">sa</code>.
+      Note that there is no guarantee that this value still exists if
+      it is returned, and a parallely running <code class="code">set</code> changes this element.
+      If such values are accessed the program may crash!</div></div>
+<pre><span class="VALget_p"><span class="keyword">val</span> get_p</span> : <code class="type">('e, 'b) <a href="?package=ocamlnet&amp;module=Netmcore_matrix&amp;type=sarray2">sarray2</a> -&gt; int -&gt; int -&gt; ('e -&gt; 'a) -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">get_p sa k1 k2 f</code>: Gets the <code class="code">(k1,k2)</code>-th element of the matrix <code class="code">sa</code>
+      and call <code class="code">f</code> with this element, and returns the result of <code class="code">f</code>.
+      During the execution of <code class="code">f</code> the requested element cannot be
+      garbage collected.</div></div>
+<pre><span class="VALget_c"><span class="keyword">val</span> get_c</span> : <code class="type">('e, 'a) <a href="?package=ocamlnet&amp;module=Netmcore_matrix&amp;type=sarray2">sarray2</a> -&gt; int -&gt; int -&gt; 'e</code></pre><div class="info"><div class="info"><code class="code">get_c sa k1 k2</code>: Gets a copy of the <code class="code">(k1,k2)</code>-th element of the matrix
+      <code class="code">sæ</code></div></div>
+<pre><span class="VALdim"><span class="keyword">val</span> dim</span> : <code class="type">('a, 'b) <a href="?package=ocamlnet&amp;module=Netmcore_matrix&amp;type=sarray2">sarray2</a> -&gt; int * int</code></pre><div class="info"><div class="info">Returns the dimenstions</div></div>
+<pre><span class="VALheader"><span class="keyword">val</span> header</span> : <code class="type">('a, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_matrix&amp;type=sarray2">sarray2</a> -&gt; 'h</code></pre><div class="info"><div class="info">Returns the header</div></div>
+<pre><span class="VALderef"><span class="keyword">val</span> deref</span> : <code class="type">('e, 'a) <a href="?package=ocamlnet&amp;module=Netmcore_matrix&amp;type=sarray2">sarray2</a> -&gt; 'e array array</code></pre><div class="info"><div class="info">Returns the raw array in shared memory for unprotected access</div></div>
+<pre><span class="VALheap"><span class="keyword">val</span> heap</span> : <code class="type">('a, 'b) <a href="?package=ocamlnet&amp;module=Netmcore_matrix&amp;type=sarray2">sarray2</a> -&gt; <a href="?package=ocaml&amp;module=Obj&amp;type=t">Obj.t</a> <a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=heap">Netmcore_heap.heap</a></code></pre><div class="info"><div class="info">Return the backing heap structure</div></div>
+<pre><span class="VALdescr_of_sarray2"><span class="keyword">val</span> descr_of_sarray2</span> : <code class="type">('e, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_matrix&amp;type=sarray2">sarray2</a> -&gt; ('e, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_matrix&amp;type=sarray2_descr">sarray2_descr</a></code></pre><div class="info"><div class="info">Returns the descriptor</div></div>
+<pre><span class="VALsarray2_of_descr"><span class="keyword">val</span> sarray2_of_descr</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; ('e, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_matrix&amp;type=sarray2_descr">sarray2_descr</a> -&gt; ('e, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_matrix&amp;type=sarray2">sarray2</a></code></pre><div class="info"><div class="info">Look up the matrix for this descriptor</div></div>
+</div>

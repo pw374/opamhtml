@@ -1,0 +1,73 @@
+<div class="ocaml_toplevel_module">
+<div class="info"><div class="info">An interface for stacks that follows <code class="code">Core</code>'s conventions, as opposed to OCaml's
+    standard <code class="code">Stack</code> module.</div></div>
+<div class="ocaml_module sig" name="S"><pre><span class="keyword">module type</span> <a href="?package=core_kernel&amp;module=Stack_intf.S">S</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> </pre>
+<div class="ocaml_include ident" path="?package=core_kernel&amp;module=Invariant.S1" items="[]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core_kernel&amp;module=Invariant.S1">Invariant.S1</a></code> with type t := 'a <a href="?package=core_kernel&amp;module=Stack_intf.S&amp;type=t">t</a></code></pre></div>
+<div class="ocaml_include ident" path="?package=core_kernel&amp;module=Container.S1" items="[]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core_kernel&amp;module=Container.S1">Container.S1</a></code> with type t := 'a <a href="?package=core_kernel&amp;module=Stack_intf.S&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">fold</code>, <code class="code">iter</code>, <code class="code">find</code>, and <code class="code">find_map</code> visit the elements in order from the top of
+      the stack to the bottom.  <code class="code">to_list</code> and <code class="code">to_array</code> return the elements in order from
+      the top of the stack to the bottom.</div></div></div>
+<pre><span class="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">'a list -&gt; 'a <a href="?package=core_kernel&amp;module=Stack_intf.S&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">of_list l</code> returns a stack whose top is the first element of <code class="code">l</code> and bottom is the
+      last element of <code class="code">l</code>.</div></div>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">unit -&gt; 'a <a href="?package=core_kernel&amp;module=Stack_intf.S&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create ()</code> returns an empty stack.</div></div>
+<pre><span class="VALpush"><span class="keyword">val</span> push</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Stack_intf.S&amp;type=t">t</a> -&gt; 'a -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">push t a</code> adds <code class="code">a</code> to the top of stack <code class="code">t</code>.</div></div>
+<pre><span class="VALpop"><span class="keyword">val</span> pop</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Stack_intf.S&amp;type=t">t</a> -&gt; 'a option</code></pre><div class="info"><div class="info"><code class="code">pop t</code> removes and returns the top element of <code class="code">t</code> as <code class="code">Some a</code>, or returns <code class="code">None</code> if
+      <code class="code">t</code> is empty.</div></div>
+<pre><span class="VALpop_exn"><span class="keyword">val</span> pop_exn</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Stack_intf.S&amp;type=t">t</a> -&gt; 'a</code></pre>
+<pre><span class="VALtop"><span class="keyword">val</span> top</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Stack_intf.S&amp;type=t">t</a> -&gt; 'a option</code></pre><div class="info"><div class="info"><code class="code">top t</code> returns <code class="code">Some a</code>, where <code class="code">a</code> is the top of <code class="code">t</code>, unless <code class="code">is_empty t</code>, in which
+      case <code class="code">top</code> returns <code class="code">None</code>.</div></div>
+<pre><span class="VALtop_exn"><span class="keyword">val</span> top_exn</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Stack_intf.S&amp;type=t">t</a> -&gt; 'a</code></pre>
+<pre><span class="VALclear"><span class="keyword">val</span> clear</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Stack_intf.S&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">clear t</code> discards all elements from <code class="code">t</code>.</div></div>
+<pre><span class="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Stack_intf.S&amp;type=t">t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Stack_intf.S&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">copy t</code> returns a copy of <code class="code">t</code>.</div></div>
+<pre><span class="VALuntil_empty"><span class="keyword">val</span> until_empty</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Stack_intf.S&amp;type=t">t</a> -&gt; ('a -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">until_empty t f</code> repeatedly pops an element <code class="code">a</code> off of <code class="code">t</code> and runs <code class="code">f a</code>, until
+      <code class="code">t</code> becomes empty.  It is fine if <code class="code">f</code> adds more elements to <code class="code">t</code>, in which case the
+      most-recently-added element will be processed next.</div></div>
+<pre><span class="VALt_of_sexp"><span class="keyword">val</span> t_of_sexp</span> : <code class="type">(<a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; 'a) -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Stack_intf.S&amp;type=t">t</a></code></pre>
+<pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type">('a -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a>) -&gt; 'a <a href="?package=core_kernel&amp;module=Stack_intf.S&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<pre><span class="VALbin_t"><span class="keyword">val</span> bin_t</span> : <code class="type">'a <a href="?package=bin_prot&amp;module=Type_class&amp;type=t">Bin_prot.Type_class.t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Stack_intf.S&amp;type=t">t</a> <a href="?package=bin_prot&amp;module=Type_class&amp;type=t">Bin_prot.Type_class.t</a></code></pre>
+<pre><span class="VALbin_read_t"><span class="keyword">val</span> bin_read_t</span> : <code class="type">'a <a href="?package=bin_prot&amp;module=Unsafe_read_c&amp;type=reader">Bin_prot.Unsafe_read_c.reader</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Stack_intf.S&amp;type=t">t</a> <a href="?package=bin_prot&amp;module=Read_ml&amp;type=reader">Bin_prot.Read_ml.reader</a></code></pre>
+<pre><span class="VALbin_read_t_"><span class="keyword">val</span> bin_read_t_</span> : <code class="type">'a <a href="?package=bin_prot&amp;module=Unsafe_read_c&amp;type=reader">Bin_prot.Unsafe_read_c.reader</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Stack_intf.S&amp;type=t">t</a> <a href="?package=bin_prot&amp;module=Unsafe_read_c&amp;type=reader">Bin_prot.Unsafe_read_c.reader</a></code></pre>
+<pre><span class="VALbin_read_t__"><span class="keyword">val</span> bin_read_t__</span> : <code class="type">'a <a href="?package=bin_prot&amp;module=Unsafe_read_c&amp;type=reader">Bin_prot.Unsafe_read_c.reader</a> -&gt;
+(int -&gt; 'a <a href="?package=core_kernel&amp;module=Stack_intf.S&amp;type=t">t</a>) <a href="?package=bin_prot&amp;module=Unsafe_read_c&amp;type=reader">Bin_prot.Unsafe_read_c.reader</a></code></pre>
+<pre><span class="VALbin_reader_t"><span class="keyword">val</span> bin_reader_t</span> : <code class="type">'a <a href="?package=bin_prot&amp;module=Type_class&amp;type=reader">Bin_prot.Type_class.reader</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Stack_intf.S&amp;type=t">t</a> <a href="?package=bin_prot&amp;module=Type_class&amp;type=reader">Bin_prot.Type_class.reader</a></code></pre>
+<pre><span class="VALbin_size_t"><span class="keyword">val</span> bin_size_t</span> : <code class="type">'a <a href="?package=bin_prot&amp;module=Size&amp;type=sizer">Bin_prot.Size.sizer</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Stack_intf.S&amp;type=t">t</a> <a href="?package=bin_prot&amp;module=Size&amp;type=sizer">Bin_prot.Size.sizer</a></code></pre>
+<pre><span class="VALbin_write_t"><span class="keyword">val</span> bin_write_t</span> : <code class="type">'a <a href="?package=bin_prot&amp;module=Unsafe_write_c&amp;type=writer">Bin_prot.Unsafe_write_c.writer</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Stack_intf.S&amp;type=t">t</a> <a href="?package=bin_prot&amp;module=Write_ml&amp;type=writer">Bin_prot.Write_ml.writer</a></code></pre>
+<pre><span class="VALbin_write_t_"><span class="keyword">val</span> bin_write_t_</span> : <code class="type">'a <a href="?package=bin_prot&amp;module=Unsafe_write_c&amp;type=writer">Bin_prot.Unsafe_write_c.writer</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Stack_intf.S&amp;type=t">t</a> <a href="?package=bin_prot&amp;module=Unsafe_write_c&amp;type=writer">Bin_prot.Unsafe_write_c.writer</a></code></pre>
+<pre><span class="VALbin_writer_t"><span class="keyword">val</span> bin_writer_t</span> : <code class="type">'a <a href="?package=bin_prot&amp;module=Type_class&amp;type=writer">Bin_prot.Type_class.writer</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Stack_intf.S&amp;type=t">t</a> <a href="?package=bin_prot&amp;module=Type_class&amp;type=writer">Bin_prot.Type_class.writer</a></code></pre>
+<div class="info"><div class="info"><code class="code">fold</code>, <code class="code">iter</code>, <code class="code">find</code>, and <code class="code">find_map</code> visit the elements in order from the top of
+      the stack to the bottom.  <code class="code">to_list</code> and <code class="code">to_array</code> return the elements in order from
+      the top of the stack to the bottom.</div></div>
+<div class="info"><div class="info"><code class="code">of_list l</code> returns a stack whose top is the first element of <code class="code">l</code> and bottom is the
+      last element of <code class="code">l</code>.</div></div>
+<div class="info"><div class="info"><code class="code">create ()</code> returns an empty stack.</div></div>
+<div class="info"><div class="info"><code class="code">push t a</code> adds <code class="code">a</code> to the top of stack <code class="code">t</code>.</div></div>
+<div class="info"><div class="info"><code class="code">pop t</code> removes and returns the top element of <code class="code">t</code> as <code class="code">Some a</code>, or returns <code class="code">None</code> if
+      <code class="code">t</code> is empty.</div></div>
+<div class="info"><div class="info"><code class="code">top t</code> returns <code class="code">Some a</code>, where <code class="code">a</code> is the top of <code class="code">t</code>, unless <code class="code">is_empty t</code>, in which
+      case <code class="code">top</code> returns <code class="code">None</code>.</div></div>
+<div class="info"><div class="info"><code class="code">clear t</code> discards all elements from <code class="code">t</code>.</div></div>
+<div class="info"><div class="info"><code class="code">copy t</code> returns a copy of <code class="code">t</code>.</div></div>
+<div class="info"><div class="info"><code class="code">until_empty t f</code> repeatedly pops an element <code class="code">a</code> off of <code class="code">t</code> and runs <code class="code">f a</code>, until
+      <code class="code">t</code> becomes empty.  It is fine if <code class="code">f</code> adds more elements to <code class="code">t</code>, in which case the
+      most-recently-added element will be processed next.</div></div></div></div>
+
+
+<div class="info"><div class="info">An interface for stacks that follows <code class="code">Core</code>'s conventions, as opposed to OCaml's
+    standard <code class="code">Stack</code> module.</div></div>
+<div class="info"><div class="info"><code class="code">fold</code>, <code class="code">iter</code>, <code class="code">find</code>, and <code class="code">find_map</code> visit the elements in order from the top of
+      the stack to the bottom.  <code class="code">to_list</code> and <code class="code">to_array</code> return the elements in order from
+      the top of the stack to the bottom.</div></div>
+<div class="info"><div class="info"><code class="code">of_list l</code> returns a stack whose top is the first element of <code class="code">l</code> and bottom is the
+      last element of <code class="code">l</code>.</div></div>
+<div class="info"><div class="info"><code class="code">create ()</code> returns an empty stack.</div></div>
+<div class="info"><div class="info"><code class="code">push t a</code> adds <code class="code">a</code> to the top of stack <code class="code">t</code>.</div></div>
+<div class="info"><div class="info"><code class="code">pop t</code> removes and returns the top element of <code class="code">t</code> as <code class="code">Some a</code>, or returns <code class="code">None</code> if
+      <code class="code">t</code> is empty.</div></div>
+<div class="info"><div class="info"><code class="code">top t</code> returns <code class="code">Some a</code>, where <code class="code">a</code> is the top of <code class="code">t</code>, unless <code class="code">is_empty t</code>, in which
+      case <code class="code">top</code> returns <code class="code">None</code>.</div></div>
+<div class="info"><div class="info"><code class="code">clear t</code> discards all elements from <code class="code">t</code>.</div></div>
+<div class="info"><div class="info"><code class="code">copy t</code> returns a copy of <code class="code">t</code>.</div></div>
+<div class="info"><div class="info"><code class="code">until_empty t f</code> repeatedly pops an element <code class="code">a</code> off of <code class="code">t</code> and runs <code class="code">f a</code>, until
+      <code class="code">t</code> becomes empty.  It is fine if <code class="code">f</code> adds more elements to <code class="code">t</code>, in which case the
+      most-recently-added element will be processed next.</div></div>
+</div>

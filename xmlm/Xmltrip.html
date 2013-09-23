@@ -1,0 +1,47 @@
+<div class="ocaml_toplevel_module"><pre><span class="VALstr"><span class="keyword">val</span> str</span> : <code class="type">('a, unit, string) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format">Pervasives.format</a> -&gt; 'a</code></pre>
+<pre><span class="VALexec"><span class="keyword">val</span> exec</span> : <code class="type">string</code></pre>
+<pre><span class="VALpr_err"><span class="keyword">val</span> pr_err</span> : <code class="type">string -&gt; unit</code></pre>
+<pre><span class="VALapply"><span class="keyword">val</span> apply</span> : <code class="type">('a -&gt; 'b) -&gt; 'a -&gt; finally:('c -&gt; 'd) -&gt; 'c -&gt; 'b</code></pre>
+<pre><span class="VALfail"><span class="keyword">val</span> fail</span> : <code class="type">(int * int) * <a href="?package=xmlm&amp;module=Xmlm&amp;type=error">Xmlm.error</a> -&gt; 'a</code></pre>
+<pre><code><span class="TYPEtree"><span class="keyword">type</span> tree</span> = </code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTtree.E"><span class="constructor">E</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=xmlm&amp;module=Xmlm&amp;type=tag">Xmlm.tag</a> * <a href="?package=xmlm&amp;module=Xmltrip&amp;type=tree">tree</a> list</code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTtree.D"><span class="constructor">D</span></span> <span class="keyword">of</span> <code class="type">string</code></code></td></tr></table>
+<pre><span class="VALin_tree"><span class="keyword">val</span> in_tree</span> : <code class="type"><a href="?package=xmlm&amp;module=Xmlm&amp;type=input">Xmlm.input</a> -&gt; <a href="?package=xmlm&amp;module=Xmlm&amp;type=dtd">Xmlm.dtd</a> * <a href="?package=xmlm&amp;module=Xmltrip&amp;type=tree">tree</a></code></pre>
+<pre><span class="VALout_tree"><span class="keyword">val</span> out_tree</span> : <code class="type"><a href="?package=xmlm&amp;module=Xmlm&amp;type=output">Xmlm.output</a> -&gt; <a href="?package=xmlm&amp;module=Xmlm&amp;type=dtd">Xmlm.dtd</a> * <a href="?package=xmlm&amp;module=Xmltrip&amp;type=tree">tree</a> -&gt; unit</code></pre>
+<pre><span class="VALxml_parse"><span class="keyword">val</span> xml_parse</span> : <code class="type">bool -&gt;
+<a href="?package=xmlm&amp;module=Xmlm&amp;type=encoding">Xmlm.encoding</a> option -&gt;
+bool -&gt;
+(string -&gt; string option) -&gt;
+(string -&gt; string option) -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a> -&gt; unit -&gt; unit</code></pre>
+<pre><span class="VALxml_signals"><span class="keyword">val</span> xml_signals</span> : <code class="type">'a -&gt;
+<a href="?package=xmlm&amp;module=Xmlm&amp;type=encoding">Xmlm.encoding</a> option -&gt;
+bool -&gt;
+(string -&gt; string option) -&gt;
+(string -&gt; string option) -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a> -&gt; 'b -&gt; unit</code></pre>
+<pre><span class="VALxml_outline"><span class="keyword">val</span> xml_outline</span> : <code class="type">bool -&gt;
+<a href="?package=xmlm&amp;module=Xmlm&amp;type=encoding">Xmlm.encoding</a> option -&gt;
+bool -&gt;
+(string -&gt; string option) -&gt;
+(string -&gt; string option) -&gt;
+<a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a> -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a> -&gt; unit</code></pre>
+<pre><span class="VALxml_xml"><span class="keyword">val</span> xml_xml</span> : <code class="type">int option -&gt;
+bool -&gt;
+<a href="?package=xmlm&amp;module=Xmlm&amp;type=encoding">Xmlm.encoding</a> option -&gt;
+bool -&gt;
+(string -&gt; string option) -&gt;
+(string -&gt; string option) -&gt;
+<a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a> -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a> -&gt; unit</code></pre>
+<pre><span class="VALwith_inf"><span class="keyword">val</span> with_inf</span> : <code class="type">(<a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a> -&gt; 'a -&gt; unit) -&gt; string -&gt; 'a -&gt; unit</code></pre>
+<pre><span class="VALwith_outf"><span class="keyword">val</span> with_outf</span> : <code class="type">('a -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a> -&gt; unit) -&gt; 'a -&gt; string -&gt; unit</code></pre>
+<pre><span class="VALentity_fun"><span class="keyword">val</span> entity_fun</span> : <code class="type">bool -&gt; bool -&gt; string -&gt; string option</code></pre>
+<pre><span class="VALprocess"><span class="keyword">val</span> process</span> : <code class="type">bool -&gt;
+bool -&gt;
+<a href="?package=xmlm&amp;module=Xmlm&amp;type=encoding">Xmlm.encoding</a> option -&gt;
+bool -&gt;
+bool -&gt;
+bool -&gt; bool -&gt; bool -&gt; bool -&gt; int option -&gt; string -&gt; string list -&gt; unit</code></pre>
+<pre><span class="VALencoding_of_str"><span class="keyword">val</span> encoding_of_str</span> : <code class="type">string -&gt;
+[&gt; `ISO_8859_1 | `US_ASCII | `UTF_16 | `UTF_16BE | `UTF_16LE | `UTF_8 ]
+option</code></pre>
+<pre><span class="VALmain"><span class="keyword">val</span> main</span> : <code class="type">unit -&gt; unit</code></pre>
+
+</div>

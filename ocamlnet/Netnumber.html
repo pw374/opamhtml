@@ -1,0 +1,136 @@
+<div class="ocaml_toplevel_module"><div class="info">Binary encodings of numbers</div>
+<div class="info"><div class="info">This is the successor of the  <a href="#Rtypes">Rtypes</a> module</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Numeric types</h2></div></div>
+<pre><span class="TYPEint4"><span class="keyword">type</span> int4</span> </pre><div class="info"><div class="info">32 bit signed integer</div></div>
+<pre><span class="TYPEint8"><span class="keyword">type</span> int8</span> </pre><div class="info"><div class="info">64 bit signed integer</div></div>
+<pre><span class="TYPEuint4"><span class="keyword">type</span> uint4</span> </pre><div class="info"><div class="info">32 bit unsigned integer</div></div>
+<pre><span class="TYPEuint8"><span class="keyword">type</span> uint8</span> </pre><div class="info"><div class="info">64 bit unsigned integer</div></div>
+<pre><span class="TYPEfp4"><span class="keyword">type</span> fp4</span> </pre><div class="info"><div class="info">single precision float (IEEE &quot;float&quot;)</div></div>
+<pre><span class="TYPEfp8"><span class="keyword">type</span> fp8</span> </pre><div class="info"><div class="info">double precision float (IEEE &quot;double&quot;)</div></div>
+<pre><span class="EXCEPTIONCannot_represent"><span class="keyword">exception</span> Cannot_represent</span> <span class="keyword">of</span> <code class="type">string</code></pre><div class="info"><div class="info">raised if a conversion can't be done</div></div>
+<pre><span class="EXCEPTIONOut_of_range"><span class="keyword">exception</span> Out_of_range</span></pre><div class="info"><div class="info">raised if string position out of range</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Basic encoding/decoding functions</h2></div></div>
+<pre><span class="VALmk_int4"><span class="keyword">val</span> mk_int4</span> : <code class="type">char * char * char * char -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int4">int4</a></code></pre>
+<pre><span class="VALmk_int8"><span class="keyword">val</span> mk_int8</span> : <code class="type">char * char * char * char * char * char * char * char -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int8">int8</a></code></pre>
+<pre><span class="VALmk_uint4"><span class="keyword">val</span> mk_uint4</span> : <code class="type">char * char * char * char -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a></code></pre>
+<pre><span class="VALmk_uint8"><span class="keyword">val</span> mk_uint8</span> : <code class="type">char * char * char * char * char * char * char * char -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a></code></pre><div class="info"><div class="info"><code class="code">mk_</code>&lt;t&gt; create integer values from character tuples. In these tuples
+ the MSB is the first component and the LSB the last.</div></div>
+<pre><span class="VALdest_int4"><span class="keyword">val</span> dest_int4</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int4">int4</a> -&gt; char * char * char * char</code></pre>
+<pre><span class="VALdest_int8"><span class="keyword">val</span> dest_int8</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int8">int8</a> -&gt; char * char * char * char * char * char * char * char</code></pre>
+<pre><span class="VALdest_uint4"><span class="keyword">val</span> dest_uint4</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a> -&gt; char * char * char * char</code></pre>
+<pre><span class="VALdest_uint8"><span class="keyword">val</span> dest_uint8</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a> -&gt; char * char * char * char * char * char * char * char</code></pre><div class="info"><div class="info"><code class="code">dest_</code>&lt;t&gt; destroy integer values and returns the corresponding char
+ tuples.</div></div>
+<pre><span class="VALmk_fp4"><span class="keyword">val</span> mk_fp4</span> : <code class="type">char * char * char * char -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=fp4">fp4</a></code></pre>
+<pre><span class="VALmk_fp8"><span class="keyword">val</span> mk_fp8</span> : <code class="type">char * char * char * char * char * char * char * char -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=fp8">fp8</a></code></pre>
+<pre><span class="VALdest_fp4"><span class="keyword">val</span> dest_fp4</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=fp4">fp4</a> -&gt; char * char * char * char</code></pre>
+<pre><span class="VALdest_fp8"><span class="keyword">val</span> dest_fp8</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=fp8">fp8</a> -&gt; char * char * char * char * char * char * char * char</code></pre>
+<div class="info"><div class="info"><h2 id="2_TITLE">Conversions</h2></div></div>
+<div class="info"><div class="info">Conversions from int to (u)int and vice versa.
+ On 32-bit computers, the type <code class="code">int</code> can hold 31-bit signed integers
+ (including the sign, i.e. one bit cannot be used).
+ On 64-bit computers, the type <code class="code">int</code> can hold 63-bit signed integers
+ (including the sign, i.e. one bit cannot be used).
+ The <code class="code">int_of_xxx</code> functions raise <code class="code">Cannot_represent</code> if the number to
+ convert is too big (or too small) to be represented as <code class="code">int</code>. Note
+ that this depends on the word size of your architecture.</div></div>
+<pre><span class="VALint_of_int4"><span class="keyword">val</span> int_of_int4</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int4">int4</a> -&gt; int</code></pre>
+<pre><span class="VALint_of_uint4"><span class="keyword">val</span> int_of_uint4</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a> -&gt; int</code></pre>
+<pre><span class="VALint_of_int8"><span class="keyword">val</span> int_of_int8</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int8">int8</a> -&gt; int</code></pre>
+<pre><span class="VALint_of_uint8"><span class="keyword">val</span> int_of_uint8</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a> -&gt; int</code></pre>
+<pre><span class="VALint4_of_int"><span class="keyword">val</span> int4_of_int</span> : <code class="type">int -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int4">int4</a></code></pre>
+<pre><span class="VALuint4_of_int"><span class="keyword">val</span> uint4_of_int</span> : <code class="type">int -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a></code></pre>
+<pre><span class="VALint8_of_int"><span class="keyword">val</span> int8_of_int</span> : <code class="type">int -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int8">int8</a></code></pre>
+<pre><span class="VALuint8_of_int"><span class="keyword">val</span> uint8_of_int</span> : <code class="type">int -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a></code></pre>
+<pre><span class="VALint32_of_int4"><span class="keyword">val</span> int32_of_int4</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int4">int4</a> -&gt; int32</code></pre>
+<pre><span class="VALint32_of_uint4"><span class="keyword">val</span> int32_of_uint4</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a> -&gt; int32</code></pre>
+<pre><span class="VALint32_of_int8"><span class="keyword">val</span> int32_of_int8</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int8">int8</a> -&gt; int32</code></pre>
+<pre><span class="VALint32_of_uint8"><span class="keyword">val</span> int32_of_uint8</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a> -&gt; int32</code></pre>
+<pre><span class="VALint4_of_int32"><span class="keyword">val</span> int4_of_int32</span> : <code class="type">int32 -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int4">int4</a></code></pre>
+<pre><span class="VALuint4_of_int32"><span class="keyword">val</span> uint4_of_int32</span> : <code class="type">int32 -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a></code></pre>
+<pre><span class="VALint8_of_int32"><span class="keyword">val</span> int8_of_int32</span> : <code class="type">int32 -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int8">int8</a></code></pre>
+<pre><span class="VALuint8_of_int32"><span class="keyword">val</span> uint8_of_int32</span> : <code class="type">int32 -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a></code></pre>
+<pre><span class="VALint64_of_int4"><span class="keyword">val</span> int64_of_int4</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int4">int4</a> -&gt; int64</code></pre>
+<pre><span class="VALint64_of_uint4"><span class="keyword">val</span> int64_of_uint4</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a> -&gt; int64</code></pre>
+<pre><span class="VALint64_of_int8"><span class="keyword">val</span> int64_of_int8</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int8">int8</a> -&gt; int64</code></pre>
+<pre><span class="VALint64_of_uint8"><span class="keyword">val</span> int64_of_uint8</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a> -&gt; int64</code></pre>
+<pre><span class="VALint4_of_int64"><span class="keyword">val</span> int4_of_int64</span> : <code class="type">int64 -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int4">int4</a></code></pre>
+<pre><span class="VALuint4_of_int64"><span class="keyword">val</span> uint4_of_int64</span> : <code class="type">int64 -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a></code></pre>
+<pre><span class="VALint8_of_int64"><span class="keyword">val</span> int8_of_int64</span> : <code class="type">int64 -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int8">int8</a></code></pre>
+<pre><span class="VALuint8_of_int64"><span class="keyword">val</span> uint8_of_int64</span> : <code class="type">int64 -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a></code></pre>
+<div class="info"><div class="info">Casts from <code class="code">uint4</code>/<code class="code">uint8</code> to <code class="code">int32</code>/<code class="code">int64</code>. Here, the sign is ignored and
+ simply considered as a bit.</div></div>
+<pre><span class="VALlogical_uint4_of_int32"><span class="keyword">val</span> logical_uint4_of_int32</span> : <code class="type">int32 -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a></code></pre>
+<pre><span class="VALlogical_int32_of_uint4"><span class="keyword">val</span> logical_int32_of_uint4</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a> -&gt; int32</code></pre>
+<pre><span class="VALlogical_uint8_of_int64"><span class="keyword">val</span> logical_uint8_of_int64</span> : <code class="type">int64 -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a></code></pre>
+<pre><span class="VALlogical_int64_of_uint8"><span class="keyword">val</span> logical_int64_of_uint8</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a> -&gt; int64</code></pre>
+<pre><span class="VALfp8_of_fp4"><span class="keyword">val</span> fp8_of_fp4</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=fp4">fp4</a> -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=fp8">fp8</a></code></pre>
+<pre><span class="VALfp4_of_fp8"><span class="keyword">val</span> fp4_of_fp8</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=fp8">fp8</a> -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=fp4">fp4</a></code></pre><div class="info"><div class="info">Note <code class="code">fp4_of_fp8</code>: This conversion is not exact. It is quite
+ normal that precision is lost. Numbers too small or too large
+ for fp4 are converted to the &quot;infinity&quot; value.</div></div>
+<pre><span class="VALfloat_of_fp4"><span class="keyword">val</span> float_of_fp4</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=fp4">fp4</a> -&gt; float</code></pre>
+<pre><span class="VALfloat_of_fp8"><span class="keyword">val</span> float_of_fp8</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=fp8">fp8</a> -&gt; float</code></pre>
+<pre><span class="VALfp4_of_float"><span class="keyword">val</span> fp4_of_float</span> : <code class="type">float -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=fp4">fp4</a></code></pre>
+<pre><span class="VALfp8_of_float"><span class="keyword">val</span> fp8_of_float</span> : <code class="type">float -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=fp8">fp8</a></code></pre><div class="info"><div class="info">Note fp4_of_float: The same problems as in fp4_of_fp8 may arise</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Comparisons</h2></div></div>
+<div class="info"><div class="info">The comparisons &quot;=&quot; and &quot;&lt;&gt;&quot; work for all numbers.<br/>    For signed integers, the operators &quot;&lt;&quot;, &quot;&lt;=&quot;, &quot;&gt;&quot;, and &quot;&gt;=&quot; work, too.
+    The unsigned integer type use representation that are not compatible
+    with these operators, and the following functions need to be called.<br/>    For <code class="code">fp4</code> and <code class="code">fp8</code> there are no comparison functions - convert to
+    <code class="code">float</code> first and compare then.</div></div>
+<pre><span class="VALlt_uint4"><span class="keyword">val</span> lt_uint4</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a> -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a> -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">lt_uint4</code> is true iff the first value is less than the second value 
+      as unsigned int</div></div>
+<pre><span class="VALle_uint4"><span class="keyword">val</span> le_uint4</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a> -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a> -&gt; bool</code></pre>
+<pre><span class="VALgt_uint4"><span class="keyword">val</span> gt_uint4</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a> -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a> -&gt; bool</code></pre>
+<pre><span class="VALge_uint4"><span class="keyword">val</span> ge_uint4</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a> -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a> -&gt; bool</code></pre><div class="info"><div class="info">Other comparisons</div></div>
+<pre><span class="VALlt_uint8"><span class="keyword">val</span> lt_uint8</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a> -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a> -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">lt_uint8</code> is true iff the first value is less than the second value 
+      as unsigned int</div></div>
+<pre><span class="VALle_uint8"><span class="keyword">val</span> le_uint8</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a> -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a> -&gt; bool</code></pre>
+<pre><span class="VALgt_uint8"><span class="keyword">val</span> gt_uint8</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a> -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a> -&gt; bool</code></pre>
+<pre><span class="VALge_uint8"><span class="keyword">val</span> ge_uint8</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a> -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a> -&gt; bool</code></pre><div class="info"><div class="info">Other comparisons</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Minimum/maximum values</h2></div></div>
+<pre><span class="VALmin_int4"><span class="keyword">val</span> min_int4</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int4">int4</a></code></pre>
+<pre><span class="VALmin_uint4"><span class="keyword">val</span> min_uint4</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a></code></pre>
+<pre><span class="VALmin_int8"><span class="keyword">val</span> min_int8</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int8">int8</a></code></pre>
+<pre><span class="VALmin_uint8"><span class="keyword">val</span> min_uint8</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a></code></pre>
+<pre><span class="VALmax_int4"><span class="keyword">val</span> max_int4</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int4">int4</a></code></pre>
+<pre><span class="VALmax_uint4"><span class="keyword">val</span> max_uint4</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a></code></pre>
+<pre><span class="VALmax_int8"><span class="keyword">val</span> max_int8</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int8">int8</a></code></pre>
+<pre><span class="VALmax_uint8"><span class="keyword">val</span> max_uint8</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a></code></pre>
+<div class="ocaml_module sig" name="ENCDEC"><pre><span class="keyword">module type</span> <a href="?package=ocamlnet&amp;module=Netnumber.ENCDEC">ENCDEC</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<div class="info"><div class="info">Encode/decode numbers as strings. These functions exist in two
+      flavors:<ul><li> <a href="#Netnumber.BE">Netnumber.BE</a> implements network byte order (big endian)</li><li> <a href="#Netnumber.LE">Netnumber.LE</a> implements little endian
+   </li></ul></div></div>
+<pre><span class="VALread_int4"><span class="keyword">val</span> read_int4</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int4">int4</a></code></pre>
+<pre><span class="VALread_int8"><span class="keyword">val</span> read_int8</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int8">int8</a></code></pre>
+<pre><span class="VALread_uint4"><span class="keyword">val</span> read_uint4</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a></code></pre>
+<pre><span class="VALread_uint8"><span class="keyword">val</span> read_uint8</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a></code></pre><div class="info"><div class="info"><code class="code">read_</code>&lt;t&gt; create integer values from the characters found at a
+	certain position in the string. Raises <code class="code">Out_of_range</code> if the position
+	is bad</div></div>
+<pre><span class="VALread_int4_unsafe"><span class="keyword">val</span> read_int4_unsafe</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int4">int4</a></code></pre>
+<pre><span class="VALread_int8_unsafe"><span class="keyword">val</span> read_int8_unsafe</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int8">int8</a></code></pre>
+<pre><span class="VALread_uint4_unsafe"><span class="keyword">val</span> read_uint4_unsafe</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a></code></pre>
+<pre><span class="VALread_uint8_unsafe"><span class="keyword">val</span> read_uint8_unsafe</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a></code></pre><div class="info"><div class="info">Same, but no index check</div></div>
+<pre><span class="VALwrite_int4"><span class="keyword">val</span> write_int4</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int4">int4</a> -&gt; unit</code></pre>
+<pre><span class="VALwrite_int8"><span class="keyword">val</span> write_int8</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int8">int8</a> -&gt; unit</code></pre>
+<pre><span class="VALwrite_uint4"><span class="keyword">val</span> write_uint4</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a> -&gt; unit</code></pre>
+<pre><span class="VALwrite_uint8"><span class="keyword">val</span> write_uint8</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">write_</code>&lt;t&gt; copies the characters corresponding to the integer values 
+	into the string at the given positions. Raises <code class="code">Out_of_range</code> if the
+	position is bad.</div></div>
+<pre><span class="VALwrite_int4_unsafe"><span class="keyword">val</span> write_int4_unsafe</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int4">int4</a> -&gt; unit</code></pre>
+<pre><span class="VALwrite_int8_unsafe"><span class="keyword">val</span> write_int8_unsafe</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int8">int8</a> -&gt; unit</code></pre>
+<pre><span class="VALwrite_uint4_unsafe"><span class="keyword">val</span> write_uint4_unsafe</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a> -&gt; unit</code></pre>
+<pre><span class="VALwrite_uint8_unsafe"><span class="keyword">val</span> write_uint8_unsafe</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">write_</code>&lt;t&gt;<code class="code">_unsafe</code>: Same, but no index check.</div></div>
+<pre><span class="VALint4_as_string"><span class="keyword">val</span> int4_as_string</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int4">int4</a> -&gt; string</code></pre>
+<pre><span class="VALint8_as_string"><span class="keyword">val</span> int8_as_string</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=int8">int8</a> -&gt; string</code></pre>
+<pre><span class="VALuint4_as_string"><span class="keyword">val</span> uint4_as_string</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a> -&gt; string</code></pre>
+<pre><span class="VALuint8_as_string"><span class="keyword">val</span> uint8_as_string</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint8">uint8</a> -&gt; string</code></pre><div class="info"><div class="info">&lt;t&gt;<code class="code">_as_string</code>: Returns the corresponding string for an integer value</div></div>
+<pre><span class="VALwrite_fp4"><span class="keyword">val</span> write_fp4</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=fp4">fp4</a> -&gt; unit</code></pre>
+<pre><span class="VALwrite_fp8"><span class="keyword">val</span> write_fp8</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=fp8">fp8</a> -&gt; unit</code></pre>
+<pre><span class="VALfp4_as_string"><span class="keyword">val</span> fp4_as_string</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=fp4">fp4</a> -&gt; string</code></pre>
+<pre><span class="VALfp8_as_string"><span class="keyword">val</span> fp8_as_string</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=fp8">fp8</a> -&gt; string</code></pre>
+<pre><span class="VALread_fp4"><span class="keyword">val</span> read_fp4</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=fp4">fp4</a></code></pre>
+<pre><span class="VALread_fp8"><span class="keyword">val</span> read_fp8</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=fp8">fp8</a></code></pre></div></div>
+<div class="ocaml_module ident" name="BE" path="?package=ocamlnet&amp;module=Netnumber.ENCDEC"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netnumber.BE">BE</a> : <code class="type"><code class="code"><a href="?package=ocamlnet&amp;module=Netnumber.ENCDEC">ENCDEC</a></code></code></pre><div class="info"><div class="info">Encoders/decoders for big endian - network byte order</div></div></div>
+<div class="ocaml_module ident" name="LE" path="?package=ocamlnet&amp;module=Netnumber.ENCDEC"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netnumber.LE">LE</a> : <code class="type"><code class="code"><a href="?package=ocamlnet&amp;module=Netnumber.ENCDEC">ENCDEC</a></code></code></pre><div class="info"><div class="info">Encoders/decoders for little endian</div></div></div>
+<div class="ocaml_module ident" name="HO" path="?package=ocamlnet&amp;module=Netnumber.ENCDEC"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netnumber.HO">HO</a> : <code class="type"><code class="code"><a href="?package=ocamlnet&amp;module=Netnumber.ENCDEC">ENCDEC</a></code></code></pre><div class="info"><div class="info">Encoders/decoders for host byte order - which is either little
+      endian or big endian, depending on the CPU (or CPU mode)</div></div></div>
+</div>

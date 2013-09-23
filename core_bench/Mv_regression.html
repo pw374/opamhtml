@@ -1,0 +1,174 @@
+<div class="ocaml_toplevel_module">
+<div class="ocaml_module ident" name="Variable" path="?package=core_bench&amp;module=Test_metrics.Variable"><pre><span class="keyword">module</span> <a href="?package=core_bench&amp;module=Mv_regression.Variable">Variable</a> : <code class="type"><code class="code"><a href="?package=core_bench&amp;module=Test_metrics.Variable">Test_metrics.Variable</a></code></code></pre></div>
+<pre><span class="VALrandom_indices_in_place"><span class="keyword">val</span> random_indices_in_place</span> : <code class="type">int <a href="?package=core&amp;module=Std.Array&amp;type=t">Core.Std.Array.t</a> -&gt; unit</code></pre>
+<pre><span class="VALquantile_of_array"><span class="keyword">val</span> quantile_of_array</span> : <code class="type"><a href="?package=core&amp;module=Std.Float&amp;type=t">Core.Std.Float.t</a> <a href="?package=core&amp;module=Std.Array&amp;type=t">Core.Std.Array.t</a> -&gt;
+?failures:<a href="?package=core&amp;module=Std.Int&amp;type=t">Core.Std.Int.t</a> -&gt;
+len:<a href="?package=core&amp;module=Std.Int&amp;type=t">Core.Std.Int.t</a> -&gt;
+low_quantile:float -&gt;
+high_quantile:float -&gt; <a href="?package=core&amp;module=Std.Float&amp;type=t">Core.Std.Float.t</a> * <a href="?package=core&amp;module=Std.Float&amp;type=t">Core.Std.Float.t</a></code></pre>
+<div class="ocaml_module sig" name="Coefficient"><pre><span class="keyword">module</span> <a href="?package=core_bench&amp;module=Mv_regression.Coefficient">Coefficient</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><code><span class="TYPEt"><span class="keyword">type</span> t</span> = {</code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTt.estimate">estimate</span> : <code class="type">float</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTt.confidence95">confidence95</span> : <code class="type">float * float</code>;</code></td></tr><tr><td>}</td></tr></table>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VALconfidence95"><span class="keyword">val</span> confidence95</span> : <code class="type"><a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a> -&gt; float * float</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a> -&gt; float * float</code></pre>
+<pre><span class="VALestimate"><span class="keyword">val</span> estimate</span> : <code class="type"><a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a> -&gt; float</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a> -&gt; float</code></pre>
+<div class="ocaml_module sig" name="Fields"><pre><span class="keyword">module</span> <a href="?package=core_bench&amp;module=Mv_regression.Coefficient.Fields">Fields</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALnames"><span class="keyword">val</span> names</span> : <code class="type">string list</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">string list</code></pre>
+<pre><span class="VALconfidence95"><span class="keyword">val</span> confidence95</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float * float) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float * float) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALestimate"><span class="keyword">val</span> estimate</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALmake_creator"><span class="keyword">val</span> make_creator</span> : <code class="type">estimate:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float)
+          <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a -&gt; ('b -&gt; float) * 'c) -&gt;
+confidence95:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float * float)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'c -&gt; ('b -&gt; float * float) * 'd) -&gt;
+'a -&gt; ('b -&gt; <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>) * 'd</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">estimate:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float)
+          <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a -&gt; ('b -&gt; float) * 'c) -&gt;
+confidence95:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float * float)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'c -&gt; ('b -&gt; float * float) * 'd) -&gt;
+'a -&gt; ('b -&gt; <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>) * 'd</code></pre>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">estimate:float -&gt; confidence95:float * float -&gt; <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">estimate:float -&gt; confidence95:float * float -&gt; <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a></code></pre>
+<pre><span class="VALmap"><span class="keyword">val</span> map</span> : <code class="type">estimate:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float)
+          <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; float) -&gt;
+confidence95:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float * float)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; float * float) -&gt;
+<a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">estimate:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float)
+          <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; float) -&gt;
+confidence95:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float * float)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; float * float) -&gt;
+<a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a></code></pre>
+<pre><span class="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">estimate:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float)
+          <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+confidence95:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float * float)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'b) -&gt;
+'b</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">estimate:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float)
+          <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+confidence95:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float * float)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'b) -&gt;
+'b</code></pre>
+<pre><span class="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">init:'a -&gt;
+estimate:('a -&gt;
+          ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float)
+          <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'b) -&gt;
+confidence95:('b -&gt;
+              ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float * float)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'c) -&gt;
+'c</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">init:'a -&gt;
+estimate:('a -&gt;
+          ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float)
+          <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'b) -&gt;
+confidence95:('b -&gt;
+              ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float * float)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'c) -&gt;
+'c</code></pre>
+<pre><span class="VALmap_poly"><span class="keyword">val</span> map_poly</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, 'a) <a href="?package=fieldslib&amp;module=Field&amp;type=user">Fieldslib.Field.user</a> -&gt; 'a list</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, 'a) <a href="?package=fieldslib&amp;module=Field&amp;type=user">Fieldslib.Field.user</a> -&gt; 'a list</code></pre>
+<pre><span class="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">estimate:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float)
+          <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+confidence95:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float * float)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+bool</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">estimate:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float)
+          <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+confidence95:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float * float)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+bool</code></pre>
+<pre><span class="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">estimate:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float)
+          <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+confidence95:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float * float)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+bool</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">estimate:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float)
+          <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+confidence95:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float * float)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+bool</code></pre>
+<pre><span class="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type">estimate:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float)
+          <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+confidence95:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float * float)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+'a list</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">estimate:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float)
+          <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+confidence95:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float * float)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+'a list</code></pre>
+<div class="ocaml_module sig" name="Direct"><pre><span class="keyword">module</span> <a href="?package=core_bench&amp;module=Mv_regression.Coefficient.Fields.Direct">Direct</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALiter"><span class="keyword">val</span> iter</span> : <code class="type"><a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a> -&gt;
+estimate:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float)
+          <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a> -&gt; float -&gt; 'a) -&gt;
+confidence95:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float * float)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a> -&gt; float * float -&gt; 'b) -&gt;
+'b</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a> -&gt;
+estimate:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float)
+          <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a> -&gt; float -&gt; 'a) -&gt;
+confidence95:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float * float)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a> -&gt; float * float -&gt; 'b) -&gt;
+'b</code></pre>
+<pre><span class="VALfold"><span class="keyword">val</span> fold</span> : <code class="type"><a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a> -&gt;
+init:'a -&gt;
+estimate:('a -&gt;
+          ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float)
+          <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a> -&gt; float -&gt; 'b) -&gt;
+confidence95:('b -&gt;
+              ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float * float)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a> -&gt; float * float -&gt; 'c) -&gt;
+'c</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a> -&gt;
+init:'a -&gt;
+estimate:('a -&gt;
+          ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float)
+          <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a> -&gt; float -&gt; 'b) -&gt;
+confidence95:('b -&gt;
+              ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a>, float * float)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a> -&gt; float * float -&gt; 'c) -&gt;
+'c</code></pre></div></div></div></div>
+<pre><span class="VALconfidence95_abs_err"><span class="keyword">val</span> confidence95_abs_err</span> : <code class="type"><a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a> -&gt; float * float</code></pre>
+<pre><span class="VALconfidence95_rel_err"><span class="keyword">val</span> confidence95_rel_err</span> : <code class="type"><a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">t</a> -&gt; float * float</code></pre></div></div>
+<div class="ocaml_module sig" name="Bootstrap"><pre><span class="keyword">module</span> <a href="?package=core_bench&amp;module=Mv_regression.Bootstrap">Bootstrap</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALprint"><span class="keyword">val</span> print</span> : <code class="type"><a href="?package=core&amp;module=Std.String.Hash_set&amp;type=elt">Core.Std.String.Hash_set.elt</a> <a href="?package=core&amp;module=Std.Hash_set&amp;type=elt">Core.Std.Hash_set.elt</a> -&gt; unit</code></pre>
+<pre><span class="VALols"><span class="keyword">val</span> ols</span> : <code class="type">?bootstrap_trials:<a href="?package=core&amp;module=Std.Int&amp;type=t">Core.Std.Int.t</a> -&gt;
+<a href="?package=core_bench&amp;module=Linear_algebra.Mat&amp;type=t">Linear_algebra.Mat.t</a> -&gt; <a href="?package=core_bench&amp;module=Linear_algebra.Vec&amp;type=t">Linear_algebra.Vec.t</a> -&gt; <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">Coefficient.t</a> array</code></pre></div></div>
+<pre><span class="VALr_square"><span class="keyword">val</span> r_square</span> : <code class="type">float <a href="?package=core&amp;module=Std.Array&amp;type=t">Core.Std.Array.t</a> <a href="?package=core&amp;module=Std.Array&amp;type=t">Core.Std.Array.t</a> -&gt;
+float <a href="?package=core&amp;module=Std.Array&amp;type=t">Core.Std.Array.t</a> -&gt; <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">Coefficient.t</a> <a href="?package=core&amp;module=Std.Array&amp;type=t">Core.Std.Array.t</a> -&gt; float</code></pre>
+<pre><span class="TYPEmv_coefficients_and_rsquare"><span class="keyword">type</span> mv_coefficients_and_rsquare</span> = <code class="type">(<a href="?package=core_bench&amp;module=Mv_regression.Variable&amp;type=t">Variable.t</a> * <a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">Coefficient.t</a>) array * float</code></pre>
+<pre><span class="VALdo_regression"><span class="keyword">val</span> do_regression</span> : <code class="type">?bootstrap_trials:<a href="?package=core&amp;module=Std.Int&amp;type=t">Core.Std.Int.t</a> -&gt;
+predictors:<a href="?package=core_bench&amp;module=Mv_regression.Variable&amp;type=t">Variable.t</a> <a href="?package=core&amp;module=Std.Array&amp;type=t">Core.Std.Array.t</a> -&gt;
+responder:[&lt; `Compactions
+           | `Cycles
+           | `Major_allocated
+           | `Major_collections
+           | `Minor_allocated
+           | `Minor_collections
+           | `Nanos
+           | `One
+           | `Promoted
+           | `Runs ] -&gt;
+test:<a href="?package=core_bench&amp;module=Test.Basic_test&amp;type=t">Test.Basic_test.t</a> -&gt;
+<a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">Test_metrics.t</a> <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">Partial_array.t</a> -&gt; <a href="?package=core_bench&amp;module=Mv_regression&amp;type=mv_coefficients_and_rsquare">mv_coefficients_and_rsquare</a></code></pre>
+<pre><span class="VALcache"><span class="keyword">val</span> cache</span> : <code class="type">('a, <a href="?package=core_bench&amp;module=Mv_regression&amp;type=mv_coefficients_and_rsquare">mv_coefficients_and_rsquare</a>) <a href="?package=core&amp;module=Std.Int.Table&amp;type=t_">Core.Std.Int.Table.t_</a></code></pre>
+<pre><span class="VALdo_regression_memoize"><span class="keyword">val</span> do_regression_memoize</span> : <code class="type">?bootstrap_trials:<a href="?package=core&amp;module=Std.Int&amp;type=t">Core.Std.Int.t</a> -&gt;
+predictors:<a href="?package=core_bench&amp;module=Mv_regression.Variable&amp;type=t">Variable.t</a> <a href="?package=core&amp;module=Std.Array&amp;type=t">Core.Std.Array.t</a> -&gt;
+responder:[&lt; `Compactions
+           | `Cycles
+           | `Major_allocated
+           | `Major_collections
+           | `Minor_allocated
+           | `Minor_collections
+           | `Nanos
+           | `One
+           | `Promoted
+           | `Runs ] -&gt;
+test:<a href="?package=core_bench&amp;module=Test.Basic_test&amp;type=t">Test.Basic_test.t</a> -&gt;
+<a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">Test_metrics.t</a> <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">Partial_array.t</a> -&gt; <a href="?package=core_bench&amp;module=Mv_regression&amp;type=mv_coefficients_and_rsquare">mv_coefficients_and_rsquare</a></code></pre>
+
+</div>

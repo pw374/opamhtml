@@ -1,0 +1,22 @@
+<div class="ocaml_toplevel_module"><div class="info">System informations.</div>
+<pre><span class="EXCEPTIONNot_available"><span class="keyword">exception</span> Not_available</span> <span class="keyword">of</span> <code class="type">string</code></pre><div class="info"><div class="info"><code class="code">Not_available(feature)</code> is an exception that may be raised when
+      a feature is not available on the current system.</div></div>
+<pre><span class="VALwindows"><span class="keyword">val</span> windows</span> : <code class="type">bool</code></pre><div class="info"><div class="info"><code class="code">true</code> iff running on windows.</div></div>
+<pre><span class="TYPEfeature"><span class="keyword">type</span> feature</span> = <code class="type">[ `fd_passing
+| `fdatasync
+| `get_affinity
+| `get_cpu
+| `get_credentials
+| `libev
+| `madvise
+| `mincore
+| `recv_msg
+| `send_msg
+| `set_affinity
+| `wait4 ]</code></pre><div class="info"><div class="info">Features that can be tested.</div></div>
+<pre><span class="VALhave"><span class="keyword">val</span> have</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_sys&amp;type=feature">feature</a> -&gt; bool</code></pre><div class="info"><div class="info">Test whether the given feature is available on the current
+      system.</div></div>
+<pre><code><span class="TYPEbyte_order"><span class="keyword">type</span> byte_order</span> = </code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTbyte_order.Little_endian"><span class="constructor">Little_endian</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTbyte_order.Big_endian"><span class="constructor">Big_endian</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Type of byte order</div></td></tr></table>
+<pre><span class="VALbyte_order"><span class="keyword">val</span> byte_order</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_sys&amp;type=byte_order">byte_order</a></code></pre><div class="info"><div class="info">The byte order used by the computer running the program.</div></div>
+</div>

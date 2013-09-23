@@ -1,0 +1,29 @@
+<div class="ocaml_toplevel_module">
+<div class="ocaml_module ident" name="Ascii_table" path="?package=textutils&amp;module=Ascii_table"><pre><span class="keyword">module</span> <a href="?package=core_bench&amp;module=Bench_command.Ascii_table">Ascii_table</a> : <code class="type"><code class="code"><a href="?package=textutils&amp;module=Ascii_table">Textutils.Ascii_table</a></code></code></pre></div>
+<div class="ocaml_module ident" name="Variable" path="?package=core_bench&amp;module=Test_metrics.Variable"><pre><span class="keyword">module</span> <a href="?package=core_bench&amp;module=Bench_command.Variable">Variable</a> : <code class="type"><code class="code"><a href="?package=core_bench&amp;module=Test_metrics.Variable">Test_metrics.Variable</a></code></code></pre></div>
+<pre><span class="TYPEcallback_bench"><span class="keyword">type</span> callback_bench</span> = <code class="type">?limit_width_to:int -&gt;
+?columns:[ `Allocated
+         | `Confidence
+         | `Cycles
+         | `GC
+         | `If_not_empty of <a href="?package=core_bench&amp;module=Column&amp;type=t">Column.t</a>
+         | `Name
+         | `Nanos
+         | `Percentage
+         | `Samples
+         | `Speedup ] list -&gt;
+?display:<a href="?package=core_bench&amp;module=Bench_command.Ascii_table.Display&amp;type=t">Ascii_table.Display.t</a> -&gt;
+?ascii_table:bool -&gt;
+?ci_absolute:bool -&gt;
+?verbosity:[ `High | `Low ] -&gt;
+?no_compactions:bool -&gt;
+?save_sample_data:bool -&gt;
+?time_quota:<a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a> -&gt;
+?sampling_type:[ `Geometric of float | `Linear of int ] -&gt;
+?stabilize_gc_between_runs:bool -&gt;
+?predictors:<a href="?package=core_bench&amp;module=Test_metrics.Variable&amp;type=t">Test_metrics.Variable.t</a> list -&gt;
+?fork_each_benchmark:bool -&gt; <a href="?package=core_bench&amp;module=Test&amp;type=t">Test.t</a> list -&gt; unit</code></pre>
+<pre><span class="VALreadme"><span class="keyword">val</span> readme</span> : <code class="type">unit -&gt; string</code></pre>
+<pre><span class="VALmake"><span class="keyword">val</span> make</span> : <code class="type"><a href="?package=core_bench&amp;module=Bench_command&amp;type=callback_bench">callback_bench</a> -&gt; <a href="?package=core_bench&amp;module=Test&amp;type=t">Test.t</a> list -&gt; <a href="?package=core&amp;module=Std.Command&amp;type=t">Core.Std.Command.t</a></code></pre>
+
+</div>

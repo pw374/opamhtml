@@ -1,0 +1,12 @@
+<div class="ocaml_toplevel_module"><div class="info">Registry for compression algorithms</div>
+<div class="info"><div class="info">This registry is initially empty. The  <a href="#Netgzip">Netgzip</a> module can be used
+    to register the <code class="code">gzip</code> algorithm, just run<br/>    <pre class="codepre"><code class="code"> Netgzip.init() </code></pre><br/>    to get this effect.</div></div>
+<pre><span class="VALregister"><span class="keyword">val</span> register</span> : <code class="type">iana_name:string -&gt;
+?encoder:(unit -&gt; <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=io_obj_channel">Netchannels.io_obj_channel</a>) -&gt;
+?decoder:(unit -&gt; <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=io_obj_channel">Netchannels.io_obj_channel</a>) -&gt; unit -&gt; unit</code></pre><div class="info"><div class="info">Registers a compression algorithm. The algorithm is given as
+      a pair of functions returning  <a href="#Netchannels.io_obj_channel">Netchannels.io_obj_channel</a>.</div></div>
+<pre><span class="VALlookup_encoder"><span class="keyword">val</span> lookup_encoder</span> : <code class="type">iana_name:string -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=io_obj_channel">Netchannels.io_obj_channel</a></code></pre><div class="info"><div class="info">Returns the encoder, or raises <code class="code">Not_found</code></div></div>
+<pre><span class="VALlookup_decoder"><span class="keyword">val</span> lookup_decoder</span> : <code class="type">iana_name:string -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=io_obj_channel">Netchannels.io_obj_channel</a></code></pre><div class="info"><div class="info">Returns the decoder, or raises <code class="code">Not_found</code></div></div>
+<pre><span class="VALall_encoders"><span class="keyword">val</span> all_encoders</span> : <code class="type">unit -&gt; string list</code></pre>
+<pre><span class="VALall_decoders"><span class="keyword">val</span> all_decoders</span> : <code class="type">unit -&gt; string list</code></pre><div class="info"><div class="info">The iana names of all encoders and decoders, resp.</div></div>
+</div>

@@ -1,0 +1,28 @@
+<div class="ocaml_toplevel_module"><div class="info">Netplex message boxes</div>
+<div class="info"><div class="info">This plugin implements a message box, following a simple model:
+    Receivers wait until messages are put into the box. Senders
+    wait until the box is free again.<br/>    This is actually an extension of  <a href="#Netplex_sharedvar">Netplex_sharedvar</a>, and the
+    same caveats apply.</div></div>
+<pre><span class="VALplugin"><span class="keyword">val</span> plugin</span> : <code class="type">Netplex_types.plugin</code></pre><div class="info"><div class="info">To enable message boxes, call the controller's <code class="code">add_plugin</code> method
+      with this object as argument. This can e.g. be done in the
+      <code class="code">post_add_hook</code> of the processor.</div></div>
+<div class="info"><div class="info">How to use this module:<br/>    - Encapsulate the type of the messages:
+      <pre class="codepre"><code class="code"> module Msg_type = struct type t = &lt;some_type&gt; end </code></pre><br/>    - Create the box module for this type:
+      <pre class="codepre"><code class="code"> module Mbox_type = Netplex_mbox.Make_mbox_type(Msg_type) </code></pre><br/>    - Call functions of this module, e.g.
+      <pre class="codepre"><code class="code">
+let box = Mbox_type.create &quot;my_box&quot;
+let msg = Mbox_type.receive box
+      </code></pre></div></div>
+<div class="ocaml_module sig" name="MBOX"><pre><span class="keyword">module type</span> <a href="?package=ocamlnet&amp;module=Netplex_mbox.MBOX">MBOX</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">The type of mailboxes <code class="code">mbox</code> with messages of type <code class="code">t</code></div></div><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">The type of messages</div></div>
+<pre><span class="TYPEmbox"><span class="keyword">type</span> mbox</span> </pre><div class="info"><div class="info">The type of the mailboxes</div></div>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">string -&gt; <a href="?package=ocamlnet&amp;module=Netplex_mbox.MBOX&amp;type=mbox">mbox</a></code></pre><div class="info"><div class="info">Creates a new mailbox with the passed name, or opens an existing
+        mailbox. Names are global to the whole Netplex process system.</div></div>
+<pre><span class="VALsend"><span class="keyword">val</span> send</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netplex_mbox.MBOX&amp;type=mbox">mbox</a> -&gt; <a href="?package=ocamlnet&amp;module=Netplex_mbox.MBOX&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Send a message to this box. If the box is full, it is waited until
+        the box is free again. If several senders wait for the box, one
+        sender is selected.</div></div>
+<pre><span class="VALreceive"><span class="keyword">val</span> receive</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netplex_mbox.MBOX&amp;type=mbox">mbox</a> -&gt; <a href="?package=ocamlnet&amp;module=Netplex_mbox.MBOX&amp;type=t">t</a></code></pre><div class="info"><div class="info">Receive a message: It is waited until a sender puts a message into
+        the box. If several receivers wait for the box, one receiver is
+        selected.</div></div></div></div>
+<div class="ocaml_module ident" name="Make_mbox_type" path="?package=ocamlnet&amp;module=Netplex_mbox.MBOX"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_mbox.Make_mbox_type">Make_mbox_type</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">T</code><code class="code"> : </code><code class="code"><a href="?package=ocamlnet&amp;module=Netplex_cenv.TYPE">Netplex_cenv.TYPE</a></code><code class="code">) -&gt; </code><code class="code"><a href="?package=ocamlnet&amp;module=Netplex_mbox.MBOX">MBOX</a></code> with type <a href="?package=ocamlnet&amp;module=Netplex_mbox.MBOX&amp;type=t">t</a> = T.t</div></code></pre><div class="info"><div class="info">Create a new mailbox access module for message type <code class="code">T.t</code></div></div></div>
+</div>

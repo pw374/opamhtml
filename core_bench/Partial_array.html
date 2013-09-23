@@ -1,0 +1,134 @@
+<div class="ocaml_toplevel_module">
+<div class="info"><div class="info">Arrays in which only some initial segment is meaningful.</div></div>
+<pre><code><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> = {</code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTt.values">values</span> : <code class="type">'a array</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.len">len</span> : <code class="type">int</code>;</code></td></tr><tr><td>}</td></tr></table>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VALlen"><span class="keyword">val</span> len</span> : <code class="type">'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALset_len"><span class="keyword">val</span> set_len</span> : <code class="type">'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALvalues"><span class="keyword">val</span> values</span> : <code class="type">'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a> -&gt; 'a array</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a> -&gt; 'a array</code></pre>
+<div class="ocaml_module sig" name="Fields"><pre><span class="keyword">module</span> <a href="?package=core_bench&amp;module=Partial_array.Fields">Fields</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALnames"><span class="keyword">val</span> names</span> : <code class="type">string list</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">string list</code></pre>
+<pre><span class="VALlen"><span class="keyword">val</span> len</span> : <code class="type">([&lt; `Read | `Set_and_create ], 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALvalues"><span class="keyword">val</span> values</span> : <code class="type">([&lt; `Read | `Set_and_create ], 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, 'a array) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, 'a array) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALmake_creator"><span class="keyword">val</span> make_creator</span> : <code class="type">values:(([&lt; `Read | `Set_and_create ], 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, 'a array)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'b -&gt; ('c -&gt; 'd array) * 'e) -&gt;
+len:(([&lt; `Read | `Set_and_create ], 'f <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     'e -&gt; ('c -&gt; int) * 'g) -&gt;
+'b -&gt; ('c -&gt; 'd <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>) * 'g</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">values:(([&lt; `Read | `Set_and_create ], 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, 'a array)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'b -&gt; ('c -&gt; 'd array) * 'e) -&gt;
+len:(([&lt; `Read | `Set_and_create ], 'f <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     'e -&gt; ('c -&gt; int) * 'g) -&gt;
+'b -&gt; ('c -&gt; 'd <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>) * 'g</code></pre>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">values:'a array -&gt; len:int -&gt; 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">values:'a array -&gt; len:int -&gt; 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a></code></pre>
+<pre><span class="VALmap"><span class="keyword">val</span> map</span> : <code class="type">values:(([&lt; `Read | `Set_and_create ], 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, 'a array)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'b array) -&gt;
+len:(([&lt; `Read | `Set_and_create ], 'c <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     int) -&gt;
+'b <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">values:(([&lt; `Read | `Set_and_create ], 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, 'a array)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'b array) -&gt;
+len:(([&lt; `Read | `Set_and_create ], 'c <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     int) -&gt;
+'b <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a></code></pre>
+<pre><span class="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">values:(([&lt; `Read | `Set_and_create ], 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, 'a array)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'b) -&gt;
+len:(([&lt; `Read | `Set_and_create ], 'c <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     'd) -&gt;
+'d</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">values:(([&lt; `Read | `Set_and_create ], 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, 'a array)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'b) -&gt;
+len:(([&lt; `Read | `Set_and_create ], 'c <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     'd) -&gt;
+'d</code></pre>
+<pre><span class="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">init:'a -&gt;
+values:('a -&gt;
+        ([&lt; `Read | `Set_and_create ], 'b <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, 'b array)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'c) -&gt;
+len:('c -&gt;
+     ([&lt; `Read | `Set_and_create ], 'd <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     'e) -&gt;
+'e</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">init:'a -&gt;
+values:('a -&gt;
+        ([&lt; `Read | `Set_and_create ], 'b <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, 'b array)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'c) -&gt;
+len:('c -&gt;
+     ([&lt; `Read | `Set_and_create ], 'd <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     'e) -&gt;
+'e</code></pre>
+<pre><span class="VALmap_poly"><span class="keyword">val</span> map_poly</span> : <code class="type">([&lt; `Read | `Set_and_create ], 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, 'b) <a href="?package=fieldslib&amp;module=Field&amp;type=user">Fieldslib.Field.user</a> -&gt; 'b list</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, 'b) <a href="?package=fieldslib&amp;module=Field&amp;type=user">Fieldslib.Field.user</a> -&gt; 'b list</code></pre>
+<pre><span class="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">values:(([&lt; `Read | `Set_and_create ], 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, 'a array)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+len:(([&lt; `Read | `Set_and_create ], 'b <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     bool) -&gt;
+bool</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">values:(([&lt; `Read | `Set_and_create ], 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, 'a array)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+len:(([&lt; `Read | `Set_and_create ], 'b <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     bool) -&gt;
+bool</code></pre>
+<pre><span class="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">values:(([&lt; `Read | `Set_and_create ], 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, 'a array)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+len:(([&lt; `Read | `Set_and_create ], 'b <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     bool) -&gt;
+bool</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">values:(([&lt; `Read | `Set_and_create ], 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, 'a array)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+len:(([&lt; `Read | `Set_and_create ], 'b <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     bool) -&gt;
+bool</code></pre>
+<pre><span class="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type">values:(([&lt; `Read | `Set_and_create ], 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, 'a array)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'b) -&gt;
+len:(([&lt; `Read | `Set_and_create ], 'c <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     'b) -&gt;
+'b list</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">values:(([&lt; `Read | `Set_and_create ], 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, 'a array)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'b) -&gt;
+len:(([&lt; `Read | `Set_and_create ], 'c <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     'b) -&gt;
+'b list</code></pre>
+<div class="ocaml_module sig" name="Direct"><pre><span class="keyword">module</span> <a href="?package=core_bench&amp;module=Partial_array.Fields.Direct">Direct</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a> -&gt;
+values:(([&lt; `Read | `Set_and_create ], 'b <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, 'b array)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a> -&gt; 'a array -&gt; 'c) -&gt;
+len:(([&lt; `Read | `Set_and_create ], 'd <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a> -&gt; int -&gt; 'e) -&gt;
+'e</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a> -&gt;
+values:(([&lt; `Read | `Set_and_create ], 'b <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, 'b array)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a> -&gt; 'a array -&gt; 'c) -&gt;
+len:(([&lt; `Read | `Set_and_create ], 'd <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a> -&gt; int -&gt; 'e) -&gt;
+'e</code></pre>
+<pre><span class="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a> -&gt;
+init:'b -&gt;
+values:('b -&gt;
+        ([&lt; `Read | `Set_and_create ], 'c <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, 'c array)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a> -&gt; 'a array -&gt; 'd) -&gt;
+len:('d -&gt;
+     ([&lt; `Read | `Set_and_create ], 'e <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a> -&gt; int -&gt; 'f) -&gt;
+'f</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a> -&gt;
+init:'b -&gt;
+values:('b -&gt;
+        ([&lt; `Read | `Set_and_create ], 'c <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, 'c array)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a> -&gt; 'a array -&gt; 'd) -&gt;
+len:('d -&gt;
+     ([&lt; `Read | `Set_and_create ], 'e <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a> -&gt; int -&gt; 'f) -&gt;
+'f</code></pre></div></div></div></div>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">values:'a array -&gt; len:int -&gt; 'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a></code></pre>
+<pre><span class="VALmap_to_array"><span class="keyword">val</span> map_to_array</span> : <code class="type">'a <a href="?package=core_bench&amp;module=Partial_array&amp;type=t">t</a> -&gt; f:('a -&gt; 'b) -&gt; 'b <a href="?package=core&amp;module=Std.Array&amp;type=t">Core.Std.Array.t</a></code></pre>
+
+<div class="info"><div class="info">Arrays in which only some initial segment is meaningful.</div></div>
+</div>

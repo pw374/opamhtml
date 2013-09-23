@@ -1,0 +1,68 @@
+<div class="ocaml_toplevel_module"><div class="ocaml_module ident" name="Gen" path="?package=type_conv&amp;module=Pa_type_conv.Gen"><pre><span class="keyword">module</span> <a href="?package=comparelib&amp;module=Pa_compare.Gen">Gen</a> : <code class="type"><code class="code"><a href="?package=type_conv&amp;module=Pa_type_conv.Gen">Pa_type_conv.Gen</a></code></code></pre></div>
+<pre><span class="VAL(|!)"><span class="keyword">val</span> (|!)</span> : <code class="type">'a -&gt; ('a -&gt; 'b) -&gt; 'b</code></pre>
+<div class="ocaml_module sig" name="Pa_tools"><pre><span class="keyword">module</span> <a href="?package=comparelib&amp;module=Pa_compare.Pa_tools">Pa_tools</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALwith_tuple"><span class="keyword">val</span> with_tuple</span> : <code class="type">Camlp4.PreCast.Ast.Loc.t -&gt;
+value:Camlp4.PreCast.Ast.expr -&gt;
+ty:Camlp4.PreCast.Ast.ctyp -&gt;
+((Camlp4.PreCast.Ast.expr * Camlp4.PreCast.Ast.ctyp) list -&gt;
+ Camlp4.PreCast.Ast.expr) -&gt;
+Camlp4.PreCast.Ast.expr</code></pre>
+<pre><span class="VALwith_record"><span class="keyword">val</span> with_record</span> : <code class="type">Camlp4.PreCast.Ast.Loc.t -&gt;
+value:Camlp4.PreCast.Ast.expr -&gt;
+ty:Camlp4.PreCast.Ast.ctyp -&gt;
+((Camlp4.PreCast.Ast.expr * Camlp4.PreCast.Ast.ctyp) list -&gt;
+ Camlp4.PreCast.Ast.expr) -&gt;
+Camlp4.PreCast.Ast.expr</code></pre>
+<pre><span class="VALunpack_ty_app"><span class="keyword">val</span> unpack_ty_app</span> : <code class="type">Camlp4.PreCast.Ast.ctyp -&gt;
+Camlp4.PreCast.Ast.ident * string list * Camlp4.PreCast.Ast.ctyp list</code></pre></div></div>
+<pre><span class="VALbind_pats"><span class="keyword">val</span> bind_pats</span> : <code class="type">Camlp4.PreCast.Ast.patt list -&gt; Camlp4.PreCast.Ast.patt</code></pre>
+<pre><span class="VALtds_contains_t"><span class="keyword">val</span> tds_contains_t</span> : <code class="type">Camlp4.PreCast.Ast.ctyp -&gt; bool</code></pre>
+<div class="ocaml_module sig" name="Gen_struct"><pre><span class="keyword">module</span> <a href="?package=comparelib&amp;module=Pa_compare.Gen_struct">Gen_struct</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALphys_equal_first"><span class="keyword">val</span> phys_equal_first</span> : <code class="type">Camlp4.PreCast.Ast.expr -&gt;
+Camlp4.PreCast.Ast.expr -&gt; Camlp4.PreCast.Ast.expr -&gt; Camlp4.PreCast.Ast.expr</code></pre>
+<pre><span class="VALchain_if"><span class="keyword">val</span> chain_if</span> : <code class="type">Camlp4.PreCast.Ast.expr list -&gt; Camlp4.PreCast.Ast.expr</code></pre>
+<pre><span class="VALbase_types"><span class="keyword">val</span> base_types</span> : <code class="type">string list</code></pre>
+<pre><span class="VALcompare_named"><span class="keyword">val</span> compare_named</span> : <code class="type">Camlp4.PreCast.Ast.ident -&gt; Camlp4.PreCast.Ast.expr</code></pre>
+<pre><span class="VALtp_name"><span class="keyword">val</span> tp_name</span> : <code class="type">string -&gt; string</code></pre>
+<pre><span class="VALcompare_applied"><span class="keyword">val</span> compare_applied</span> : <code class="type">Camlp4.PreCast.Ast.ctyp -&gt;
+Camlp4.PreCast.Ast.expr -&gt; Camlp4.PreCast.Ast.expr -&gt; Camlp4.PreCast.Ast.expr</code></pre>
+<pre><span class="VALcompare_list"><span class="keyword">val</span> compare_list</span> : <code class="type">Camlp4.PreCast.Ast.ctyp -&gt;
+Camlp4.PreCast.Ast.expr -&gt; Camlp4.PreCast.Ast.expr -&gt; Camlp4.PreCast.Ast.expr</code></pre>
+<pre><span class="VALcompare_array"><span class="keyword">val</span> compare_array</span> : <code class="type">Camlp4.PreCast.Ast.ctyp -&gt;
+Camlp4.PreCast.Ast.expr -&gt; Camlp4.PreCast.Ast.expr -&gt; Camlp4.PreCast.Ast.expr</code></pre>
+<pre><span class="VALcompare_of_tuple"><span class="keyword">val</span> compare_of_tuple</span> : <code class="type">Camlp4.PreCast.Ast.ctyp -&gt;
+Camlp4.PreCast.Ast.expr -&gt; Camlp4.PreCast.Ast.expr -&gt; Camlp4.PreCast.Ast.expr</code></pre>
+<pre><span class="VALcompare_variant"><span class="keyword">val</span> compare_variant</span> : <code class="type">Camlp4.PreCast.Ast.ctyp -&gt;
+Camlp4.PreCast.Ast.expr -&gt; Camlp4.PreCast.Ast.expr -&gt; Camlp4.PreCast.Ast.expr</code></pre>
+<pre><span class="VALbranches_of_sum"><span class="keyword">val</span> branches_of_sum</span> : <code class="type">rightmost:bool -&gt; Camlp4.PreCast.Ast.ctyp -&gt; Camlp4.PreCast.Ast.match_case</code></pre>
+<pre><span class="VALcompare_sum"><span class="keyword">val</span> compare_sum</span> : <code class="type">Camlp4.PreCast.Ast.ctyp -&gt;
+Camlp4.PreCast.Ast.expr -&gt; Camlp4.PreCast.Ast.expr -&gt; Camlp4.PreCast.Ast.expr</code></pre>
+<pre><span class="VALcompare_of_ty"><span class="keyword">val</span> compare_of_ty</span> : <code class="type">Camlp4.PreCast.Ast.ctyp -&gt;
+Camlp4.PreCast.Ast.expr -&gt; Camlp4.PreCast.Ast.expr -&gt; Camlp4.PreCast.Ast.expr</code></pre>
+<pre><span class="VALcompare_of_ty_fun"><span class="keyword">val</span> compare_of_ty_fun</span> : <code class="type">type_constraint:bool -&gt; Camlp4.PreCast.Ast.ctyp -&gt; Camlp4.PreCast.Ast.expr</code></pre>
+<pre><span class="VALcompare_of_record"><span class="keyword">val</span> compare_of_record</span> : <code class="type">Camlp4.PreCast.Ast.ctyp -&gt;
+Camlp4.PreCast.Ast.expr -&gt; Camlp4.PreCast.Ast.expr -&gt; Camlp4.PreCast.Ast.expr</code></pre>
+<pre><span class="VALcompare_of_nil"><span class="keyword">val</span> compare_of_nil</span> : <code class="type">Camlp4.PreCast.Ast.loc -&gt;
+string -&gt;
+Camlp4.PreCast.Ast.expr -&gt; Camlp4.PreCast.Ast.expr -&gt; Camlp4.PreCast.Ast.expr</code></pre>
+<pre><span class="VALscheme_of_td"><span class="keyword">val</span> scheme_of_td</span> : <code class="type">Camlp4.PreCast.Ast.loc -&gt;
+string -&gt; Camlp4.PreCast.Ast.ctyp list -&gt; Camlp4.PreCast.Ast.ctyp</code></pre>
+<pre><span class="VALcompare_of_td"><span class="keyword">val</span> compare_of_td</span> : <code class="type">Camlp4.PreCast.Ast.loc -&gt;
+string -&gt;
+Camlp4.PreCast.Ast.ctyp list -&gt;
+Camlp4.PreCast.Ast.ctyp -&gt; Camlp4.PreCast.Ast.binding</code></pre>
+<pre><span class="VALcompare_of_tds"><span class="keyword">val</span> compare_of_tds</span> : <code class="type">Camlp4.PreCast.Ast.ctyp -&gt; Camlp4.PreCast.Ast.binding</code></pre>
+<pre><span class="VALcompare_of"><span class="keyword">val</span> compare_of</span> : <code class="type">bool -&gt; Camlp4.PreCast.Ast.ctyp -&gt; Camlp4.PreCast.Ast.str_item</code></pre></div></div>
+<div class="ocaml_module sig" name="Gen_sig"><pre><span class="keyword">module</span> <a href="?package=comparelib&amp;module=Pa_compare.Gen_sig">Gen_sig</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALsig_of_td__loop"><span class="keyword">val</span> sig_of_td__loop</span> : <code class="type">Camlp4.PreCast.Ast.ctyp -&gt;
+Camlp4.PreCast.Ast.ctyp list -&gt; Camlp4.PreCast.Ast.ctyp</code></pre>
+<pre><span class="VALsig_of_td"><span class="keyword">val</span> sig_of_td</span> : <code class="type">Camlp4.PreCast.Ast.loc -&gt;
+string -&gt;
+Camlp4.PreCast.Ast.ctyp list -&gt; 'a -&gt; 'b -&gt; Camlp4.PreCast.Ast.sig_item</code></pre>
+<pre><span class="VALsig_of_tds"><span class="keyword">val</span> sig_of_tds</span> : <code class="type">'a -&gt; Camlp4.PreCast.Ast.ctyp -&gt; Camlp4.PreCast.Ast.sig_item</code></pre></div></div>
+<div class="ocaml_module sig" name="Gen_quote"><pre><span class="keyword">module</span> <a href="?package=comparelib&amp;module=Pa_compare.Gen_quote">Gen_quote</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALparse"><span class="keyword">val</span> parse</span> : <code class="type">Camlp4.PreCast.Ast.Loc.t -&gt; 'a -&gt; string -&gt; Camlp4.PreCast.Ast.expr</code></pre></div></div>
+
+
+
+</div>

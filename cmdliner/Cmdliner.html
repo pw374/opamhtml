@@ -1,0 +1,763 @@
+<div class="ocaml_toplevel_module"><div class="info">Declarative definition of command line interfaces.<br/>    <code class="code">Cmdliner</code> provides a simple and compositional mechanism
+    to convert command line arguments to OCaml values and pass them to
+    your functions. The module automatically handles syntax errors,
+    help messages and UNIX man page generation. It supports programs 
+    with single or multiple commands
+    (like <code class="code">darcs</code> or <code class="code">git</code>) and respect most of the
+     <a href="http://www.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap12.html">
+    POSIX</a> and
+     <a href="http://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html">
+    GNU</a> conventions.<br/>    Consult the  <a href="#basics">basics</a>, details about the supported
+     <a href="#cmdline">command line syntax</a> and  <a href="#examples"> examples</a> of
+    use. Open the module to use it, it defines only three modules in
+    your scope.<br/>    <em>Release 0.9.2 - Daniel Bünzli &lt;daniel.buenzli at erratique.ch&gt; </em></div>
+<div class="info"><div class="info"><h1 id="top">Interface</h1></div></div>
+<div class="ocaml_module sig" name="Manpage"><pre><span class="keyword">module</span> <a href="?package=cmdliner&amp;module=Cmdliner.Manpage">Manpage</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Man page specification. <br/>    Man page generation is automatically handled by <code class="code">Cmdliner</code>. The
+     <a href="#block">block</a> type is used to define a man page's content.<br/>    The  <a href="#print">print</a> function can be useful if the client wants to define
+    other man pages (e.g. to implement a help command).</div></div><div class="ocaml_module_content">
+<div class="info"><div class="info"><h1 id="1_TITLE">Man pages</h1></div></div>
+<pre><span class="TYPEblock"><span class="keyword">type</span> block</span> = <code class="type">[ `I of string * string | `Noblank | `P of string | `S of string ]</code></pre><div class="info"><div class="info">The type for a block of man page text. <br/>      <ul><li><code class="code">`Noblank</code> suppresses the blank line introduced between two blocks.</li><li><code class="code">`I (l,t)</code> is an indented paragraph with label
+      <code class="code">l</code> and text <code class="code">t</code>.</li><li><code class="code">`P t</code> is a new paragraph with text <code class="code">t</code>.</li><li><code class="code">`S s</code> introduces a new section <code class="code">s</code>.</li></ul><br/>      In text strings <code class="code">t</code>, whitespace and newlines are not significant
+      and are all collapsed to a single space. In labels <code class="code">l</code> and text
+      strings <code class="code">t</code>, the syntax <code class="code">&quot;$(i,italic text)&quot;</code> and <code class="code">&quot;$(b,bold
+      text)&quot;</code> can be used to respectively produce italic and bold
+      text.</div></div>
+<pre><span class="TYPEtitle"><span class="keyword">type</span> title</span> = <code class="type">string * int * string * string * string</code></pre><div class="info"><div class="info">The type for man page titles. Describes the man page
+      <code class="code">title</code>, <code class="code">section</code>, <code class="code">center_footer</code>, <code class="code">left_footer</code>, <code class="code">center_header</code>.</div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type"><a href="?package=cmdliner&amp;module=Cmdliner.Manpage&amp;type=title">title</a> * <a href="?package=cmdliner&amp;module=Cmdliner.Manpage&amp;type=block">block</a> list</code></pre><div class="info"><div class="info">The type for a man page. A title and the page text as a list of blocks.</div></div>
+<pre><span class="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?subst:(string -&gt; string) -&gt;
+[ `Groff | `Pager | `Plain ] -&gt; <a href="?package=ocaml&amp;module=Format&amp;type=formatter">Format.formatter</a> -&gt; <a href="?package=cmdliner&amp;module=Cmdliner.Manpage&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">print ~subst fmt ppf page</code> prints <code class="code">page</code> on <code class="code">ppf</code> in the format <code class="code">fmt</code>.
+      If <code class="code">fmt</code> is <code class="code">`Pager</code> the function tries to write the formatted
+      result in a pager, if that fails the format <code class="code">`Plain</code> is written 
+      on <code class="code">ppf</code>. <code class="code">subst</code> can be used to perform variable substitution, 
+      see  <a href="#Buffer.add_substitute">Buffer.add_substitute</a> (defaults to the identity).</div></div></div></div>
+<div class="ocaml_module sig" name="Term"><pre><span class="keyword">module</span> <a href="?package=cmdliner&amp;module=Cmdliner.Term">Term</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Terms. <br/>    A term is evaluated by a program to produce a  <a href="#result">result</a>.
+    A term made of terms referring to  <a href="#Arg">command line arguments</a>
+    implicitly defines a command line syntax.</div></div><div class="ocaml_module_content">
+<div class="info"><div class="info"><h1 id="1_TITLE">Terms</h1></div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> </pre><div class="info"><div class="info">The type for terms evaluating to values of type 'a.</div></div>
+<pre><span class="VALpure"><span class="keyword">val</span> pure</span> : <code class="type">'a -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">pure v</code> is a term that evaluates to <code class="code">v</code>.</div></div>
+<pre><span class="VAL$"><span class="keyword">val</span> $</span> : <code class="type">('a -&gt; 'b) <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">t</a> -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">t</a> -&gt; 'b <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">f $ v</code> is a term that evaluates to the result of applying
+      the evaluation of <code class="code">v</code> to the one of <code class="code">f</code>.</div></div>
+<pre><span class="VALapp"><span class="keyword">val</span> app</span> : <code class="type">('a -&gt; 'b) <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">t</a> -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">t</a> -&gt; 'b <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">app</code> is  <a href="#($)">($)</a>.</div></div>
+<pre><span class="VALret"><span class="keyword">val</span> ret</span> : <code class="type">[ `Error of bool * string
+| `Help of [ `Groff | `Pager | `Plain ] * string option
+| `Ok of 'a ] <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">t</a> -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">ret v</code> is a term whose evaluation depends on the case
+      to which <code class="code">v</code> evaluates. With :
+      <ul><li><code class="code">`Help (format, name)</code>, the evaluation fails and <code class="code">Cmdliner</code> prints the
+         term's man page in the given <code class="code">format</code> (or the man page for a 
+         specific <code class="code">name</code> term in case of multiple term evaluation).</li><li><code class="code">`Error (usage,e)</code>, the evaluation fails and <code class="code">Cmdliner</code> prints
+         the error <code class="code">e</code> and the term's usage if <code class="code">usage</code> is <code class="code">true</code>.</li><li><code class="code">`Ok r</code>, it evaluates to <code class="code">r</code>.</li></ul></div></div>
+<pre><span class="VALmain_name"><span class="keyword">val</span> main_name</span> : <code class="type">string <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">main_name</code> is a term that evaluates to the &quot;main&quot; term's name.</div></div>
+<pre><span class="VALchoice_names"><span class="keyword">val</span> choice_names</span> : <code class="type">string list <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">choice_names</code> is a term that evaluates to the names of the terms
+      to choose from.</div></div>
+<pre><span class="VALman_format"><span class="keyword">val</span> man_format</span> : <code class="type">[ `Groff | `Pager | `Plain ] <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">man_format</code> is a term that defines a <code class="code">--man-format</code> option and 
+      evaluates to a value that can be used with  <a href="#Manpage.print">Manpage.print</a>.</div></div>
+<div class="info"><div class="info"><h1 id="tinfo">Term information</h1> <br/>      Term information defines the name and man page of a term.
+      For simple evaluation this is the name of the program and its
+      man page. For multiple term evaluation, this is 
+      the name of a command and its man page.</div></div>
+<pre><span class="TYPEinfo"><span class="keyword">type</span> info</span> </pre><div class="info"><div class="info">The type for term information.</div></div>
+<pre><span class="VALinfo"><span class="keyword">val</span> info</span> : <code class="type">?sdocs:string -&gt;
+?man:<a href="?package=cmdliner&amp;module=Cmdliner.Manpage&amp;type=block">Manpage.block</a> list -&gt;
+?docs:string -&gt; ?doc:string -&gt; ?version:string -&gt; string -&gt; <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=info">info</a></code></pre><div class="info"><div class="info"><code class="code">info sdocs man docs doc version name</code> is a term information
+      such that:
+      <ul><li><code class="code">sdocs</code> defines the title of the section in which the
+         standard <code class="code">--help</code> and <code class="code">--version</code> arguments are listed.</li><li><code class="code">man</code> is the text of the man page for the term. In the text,
+         the variables <code class="code">&quot;$(tname)&quot;</code> and <code class="code">&quot;$(mname)&quot;</code> can respectively be 
+         used to refer to the value of <code class="code">name</code> and the main term's name.
+      </li><li><code class="code">docs</code>, only for commands, the title of the section of the main 
+         term's man page where it should be listed (defaults to <code class="code">&quot;COMMANDS&quot;</code>).</li><li><code class="code">doc</code> is a one line description of the program or command used 
+         for the <code class="code">NAME</code> section of the term's man page. For commands this
+         description is also used in the list of commands of the main
+         term's man page.</li><li><code class="code">version</code> is the version string of the program, ignored
+         for commands.</li><li><code class="code">name</code> is the name of the program or the command.</li></ul></div></div>
+<pre><span class="VALname"><span class="keyword">val</span> name</span> : <code class="type"><a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=info">info</a> -&gt; string</code></pre><div class="info"><div class="info"><code class="code">name ti</code> is the name of the term information.</div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Evaluation</h1></div></div>
+<pre><span class="TYPEresult"><span class="keyword">type</span> <code class="type">'a </code>result</span> = <code class="type">[ `Error of [ `Exn | `Parse | `Term ] | `Help | `Ok of 'a | `Version ]</code></pre><div class="info"><div class="info">The type for evaluation results.
+      <ul><li><code class="code">`Error `Exn</code>, an exception <code class="code">e</code> was caught and reported
+         on the error formatter (see the <code class="code">~catch</code> parameter of  <a href="#eval">eval</a>).</li><li><code class="code">`Error `Term</code>, a term evaluation error occured and was reported
+         on the error formatter (see  <a href="#Term.ret">Term.ret</a>).</li><li><code class="code">`Error `Parse</code>, a command line parse error occured and was 
+         reported on the error formatter.</li><li><code class="code">`Help</code>, man page about the term was printed on the help formatter.</li><li><code class="code">`Version</code>, the version string of the main term was printed
+       on the help formatter.</li><li><code class="code">`Ok v</code>, the term evaluated successfully and <code class="code">v</code> is the result.</li></ul></div></div>
+<pre><span class="VALeval"><span class="keyword">val</span> eval</span> : <code class="type">?help:<a href="?package=ocaml&amp;module=Format&amp;type=formatter">Format.formatter</a> -&gt;
+?err:<a href="?package=ocaml&amp;module=Format&amp;type=formatter">Format.formatter</a> -&gt;
+?catch:bool -&gt; ?argv:string array -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">t</a> * <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=info">info</a> -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=result">result</a></code></pre><div class="info"><div class="info"><code class="code">eval help err catch argv (t,i)</code>  is the evaluation result
+    of <code class="code">t</code> with command line arguments <code class="code">argv</code> (defaults to  <a href="#Sys.argv">Sys.argv</a>).<br/>    If <code class="code">catch</code> is <code class="code">true</code> (default) uncaught exeptions
+    are intercepted and their stack trace is written to the <code class="code">err</code>
+    formatter. <br/>    <code class="code">help</code> is the formatter used to print help or version messages
+    (defaults to  <a href="#Format.std_formatter">Format.std_formatter</a>). <code class="code">err</code> is the formatter
+    used to print error messages (defaults to  <a href="#Format.err_formatter">Format.err_formatter</a>).</div></div>
+<pre><span class="VALeval_choice"><span class="keyword">val</span> eval_choice</span> : <code class="type">?help:<a href="?package=ocaml&amp;module=Format&amp;type=formatter">Format.formatter</a> -&gt;
+?err:<a href="?package=ocaml&amp;module=Format&amp;type=formatter">Format.formatter</a> -&gt;
+?catch:bool -&gt;
+?argv:string array -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">t</a> * <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=info">info</a> -&gt; ('a <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">t</a> * <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=info">info</a>) list -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=result">result</a></code></pre><div class="info"><div class="info"><code class="code">eval_choice help err catch argv default (t,i) choices</code> is like  <a href="#eval">eval</a> 
+      except that if the first argument on the command line is not an option 
+      name it will look in <code class="code">choices</code> for a term whose information has this 
+      name and evaluate it.<br/>      If the command name is unknown an error is reported. If the name
+      is unspecified the &quot;main&quot; term <code class="code">t</code> is evaluated. <code class="code">i</code> defines the
+      name and man page of the program.</div></div></div></div>
+<div class="ocaml_module sig" name="Arg"><pre><span class="keyword">module</span> <a href="?package=cmdliner&amp;module=Cmdliner.Arg">Arg</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Terms for command line arguments.<br/>    This module provides functions to define terms that evaluate 
+    to the arguments provided on the command line. <br/>    Basic constraints, like the argument type or repeatability, are
+    specified by defining a value of type  <a href="#t">t</a>. Further contraints can
+    be specified during the  <a href="#argterms">conversion</a> to a term.</div></div><div class="ocaml_module_content">
+<div class="info"><div class="info"><h1 id="argconv">Argument converters</h1>  <br/>    An argument converter transforms a string argument of the command
+    line to an OCaml value.  <a href="#converters">Predefined converters</a>
+    are provided for many types of the standard library.</div></div>
+<pre><span class="TYPEparser"><span class="keyword">type</span> <code class="type">'a </code>parser</span> = <code class="type">string -&gt; [ `Error of string | `Ok of 'a ]</code></pre><div class="info"><div class="info">The type for argument parsers.</div></div>
+<pre><span class="TYPEprinter"><span class="keyword">type</span> <code class="type">'a </code>printer</span> = <code class="type"><a href="?package=ocaml&amp;module=Format&amp;type=formatter">Format.formatter</a> -&gt; 'a -&gt; unit</code></pre><div class="info"><div class="info">The type for converted argument printers.</div></div>
+<pre><span class="TYPEconverter"><span class="keyword">type</span> <code class="type">'a </code>converter</span> = <code class="type">'a <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=parser">parser</a> * 'a <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=printer">printer</a></code></pre><div class="info"><div class="info">The type for argument converters.</div></div>
+<pre><span class="VALsome"><span class="keyword">val</span> some</span> : <code class="type">?none:string -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a> -&gt; 'a option <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a></code></pre><div class="info"><div class="info"><code class="code">some none c</code> is like the converter <code class="code">c</code> except it returns
+      <code class="code">Some</code> value. It is used for command line arguments 
+      that default to <code class="code">None</code> when absent. <code class="code">none</code> is what to print to
+      document the absence (defaults to <code class="code">&quot;&quot;</code>).</div></div>
+<div class="info"><div class="info"><h1 id="arginfo">Arguments and their information</h1> <br/>    Argument information defines the man page information of an argument and, 
+    for optional arguments, its names.</div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> </pre><div class="info"><div class="info">The type for arguments holding data of type <code class="code">'a</code>.</div></div>
+<pre><span class="TYPEinfo"><span class="keyword">type</span> info</span> </pre><div class="info"><div class="info">The type for information about command line arguments.</div></div>
+<pre><span class="VALinfo"><span class="keyword">val</span> info</span> : <code class="type">?docs:string -&gt; ?docv:string -&gt; ?doc:string -&gt; string list -&gt; <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=info">info</a></code></pre><div class="info"><div class="info"><code class="code">info docs docv doc names</code> defines information for 
+      an argument. <br/>      <code class="code">names</code> defines the names under which an optional argument
+      can be referred to. Strings of length <code class="code">1</code> (<code class="code">&quot;c&quot;</code>) define short 
+      option names (<code class="code">&quot;-c&quot;</code>), longer strings (<code class="code">&quot;count&quot;</code>) define long
+      option names (<code class="code">&quot;--count&quot;</code>). <code class="code">names</code> must be empty for positional 
+      arguments. <br/>      <ul><li><code class="code">docs</code> is the title of the man page section in which the argument 
+         will be listed. For optional arguments this defaults
+         to <code class="code">&quot;OPTIONS&quot;</code>. For positional arguments this defaults
+         to <code class="code">&quot;ARGUMENTS&quot;</code>. However a positional argument is only listed
+         if it has both a <code class="code">doc</code> and <code class="code">docv</code> specified.</li><li><code class="code">docv</code> is for positional and non-flag optional arguments.
+	 It is a variable name used in the man page to stand for their value.</li><li><code class="code">doc</code> is the man page information of the argument.
+         The variable <code class="code">&quot;$(docv)&quot;</code> can be used to refer to the value 
+         of <code class="code">docv</code> (see below).</li></ul></div></div>
+<pre><span class="VAL(&amp;)"><span class="keyword">val</span> (&amp;)</span> : <code class="type">('a -&gt; 'b) -&gt; 'a -&gt; 'b</code></pre><div class="info"><div class="info"><code class="code">f &amp; v</code> is <code class="code">f v</code>, a right associative composition operator for
+      specifying argument terms.</div></div>
+<div class="info"><div class="info"><h1 id="optargs">Optional arguments</h1> <br/>    The information of an optional argument must have at least
+    one name or <code class="code">Invalid_argument</code> is raised.</div></div>
+<pre><span class="VALflag"><span class="keyword">val</span> flag</span> : <code class="type"><a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=info">info</a> -&gt; bool <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">flag i</code> is a <code class="code">bool</code> argument defined by an optional flag 
+      that may appear <em>at most</em> once on the command line under one of 
+      the names specified by <code class="code">i</code>. The argument holds <code class="code">true</code> if the 
+      flag is present on the command line and <code class="code">false</code> otherwise.</div></div>
+<pre><span class="VALflag_all"><span class="keyword">val</span> flag_all</span> : <code class="type"><a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=info">info</a> -&gt; bool list <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">flag_all</code> is like  <a href="#flag">flag</a> except the flag may appear more than
+      once. The argument holds a list that contains one <code class="code">true</code> value per 
+      occurence of the flag. It holds the empty list if the flag
+      is absent from the command line.</div></div>
+<pre><span class="VALvflag"><span class="keyword">val</span> vflag</span> : <code class="type">'a -&gt; ('a * <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=info">info</a>) list -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">vflag v [v</code><sub class="subscript">0</sub><code class="code">,i</code><sub class="subscript">0</sub><code class="code">;...]</code> is an <code class="code">'a</code> argument defined 
+      by an optional flag that may appear <em>at most</em> once on 
+      the command line under one of the names specified in the <code class="code">i</code><sub class="subscript">k</sub>
+      values. The argument holds <code class="code">v</code> if the flag is absent from the 
+      command line and the value <code class="code">v</code><sub class="subscript">k</sub> if the name under which it appears 
+      is in <code class="code">i</code><sub class="subscript">k</sub>.</div></div>
+<pre><span class="VALvflag_all"><span class="keyword">val</span> vflag_all</span> : <code class="type">'a list -&gt; ('a * <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=info">info</a>) list -&gt; 'a list <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">vflag_all v l</code> is like  <a href="#vflag">vflag</a> except the flag may appear more
+      than once. The argument holds the list <code class="code">v</code> if the flag is absent
+      from the command line. Otherwise it holds a list that contains one 
+      corresponding value per occurence of the flag, in the order found on 
+      the command line.</div></div>
+<pre><span class="VALopt"><span class="keyword">val</span> opt</span> : <code class="type">?vopt:'a -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a> -&gt; 'a -&gt; <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=info">info</a> -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">opt vopt c v i</code> is an <code class="code">'a</code> argument defined by the value of 
+      an optional argument that may appear <em>at most</em> once on the command
+      line under one of the names specified by <code class="code">i</code>. The argument holds
+      <code class="code">v</code> if the option is absent from the command line. Otherwise
+      it has the value of the option as converted by <code class="code">c</code>. <br/>      If <code class="code">vopt</code> is provided the value of the optional argument is itself
+      optional, taking the value <code class="code">vopt</code> if unspecified on the command line.</div></div>
+<pre><span class="VALopt_all"><span class="keyword">val</span> opt_all</span> : <code class="type">?vopt:'a -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a> -&gt; 'a list -&gt; <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=info">info</a> -&gt; 'a list <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">opt_all vopt c v i</code> is like  <a href="#opt">opt</a> except the optional argument may 
+      appear more than once. The argument holds a list that contains one value
+      per occurence of the flag in the order found on the command line. 
+      It holds the list <code class="code">v</code> if the flag is absent from the command line.</div></div>
+<div class="info"><div class="info"><h1 id="posargs">Positional arguments</h1> <br/>      The information of a positional argument must have no name
+      or <code class="code">Invalid_argument</code> is raised. Positional arguments indexing
+      is zero-based.</div></div>
+<pre><span class="VALpos"><span class="keyword">val</span> pos</span> : <code class="type">?rev:bool -&gt; int -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a> -&gt; 'a -&gt; <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=info">info</a> -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">pos rev n c v i</code> is an <code class="code">'a</code> argument defined by the <code class="code">n</code>th
+      positional argument of the command line as converted by <code class="code">c</code>.
+      If the positional argument is absent from the command line 
+      the argument is <code class="code">v</code>.<br/>      If <code class="code">rev</code> is <code class="code">true</code> (defaults to <code class="code">false</code>), the computed
+      position is <code class="code">max-n</code> where <code class="code">max</code> is the position of 
+      the last positional argument present on the command line.</div></div>
+<pre><span class="VALpos_all"><span class="keyword">val</span> pos_all</span> : <code class="type">'a <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a> -&gt; 'a list -&gt; <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=info">info</a> -&gt; 'a list <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">pos_all c v i</code> is an <code class="code">'a list</code> argument that holds 
+      all the positional arguments of the command line as converted
+      by <code class="code">c</code> or <code class="code">v</code> if there are none.</div></div>
+<pre><span class="VALpos_left"><span class="keyword">val</span> pos_left</span> : <code class="type">?rev:bool -&gt; int -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a> -&gt; 'a list -&gt; <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=info">info</a> -&gt; 'a list <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">pos_left rev n c v i</code> is an <code class="code">'a list</code> argument that holds
+      all the positional arguments as converted by <code class="code">c</code> found on the left
+      of the <code class="code">n</code>th positional argument or <code class="code">v</code> if there are none.<br/>      If <code class="code">rev</code> is <code class="code">true</code> (defaults to <code class="code">false</code>), the computed
+      position is <code class="code">max-n</code> where <code class="code">max</code> is the position of 
+      the last positional argument present on the command line.</div></div>
+<pre><span class="VALpos_right"><span class="keyword">val</span> pos_right</span> : <code class="type">?rev:bool -&gt; int -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a> -&gt; 'a list -&gt; <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=info">info</a> -&gt; 'a list <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">pos_right</code> is like  <a href="#pos_left">pos_left</a> except it holds all the positional
+      arguments found on the right of the specified positional argument.</div></div>
+<div class="info"><div class="info"><h1 id="argterms">Arguments as terms</h1></div></div>
+<pre><span class="VALvalue"><span class="keyword">val</span> value</span> : <code class="type">'a <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=t">t</a> -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">Term.t</a></code></pre><div class="info"><div class="info"><code class="code">value a</code> is a term that evaluates to <code class="code">a</code>'s value.</div></div>
+<pre><span class="VALrequired"><span class="keyword">val</span> required</span> : <code class="type">'a option <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=t">t</a> -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">Term.t</a></code></pre><div class="info"><div class="info"><code class="code">required a</code> is a term that fails if <code class="code">a</code>'s value is <code class="code">None</code> and
+      evaluates to the value of <code class="code">Some</code> otherwise. Use this for required 
+      positional arguments (it can also be used for defining required 
+      optional arguments, but from a user interface perspective this 
+      shouldn't be done, it is a contradiction in terms).</div></div>
+<pre><span class="VALnon_empty"><span class="keyword">val</span> non_empty</span> : <code class="type">'a list <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=t">t</a> -&gt; 'a list <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">Term.t</a></code></pre><div class="info"><div class="info"><code class="code">non_empty a</code> is term that fails if <code class="code">a</code>'s list is empty and 
+      evaluates to <code class="code">a</code>'s list otherwise. Use this for non empty lists
+      of positional arguments.</div></div>
+<pre><span class="VALlast"><span class="keyword">val</span> last</span> : <code class="type">'a list <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=t">t</a> -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">Term.t</a></code></pre><div class="info"><div class="info"><code class="code">last a</code> is a term that fails if <code class="code">a</code>'s list is empty and evaluates
+      to the value of the last element of the list otherwise. Use this
+      for lists of flags or options where the last occurence takes precedence
+      over the others.</div></div>
+<div class="info"><div class="info"><h1 id="converters">Predefined converters</h1></div></div>
+<pre><span class="VALbool"><span class="keyword">val</span> bool</span> : <code class="type">bool <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a></code></pre><div class="info"><div class="info"><code class="code">bool</code> converts values with  <a href="#bool_of_string">bool_of_string</a>.</div></div>
+<pre><span class="VALchar"><span class="keyword">val</span> char</span> : <code class="type">char <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a></code></pre><div class="info"><div class="info"><code class="code">char</code> converts values by ensuring the argument has a single char.</div></div>
+<pre><span class="VALint"><span class="keyword">val</span> int</span> : <code class="type">int <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a></code></pre><div class="info"><div class="info"><code class="code">int</code> converts values with  <a href="#int_of_string">int_of_string</a>.</div></div>
+<pre><span class="VALnativeint"><span class="keyword">val</span> nativeint</span> : <code class="type">nativeint <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a></code></pre><div class="info"><div class="info"><code class="code">nativeint</code> converts values with  <a href="#Nativeint.of_string">Nativeint.of_string</a>.</div></div>
+<pre><span class="VALint32"><span class="keyword">val</span> int32</span> : <code class="type">int32 <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a></code></pre><div class="info"><div class="info"><code class="code">int32</code> converts values with  <a href="#Int32.of_string">Int32.of_string</a>.</div></div>
+<pre><span class="VALint64"><span class="keyword">val</span> int64</span> : <code class="type">int64 <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a></code></pre><div class="info"><div class="info"><code class="code">int64</code> converts values with  <a href="#Int64.of_string">Int64.of_string</a>.</div></div>
+<pre><span class="VALfloat"><span class="keyword">val</span> float</span> : <code class="type">float <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a></code></pre><div class="info"><div class="info"><code class="code">float</code> converts values with  <a href="#float_of_string">float_of_string</a>.</div></div>
+<pre><span class="VALstring"><span class="keyword">val</span> string</span> : <code class="type">string <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a></code></pre><div class="info"><div class="info"><code class="code">string</code> converts values with the identity function.</div></div>
+<pre><span class="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">(string * 'a) list -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a></code></pre><div class="info"><div class="info"><code class="code">enum l p</code> converts values such that unambiguous prefixes of string names 
+      in <code class="code">l</code> map to the corresponding value of type <code class="code">'a</code>.</div></div>
+<pre><span class="VALfile"><span class="keyword">val</span> file</span> : <code class="type">string <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a></code></pre><div class="info"><div class="info"><code class="code">file</code> converts a value with the identity function and
+      checks with  <a href="#Sys.file_exists">Sys.file_exists</a> that a file with that name exists.</div></div>
+<pre><span class="VALdir"><span class="keyword">val</span> dir</span> : <code class="type">string <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a></code></pre><div class="info"><div class="info"><code class="code">dir</code> converts a value with the identity function and checks
+      with  <a href="#Sys.file_exists">Sys.file_exists</a> and  <a href="#Sys.is_directory">Sys.is_directory</a> 
+      that a directory with that name exists.</div></div>
+<pre><span class="VALnon_dir_file"><span class="keyword">val</span> non_dir_file</span> : <code class="type">string <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a></code></pre><div class="info"><div class="info"><code class="code">non_dir_file</code> converts a value with the identity function and checks
+      with  <a href="#Sys.file_exists">Sys.file_exists</a> and  <a href="#Sys.is_directory">Sys.is_directory</a> 
+      that a non directory file with that name exists.</div></div>
+<pre><span class="VALlist"><span class="keyword">val</span> list</span> : <code class="type">?sep:char -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a> -&gt; 'a list <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a></code></pre><div class="info"><div class="info"><code class="code">list sep c</code> splits the argument at each <code class="code">sep</code> (defaults to <code class="code">','</code>) 
+      character and converts each substrings with <code class="code">c</code>.</div></div>
+<pre><span class="VALarray"><span class="keyword">val</span> array</span> : <code class="type">?sep:char -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a> -&gt; 'a array <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a></code></pre><div class="info"><div class="info"><code class="code">array sep c</code> splits the argument at each <code class="code">sep</code> (defaults to <code class="code">','</code>) 
+      character and converts each substring with <code class="code">c</code>.</div></div>
+<pre><span class="VALpair"><span class="keyword">val</span> pair</span> : <code class="type">?sep:char -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a> -&gt; 'b <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a> -&gt; ('a * 'b) <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a></code></pre><div class="info"><div class="info"><code class="code">pair sep c0 c1</code> splits the argument at the <em>first</em> <code class="code">sep</code> character 
+      (defaults to <code class="code">','</code>) and respectively converts the substrings with 
+      <code class="code">c0</code> and <code class="code">c1</code>.</div></div>
+<pre><span class="VALt2"><span class="keyword">val</span> t2</span> : <code class="type">?sep:char -&gt; 'a <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a> -&gt; 'b <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a> -&gt; ('a * 'b) <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a></code></pre><div class="info"><div class="info"> <a href="#t2">t2</a> is  <a href="#pair">pair</a>.</div></div>
+<pre><span class="VALt3"><span class="keyword">val</span> t3</span> : <code class="type">?sep:char -&gt;
+'a <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a> -&gt; 'b <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a> -&gt; 'c <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a> -&gt; ('a * 'b * 'c) <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a></code></pre><div class="info"><div class="info"><code class="code">t3 sep c0 c1 c2</code> splits the argument at the <em>first</em> two <code class="code">sep</code> 
+      characters (defaults to <code class="code">','</code>) and respectively converts the 
+      substrings with <code class="code">c0</code>, <code class="code">c1</code> and <code class="code">c2</code>.</div></div>
+<pre><span class="VALt4"><span class="keyword">val</span> t4</span> : <code class="type">?sep:char -&gt;
+'a <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a> -&gt;
+'b <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a> -&gt; 'c <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a> -&gt; 'd <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a> -&gt; ('a * 'b * 'c * 'd) <a href="?package=cmdliner&amp;module=Cmdliner.Arg&amp;type=converter">converter</a></code></pre><div class="info"><div class="info"><code class="code">t4 sep c0 c1 c2 c3</code> splits the argument at the <em>first</em> three <code class="code">sep</code> 
+      characters (defaults to <code class="code">','</code>) respectively converts the substrings 
+      with <code class="code">c0</code>, <code class="code">c1</code>, <code class="code">c2</code> and <code class="code">c3</code>.</div></div></div></div>
+<div class="info"><div class="info"><h1 id="basics">Basics</h1><br/>    With <code class="code">Cmdliner</code> your program evaluates a term. A <em>term</em>
+    is a value of type  <a href="#Term.t">Term.t</a>. The type parameter indicates
+    the type of the result of the evaluation.<br/>    One way to create terms is by lifting regular OCaml values with
+     <a href="#Term.pure">Term.pure</a>. Terms can be applied to terms evaluating to
+    functional values with  <a href="#Term.( $ )">Term.( $ )</a> (the type for terms is an
+     <a href="http://dx.doi.org/10.1017/S0956796807006326">applicative
+    functor</a>). For example for the function:
+<pre class="codepre"><code class="code">let revolt () = print_endline &quot;Revolt!&quot;</code></pre>
+    the term :
+<pre class="codepre"><code class="code">
+open Cmdliner;;
+
+let revolt_t = Term.(pure revolt $ pure ())</code></pre>
+    is a term that evaluates to the result (and effect) of the <code class="code">revolt</code> 
+    function.
+    Terms are evaluated with  <a href="#Term.eval">Term.eval</a>:
+<pre class="codepre"><code class="code">let () = match Term.eval (revolt_t, Term.info &quot;revolt&quot;) with 
+| `Error _ -&gt; exit 1 | _ -&gt; exit 0</code></pre>
+    This defines a command line program named <code class="code">&quot;revolt&quot;</code>, without command line 
+    arguments arguments, that just prints <code class="code">&quot;Revolt!&quot;</code> on <code class="code">stdout</code>.
+<pre class="codepre"><code class="code">&gt; ./revolt 
+Revolt!</code></pre>
+    The combinators in the  <a href="#Arg">Arg</a> module allow to extract command
+    line argument data as terms. These terms can then be applied to
+    lifted OCaml functions to be evaluated by the program. <br/>    Terms corresponding to command line argument data that are part of
+    a term evaluation implicitly define a command line syntax.  We
+    show this on an concrete example.<br/>    Consider the <code class="code">chorus</code> function that prints repeatedly a 
+    given message :
+<pre class="codepre"><code class="code">let chorus count msg = 
+  for i = 1 to count do print_endline msg done</code></pre>
+    we want to make it available from the command line
+    with the synopsis:
+<pre class="codepre"><code class="code">chorus [-c COUNT | --count=COUNT] [MSG]</code></pre>
+    where <code class="code">COUNT</code> defaults to <code class="code">10</code> and <code class="code">MSG</code> defaults to <code class="code">&quot;Revolt!&quot;</code>. 
+    We first define a term corresponding to the <code class="code">--count</code>
+    option:
+<pre class="codepre"><code class="code">
+let count = 
+  let doc = &quot;Repeat the message $(docv) times.&quot; in
+  Arg.(value &amp; opt int 10 &amp; info [&quot;c&quot;; &quot;count&quot;] ~docv:&quot;COUNT&quot; ~doc)
+</code></pre>
+    This says that <code class="code">count</code> is a term that evaluates to the 
+    value of an optional argument of type <code class="code">int</code> that 
+    defaults to <code class="code">10</code> if unspecified and whose option name is
+    either <code class="code">-c</code> or <code class="code">--count</code>. The arguments <code class="code">doc</code> and <code class="code">docv</code> are used to 
+    generate the option's man page information. <br/>    The term for the positional argument <code class="code">MSG</code> is:
+<pre class="codepre"><code class="code">
+let msg = 
+  let doc = &quot;The message to print.&quot; in
+  Arg.(value &amp; pos 0 string &quot;Revolt!&quot; &amp; info [] ~docv:&quot;MSG&quot; ~doc)
+</code></pre>
+    which says that <code class="code">msg</code> is a term whose value is 
+    the positional argument at index <code class="code">0</code> of type <code class="code">string</code> and
+    defaults to <code class="code">&quot;Revolt!&quot;</code> if unspecified. Here again
+    <code class="code">doc</code> and <code class="code">docv</code> are used for the man page information.<br/>    The term for executing <code class="code">chorus</code> with these command line arguments
+    is : 
+<pre class="codepre"><code class="code">
+let chorus_t = Term.(pure chorus $ count $ msg)
+</code></pre>
+    and we are now ready to define our program:
+<pre class="codepre"><code class="code">
+let info = 
+  let doc = &quot;print a customizable message repeatedly&quot; in
+  let man = [ `S &quot;BUGS&quot;; `P &quot;Email bug reports to &lt;hehey at example.org&gt;.&quot;;] in
+  Term.info &quot;chorus&quot; ~version:&quot;1.6.1&quot; ~doc ~man
+
+let () = match Term.eval (chorus_t, info) with `Error _ -&gt; exit 1 | _ -&gt; exit 0
+</code></pre>
+    The <code class="code">info</code> value created with  <a href="#Term.info">Term.info</a> gives more information
+    about the term we execute and is used to generate the program's
+    man page. Since we provided a <code class="code">~version</code> string, the program will
+    automatically respond to the <code class="code">--version</code> option by printing this
+    string.<br/>    A program using  <a href="#Term.eval">Term.eval</a> always responds to the
+    <code class="code">--help</code> option by showing the man page about the program generated
+    using the information you provided with  <a href="#Term.info">Term.info</a> and  <a href="#Arg.info">Arg.info</a>.
+    Here is the output generated by our example :
+<span class="verbatim">&gt; ./chorus --help
+NAME
+       chorus - print a customizable message repeatedly
+
+SYNOPSIS
+       chorus [OPTION]... [MSG]
+
+ARGUMENTS
+       MSG (absent=Revolt!)
+           The message to print.
+
+OPTIONS
+       -c COUNT, --count=COUNT (absent=10)
+           Repeat the message COUNT times.
+
+       --help[=FMT] (default=pager)
+           Show this help in format FMT (pager, plain or groff).
+
+       --version
+           Show version information.
+
+BUGS
+       Email bug reports to &lt;hehey at example.org&gt;.</span><br/>    If a pager is available, this output is written to a pager.
+    This help is also available in plain text or in the 
+     <a href="http://www.gnu.org/software/groff/groff.html">groff</a> man page format by 
+    invoking the program with the option <code class="code">--help=plain</code> or <code class="code">--help=groff</code>. <br/>    For examples of more complex command line definitions look and 
+    run the  <a href="#examples">examples</a>.<br/>    <h2 id="2_TITLE">Multiple terms</h2> <br/>    <code class="code">Cmdliner</code> also provides support for programs like <code class="code">darcs</code> or
+    <code class="code">git</code> that have multiple commands each with their own syntax:
+    <pre class="codepre"><code class="code">prog COMMAND [OPTION]... ARG...</code></pre>
+    A command is defined by coupling a term with 
+     <a href="#Term.tinfo">term information</a>. The term information defines the 
+    command name and its man page. Given a list of commands the function
+     <a href="#Term.eval_choice">Term.eval_choice</a> will execute the term corresponding to the
+    <code class="code">COMMAND</code> argument or or a specific &quot;main&quot; term if there is
+    no <code class="code">COMMAND</code> argument.<br/>    <h2 id="2_TITLE">Manual</h2><br/>    Man page sections are printed in the order specified by
+     <a href="#Term.info">Term.info</a>. The man page information of an argument is listed in
+    alphabetical order at the end of the text of the section specified
+    by its  <a href="#Arg.info">argument information</a>. Positional arguments are
+    also listed iff both the <code class="code">docv</code> and <code class="code">doc</code> string is specified in
+    their argument information.<br/>    If an argument information mentions a section not specified in
+     <a href="#Term.info">Term.info</a>, an empty section is created for it. This section is
+    inserted just after the <code class="code">&quot;SYNOPSIS&quot;</code> section or after a section
+    named <code class="code">&quot;DESCRIPTION&quot;</code> if there is one. <br/>    Ideally all manual strings should be UTF-8 encoded. However at the
+    moment Groff (at least <code class="code">1.19.2</code>) doesn't seem to cope with UTF-8
+    input and UTF-8 characters beyond the ASCII set will look garbled.
+    Regarding UTF-8 output, generating the man page with <code class="code">-Tutf8</code> maps
+    the hyphen-minus <code class="code">U+002D</code> to the minus sign <code class="code">U+2212</code> which makes it 
+    difficult to search it in the pager, so <code class="code">-Tascii</code> is used for now. 
+    Conclusion is that it may be better to stick to the ASCII set for now. 
+    Please contact the author if something seems wrong in this reasoning 
+    or if you know a work around this.<br/>    <h2 id="2_TITLE">Miscellaneous</h2><br/>    <ul><li>The evaluation of a term in which the same option name is defined
+       by more than one argument is undefined.</li><li>The option name <code class="code">--help</code>, (and <code class="code">--version</code> if you specify a 
+       version string) is reserved by the module. Using it as a term or 
+       option name may result in undefined behaviour.</li></ul><br/>    <h1 id="cmdline">Command line syntax</h1><br/>    For programs evaluating a single term the most general form of invocation 
+    is:
+    <ul><li><code class="code">prog [OPTION]... [ARG]...</code></li></ul>
+    The program automatically reponds to the <code class="code">--help</code> option by 
+    printing the help. If a version string is provided in 
+    the  <a href="#Term.tinfo">term information</a>, it also automatically responds
+    to the <code class="code">--version</code> option by printing this string.<br/>    Command line arguments are either  <a href="#optargs"><em>optional</em></a> or
+     <a href="#posargs"><em>positional</em></a>. Both can be freely interleaved but
+    since <code class="code">Cmdliner</code> accepts many optional forms this may result in
+    ambiguities. The special  <a href="#posargs"> token <code class="code">--</code></a> can be used to resolve 
+    them.<br/>    Programs evaluating multiple terms also add this form of invocation:
+    <ul><li><code class="code">prog COMMAND [OPTION]... [ARG]...</code></li></ul>
+    Commands automatically respond to the <code class="code">--help</code> option
+    by printing their help. The <code class="code">COMMAND</code> string must
+    be the first string following the program name and may be specified
+    by a prefix as long as it is not ambiguous. <br/>    <h2 id="optargs">Optional arguments</h2> <br/>    An optional argument is specified on the command line by a <em>    name</em> possibly followed by a <em>value</em>.<br/>    The name of an option can be short or long.
+    <ul><li>A <em>long</em> name is two dashes followed by alphanumeric 
+       characters and dashes: <code class="code">&quot;--help&quot;</code>, <code class="code">&quot;--silent&quot;</code>, <code class="code">&quot;--ignore-case&quot;</code>.</li><li>A <em>short</em> name is a dash followed by a single alphanumeric 
+       character: <code class="code">&quot;-h&quot;</code>, <code class="code">&quot;-q&quot;</code>, <code class="code">&quot;-I&quot;</code>.</li></ul><br/>    More than one name may refer to the same optional argument.  For
+    example in a given program the names <code class="code">&quot;-q&quot;</code>, <code class="code">&quot;--quiet&quot;</code> and
+    <code class="code">&quot;--silent&quot;</code> may all stand for the same boolean argument
+    indicating the program to be quiet.  Long names
+    can be specified by any non ambiguous prefix. <br/>    The value of an option can be specified in three different ways.
+    <ul><li>Glued to a long name after an equal character:
+    <code class="code">&quot;--output=a.out&quot;</code>.</li><li>Glued to a short name: <code class="code">&quot;-oa.out&quot;</code>.</li><li>As the next token on the command line: <code class="code">&quot;-o a.out&quot;</code>, 
+       <code class="code">&quot;--output a.out&quot;</code>.</li></ul>
+    Glued forms are especially useful if
+    the value itself starts with a dash as is the case for negative numbers,
+    <code class="code">&quot;--min=-10&quot;</code>.<br/>    An optional argument without a value is either a <em>flag</em> 
+    (see  <a href="#Arg.flag">Arg.flag</a>,  <a href="#Arg.vflag">Arg.vflag</a>) or an optional argument with an optional 
+    value (see the <code class="code">~vopt</code> argument of  <a href="#Arg.opt">Arg.opt</a>). <br/>    <h2 id="posargs">Positional arguments</h2><br/>    Positional arguments are tokens on the command line that are not
+    option names and are not the value of an optional argument. They
+    are numbered from left to right starting with zero.<br/>    Since positional arguments may be mistaken as the optional value
+    of an optional argument or they may need to look like option
+    names, anything that follows the special token <code class="code">&quot;--&quot;</code> on the command
+    line is considered to be a positional argument.<br/>    <h1 id="examples">Examples</h1><br/>    These examples are in the <code class="code">test</code> directory of the distribution.<br/> <h2 id="exrm">A <code class="code">rm</code> command</h2> <br/>    We define the command line interface of a
+    <code class="code">rm</code> command with the synopsis:
+<pre class="codepre"><code class="code">
+rm [OPTION]... FILE...
+</code></pre>
+    The <code class="code">-f</code>, <code class="code">-i</code> and <code class="code">-I</code> flags define the prompt behaviour of <code class="code">rm</code>,
+    represented in our program by the <code class="code">prompt</code> type. If more than one
+    of these flags is present on the command line the last one takes
+    precedence.<br/>    To implement this behaviour we map the presence of these flags
+    to values of the <code class="code">prompt</code> type by using  <a href="#Arg.vflag_all">Arg.vflag_all</a>.  This
+    argument will contain all occurences of the flag on the command
+    line and we just take the  <a href="#Arg.last">Arg.last</a> one to define our term value
+    (if there's no occurence the last value of the default list <code class="code">[Always]</code> is
+    taken, i.e. the default is <code class="code">Always</code>).
+<pre class="codepre"><code class="code">
+(* Implementation of the command, we just print the args. *)
+
+type prompt = Always | Once | Never
+let prompt_str = function 
+| Always -&gt; &quot;always&quot; | Once -&gt; &quot;once&quot; | Never -&gt; &quot;never&quot;
+
+let rm prompt recurse files =
+  Printf.printf &quot;prompt = %s\nrecurse = %b\nfiles = %s\n&quot;
+    (prompt_str prompt) recurse (String.concat &quot;, &quot; files)
+
+(* Command line interface *)
+
+open Cmdliner;;
+
+let files = Arg.(non_empty &amp; pos_all file [] &amp; info [] ~docv:&quot;FILE&quot;)
+let prompt =
+  let doc = &quot;Prompt before every removal.&quot; in  
+  let always = Always, Arg.info [&quot;i&quot;] ~doc in
+  let doc = &quot;Ignore nonexistent files and never prompt.&quot; in
+  let never = Never, Arg.info [&quot;f&quot;; &quot;force&quot;] ~doc in
+  let doc = &quot;Prompt once before removing more than three files, or when
+             removing recursively. Less intrusive than $(b,-i), while 
+	     still giving protection against most mistakes.&quot; 
+  in
+  let once = Once, Arg.info [&quot;I&quot;] ~doc in
+  Arg.(last &amp; vflag_all [Always] [always; never; once])
+
+let recursive = 
+  let doc = &quot;Remove directories and their contents recursively.&quot; in
+  Arg.(value &amp; flag &amp; info [&quot;r&quot;; &quot;R&quot;; &quot;recursive&quot;] ~doc)
+
+let cmd = 
+  let doc = &quot;remove files or directories&quot; in 
+  let man = [
+    `S &quot;DESCRIPTION&quot;;
+    `P &quot;$(tname) removes each specified $(i,FILE). By default it does not 
+        remove directories, to also remove them and their contents, use the
+        option $(b,--recursive) ($(b,-r) or $(b,-R)).&quot;;
+    `P &quot;To remove a file whose name starts with a `-', for example
+        `-foo', use one of these commands:&quot;;
+    `P &quot;rm -- -foo&quot;; `Noblank;
+    `P &quot;rm ./-foo&quot;;
+    `P &quot;$(tname) removes symbolic links, not the files referenced by the 
+        links.&quot;;
+    `S &quot;BUGS&quot;; `P &quot;Report bugs to &lt;hehey at example.org&gt;.&quot;;
+    `S &quot;SEE ALSO&quot;; `P &quot;$(b,rmdir)(1), $(b,unlink)(2)&quot; ] 
+  in
+  Term.(pure rm $ prompt $ recursive $ files),
+  Term.info &quot;rm&quot; ~version:&quot;1.6.1&quot; ~doc ~man
+
+let () = match Term.eval cmd with `Error _ -&gt; exit 1 | _ -&gt; exit 0
+</code></pre>
+    <h2 id="excp">A <code class="code">cp</code> command</h2> <br/>    We define the command line interface of a
+    <code class="code">cp</code> command with the synopsis:
+<pre class="codepre"><code class="code">cp [OPTION]... SOURCE... DEST </code></pre>
+    The <code class="code">DEST</code> argument must be a directory if there is more than 
+    one <code class="code">SOURCE</code>. This constraint is too complex to be expressed by the
+    combinators of  <a href="#Arg">Arg</a>. Hence we just give it the  <a href="#Arg.string">Arg.string</a> type
+    and verify the constraint at the beginning of the <code class="code">cp</code>
+    implementation. If unsatisfied we return an <code class="code">`Error</code> and
+    by using  <a href="#Term.ret">Term.ret</a> on the lifted result <code class="code">cp_t</code> of <code class="code">cp</code>, 
+    <code class="code">Cmdliner</code> handles the error reporting.
+<pre class="codepre"><code class="code">
+(* Implementation, we check the dest argument and print the args *)
+
+let cp verbose recurse force srcs dest =
+  if List.length srcs &gt; 1 &amp;&amp; 
+  (not (Sys.file_exists dest) || not (Sys.is_directory dest)) 
+  then 
+    `Error (false, dest ^ &quot; is not a directory&quot;) 
+  else 
+    `Ok (Printf.printf 
+	   &quot;verbose = %b\nrecurse = %b\nforce = %b\nsrcs = %s\ndest = %s\n&quot; 
+	    verbose recurse force (String.concat &quot;, &quot; srcs) dest)
+
+(* Command line interface *)
+
+open Cmdliner;;
+
+let verbose = 
+  let doc = &quot;Print file names as they are copied.&quot; in
+  Arg.(value &amp; flag &amp; info [&quot;v&quot;; &quot;verbose&quot;] ~doc) 
+
+let recurse = 
+  let doc = &quot;Copy directories recursively.&quot; in
+  Arg.(value &amp; flag &amp; info [&quot;r&quot;; &quot;R&quot;; &quot;recursive&quot;] ~doc)
+
+let force = 
+  let doc = &quot;If a destination file cannot be opened, remove it and try again.&quot;in
+  Arg.(value &amp; flag &amp; info [&quot;f&quot;; &quot;force&quot;] ~doc)
+
+let srcs = 
+  let doc = &quot;Source file(s) to copy.&quot; in
+  Arg.(non_empty &amp; pos_left ~rev:true 0 file [] &amp; info [] ~docv:&quot;SOURCE&quot; ~doc) 
+
+let dest = 
+  let doc = &quot;Destination of the copy. Must be a directory if there is more 
+           than one $(i,SOURCE).&quot; in
+  Arg.(required &amp; pos ~rev:true 0 (some string) None &amp; info [] ~docv:&quot;DEST&quot; 
+         ~doc)
+
+let cmd = 
+  let doc = &quot;copy files&quot; in
+  let man = [
+    `S &quot;BUGS&quot;; 
+    `P &quot;Email them to &lt;hehey at example.org&gt;.&quot;; 
+    `S &quot;SEE ALSO&quot;;
+    `P &quot;$(b,mv)(1), $(b,scp)(1), $(b,umask)(2), $(b,symlink)(7)&quot; ]
+  in
+  Term.(ret (pure cp $ verbose $ recurse $ force $ srcs $ dest)), 
+  Term.info &quot;cp&quot; ~version:&quot;1.6.1&quot; ~doc ~man
+
+let () = match Term.eval cmd with `Error _ -&gt; exit 1 | _ -&gt; exit 0
+</code></pre><br/><h2 id="extail">A <code class="code">tail</code> command</h2><br/>We define the command line interface of a <code class="code">tail</code> command with the 
+synopsis:
+<pre class="codepre"><code class="code">tail [OPTION]... [FILE]...</code></pre><br/>The <code class="code">--lines</code> option whose value specifies the number of last lines to
+print has a special syntax where a <code class="code">+</code> prefix indicates to start
+printing from that line number. In the program this is represented by
+the <code class="code">loc</code> type. We define a custom <code class="code">loc</code>  <a href="#Arg.argconv">argument converter</a> 
+for this option.<br/>The <code class="code">--follow</code> option has an optional enumerated value. The argument
+converter <code class="code">follow</code>, created with  <a href="#Arg.enum">Arg.enum</a> parses the option value
+into the enumeration. By using  <a href="#Arg.some">Arg.some</a> and the <code class="code">~vopt</code> argument of
+ <a href="#Arg.opt">Arg.opt</a>, the term corresponding to the option <code class="code">--follow</code> evaluates to
+<code class="code">None</code> if <code class="code">--follow</code> is absent from the command line, to <code class="code">Some Descriptor</code>
+if present but without a value and to <code class="code">Some v</code> if present with a value
+<code class="code">v</code> specified.<br/><pre class="codepre"><code class="code">
+(* Implementation of the command, we just print the args. *)
+
+type loc = bool * int
+type verb = Verbose | Quiet 
+type follow = Name | Descriptor
+
+let str = Printf.sprintf 
+let opt_str sv = function None -&gt; &quot;None&quot; | Some v -&gt; str &quot;Some(%s)&quot; (sv v)
+let loc_str (rev, k) = if rev then str &quot;%d&quot; k else str &quot;+%d&quot; k
+let follow_str = function Name -&gt; &quot;name&quot; | Descriptor -&gt; &quot;descriptor&quot;
+let verb_str = function Verbose -&gt; &quot;verbose&quot; | Quiet -&gt; &quot;quiet&quot;
+
+let tail lines follow verb pid files = 
+  Printf.printf &quot;lines = %s\nfollow = %s\nverb = %s\npid = %s\nfiles = %s\n&quot;
+    (loc_str lines) (opt_str follow_str follow) (verb_str verb) 
+    (opt_str string_of_int pid) (String.concat &quot;, &quot; files)
+
+(* Command line interface *)
+
+open Cmdliner;;
+
+let lines = 
+  let loc =
+    let parse s = try
+      if s &lt;&gt; &quot;&quot; &amp;&amp; s.[0] &lt;&gt; '+' then `Ok (true, int_of_string s) else
+      `Ok (false, int_of_string (String.sub s 1 (String.length s - 1))) 
+    with Failure _ -&gt; `Error &quot;unable to parse integer&quot;
+    in
+    parse, fun ppf p -&gt; Format.fprintf ppf &quot;%s&quot; (loc_str p)
+  in
+  Arg.(value &amp; opt loc (true, 10) &amp; info [&quot;n&quot;; &quot;lines&quot;] ~docv:&quot;N&quot; 
+	 ~doc:&quot;Output the last $(docv) lines or use $(i,+)$(docv) to start 
+	       output after the $(i,N)-1th line.&quot;) 
+let follow = 
+  let doc = &quot;Output appended data as the file grows. $(docv) specifies how the
+	       file should be tracked, by its `name' or by its `descriptor'.&quot; in
+  let follow = Arg.enum [&quot;name&quot;, Name; &quot;descriptor&quot;, Descriptor] in
+  Arg.(value &amp; opt (some follow) ~vopt:(Some Descriptor) None &amp; 
+       info [&quot;f&quot;; &quot;follow&quot;] ~docv:&quot;ID&quot; ~doc) 
+
+let verb = 
+  let doc = &quot;Never output headers giving file names.&quot; in 
+  let quiet = Quiet, Arg.info [&quot;q&quot;; &quot;quiet&quot;; &quot;silent&quot;] ~doc in 
+  let doc = &quot;Always output headers giving file names.&quot; in
+  let verbose = Verbose, Arg.info [&quot;v&quot;; &quot;verbose&quot;] ~doc in 
+  Arg.(last &amp; vflag_all [Quiet] [quiet; verbose])
+
+let pid = 
+  let doc = &quot;With -f, terminate after process $(docv) dies.&quot; in
+  Arg.(value &amp; opt (some int) None &amp; info [&quot;pid&quot;] ~docv:&quot;PID&quot; ~doc)
+
+let files = Arg.(value &amp; (pos_all non_dir_file []) &amp; info [] ~docv:&quot;FILE&quot;)
+
+let cmd = 
+  let doc = &quot;display the last part of a file&quot; in
+  let man = [
+    `S &quot;DESCRIPTION&quot;;
+    `P &quot;$(tname) prints the last lines of each $(i,FILE) to standard output. If
+        no file is specified reads standard input. The number of printed
+	lines can be  specified with the $(b,-n) option.&quot;;
+    `S &quot;BUGS&quot;; 
+    `P &quot;Report them to &lt;hehey at example.org&gt;.&quot;;
+    `S &quot;SEE ALSO&quot;; 
+    `P &quot;$(b,cat)(1), $(b,head)(1)&quot; ]
+  in
+  Term.(pure tail $ lines $ follow $ verb $ pid $ files),
+  Term.info &quot;tail&quot; ~version:&quot;1.6.1&quot; ~doc ~man
+
+let () = match Term.eval cmd with `Error _ -&gt; exit 1 | _ -&gt; exit 0
+</code></pre><br/><h2 id="exdarcs">A <code class="code">darcs</code> command</h2><br/>We define the command line interface of a <code class="code">darcs</code> command with the synopsis:
+<pre class="codepre"><code class="code">darcs [COMMAND] ...</code></pre><br/>The <code class="code">--debug</code>, <code class="code">-q</code>, <code class="code">-v</code> and <code class="code">--prehook</code> options are available in
+each command.  To avoid having to pass them individually to each
+command we gather them in a record of type <code class="code">copts</code>. By lifting the
+record constructor <code class="code">copts</code> into the term <code class="code">copts_t</code> we now have a term
+that we can pass to the commands to stand for an argument of type
+<code class="code">copts</code>. These options are documented in a section called <code class="code">COMMON
+OPTIONS</code>, since we also want to put <code class="code">--help</code> and <code class="code">--version</code> in this
+section, the term information of commands makes a judicious use of the
+<code class="code">sdocs</code> parameter of  <a href="#Term.info">Term.info</a>.<br/>The <code class="code">help</code> command shows help about commands or other topics. The help
+shown for commands is generated by <code class="code">Cmdliner</code> by making an approriate
+use of  <a href="#Term.ret">Term.ret</a> on the lifted <code class="code">help</code> function.<br/>If the program is invoked without a command we just want to show the
+help of the program as printed by <code class="code">Cmdliner</code> with <code class="code">--help</code>. This is
+done by the <code class="code">no_cmd</code> term.<br/><pre class="codepre"><code class="code">
+(* Implementations, just print the args. *)
+
+type verb = Normal | Quiet | Verbose
+type copts = { debug : bool; verb : verb; prehook : string option }
+
+let str = Printf.sprintf 
+let opt_str sv = function None -&gt; &quot;None&quot; | Some v -&gt; str &quot;Some(%s)&quot; (sv v)
+let opt_str_str = opt_str (fun s -&gt; s)
+let verb_str = function 
+  | Normal -&gt; &quot;normal&quot; | Quiet -&gt; &quot;quiet&quot; | Verbose -&gt; &quot;verbose&quot;
+
+let pr_copts oc copts = Printf.fprintf oc 
+    &quot;debug = %b\nverbosity = %s\nprehook = %s\n&quot; 
+    copts.debug (verb_str copts.verb) (opt_str_str copts.prehook)
+
+let initialize copts repodir = Printf.printf
+    &quot;%arepodir = %s\n&quot; pr_copts copts repodir
+
+let record copts name email all ask_deps files = Printf.printf
+    &quot;%aname = %s\nemail = %s\nall = %b\nask-deps = %b\nfiles = %s\n&quot; 
+    pr_copts copts (opt_str_str name) (opt_str_str email) all ask_deps 
+    (String.concat &quot;, &quot; files)
+
+let help copts man_format cmds topic = match topic with
+| None -&gt; `Help (`Pager, None) (* help about the program. *)
+| Some topic -&gt; 
+    let topics = &quot;topics&quot; :: &quot;patterns&quot; :: &quot;environment&quot; :: cmds in 
+    let conv, _ = Cmdliner.Arg.enum (List.rev_map (fun s -&gt; (s, s)) topics) in
+    match conv topic with 
+    | `Error e -&gt; `Error (false, e)
+    | `Ok t when t = &quot;topics&quot; -&gt; List.iter print_endline topics; `Ok ()
+    | `Ok t when List.mem t cmds -&gt; `Help (man_format, Some t)
+    | `Ok t -&gt; 
+        let page = (topic, 7, &quot;&quot;, &quot;&quot;, &quot;&quot;), [`S topic; `P &quot;Say something&quot;;] in
+        `Ok (Cmdliner.Manpage.print man_format Format.std_formatter page)
+
+open Cmdliner;;
+
+(* Help sections common to all commands *)
+
+let copts_sect = &quot;COMMON OPTIONS&quot;
+let help_secs = [ 
+ `S copts_sect; 
+ `P &quot;These options are common to all commands.&quot;;
+ `S &quot;MORE HELP&quot;;
+ `P &quot;Use `$(mname) $(i,COMMAND) --help' for help on a single command.&quot;;`Noblank;
+ `P &quot;Use `$(mname) help patterns' for help on patch matching.&quot;; `Noblank;
+ `P &quot;Use `$(mname) help environment' for help on environment variables.&quot;;
+ `S &quot;BUGS&quot;; `P &quot;Check bug reports at http://bugs.example.org.&quot;;]
+
+(* Options common to all commands *)
+
+let copts debug verb prehook = { debug; verb; prehook }
+let copts_t = 
+  let docs = copts_sect in 
+  let debug = 
+    let doc = &quot;Give only debug output.&quot; in
+    Arg.(value &amp; flag &amp; info [&quot;debug&quot;] ~docs ~doc)
+  in
+  let verb =
+    let doc = &quot;Suppress informational output.&quot; in 
+    let quiet = Quiet, Arg.info [&quot;q&quot;; &quot;quiet&quot;] ~docs ~doc in
+    let doc = &quot;Give verbose output.&quot; in
+    let verbose = Verbose, Arg.info [&quot;v&quot;; &quot;verbose&quot;] ~docs ~doc in 
+    Arg.(last &amp; vflag_all [Normal] [quiet; verbose]) 
+  in 
+  let prehook = 
+    let doc = &quot;Specify command to run before this $(mname) command.&quot; in 
+    Arg.(value &amp; opt (some string) None &amp; info [&quot;prehook&quot;] ~docs ~doc)
+  in
+  Term.(pure copts $ debug $ verb $ prehook)
+    
+(* Commands *)
+
+let initialize_cmd = 
+  let repodir = 
+    let doc = &quot;Run the program in repository directory $(docv).&quot; in
+    Arg.(value &amp; opt file Filename.current_dir_name &amp; info [&quot;repodir&quot;]
+           ~docv:&quot;DIR&quot; ~doc)
+  in
+  let doc = &quot;make the current directory a repository&quot; in
+  let man = [
+    `S &quot;DESCRIPTION&quot;;
+    `P &quot;Turns the current directory into a Darcs repository. Any
+       existing files and subdirectories become ...&quot;] @ help_secs
+  in
+  Term.(pure initialize $ copts_t $ repodir),
+  Term.info &quot;initialize&quot; ~sdocs:copts_sect ~doc ~man
+
+let record_cmd =
+  let pname = 
+    let doc = &quot;Name of the patch.&quot; in
+    Arg.(value &amp; opt (some string) None &amp; info [&quot;m&quot;; &quot;patch-name&quot;] ~docv:&quot;NAME&quot; 
+	   ~doc)
+  in
+  let author = 
+    let doc = &quot;Specifies the author's identity.&quot; in
+    Arg.(value &amp; opt (some string) None &amp; info [&quot;A&quot;; &quot;author&quot;] ~docv:&quot;EMAIL&quot;
+	   ~doc)
+  in
+  let all = 
+    let doc = &quot;Answer yes to all patches.&quot; in  
+    Arg.(value &amp; flag &amp; info [&quot;a&quot;; &quot;all&quot;] ~doc)
+  in
+  let ask_deps = 
+    let doc = &quot;Ask for extra dependencies.&quot; in 
+    Arg.(value &amp; flag &amp; info [&quot;ask-deps&quot;] ~doc)
+  in
+  let files = Arg.(value &amp; (pos_all file) [] &amp; info [] ~docv:&quot;FILE or DIR&quot;) in
+  let doc = &quot;create a patch from unrecorded changes&quot; in 
+  let man = 
+    [`S &quot;DESCRIPTION&quot;;
+     `P &quot;Creates a patch from changes in the working tree. If you specify 
+	    a set of files ...&quot;] @ help_secs
+  in    
+  Term.(pure record $ copts_t $ pname $ author $ all $ ask_deps $ files),
+  Term.info &quot;record&quot; ~doc ~sdocs:copts_sect ~man
+
+let help_cmd = 
+  let topic = 
+    let doc = &quot;The topic to get help on. `topics' lists the topics.&quot; in 
+    Arg.(value &amp; pos 0 (some string) None &amp; info [] ~docv:&quot;TOPIC&quot; ~doc)
+  in
+  let doc = &quot;display help about darcs and darcs commands&quot; in
+  let man = 
+    [`S &quot;DESCRIPTION&quot;;
+     `P &quot;Prints help about darcs commands and other subjects...&quot;] @ help_secs
+  in
+  Term.(ret (pure help $ copts_t $ Term.man_format $ Term.choice_names $topic)),
+  Term.info &quot;help&quot; ~doc ~man
+
+let default_cmd = 
+  let doc = &quot;a revision control system&quot; in 
+  let man = help_secs in
+  Term.(ret (pure (fun _ -&gt; `Help (`Pager, None)) $ copts_t)),
+  Term.info &quot;darcs&quot; ~version:&quot;1.6.1&quot; ~sdocs:copts_sect ~doc ~man
+       
+let cmds = [initialize_cmd; record_cmd; help_cmd]
+
+let () = match Term.eval_choice default_cmd cmds with 
+| `Error _ -&gt; exit 1 | _ -&gt; exit 0
+</code></pre></div></div>
+</div>

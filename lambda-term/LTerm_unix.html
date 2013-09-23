@@ -1,0 +1,14 @@
+<div class="ocaml_toplevel_module"><div class="info">Unix specific functions</div>
+<pre><span class="VALsigwinch"><span class="keyword">val</span> sigwinch</span> : <code class="type">int option</code></pre><div class="info"><div class="info">The number of the signal used to indicate that the terminal size
+      have changed. It is <code class="code">None</code> on windows.</div></div>
+<pre><span class="VALsystem_encoding"><span class="keyword">val</span> system_encoding</span> : <code class="type">string</code></pre><div class="info"><div class="info">The encoding used by the system.</div></div>
+<pre><span class="VALparse_event"><span class="keyword">val</span> parse_event</span> : <code class="type">?escape_time:float -&gt;
+<a href="?package=camomile&amp;module=CamomileLibraryDyn.Camomile.CharEncoding&amp;type=t">CamomileLibraryDyn.Camomile.CharEncoding.t</a> -&gt;
+char <a href="?package=lwt&amp;module=Lwt_stream&amp;type=t">Lwt_stream.t</a> -&gt; <a href="?package=lambda-term&amp;module=LTerm_event&amp;type=t">LTerm_event.t</a> <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">parse_event encoding stream</code> parses one event from the given
+      input stream. <code class="code">encoding</code> is the character encoding used to
+      decode non-ascii characters. It must be a converter from the
+      stream encoding to &quot;UCS-4BE&quot;. If an invalid sequence is
+      encountered in the input, it fallbacks to Latin-1. <code class="code">escape_time</code>
+      is the time waited before returning the escape key. It defaults
+      to <code class="code">0.1</code>.</div></div>
+</div>

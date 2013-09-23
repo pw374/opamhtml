@@ -1,0 +1,115 @@
+<div class="ocaml_toplevel_module"><div class="info">Basic logging facility<br/>    The purpose of this module is to define a mutable logging function
+    which ensures to be always pointing to a valid logging implementation.
+    By default, the function prints the messages to stderr, prepended
+    by a timestamp. In Netplex context, the implementation is changed so
+    that the Netplex logger is used instead (see  <a href="#Netplex_log">Netplex_log</a>), and
+    the <code class="code">log</code> and <code class="code">logf</code> functions below have the same effect as
+    the counterparts in  <a href="#Netplex_cenv">Netplex_cenv</a> with the same name.</div>
+<pre><span class="TYPElevel"><span class="keyword">type</span> level</span> = <code class="type">[ `Alert | `Crit | `Debug | `Emerg | `Err | `Info | `Notice | `Warning ]</code></pre><div class="info"><div class="info">The log levels (syslog-like)</div></div>
+<pre><span class="TYPElogger"><span class="keyword">type</span> logger</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Netlog&amp;type=level">level</a> -&gt; string -&gt; unit</code></pre><div class="info"><div class="info">A logging function takes a level, and the message</div></div>
+<pre><span class="VALchannel_logger"><span class="keyword">val</span> channel_logger</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a> -&gt; <a href="?package=ocamlnet&amp;module=Netlog&amp;type=level">level</a> -&gt; <a href="?package=ocamlnet&amp;module=Netlog&amp;type=logger">logger</a></code></pre><div class="info"><div class="info"><code class="code">channel_logger ch lev</code>: Prints all messages with a level of <code class="code">lev</code>
+      and higher to the channel <code class="code">ch</code>. The output buffer is flushed after
+      each message,</div></div>
+<pre><span class="VALcurrent_logger"><span class="keyword">val</span> current_logger</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netlog&amp;type=logger">logger</a> <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">The variable containing the current logger function.
+      Defaults to <code class="code">channel_logger stderr `Debug</code> at program startup.
+      Assign something else to this variable in order to change the
+      log destination or the log level.<br/>      Note that the function  <a href="#Netplex_main.run">Netplex_main.run</a> modifies <code class="code">current_logger</code>
+      so log messages are forwarded to the Netplex logger. It is then the
+      Netplex framework that determines log destination and level.</div></div>
+<pre><span class="VALlog"><span class="keyword">val</span> log</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netlog&amp;type=level">level</a> -&gt; string -&gt; unit</code></pre><div class="info"><div class="info">Writes a log message</div></div>
+<pre><span class="VALlogf"><span class="keyword">val</span> logf</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netlog&amp;type=level">level</a> -&gt; ('a, unit, string, unit) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format4">Pervasives.format4</a> -&gt; 'a</code></pre><div class="info"><div class="info">Writes a log message like <code class="code">printf</code></div></div>
+<pre><span class="VALlevel_weight"><span class="keyword">val</span> level_weight</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netlog&amp;type=level">level</a> -&gt; int</code></pre><div class="info"><div class="info">A number correspondig to the level</div></div>
+<pre><span class="VALlevel_of_string"><span class="keyword">val</span> level_of_string</span> : <code class="type">string -&gt; <a href="?package=ocamlnet&amp;module=Netlog&amp;type=level">level</a></code></pre>
+<pre><span class="VALstring_of_level"><span class="keyword">val</span> string_of_level</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netlog&amp;type=level">level</a> -&gt; string</code></pre><div class="info"><div class="info">Convert level names to strings and vice versa</div></div>
+<pre><span class="VALlevel_names"><span class="keyword">val</span> level_names</span> : <code class="type">string array</code></pre><div class="info"><div class="info">The level names indexed by weight</div></div>
+<pre><span class="TYPEformat"><span class="keyword">type</span> format</span> = <code class="type">[ `ISO | `Std ]</code></pre>
+<pre><span class="VALformat_timestamp"><span class="keyword">val</span> format_timestamp</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netlog&amp;type=format">format</a> -&gt; int -&gt; float * int -&gt; string</code></pre><div class="info"><div class="info"><code class="code">format_timestamp fmt digits (seconds,nanos)</code>: Formats the timestamp
+      <code class="code">(seconds,nanos)</code> and returns the string. Pass in <code class="code">digits</code> the number
+      of digits for fractional seconds.<br/>      - <code class="code">`Std</code>: This is the &quot;%c&quot; format of <code class="code">Netdate</code><ul><li><code class="code">`ISO</code>: ISO-8601 format
+   </li></ul></div></div>
+<pre><span class="VALcurrent_formatter"><span class="keyword">val</span> current_formatter</span> : <code class="type">(float * int -&gt; string) <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">The current timestamp formatter<br/>      Example: Change the format of timestamps to ISO with a precision
+      of milliseconds:
+      <pre class="codepre"><code class="code">
+        Netlog.current_formatter := Netlog.format_timestamp `ISO 3
+      </code></pre></div></div>
+<div class="ocaml_module sig" name="Debug"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netlog.Debug">Debug</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<div class="info"><div class="info">Controlling messages for debugging Ocamlnet</div></div>
+<div class="info"><div class="info">Many Ocamlnet modules can emit debug messages. For a module
+      <code class="code">M</code> (e.g.  <a href="#Rpc_client">Rpc_client</a>) there is usually a sub module 
+      <code class="code">M.Debug</code> providing functions controlling the debug messages.
+      These functions send the messages to this <code class="code">Debug</code> module, and from here
+      they are forwarded to  <a href="#Netlog.log">Netlog.log</a> (with a level of <code class="code">`Debug</code>).<br/>      In this module everything is by default initialized to enable
+      debug messages (i.e., <code class="code">current_dlogger</code> is set to <code class="code">fwd_dlogger</code>,
+      and this function sends the messages to <code class="code">current_logger</code> where they are
+      printed by <code class="code">channel_logger stderr `Debug</code>). However, the debugged
+      modules also need to be enabled individually. One can do this
+      by setting the variable <code class="code">M.Debug.enable</code> to <code class="code">true</code>, or by calling
+      <code class="code">enable_module</code> or <code class="code">enable_all</code> (see below).<br/>      Although this debug interface is mainly intended for Ocamlnet
+      itself, it is not restricted to this. In order to use it for
+      a user module, one has to register the boolean variable that
+      controls whether debug messages are enabled (see <code class="code">register_module</code>
+      below). This should be done at module initialization time, and
+      <b>before</b> any thread is spawned.</div></div>
+<pre><span class="TYPEdlogger"><span class="keyword">type</span> dlogger</span> = <code class="type">string -&gt; string -&gt; unit</code></pre><div class="info"><div class="info">Debug logger: The first string is the module name, and the second 
+        is the message</div></div>
+<pre><span class="VALfwd_dlogger"><span class="keyword">val</span> fwd_dlogger</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netlog.Debug&amp;type=dlogger">dlogger</a></code></pre><div class="info"><div class="info">The standard debug logger simply prepends the module name to the
+        message (separated by &quot;: &quot;), and calls the current logger to
+        print it</div></div>
+<pre><span class="VALnull_dlogger"><span class="keyword">val</span> null_dlogger</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netlog.Debug&amp;type=dlogger">dlogger</a></code></pre><div class="info"><div class="info">The &quot;logger&quot; not printing anything</div></div>
+<pre><span class="VALcurrent_dlogger"><span class="keyword">val</span> current_dlogger</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netlog.Debug&amp;type=dlogger">dlogger</a> <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">The current debug logger. This is initialized to <code class="code">fwd_dlogger</code> at
+        program startup. Set this variable to <code class="code">null_logger</code> to completely
+        turn off debug logging of Ocamlnet.</div></div>
+<pre><span class="VALlog"><span class="keyword">val</span> log</span> : <code class="type">string -&gt; string -&gt; unit</code></pre><div class="info"><div class="info">Writes a log message</div></div>
+<pre><span class="VALlogf"><span class="keyword">val</span> logf</span> : <code class="type">string -&gt; ('a, unit, string, unit) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format4">Pervasives.format4</a> -&gt; 'a</code></pre><div class="info"><div class="info">Writes a log message like <code class="code">printf</code></div></div>
+<pre><span class="VALenable_module"><span class="keyword">val</span> enable_module</span> : <code class="type">string -&gt; unit</code></pre>
+<pre><span class="VALdisable_module"><span class="keyword">val</span> disable_module</span> : <code class="type">string -&gt; unit</code></pre><div class="info"><div class="info">Enable or disable the passed module <code class="code">M</code>
+        (e.g. <code class="code">enable_module &quot;Rpc_client&quot;</code>). No exception is raised when
+        the module name is invalid! Because of this, it is usually safer
+        to change the variable <code class="code">M.Debug.enable</code> directly (e.g.
+        <code class="code">Rpc_client.Debug.enable := true</code>).</div></div>
+<pre><span class="VALenable_all"><span class="keyword">val</span> enable_all</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info">Enable all modules</div></div>
+<pre><span class="VALdisable_all"><span class="keyword">val</span> disable_all</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info">Disable all modules (the default)</div></div>
+<pre><span class="VALnames"><span class="keyword">val</span> names</span> : <code class="type">unit -&gt; string list</code></pre><div class="info"><div class="info">Return the possible module names for <code class="code">enable_module</code> and
+        <code class="code">disable_module</code></div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">For debugged Ocamlnet modules</h2></div></div>
+<pre><span class="VALregister_module"><span class="keyword">val</span> register_module</span> : <code class="type">string -&gt; bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a> -&gt; unit</code></pre><div class="info"><div class="info">Registers the <code class="code">enable</code> variable of the named module</div></div>
+<pre><span class="VALmk_dlog"><span class="keyword">val</span> mk_dlog</span> : <code class="type">string -&gt; bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a> -&gt; string -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">let dlog = mk_dlog &quot;M&quot; enable</code>: The conditional debug function</div></div>
+<pre><span class="VALmk_dlogr"><span class="keyword">val</span> mk_dlogr</span> : <code class="type">string -&gt; bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a> -&gt; (unit -&gt; string) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">let dlogr = mk_dlog &quot;M&quot; enable</code>: The conditional debug function</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">File descriptor tracking</h2></div></div>
+<div class="info"><div class="info"><code class="code">Netlog.Debug</code> also has a little hash table that maps file descriptors
+      to an info record. This allows it to track file descriptors more
+      easily, and to find file descriptor leaks, and &quot;double close&quot; bugs.
+      All long-living descriptors managed by Ocamlnet should go into this
+      table.</div></div>
+<pre><span class="TYPEserial"><span class="keyword">type</span> serial</span> </pre><div class="info"><div class="info">A serial number for the optional tracking of ownership</div></div>
+<pre><span class="VALnew_serial"><span class="keyword">val</span> new_serial</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Netlog.Debug&amp;type=serial">serial</a></code></pre><div class="info"><div class="info">Create new serial number</div></div>
+<pre><span class="VALtrack_fd"><span class="keyword">val</span> track_fd</span> : <code class="type">?update:bool -&gt;
+?anchor:'a -&gt;
+?sn:<a href="?package=ocamlnet&amp;module=Netlog.Debug&amp;type=serial">serial</a> -&gt; owner:string -&gt; descr:string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">track_fd ~owner ~descr fd</code>: Enters the descriptor <code class="code">fd</code> into the
+        descriptor table. The <code class="code">owner</code> string should be set to the module
+        name. In <code class="code">descr</code> one can give additional information, e.g. about
+        the purpose, and details like the file name.<br/>        It is not an error if there is also an entry for the descriptor
+        <code class="code">fd</code>. However, a warning is emitted (using the debug logger).
+        By setting <code class="code">update</code> to <code class="code">true</code>, this warning can be suppressed.
+        The old entry is overwritten by the new one.<br/>        The <code class="code">anchor</code> can be an arbitrary boxed value. When the garbage
+        collector calls the finaliser for <code class="code">anchor</code> the descriptor is
+        marked as dead, and will be tagged in the <code class="code">fd_table</code> as such.<br/>        By setting <code class="code">sn</code> to a new serial number, the knowledge of this
+        number is required to update the descriptor entry later,
+        and to release the descriptor. If the entry is tried to be
+        updated or released with the wrong serial number, a warning
+        is emitted (to the debug logger).</div></div>
+<pre><span class="VALrelease_fd"><span class="keyword">val</span> release_fd</span> : <code class="type">?sn:<a href="?package=ocamlnet&amp;module=Netlog.Debug&amp;type=serial">serial</a> -&gt; ?force:bool -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; unit</code></pre><div class="info"><div class="info">Removes this descriptor from the descriptor table.<br/>        It is not an error if the descriptor does not exist in the table.
+        However, a warning is emitted (using the debug logger).<br/>        <code class="code">release_fd</code> must be invoked <b>before</b> the descriptor is actually
+        closed.<br/>        <code class="code">force</code>: If set, all warnings are suppressed</div></div>
+<pre><span class="VALfd_string"><span class="keyword">val</span> fd_string</span> : <code class="type">?owner:bool -&gt; ?descr:bool -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; string</code></pre><div class="info"><div class="info">Return a string for generating debug messages. By default, the
+        string only includes the numeric descriptor value.<br/>        If <code class="code">owner</code> is set to true, the string also includes the owner.
+        If <code class="code">descr</code> is set to true, the string also includes the description.<br/>        The full version of this string looks like
+        &quot;76(Http_client - 87.65.213.67:80)&quot;. An untracked descriptor
+        looks like &quot;76(?)&quot;.</div></div>
+<pre><span class="VALfd_table"><span class="keyword">val</span> fd_table</span> : <code class="type">unit -&gt; string list</code></pre><div class="info"><div class="info">Returns the table of descriptors as list of lines. 
+        One can easily print them to stdout using
+        <code class="code">List.iter print_endline (fd_table())</code>.</div></div>
+<pre><span class="VALenable_fd_tracking"><span class="keyword">val</span> enable_fd_tracking</span> : <code class="type">bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">By setting to true, each <code class="code">track_fd</code> and <code class="code">release_fd</code> is 
+        logged.</div></div></div></div>
+<pre><span class="VALten_power"><span class="keyword">val</span> ten_power</span> : <code class="type">int -&gt; int</code></pre>
+</div>

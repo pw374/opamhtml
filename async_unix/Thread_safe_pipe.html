@@ -1,0 +1,33 @@
+<div class="ocaml_toplevel_module"><div class="info">A thread-safe pipe is a thread-safe interface to the write end of a normal
+    <code class="code">Async.Pipe</code>.  All operations except for <code class="code">create</code> must be called from threads outside
+    async.  <code class="code">create</code> can be called from inside or outside async.<br/>    For <code class="code">Pipe</code> functions that return a <code class="code">unit Deferred.t</code>, the analog in <code class="code">Thread_safe_pipe</code>
+    blocks.<br/>    For documentation of <code class="code">wakeup_scheduler</code>, see the  <a href="#Thread_safe">Thread_safe</a> module.</div>
+<pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> </pre>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">unit -&gt; 'a <a href="?package=async_unix&amp;module=Import.Pipe.Reader&amp;type=t">Import.Pipe.Reader.t</a> * 'a <a href="?package=async_unix&amp;module=Thread_safe_pipe&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create ()</code> returns a reader end, which must be used inside async, and a writer end,
+    which must be used outside async.  <code class="code">create</code> can be called inside or outside async.</div></div>
+<div class="info"><div class="info">All the following functions must be called outside async.  They behave as their
+    counterpart in the  <a href="#Pipe">Pipe</a> module.</div></div>
+<pre><span class="VALpushback"><span class="keyword">val</span> pushback</span> : <code class="type">'a <a href="?package=async_unix&amp;module=Thread_safe_pipe&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">pushback writer</code> blocks the current thread until the pipe is empty or closed.</div></div>
+<pre><span class="VALwrite_without_pushback'"><span class="keyword">val</span> write_without_pushback'</span> : <code class="type">?wakeup_scheduler:bool -&gt; 'a <a href="?package=async_unix&amp;module=Thread_safe_pipe&amp;type=t">t</a> -&gt; 'a <a href="?package=core&amp;module=Std.Queue&amp;type=t">Core.Std.Queue.t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">write_without_pushback'</code> and <code class="code">write_without_pushback</code> transfer the element(s) into
+    the pipe and return immediately.</div></div>
+<pre><span class="VALwrite_without_pushback"><span class="keyword">val</span> write_without_pushback</span> : <code class="type">?wakeup_scheduler:bool -&gt; 'a <a href="?package=async_unix&amp;module=Thread_safe_pipe&amp;type=t">t</a> -&gt; 'a -&gt; unit</code></pre>
+<pre><span class="VALwrite'"><span class="keyword">val</span> write'</span> : <code class="type">'a <a href="?package=async_unix&amp;module=Thread_safe_pipe&amp;type=t">t</a> -&gt; 'a <a href="?package=core&amp;module=Std.Queue&amp;type=t">Core.Std.Queue.t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">write'</code> and <code class="code">write</code> transfer the element(s) into the pipe and block the current
+    thread until the pipe is empty or closed (like  <a href="#pushback">pushback</a>).</div></div>
+<pre><span class="VALwrite"><span class="keyword">val</span> write</span> : <code class="type">'a <a href="?package=async_unix&amp;module=Thread_safe_pipe&amp;type=t">t</a> -&gt; 'a -&gt; unit</code></pre>
+<pre><span class="VALclose"><span class="keyword">val</span> close</span> : <code class="type">'a <a href="?package=async_unix&amp;module=Thread_safe_pipe&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VALis_closed"><span class="keyword">val</span> is_closed</span> : <code class="type">'a <a href="?package=async_unix&amp;module=Thread_safe_pipe&amp;type=t">t</a> -&gt; bool</code></pre>
+<pre><span class="VALclosed"><span class="keyword">val</span> closed</span> : <code class="type">'a <a href="?package=async_unix&amp;module=Thread_safe_pipe&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">closed writer</code> blocks the current thread until the pipe is closed.</div></div>
+<pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type">('a -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a>) -&gt; 'a <a href="?package=async_unix&amp;module=Thread_safe_pipe&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<div class="info"><div class="info"><code class="code">create ()</code> returns a reader end, which must be used inside async, and a writer end,
+    which must be used outside async.  <code class="code">create</code> can be called inside or outside async.</div></div>
+<div class="info"><div class="info">All the following functions must be called outside async.  They behave as their
+    counterpart in the  <a href="#Pipe">Pipe</a> module.</div></div>
+<div class="info"><div class="info"><code class="code">pushback writer</code> blocks the current thread until the pipe is empty or closed.</div></div>
+<div class="info"><div class="info"><code class="code">write_without_pushback'</code> and <code class="code">write_without_pushback</code> transfer the element(s) into
+    the pipe and return immediately.</div></div>
+<div class="info"><div class="info">default is <code class="code">true</code></div></div>
+<div class="info"><div class="info">default is <code class="code">true</code></div></div>
+<div class="info"><div class="info"><code class="code">write'</code> and <code class="code">write</code> transfer the element(s) into the pipe and block the current
+    thread until the pipe is empty or closed (like  <a href="#pushback">pushback</a>).</div></div>
+<div class="info"><div class="info"><code class="code">closed writer</code> blocks the current thread until the pipe is closed.</div></div>
+</div>

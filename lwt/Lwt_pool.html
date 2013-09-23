@@ -1,0 +1,17 @@
+<div class="ocaml_toplevel_module"><div class="info">Creating pools (for example pools of connections to a database).</div>
+<div class="info"><div class="info">Instead of creating a new connection each time you need one,
+    keep a pool of opened connections and reuse opened connections
+    that are free.</div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> </pre><div class="info"><div class="info">Type of pools</div></div>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -&gt;
+?check:('a -&gt; (bool -&gt; unit) -&gt; unit) -&gt;
+?validate:('a -&gt; bool <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; (unit -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; 'a <a href="?package=lwt&amp;module=Lwt_pool&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create n ?check ?validate f</code> creates a new pool with at most
+      <code class="code">n</code> members. <code class="code">f</code> is the function to use to create a new pool
+      member.<br/>      An element of the pool is validated by the optional <code class="code">validate</code>
+      function before its  <a href="#use">use</a>. Invalid elements are re-created.<br/>      The optional function <code class="code">check</code> is called after a <code class="code">use</code> of an
+      element failed. It must call its argument excatly one with
+      <code class="code">true</code> if the pool member is still valid and <code class="code">false</code>
+      otherwise.</div></div>
+<pre><span class="VALuse"><span class="keyword">val</span> use</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt_pool&amp;type=t">t</a> -&gt; ('a -&gt; 'b <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; 'b <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">use p f</code> takes one free member of the pool <code class="code">p</code> and gives it to
+      the function <code class="code">f</code>.</div></div>
+</div>

@@ -1,0 +1,19 @@
+<div class="ocaml_toplevel_module"><div class="info">Mailbox variables</div>
+<div class="info"><div class="info">&quot;Mailbox&quot; variables implement a synchronising variable, used for
+    communication between concurrent threads.<br/>    This code adapted from
+     <a href="http://eigenclass.org/hiki.rb?cmd=view&amp;p=lightweight-threads-with-lwt">Comparing lightweight threads (eigenclass.org)</a></div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> </pre><div class="info"><div class="info">The type of a mailbox variable. Mailbox variables are used to
+      communicate values between threads in a synchronous way. The
+      type parameter specifies the type of the value propagated from
+      <code class="code">put</code> to <code class="code">take</code>.</div></div>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">'a -&gt; 'a <a href="?package=lwt&amp;module=Lwt_mvar&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create v</code> creates a new mailbox variable containing value <code class="code">v</code>.</div></div>
+<pre><span class="VALcreate_empty"><span class="keyword">val</span> create_empty</span> : <code class="type">unit -&gt; 'a <a href="?package=lwt&amp;module=Lwt_mvar&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create ()</code> creates a new empty mailbox variable.</div></div>
+<pre><span class="VALput"><span class="keyword">val</span> put</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt_mvar&amp;type=t">t</a> -&gt; 'a -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">put mvar value</code> puts a value into a mailbox variable. This
+      value will remain in the mailbox until <code class="code">take</code> is called to
+      remove it. If the mailbox is not empty, the current thread will
+      block until it is emptied.</div></div>
+<pre><span class="VALtake"><span class="keyword">val</span> take</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt_mvar&amp;type=t">t</a> -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">take mvar</code> will take any currently available value from the
+      mailbox variable. If no value is currently available, the
+      current thread will block, awaiting a value to be <code class="code">put</code> by
+      another thread.</div></div>
+</div>

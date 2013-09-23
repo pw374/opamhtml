@@ -1,0 +1,202 @@
+<div class="ocaml_toplevel_module"><div class="info">Hash tables and hash functions.<br/>   Hash tables are hashed association tables, with in-place modification.</div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Generic interface</h6></div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b) </code>t</span> </pre><div class="info"><div class="info">The type of hash tables from type <code class="code">'a</code> to type <code class="code">'b</code>.</div></div>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">?random:bool -&gt; int -&gt; ('a, 'b) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">Hashtbl.create n</code> creates a new, empty hash table, with
+   initial size <code class="code">n</code>.  For best results, <code class="code">n</code> should be on the
+   order of the expected number of elements that will be in
+   the table.  The table grows as needed, so <code class="code">n</code> is just an
+   initial guess.<br/>   The optional <code class="code">random</code> parameter (a boolean) controls whether
+   the internal organization of the hash table is randomized at each
+   execution of <code class="code">Hashtbl.create</code> or deterministic over all executions.<br/>   A hash table that is created with <code class="code">~random:false</code> uses a
+   fixed hash function ( <a href="#Hashtbl.hash">Hashtbl.hash</a>) to distribute keys among
+   buckets.  As a consequence, collisions between keys happen
+   deterministically.  In Web-facing applications or other
+   security-sensitive applications, the deterministic collision
+   patterns can be exploited by a malicious user to create a
+   denial-of-service attack: the attacker sends input crafted to
+   create many collisions in the table, slowing the application down.<br/>   A hash table that is created with <code class="code">~random:true</code> uses the seeded
+   hash function  <a href="#Hashtbl.seeded_hash">Hashtbl.seeded_hash</a> with a seed that is randomly
+   chosen at hash table creation time.  In effect, the hash function
+   used is randomly selected among <code class="code">2^{30}</code> different hash functions.
+   All these hash functions have different collision patterns,
+   rendering ineffective the denial-of-service attack described above.
+   However, because of randomization, enumerating all elements of the
+   hash table using  <a href="#Hashtbl.fold">Hashtbl.fold</a> or  <a href="#Hashtbl.iter">Hashtbl.iter</a> is no longer
+   deterministic: elements are enumerated in different orders at
+   different runs of the program.<br/>   If no <code class="code">~random</code> parameter is given, hash tables are created
+   in non-random mode by default.  This default can be changed
+   either programmatically by calling  <a href="#Hashtbl.randomize">Hashtbl.randomize</a> or by
+   setting the <code class="code">R</code> flag in the <code class="code">OCAMLRUNPARAM</code> environment variable.<b>Before 4.00.0</b> the <code class="code">random</code> parameter was not present and all
+   hash tables were created in non-randomized mode.<br/></div></div>
+<pre><span class="VALclear"><span class="keyword">val</span> clear</span> : <code class="type">('a, 'b) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Empty a hash table. Use <code class="code">reset</code> instead of <code class="code">clear</code> to shrink the
+    size of the bucket table to its initial size.</div></div>
+<pre><span class="VALreset"><span class="keyword">val</span> reset</span> : <code class="type">('a, 'b) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Empty a hash table and shrink the size of the bucket table
+    to its initial size.</div></div>
+<pre><span class="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">('a, 'b) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">t</a> -&gt; ('a, 'b) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">t</a></code></pre><div class="info"><div class="info">Return a copy of the given hashtable.</div></div>
+<pre><span class="VALadd"><span class="keyword">val</span> add</span> : <code class="type">('a, 'b) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">t</a> -&gt; 'a -&gt; 'b -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">Hashtbl.add tbl x y</code> adds a binding of <code class="code">x</code> to <code class="code">y</code> in table <code class="code">tbl</code>.
+   Previous bindings for <code class="code">x</code> are not removed, but simply
+   hidden. That is, after performing  <a href="#Hashtbl.remove">Hashtbl.remove</a><code class="code"> tbl x</code>,
+   the previous binding for <code class="code">x</code>, if any, is restored.
+   (Same behavior as with association lists.)</div></div>
+<pre><span class="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a, 'b) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">t</a> -&gt; 'a -&gt; 'b</code></pre><div class="info"><div class="info"><code class="code">Hashtbl.find tbl x</code> returns the current binding of <code class="code">x</code> in <code class="code">tbl</code>,
+   or raises <code class="code">Not_found</code> if no such binding exists.</div></div>
+<pre><span class="VALfind_all"><span class="keyword">val</span> find_all</span> : <code class="type">('a, 'b) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">t</a> -&gt; 'a -&gt; 'b list</code></pre><div class="info"><div class="info"><code class="code">Hashtbl.find_all tbl x</code> returns the list of all data
+   associated with <code class="code">x</code> in <code class="code">tbl</code>.
+   The current binding is returned first, then the previous
+   bindings, in reverse order of introduction in the table.</div></div>
+<pre><span class="VALmem"><span class="keyword">val</span> mem</span> : <code class="type">('a, 'b) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">t</a> -&gt; 'a -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">Hashtbl.mem tbl x</code> checks if <code class="code">x</code> is bound in <code class="code">tbl</code>.</div></div>
+<pre><span class="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">('a, 'b) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">t</a> -&gt; 'a -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">Hashtbl.remove tbl x</code> removes the current binding of <code class="code">x</code> in <code class="code">tbl</code>,
+   restoring the previous binding if it exists.
+   It does nothing if <code class="code">x</code> is not bound in <code class="code">tbl</code>.</div></div>
+<pre><span class="VALreplace"><span class="keyword">val</span> replace</span> : <code class="type">('a, 'b) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">t</a> -&gt; 'a -&gt; 'b -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">Hashtbl.replace tbl x y</code> replaces the current binding of <code class="code">x</code>
+   in <code class="code">tbl</code> by a binding of <code class="code">x</code> to <code class="code">y</code>.  If <code class="code">x</code> is unbound in <code class="code">tbl</code>,
+   a binding of <code class="code">x</code> to <code class="code">y</code> is added to <code class="code">tbl</code>.
+   This is functionally equivalent to  <a href="#Hashtbl.remove">Hashtbl.remove</a><code class="code"> tbl x</code>
+   followed by  <a href="#Hashtbl.add">Hashtbl.add</a><code class="code"> tbl x y</code>.</div></div>
+<pre><span class="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -&gt; 'b -&gt; unit) -&gt; ('a, 'b) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">Hashtbl.iter f tbl</code> applies <code class="code">f</code> to all bindings in table <code class="code">tbl</code>.
+   <code class="code">f</code> receives the key as first argument, and the associated value
+   as second argument. Each binding is presented exactly once to <code class="code">f</code>.<br/>   The order in which the bindings are passed to <code class="code">f</code> is unspecified.
+   However, if the table contains several bindings for the same key,
+   they are passed to <code class="code">f</code> in reverse order of introduction, that is,
+   the most recent binding is passed first.<br/>   If the hash table was created in non-randomized mode, the order
+   in which the bindings are enumerated is reproducible between
+   successive runs of the program, and even between minor versions
+   of OCaml.  For randomized hash tables, the order of enumeration
+   is entirely random.</div></div>
+<pre><span class="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -&gt; 'b -&gt; 'c -&gt; 'c) -&gt; ('a, 'b) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">t</a> -&gt; 'c -&gt; 'c</code></pre><div class="info"><div class="info"><code class="code">Hashtbl.fold f tbl init</code> computes
+   <code class="code">(f kN dN ... (f k1 d1 init)...)</code>,
+   where <code class="code">k1 ... kN</code> are the keys of all bindings in <code class="code">tbl</code>,
+   and <code class="code">d1 ... dN</code> are the associated values.
+   Each binding is presented exactly once to <code class="code">f</code>.<br/>   The order in which the bindings are passed to <code class="code">f</code> is unspecified.
+   However, if the table contains several bindings for the same key,
+   they are passed to <code class="code">f</code> in reverse order of introduction, that is,
+   the most recent binding is passed first.<br/>   If the hash table was created in non-randomized mode, the order
+   in which the bindings are enumerated is reproducible between
+   successive runs of the program, and even between minor versions
+   of OCaml.  For randomized hash tables, the order of enumeration
+   is entirely random.</div></div>
+<pre><span class="VALlength"><span class="keyword">val</span> length</span> : <code class="type">('a, 'b) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info"><code class="code">Hashtbl.length tbl</code> returns the number of bindings in <code class="code">tbl</code>.
+   It takes constant time.  Multiple bindings are counted once each, so
+   <code class="code">Hashtbl.length</code> gives the number of times <code class="code">Hashtbl.iter</code> calls its
+   first argument.</div></div>
+<pre><span class="VALrandomize"><span class="keyword">val</span> randomize</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info">After a call to <code class="code">Hashtbl.randomize()</code>, hash tables are created in
+    randomized mode by default:  <a href="#Hashtbl.create">Hashtbl.create</a> returns randomized
+    hash tables, unless the <code class="code">~random:false</code> optional parameter is given.
+    The same effect can be achieved by setting the <code class="code">R</code> parameter in
+    the <code class="code">OCAMLRUNPARAM</code> environment variable.<br/>    It is recommended that applications or Web frameworks that need to
+    protect themselves against the denial-of-service attack described
+    in  <a href="#Hashtbl.create">Hashtbl.create</a> call <code class="code">Hashtbl.randomize()</code> at initialization
+    time.<br/>    Note that once <code class="code">Hashtbl.randomize()</code> was called, there is no way
+    to revert to the non-randomized default behavior of  <a href="#Hashtbl.create">Hashtbl.create</a>.
+    This is intentional.  Non-randomized hash tables can still be
+    created using <code class="code">Hashtbl.create ~random:false</code>. <b>Since</b> 4.00.0</div></div>
+<pre><code><span class="TYPEstatistics"><span class="keyword">type</span> statistics</span> = {</code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTstatistics.num_bindings">num_bindings</span> : <code class="type">int</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">Number of bindings present in the table.
+        Same value as returned by  <a href="#Hashtbl.length">Hashtbl.length</a>.</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTstatistics.num_buckets">num_buckets</span> : <code class="type">int</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">Number of buckets in the table.</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTstatistics.max_bucket_length">max_bucket_length</span> : <code class="type">int</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">Maximal number of bindings per bucket.</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTstatistics.bucket_histogram">bucket_histogram</span> : <code class="type">int array</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">Histogram of bucket sizes.  This array <code class="code">histo</code> has
+        length <code class="code">max_bucket_length + 1</code>.  The value of
+        <code class="code">histo.(i)</code> is the number of buckets whose size is <code class="code">i</code>.</div></td></tr><tr><td>}</td></tr></table>
+<pre><span class="VALstats"><span class="keyword">val</span> stats</span> : <code class="type">('a, 'b) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Hashtbl&amp;type=statistics">statistics</a></code></pre><div class="info"><div class="info"><code class="code">Hashtbl.stats tbl</code> returns statistics about the table <code class="code">tbl</code>:
+   number of buckets, size of the biggest bucket, distribution of
+   buckets by size. <b>Since</b> 4.00.0</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Functorial interface</h6></div></div>
+<div class="ocaml_module sig" name="HashedType"><pre><span class="keyword">module type</span> <a href="?package=ocaml&amp;module=Hashtbl.HashedType">HashedType</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">The input signature of the functor  <a href="#Hashtbl.Make">Hashtbl.Make</a>.</div></div><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">The type of the hashtable keys.</div></div>
+<pre><span class="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="?package=ocaml&amp;module=Hashtbl.HashedType&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Hashtbl.HashedType&amp;type=t">t</a> -&gt; bool</code></pre><div class="info"><div class="info">The equality predicate used to compare keys.</div></div>
+<pre><span class="VALhash"><span class="keyword">val</span> hash</span> : <code class="type"><a href="?package=ocaml&amp;module=Hashtbl.HashedType&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">A hashing function on keys. It must be such that if two keys are
+          equal according to <code class="code">equal</code>, then they have identical hash values
+          as computed by <code class="code">hash</code>.
+          Examples: suitable (<code class="code">equal</code>, <code class="code">hash</code>) pairs for arbitrary key
+          types include<ul><li>        (<code class="code">(=)</code>,  <a href="#Hashtbl.hash">Hashtbl.hash</a>) for comparing objects by structure
+              (provided objects do not contain floats)</li><li>        (<code class="code">(fun x y -&gt; compare x y = 0)</code>,  <a href="#Hashtbl.hash">Hashtbl.hash</a>)
+              for comparing objects by structure
+              and handling  <a href="#Pervasives.nan">Pervasives.nan</a> correctly</li><li>        (<code class="code">(==)</code>,  <a href="#Hashtbl.hash">Hashtbl.hash</a>) for comparing objects by physical
+              equality (e.g. for mutable or cyclic objects). </li></ul></div></div></div></div>
+<div class="ocaml_module sig" name="S"><pre><span class="keyword">module type</span> <a href="?package=ocaml&amp;module=Hashtbl.S">S</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">The output signature of the functor  <a href="#Hashtbl.Make">Hashtbl.Make</a>.</div></div><div class="ocaml_module_content">
+<pre><span class="TYPEkey"><span class="keyword">type</span> key</span> </pre>
+<pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> </pre>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -&gt; 'a <a href="?package=ocaml&amp;module=Hashtbl.S&amp;type=t">t</a></code></pre>
+<pre><span class="VALclear"><span class="keyword">val</span> clear</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Hashtbl.S&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VALreset"><span class="keyword">val</span> reset</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Hashtbl.S&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Hashtbl.S&amp;type=t">t</a> -&gt; 'a <a href="?package=ocaml&amp;module=Hashtbl.S&amp;type=t">t</a></code></pre>
+<pre><span class="VALadd"><span class="keyword">val</span> add</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Hashtbl.S&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Hashtbl.S&amp;type=key">key</a> -&gt; 'a -&gt; unit</code></pre>
+<pre><span class="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Hashtbl.S&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Hashtbl.S&amp;type=key">key</a> -&gt; unit</code></pre>
+<pre><span class="VALfind"><span class="keyword">val</span> find</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Hashtbl.S&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Hashtbl.S&amp;type=key">key</a> -&gt; 'a</code></pre>
+<pre><span class="VALfind_all"><span class="keyword">val</span> find_all</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Hashtbl.S&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Hashtbl.S&amp;type=key">key</a> -&gt; 'a list</code></pre>
+<pre><span class="VALreplace"><span class="keyword">val</span> replace</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Hashtbl.S&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Hashtbl.S&amp;type=key">key</a> -&gt; 'a -&gt; unit</code></pre>
+<pre><span class="VALmem"><span class="keyword">val</span> mem</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Hashtbl.S&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Hashtbl.S&amp;type=key">key</a> -&gt; bool</code></pre>
+<pre><span class="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(<a href="?package=ocaml&amp;module=Hashtbl.S&amp;type=key">key</a> -&gt; 'a -&gt; unit) -&gt; 'a <a href="?package=ocaml&amp;module=Hashtbl.S&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">(<a href="?package=ocaml&amp;module=Hashtbl.S&amp;type=key">key</a> -&gt; 'a -&gt; 'b -&gt; 'b) -&gt; 'a <a href="?package=ocaml&amp;module=Hashtbl.S&amp;type=t">t</a> -&gt; 'b -&gt; 'b</code></pre>
+<pre><span class="VALlength"><span class="keyword">val</span> length</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Hashtbl.S&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALstats"><span class="keyword">val</span> stats</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Hashtbl.S&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Hashtbl&amp;type=statistics">statistics</a></code></pre></div></div>
+<div class="ocaml_module ident" name="Make" path="?package=ocaml&amp;module=Hashtbl.S"><pre><span class="keyword">module</span> <a href="?package=ocaml&amp;module=Hashtbl.Make">Make</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">H</code><code class="code"> : </code><code class="code"><a href="?package=ocaml&amp;module=Hashtbl.HashedType">HashedType</a></code><code class="code">) -&gt; </code><code class="code"><a href="?package=ocaml&amp;module=Hashtbl.S">S</a></code> with type <a href="?package=ocaml&amp;module=Hashtbl.S&amp;type=key">key</a> = H.t</div></code></pre><div class="info"><div class="info">Functor building an implementation of the hashtable structure.
+    The functor <code class="code">Hashtbl.Make</code> returns a structure containing
+    a type <code class="code">key</code> of keys and a type <code class="code">'a t</code> of hash tables
+    associating data of type <code class="code">'a</code> to keys of type <code class="code">key</code>.
+    The operations perform similarly to those of the generic
+    interface, but use the hashing and equality functions
+    specified in the functor argument <code class="code">H</code> instead of generic
+    equality and hashing.  Since the hash function is not seeded,
+    the <code class="code">create</code> operation of the result structure always returns
+    non-randomized hash tables.</div></div></div>
+<div class="ocaml_module sig" name="SeededHashedType"><pre><span class="keyword">module type</span> <a href="?package=ocaml&amp;module=Hashtbl.SeededHashedType">SeededHashedType</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">The input signature of the functor  <a href="#Hashtbl.MakeSeeded">Hashtbl.MakeSeeded</a>. <b>Since</b> 4.00.0</div></div><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">The type of the hashtable keys.</div></div>
+<pre><span class="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="?package=ocaml&amp;module=Hashtbl.SeededHashedType&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Hashtbl.SeededHashedType&amp;type=t">t</a> -&gt; bool</code></pre><div class="info"><div class="info">The equality predicate used to compare keys.</div></div>
+<pre><span class="VALhash"><span class="keyword">val</span> hash</span> : <code class="type">int -&gt; <a href="?package=ocaml&amp;module=Hashtbl.SeededHashedType&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">A seeded hashing function on keys.  The first argument is
+          the seed.  It must be the case that if <code class="code">equal x y</code> is true,
+          then <code class="code">hash seed x = hash seed y</code> for any value of <code class="code">seed</code>.
+          A suitable choice for <code class="code">hash</code> is the function  <a href="#Hashtbl.seeded_hash">Hashtbl.seeded_hash</a>
+          below.</div></div></div></div>
+<div class="ocaml_module sig" name="SeededS"><pre><span class="keyword">module type</span> <a href="?package=ocaml&amp;module=Hashtbl.SeededS">SeededS</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">The output signature of the functor  <a href="#Hashtbl.MakeSeeded">Hashtbl.MakeSeeded</a>. <b>Since</b> 4.00.0</div></div><div class="ocaml_module_content">
+<pre><span class="TYPEkey"><span class="keyword">type</span> key</span> </pre>
+<pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> </pre>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">?random:bool -&gt; int -&gt; 'a <a href="?package=ocaml&amp;module=Hashtbl.SeededS&amp;type=t">t</a></code></pre>
+<pre><span class="VALclear"><span class="keyword">val</span> clear</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Hashtbl.SeededS&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VALreset"><span class="keyword">val</span> reset</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Hashtbl.SeededS&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Hashtbl.SeededS&amp;type=t">t</a> -&gt; 'a <a href="?package=ocaml&amp;module=Hashtbl.SeededS&amp;type=t">t</a></code></pre>
+<pre><span class="VALadd"><span class="keyword">val</span> add</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Hashtbl.SeededS&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Hashtbl.SeededS&amp;type=key">key</a> -&gt; 'a -&gt; unit</code></pre>
+<pre><span class="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Hashtbl.SeededS&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Hashtbl.SeededS&amp;type=key">key</a> -&gt; unit</code></pre>
+<pre><span class="VALfind"><span class="keyword">val</span> find</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Hashtbl.SeededS&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Hashtbl.SeededS&amp;type=key">key</a> -&gt; 'a</code></pre>
+<pre><span class="VALfind_all"><span class="keyword">val</span> find_all</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Hashtbl.SeededS&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Hashtbl.SeededS&amp;type=key">key</a> -&gt; 'a list</code></pre>
+<pre><span class="VALreplace"><span class="keyword">val</span> replace</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Hashtbl.SeededS&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Hashtbl.SeededS&amp;type=key">key</a> -&gt; 'a -&gt; unit</code></pre>
+<pre><span class="VALmem"><span class="keyword">val</span> mem</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Hashtbl.SeededS&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Hashtbl.SeededS&amp;type=key">key</a> -&gt; bool</code></pre>
+<pre><span class="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(<a href="?package=ocaml&amp;module=Hashtbl.SeededS&amp;type=key">key</a> -&gt; 'a -&gt; unit) -&gt; 'a <a href="?package=ocaml&amp;module=Hashtbl.SeededS&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">(<a href="?package=ocaml&amp;module=Hashtbl.SeededS&amp;type=key">key</a> -&gt; 'a -&gt; 'b -&gt; 'b) -&gt; 'a <a href="?package=ocaml&amp;module=Hashtbl.SeededS&amp;type=t">t</a> -&gt; 'b -&gt; 'b</code></pre>
+<pre><span class="VALlength"><span class="keyword">val</span> length</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Hashtbl.SeededS&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALstats"><span class="keyword">val</span> stats</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Hashtbl.SeededS&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Hashtbl&amp;type=statistics">statistics</a></code></pre></div></div>
+<div class="ocaml_module ident" name="MakeSeeded" path="?package=ocaml&amp;module=Hashtbl.SeededS"><pre><span class="keyword">module</span> <a href="?package=ocaml&amp;module=Hashtbl.MakeSeeded">MakeSeeded</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">H</code><code class="code"> : </code><code class="code"><a href="?package=ocaml&amp;module=Hashtbl.SeededHashedType">SeededHashedType</a></code><code class="code">) -&gt; </code><code class="code"><a href="?package=ocaml&amp;module=Hashtbl.SeededS">SeededS</a></code> with type <a href="?package=ocaml&amp;module=Hashtbl.SeededS&amp;type=key">key</a> = H.t</div></code></pre><div class="info"><div class="info">Functor building an implementation of the hashtable structure.
+    The functor <code class="code">Hashtbl.MakeSeeded</code> returns a structure containing
+    a type <code class="code">key</code> of keys and a type <code class="code">'a t</code> of hash tables
+    associating data of type <code class="code">'a</code> to keys of type <code class="code">key</code>.
+    The operations perform similarly to those of the generic
+    interface, but use the seeded hashing and equality functions
+    specified in the functor argument <code class="code">H</code> instead of generic
+    equality and hashing.  The <code class="code">create</code> operation of the
+    result structure supports the <code class="code">~random</code> optional parameter
+    and returns randomized hash tables if <code class="code">~random:true</code> is passed
+    or if randomization is globally on (see  <a href="#Hashtbl.randomize">Hashtbl.randomize</a>). <b>Since</b> 4.00.0</div></div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">The polymorphic hash functions</h6></div></div>
+<pre><span class="VALhash"><span class="keyword">val</span> hash</span> : <code class="type">'a -&gt; int</code></pre><div class="info"><div class="info"><code class="code">Hashtbl.hash x</code> associates a nonnegative integer to any value of
+   any type. It is guaranteed that
+   if <code class="code">x = y</code> or <code class="code">Pervasives.compare x y = 0</code>, then <code class="code">hash x = hash y</code>.
+   Moreover, <code class="code">hash</code> always terminates, even on cyclic structures.</div></div>
+<pre><span class="VALseeded_hash"><span class="keyword">val</span> seeded_hash</span> : <code class="type">int -&gt; 'a -&gt; int</code></pre><div class="info"><div class="info">A variant of  <a href="#Hashtbl.hash">Hashtbl.hash</a> that is further parameterized by
+   an integer seed. <b>Since</b> 4.00.0</div></div>
+<pre><span class="VALhash_param"><span class="keyword">val</span> hash_param</span> : <code class="type">int -&gt; int -&gt; 'a -&gt; int</code></pre><div class="info"><div class="info"><code class="code">Hashtbl.hash_param meaningful total x</code> computes a hash value for <code class="code">x</code>,
+   with the same properties as for <code class="code">hash</code>. The two extra integer
+   parameters <code class="code">meaningful</code> and <code class="code">total</code> give more precise control over
+   hashing. Hashing performs a breadth-first, left-to-right traversal
+   of the structure <code class="code">x</code>, stopping after <code class="code">meaningful</code> meaningful nodes
+   were encountered, or <code class="code">total</code> nodes (meaningful or not) were
+   encountered. Meaningful nodes are: integers; floating-point
+   numbers; strings; characters; booleans; and constant
+   constructors. Larger values of <code class="code">meaningful</code> and <code class="code">total</code> means that
+   more nodes are taken into account to compute the final hash value,
+   and therefore collisions are less likely to happen.  However,
+   hashing takes longer. The parameters <code class="code">meaningful</code> and <code class="code">total</code>
+   govern the tradeoff between accuracy and speed.  As default
+   choices,  <a href="#Hashtbl.hash">Hashtbl.hash</a> and  <a href="#Hashtbl.seeded_hash">Hashtbl.seeded_hash</a> take
+   <code class="code">meaningful = 10</code> and <code class="code">total = 100</code>.</div></div>
+<pre><span class="VALseeded_hash_param"><span class="keyword">val</span> seeded_hash_param</span> : <code class="type">int -&gt; int -&gt; int -&gt; 'a -&gt; int</code></pre><div class="info"><div class="info">A variant of  <a href="#Hashtbl.hash_param">Hashtbl.hash_param</a> that is further parameterized by
+   an integer seed.  Usage:
+   <code class="code">Hashtbl.seeded_hash_param meaningful total seed x</code>. <b>Since</b> 4.00.0</div></div>
+</div>

@@ -1,0 +1,25 @@
+<div class="ocaml_toplevel_module"><div class="info">This module allows to mix preemptive threads with <code class="code">Lwt</code>
+    cooperative threads. It maintains an extensible pool of preemptive
+    threads to with you can detach computations.</div>
+<pre><span class="VALdetach"><span class="keyword">val</span> detach</span> : <code class="type">('a -&gt; 'b) -&gt; 'a -&gt; 'b <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">detaches a computation to a preemptive thread.</div></div>
+<pre><span class="VALrun_in_main"><span class="keyword">val</span> run_in_main</span> : <code class="type">(unit -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">run_in_main f</code> executes <code class="code">f</code> in the main thread, i.e. the one
+      executing  <a href="#Lwt_main.run">Lwt_main.run</a> and returns its result.</div></div>
+<pre><span class="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -&gt; int -&gt; (string -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">init min max log</code> initialises this module. i.e. it launches the
+      minimum number of preemptive threads and starts the <b>      dispatcher</b>.<div class="parameters"><div class="param_info"><code class="code">min</code> : is the minimum number of threads</div><div class="param_info"><code class="code">max</code> : is the maximum number of threads</div><div class="param_info"><code class="code">log</code> : is used to log error messages<br/>      If  <a href="#Lwt_preemptive">Lwt_preemptive</a> has already been initialised, this call
+      only modify bounds and the log function, and return the
+      dispatcher thread.</div></div></div></div>
+<pre><span class="VALsimple_init"><span class="keyword">val</span> simple_init</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">simple_init ()</code> does a <i>simple initialization</i>. i.e. with
+      default parameters if the library is not yet initialised.<br/>      Note: this function is automatically called  <a href="#detach">detach</a>.</div></div>
+<pre><span class="VALget_bounds"><span class="keyword">val</span> get_bounds</span> : <code class="type">unit -&gt; int * int</code></pre><div class="info"><div class="info"><code class="code">get_bounds ()</code> returns the minimum and the maximum number of
+      preemptive threads.</div></div>
+<pre><span class="VALset_bounds"><span class="keyword">val</span> set_bounds</span> : <code class="type">int * int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">set_bounds (min, max)</code> set the minimum and the maximum number
+      of preemptive threads.</div></div>
+<pre><span class="VALset_max_number_of_threads_queued"><span class="keyword">val</span> set_max_number_of_threads_queued</span> : <code class="type">int -&gt; unit</code></pre><div class="info"><div class="info">Sets the size of the waiting queue, if no more preemptive
+      threads are available. When the queue is full,  <a href="#detach">detach</a> will
+      sleep until a thread is available.</div></div>
+<pre><span class="VALget_max_number_of_threads_queued"><span class="keyword">val</span> get_max_number_of_threads_queued</span> : <code class="type">unit -&gt; int</code></pre><div class="info"><div class="info">Returns the size of the waiting queue, if no more threads are
+      available</div></div>
+<pre><span class="VALnbthreads"><span class="keyword">val</span> nbthreads</span> : <code class="type">unit -&gt; int</code></pre>
+<pre><span class="VALnbthreadsbusy"><span class="keyword">val</span> nbthreadsbusy</span> : <code class="type">unit -&gt; int</code></pre>
+<pre><span class="VALnbthreadsqueued"><span class="keyword">val</span> nbthreadsqueued</span> : <code class="type">unit -&gt; int</code></pre>
+</div>

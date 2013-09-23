@@ -1,0 +1,32 @@
+<div class="ocaml_toplevel_module"><pre><span class="VAL_loc"><span class="keyword">val</span> _loc</span> : <code class="type">Camlp4.PreCast.Syntax.Loc.t</code></pre>
+<pre><span class="VALnamed_regexps"><span class="keyword">val</span> named_regexps</span> : <code class="type">(string, <a href="?package=ulex&amp;module=Ulex&amp;type=regexp">Ulex.regexp</a>) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">Hashtbl.t</a></code></pre>
+
+<pre><code><span class="TYPEdecision_tree"><span class="keyword">type</span> decision_tree</span> = </code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTdecision_tree.Lte"><span class="constructor">Lte</span></span> <span class="keyword">of</span> <code class="type">int * <a href="?package=ulex&amp;module=Pa_ulex&amp;type=decision_tree">decision_tree</a> * <a href="?package=ulex&amp;module=Pa_ulex&amp;type=decision_tree">decision_tree</a></code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTdecision_tree.Table"><span class="constructor">Table</span></span> <span class="keyword">of</span> <code class="type">int * int array</code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTdecision_tree.Return"><span class="constructor">Return</span></span> <span class="keyword">of</span> <code class="type">int</code></code></td></tr></table>
+<pre><span class="VALdecision"><span class="keyword">val</span> decision</span> : <code class="type">(int * int * int) list -&gt; <a href="?package=ulex&amp;module=Pa_ulex&amp;type=decision_tree">decision_tree</a></code></pre>
+<pre><span class="VALlimit"><span class="keyword">val</span> limit</span> : <code class="type">int</code></pre>
+<pre><span class="VALdecision_table"><span class="keyword">val</span> decision_table</span> : <code class="type">(int * int * int) list -&gt; <a href="?package=ulex&amp;module=Pa_ulex&amp;type=decision_tree">decision_tree</a></code></pre>
+<pre><span class="VALsimplify"><span class="keyword">val</span> simplify</span> : <code class="type">int -&gt; int -&gt; <a href="?package=ulex&amp;module=Pa_ulex&amp;type=decision_tree">decision_tree</a> -&gt; <a href="?package=ulex&amp;module=Pa_ulex&amp;type=decision_tree">decision_tree</a></code></pre>
+<pre><span class="VALtables"><span class="keyword">val</span> tables</span> : <code class="type">(int array, string) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">Hashtbl.t</a></code></pre>
+<pre><span class="VALtables_counter"><span class="keyword">val</span> tables_counter</span> : <code class="type">int <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre>
+<pre><span class="VALget_tables"><span class="keyword">val</span> get_tables</span> : <code class="type">unit -&gt; (string * int array) list</code></pre>
+<pre><span class="VALtable_name"><span class="keyword">val</span> table_name</span> : <code class="type">int array -&gt; string</code></pre>
+<pre><span class="VALoutput_byte"><span class="keyword">val</span> output_byte</span> : <code class="type"><a href="?package=ocaml&amp;module=Buffer&amp;type=t">Buffer.t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALoutput_byte_array"><span class="keyword">val</span> output_byte_array</span> : <code class="type">int array -&gt; Camlp4.PreCast.Syntax.Ast.expr</code></pre>
+<pre><span class="VALtable"><span class="keyword">val</span> table</span> : <code class="type">string * int array -&gt; Camlp4.PreCast.Syntax.Ast.str_item</code></pre>
+<pre><span class="VALpartition_name"><span class="keyword">val</span> partition_name</span> : <code class="type">int -&gt; string</code></pre>
+<pre><span class="VALpartition"><span class="keyword">val</span> partition</span> : <code class="type">int * (int * int * int) list -&gt; Camlp4.PreCast.Syntax.Ast.str_item</code></pre>
+<pre><span class="VALbest_final"><span class="keyword">val</span> best_final</span> : <code class="type">bool array -&gt; int option</code></pre>
+<pre><span class="VALcall_state"><span class="keyword">val</span> call_state</span> : <code class="type">('a * 'b array * bool array) array -&gt; int -&gt; Camlp4.PreCast.Syntax.Ast.expr</code></pre>
+<pre><span class="VALgen_state"><span class="keyword">val</span> gen_state</span> : <code class="type">('a * 'b array * bool array) array -&gt;
+Camlp4.PreCast.Syntax.Ast.loc -&gt;
+int -&gt; int * int array * bool array -&gt; Camlp4.PreCast.Syntax.Ast.binding</code></pre>
+<pre><span class="VALgen_definition"><span class="keyword">val</span> gen_definition</span> : <code class="type">Camlp4.PreCast.Syntax.Ast.loc -&gt;
+(<a href="?package=ulex&amp;module=Ulex&amp;type=regexp">Ulex.regexp</a> * Camlp4.PreCast.Syntax.Ast.expr) list -&gt;
+Camlp4.PreCast.Syntax.Ast.expr</code></pre>
+<pre><span class="VALchar_int"><span class="keyword">val</span> char_int</span> : <code class="type">string -&gt; int</code></pre>
+<pre><span class="VALregexp_for_string"><span class="keyword">val</span> regexp_for_string</span> : <code class="type">string -&gt; <a href="?package=ulex&amp;module=Ulex&amp;type=regexp">Ulex.regexp</a></code></pre>
+
+<pre><span class="VALchange_ids"><span class="keyword">val</span> change_ids</span> : <code class="type">string -&gt; Camlp4.PreCast.Syntax.Ast.map</code></pre>
+
+</div>

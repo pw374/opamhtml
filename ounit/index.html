@@ -1,0 +1,37 @@
+<h1>Modules</h1>
+<table class="indextable">
+    <tr><td class="module"><a href="?package=ounit&amp;module=OUnit">OUnit</a></td><td/></tr>
+<tr><td class="module"><a href="?package=ounit&amp;module=OUnitDiff">OUnitDiff</a></td><td><div class="info">Unit tests for collection of elements<br/>    This module allows to define a more precise way to display differences
+    between collection of elements. When collection differ, the tester is 
+    interested by what are the missing/extra elements. This module provides
+    a <code class="code">diff</code> operation to spot the difference quickly between two sets of
+    elements.<br/>    Example:
+<pre class="codepre"><code class="code">
+open OUnit;;
+
+module EInt = 
+struct 
+  type t = int
+  let compare = ( - )
+  let pp_print = Format.pp_print_int
+  let pp_print_sep = OUnitDiff.comma_separator
+end
+
+module ListInt = OUnitDiff.ListSimpleMake(EInt);;
+
+let test_diff () = 
+  ListInt.assert_equal
+    [1; 2; 3; 4; 5]
+    [1; 2; 5; 4]
+;;
+
+let _ = 
+  run_test_tt_main (&quot;test_diff&quot; &gt;:: test_diff)
+;;
+</code></pre><br/>when run this test outputs:
+<pre class="codepre"><code class="code">
+OUnit: expected: 1, 2, 3, 4, 5 but got: 1, 2, 5, 4
+differences: element number 2 differ (3 &lt;&gt; 5)
+</code></pre><div class="authors"><b>Author(s): </b><span class="author">Sylvain Le Gall</span></div> <b>Since</b> 1.1.0</div></td></tr>
+<tr><td class="module"><a href="?package=ounit&amp;module=Test">Test</a></td><td/></tr>
+</table>

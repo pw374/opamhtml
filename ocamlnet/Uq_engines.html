@@ -1,0 +1,918 @@
+<div class="ocaml_toplevel_module"><div class="info">An <b>engine</b> performs a certain task in an autonomous way. Engines
+ are attached to a  <a href="#Unixqueue.event_system">Unixqueue.event_system</a>, and do their task by
+ generating events for resources of the operating system, and 
+ by handling such events. Engines are in one of four states: They
+ may be still <b>working</b>, they may be <b>done</b>, they may be
+ <b>aborted</b>, or they may be in an <b>error</b> state. The three latter
+ states a called <b>final states</b>, because they indicate that the
+ engine has stopped operation.<br/> It is possible to ask an engine to notify another object when it
+ changes its state. For simplicity, notification is done by invoking
+ a callback function, and not by issuing notification events.<br/> Effectively, engines provide a calculus for cooperative microthreading.
+ This calculus includes combinators for sequential execution and
+ synchronization. Moreover, it is easy to connect it with callback-style
+ microthreading - one can arrange callbacks when an engine is done, and
+ one can catch callbacks and turn them into engines.</div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Exceptions</h1></div></div>
+<pre><span class="EXCEPTIONClosed_channel"><span class="keyword">exception</span> Closed_channel</span></pre><div class="info"><div class="info">Raised when a method of a closed channel object is called (only channel
+ methods count).<br/> This exception should be regarded as equivalent to
+ <code class="code">Netchannels.Closed_channel</code>, but need not be the same exception.</div></div>
+<pre><span class="EXCEPTIONBroken_communication"><span class="keyword">exception</span> Broken_communication</span></pre><div class="info"><div class="info">Some engines indicate this error when they cannot continue because the
+ other endpoint of communication signals an error.<br/> This exception is not raised, but used as argument of the <code class="code">`Error</code>
+ state.</div></div>
+<pre><span class="EXCEPTIONWatchdog_timeout"><span class="keyword">exception</span> Watchdog_timeout</span></pre><div class="info"><div class="info">Used by the watchdog engine to indicate a timeout. <br/> This exception is not raised, but used as argument of the <code class="code">`Error</code>
+ state.</div></div>
+<pre><span class="EXCEPTIONTimeout"><span class="keyword">exception</span> Timeout</span></pre><div class="info"><div class="info">Used by <code class="code">input_engine</code> and <code class="code">output_engine</code> to indicate timeouts</div></div>
+<pre><span class="EXCEPTIONAddressing_method_not_supported"><span class="keyword">exception</span> Addressing_method_not_supported</span></pre><div class="info"><div class="info">Raised by <code class="code">client_socket_connector</code> and <code class="code">server_socket_acceptor</code> to
+ indicate that the passed address is not supported by the class.</div></div>
+<pre><span class="EXCEPTIONCancelled"><span class="keyword">exception</span> Cancelled</span></pre><div class="info"><div class="info">The callback function of a <code class="code">multiplex_controller</code> is invoked with this
+ exception if the operation is cancelled.</div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Engine definition</h1></div></div>
+<pre><span class="TYPEengine_state"><span class="keyword">type</span> <code class="type">'t </code>engine_state</span> = <code class="type">[ `Aborted | `Done of 't | `Error of exn | `Working of int ]</code></pre><div class="info"><div class="info">The type of states with result values of type <code class="code">'t</code>:<ul><li><code class="code">`Working n</code>: The engine is working. The number <code class="code">n</code> counts the number
+   of events that have been processed.</li><li><code class="code">`Done arg</code>: The engine has completed its task without errors. 
+   The argument <code class="code">arg</code> is the result value of the engine</li><li><code class="code">`Error exn</code>: The engine has aborted because of an error. The
+   argument <code class="code">exn</code> describes the error as an exception.</li><li><code class="code">`Aborted</code>: The engine has aborted because the <code class="code">abort</code> method
+   was called 
+   </li></ul></div></div>
+<pre><span class="TYPEfinal_state"><span class="keyword">type</span> <code class="type">'t </code>final_state</span> = <code class="type">[ `Aborted | `Done of 't | `Error of exn ]</code></pre><div class="info"><div class="info">Same as <code class="code">engine_state</code> without <code class="code">`Working</code>. These are only the final
+	states.</div></div>
+<pre><span class="VALstring_of_state"><span class="keyword">val</span> string_of_state</span> : <code class="type">'a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine_state">engine_state</a> -&gt; string</code></pre><div class="info"><div class="info">For debug purposes: Returns a string describing the state</div></div>
+<div class="ocaml_class sig" name="engine"><pre><span class="TYPEengine"><span class="keyword">class type</span> <code class="type">['t] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">This class type defines the interface an engine must support. The
+ class parameter <code class="code">'t</code> is the type of the result values (when the
+ engine goes to state <code class="code">`Done</code>).</div></div><div class="ocaml_class_content"><div class="info"><div class="info">Requirements for engines</div></div>
+<pre><span class="METHODstate"><span class="keyword">method</span> state</span> : <code class="code">'t <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine_state">engine_state</a></code></pre>
+<div class="info"><div class="info">Returns the state of the engine</div></div>
+<pre><span class="METHODabort"><span class="keyword">method</span> abort</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Forces that the engine aborts operation. If the state is already
+ <code class="code">`Done </code>, <code class="code">`Aborted</code>, or <code class="code">`Error</code>, this method must do nothing (you 
+ cannot abort an already finished engine).</div></div>
+<pre><span class="METHODrequest_notification"><span class="keyword">method</span> request_notification</span> : <code class="code">(unit -&gt; bool) -&gt; unit</code></pre>
+<div class="info"><div class="info">Requests notification about state changes.<br/> After the notification has been requested, the passed function must
+ be called whenever <code class="code">state</code> changes its value (or might change
+ its value; it is allowed to call the notification function more
+ frequently than necessary). The function returns <code class="code">true</code> if there
+ is still interest in notification, and <code class="code">false</code> if notification must
+ be disabled; the function must not be called any longer in this
+ case.<br/> There can be any number of parallel active notifications. It is
+ allowed that a notification callback function requests further
+ notifications.<br/> If the callback raises an exception, this exception is
+ propagated to the caller of  <a href="#Unixqueue.run">Unixqueue.run</a>.</div></div>
+<pre><span class="METHODevent_system"><span class="keyword">method</span> event_system</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a></code></pre>
+<div class="info"><div class="info">Returns the event system the engine is attached to</div></div></div></div>
+<div class="ocaml_class ident" name="delegate_engine" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"><pre><span class="TYPEdelegate_engine"><span class="keyword">class</span> <code class="type">['t] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=delegate_engine">delegate_engine</a></span> : <code class="type">'t #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> -&gt; </code><code class="type">['t] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a></pre><div class="info"><div class="info">Turns an engine value into a class</div></div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Engines and callbacks</h1></div></div>
+<pre><span class="VALwhen_state"><span class="keyword">val</span> when_state</span> : <code class="type">?is_done:('a -&gt; unit) -&gt;
+?is_error:(exn -&gt; unit) -&gt;
+?is_aborted:(unit -&gt; unit) -&gt;
+?is_progressing:(int -&gt; unit) -&gt; 'a #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> -&gt; unit</code></pre><div class="info"><div class="info">Watches the state of the argument engine, and arranges that one of
+ the functions is called when the corresponding state change is done. 
+ Once a final state is reached, the engine is no longer watched.
+ Note that <code class="code">when_state</code> only observes future state changes.<br/> If one of the functions raises an exception, this exception is
+ propagated to the caller of  <a href="#Unixqueue.run">Unixqueue.run</a>.<div class="parameters"><div class="param_info"><code class="code">is_done</code> : The state transitions to <code class="code">`Done</code>. The argument of
+   <code class="code">is_done</code> is the argument of the <code class="code">`Done</code> state.</div><div class="param_info"><code class="code">is_error</code> : The state transitions to <code class="code">`Error</code>. The argument of
+   <code class="code">is_error</code> is the argument of the <code class="code">`Error</code> state.</div><div class="param_info"><code class="code">is_aborted</code> : The state transitions to <code class="code">`Aborted</code>.</div><div class="param_info"><code class="code">is_progressing</code> : This function is called when the <code class="code">`Working</code>
+   state changes. The int argument is the new <code class="code">`Working</code> arg.</div></div></div></div>
+<div class="ocaml_class sig" name="signal_engine"><pre><span class="TYPEsignal_engine"><span class="keyword">class</span> <code class="type">['a] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=signal_engine">signal_engine</a></span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info"><code class="code">let se = new signal_engine esys</code>: The engine <code class="code">se</code> remains in
+      <code class="code">`Working 0</code> until the method <code class="code">se # signal x</code> is called. At this point
+      <code class="code">e</code> transitions to <code class="code">x</code>. Any further call of <code class="code">signal</code> does not
+      have any effect.<br/>      Also, if <code class="code">se</code> is aborted, <code class="code">signal</code> does not have any effect.<br/>      The function <code class="code">signal</code> may be called from a different thread.
+      The signalling event is forwarded to the thread running the
+      event system.</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"> <pre><span class="keyword">inherit</span> <code class="type"/><code class="type">['a] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a></pre></div>
+
+<pre><span class="METHODsignal"><span class="keyword">method</span> signal</span> : <code class="code">'a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=final_state">final_state</a> -&gt; unit</code></pre>
+</div></div>
+<pre><span class="VALsignal_engine"><span class="keyword">val</span> signal_engine</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; 'a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a> * ('a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=final_state">final_state</a> -&gt; unit)</code></pre><div class="info"><div class="info"><code class="code">let (se, signal) = signal_engine esys</code>: Same as function</div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Combinators</h1></div></div>
+<div class="info"><div class="info">The following combinators serve as the control structures to connect
+    primitive engines with each other.</div></div>
+<div class="ocaml_class ident" name="map_engine" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"><pre><span class="TYPEmap_engine"><span class="keyword">class</span> <code class="type">['a, 'b] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=map_engine">map_engine</a></span> : <code class="type">'a -&gt; 'b <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine_state">engine_state</a> -&gt; (exn -&gt; 'b <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine_state">engine_state</a>) option -&gt; (unit -&gt; 'b <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine_state">engine_state</a>) option -&gt; bool option -&gt; 'a #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> -&gt; </code><code class="type">['b] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a></pre><div class="info"><div class="info">The <code class="code">map_engine</code> observes the argument engine, and when the
+ state changes to <code class="code">`Done</code>, <code class="code">`Error</code>, or <code class="code">`Aborted</code>, the corresponding
+ mapping function is called, and the resulting state becomes the state
+ of the mapped engine. If the engine is already in one of the
+ mentioned states, the map functions are also called (unlike
+ <code class="code">when_state</code>).<br/> After the state change to <code class="code">`Done</code>, <code class="code">`Error</code>, or <code class="code">`Aborted</code> has been
+ observed, the map engine detaches from the argument engine,
+ and no further state changes are recognized.<br/> The state <code class="code">`Working</code> cannot be mapped to another state. It is an
+ error to map final states to <code class="code">`Working</code>.
+ The result type of the <code class="code">map_*</code> functions is <code class="code">engine_state</code> 
+ and not <code class="code">final_state</code> because of historic reasons.<br/> If the mapped engine is aborted, this request will be forwarded
+ to the argument engine.<br/> If one of the mapping functions raises an exception, this causes
+ a transiton to <code class="code">`Error</code>.<div class="parameters"><div class="param_info"><code class="code">map_done</code> : Maps the <code class="code">`Done</code> state of the argument engine to
+   another state. The argument of <code class="code">map_done</code> is the argument of the
+   <code class="code">`Done</code> state. Note that <code class="code">map_done</code> is non-optional only because
+   of typing. If it were optional, the type checker would infer <code class="code">'a = 'b</code>.</div><div class="param_info"><code class="code">map_error</code> : Maps the <code class="code">`Error</code> state of the argument engine to
+   another state. The argument of <code class="code">map_error</code> is the argument of the
+   <code class="code">`Error</code> state.</div><div class="param_info"><code class="code">map_aborted</code> : Maps the <code class="code">`Aborted</code> state of the argument engine to
+   another state.</div><div class="param_info"><code class="code">propagate_working</code> : Specifies whether changes of the <code class="code">`Working</code>
+   state in the argument engine are propagated. Defaults to <code class="code">true</code>.
+   If set to <code class="code">false</code>, the mapped engine remains in <code class="code">`Working 0</code> until
+   it transitions to a final state.</div></div></div></div></div>
+<pre><span class="VALmap_engine"><span class="keyword">val</span> map_engine</span> : <code class="type">map_done:('a -&gt; 'b <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine_state">engine_state</a>) -&gt;
+?map_error:(exn -&gt; 'b <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine_state">engine_state</a>) -&gt;
+?map_aborted:(unit -&gt; 'b <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine_state">engine_state</a>) -&gt;
+?propagate_working:bool -&gt; 'a #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> -&gt; 'b <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre><div class="info"><div class="info">Same as function</div></div>
+<div class="ocaml_class ident" name="fmap_engine" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"><pre><span class="TYPEfmap_engine"><span class="keyword">class</span> <code class="type">['a, 'b] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=fmap_engine">fmap_engine</a></span> : <code class="type">'a #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> -&gt; 'a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=final_state">final_state</a> -&gt; 'b <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=final_state">final_state</a> -&gt; </code><code class="type">['b] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a></pre><div class="info"><div class="info">Similar to <code class="code">map_engine</code> but different calling conventions: The
+      mapping function is called when the argument engine reaches a
+      final state, and this state can be mapped to another final state.</div></div></div>
+<pre><span class="VALfmap_engine"><span class="keyword">val</span> fmap_engine</span> : <code class="type">'a #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> -&gt; ('a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=final_state">final_state</a> -&gt; 'b <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=final_state">final_state</a>) -&gt; 'b <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre><div class="info"><div class="info">Same as function<br/>      After opening  <a href="#Uq_engines.Operators">Uq_engines.Operators</a>, this is also available
+      as operator <code class="code">&gt;&gt;</code>, e.g.<br/>      <pre class="codepre"><code class="code"> 
+         e &gt;&gt;
+           (function
+             | `Done r -&gt; ...
+             | `Error error -&gt; ...
+             | `Aborted -&gt; ...
+           )
+       </code></pre></div></div>
+<div class="ocaml_class ident" name="meta_engine" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"><pre><span class="TYPEmeta_engine"><span class="keyword">class</span> <code class="type">['a] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=meta_engine">meta_engine</a></span> : <code class="type">'a #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> -&gt; </code><code class="type">['a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=final_state">final_state</a>] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a></pre><div class="info"><div class="info">maps the final state <code class="code">s</code> to <code class="code">`Done s</code></div></div></div>
+<pre><span class="VALmeta_engine"><span class="keyword">val</span> meta_engine</span> : <code class="type">'a #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> -&gt; 'a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=final_state">final_state</a> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre><div class="info"><div class="info">Same as function</div></div>
+<div class="ocaml_class ident" name="epsilon_engine" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"><pre><span class="TYPEepsilon_engine"><span class="keyword">class</span> <code class="type">['t] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=epsilon_engine">epsilon_engine</a></span> : <code class="type">'t <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine_state">engine_state</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; </code><code class="type">['t] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a></pre><div class="info"><div class="info">This engine transitions from its initial state <code class="code">`Working 0</code> in one
+ step (&quot;epsilon time&quot;) to the passed constant state. During this time
+ event processing will continue, so concurrently running engines can
+ make progress. For performance reasons, however, external resources
+ like file descriptors are not watched for new events.<br/> In previous versions of this library the class was called <code class="code">const_engine</code>.
+ However, this is not a constant thing. In particular, it is possible
+ that this engine is aborted, so the passed state is not reached.
+ To avoid programming errors because of the misnomer, this class has been
+ renamed.</div></div></div>
+<pre><span class="VALepsilon_engine"><span class="keyword">val</span> epsilon_engine</span> : <code class="type">'t <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine_state">engine_state</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; 't <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre><div class="info"><div class="info">Same as function</div></div>
+<div class="ocaml_class ident" name="seq_engine" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"><pre><span class="TYPEseq_engine"><span class="keyword">class</span> <code class="type">['a, 'b] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=seq_engine">seq_engine</a></span> : <code class="type">'a #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> -&gt; 'a -&gt; 'b #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> -&gt; </code><code class="type">['b] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a></pre><div class="info"><div class="info">This engine runs two engines in sequential order. It is called<br/> <pre class="codepre"><code class="code"> let eng_s = new seq_engine eng_a f </code></pre><br/> When <code class="code">eng_a</code> goes to the state <code class="code">`Done arg</code>, the function <code class="code">f</code> is called to
+ obtain<br/> <pre class="codepre"><code class="code"> let eng_b = f arg </code></pre><br/> <code class="code">eng_b</code> runs until it is also in state <code class="code">`Done</code>.<br/> If <code class="code">eng_a</code> or <code class="code">eng_b</code> go to states <code class="code">`Aborted</code> or <code class="code">`Error</code>, the
+ sequential engine <code class="code">eng_s</code> does so, too. If <code class="code">eng_s</code> is aborted,
+ this request will be forwarded to the currently active engine,
+ <code class="code">eng_a</code> or <code class="code">eng_b</code>.<br/> If calling <code class="code">f</code> results in an exception, this is handled as if <code class="code">eng_a</code>
+ signaled an exception.</div></div></div>
+<pre><span class="VALseq_engine"><span class="keyword">val</span> seq_engine</span> : <code class="type">'a #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> -&gt; ('a -&gt; 'b #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a>) -&gt; 'b <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre><div class="info"><div class="info">Same as function.<br/> After opening  <a href="#Uq_engines.Operators">Uq_engines.Operators</a>, this is also available
+ as operator <code class="code">++</code>, e.g.
+ <pre class="codepre"><code class="code"> e1 ++ (fun r1 -&gt; e2) </code></pre>
+ (when <code class="code">e1</code> and <code class="code">e2</code> are engines, and <code class="code">r1</code> is the result of <code class="code">e1</code>).</div></div>
+<div class="ocaml_class ident" name="qseq_engine" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"><pre><span class="TYPEqseq_engine"><span class="keyword">class</span> <code class="type">['a, 'b] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=qseq_engine">qseq_engine</a></span> : <code class="type">'a #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> -&gt; 'a -&gt; 'b #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> -&gt; </code><code class="type">['b] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a></pre></div>
+<pre><span class="VALqseq_engine"><span class="keyword">val</span> qseq_engine</span> : <code class="type">'a #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> -&gt; ('a -&gt; 'b #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a>) -&gt; 'b <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre><div class="info"><div class="info">Almost the same as <code class="code">seq_engine</code>, but this version does not
+      propagate working state (i.e. no progress reporting).<br/>      <code class="code">qseq_engine</code> should be preferred for recursive chains of engines.</div></div>
+<div class="ocaml_class ident" name="stream_seq_engine" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"><pre><span class="TYPEstream_seq_engine"><span class="keyword">class</span> <code class="type">['a] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=stream_seq_engine">stream_seq_engine</a></span> : <code class="type">'a -&gt; ('a -&gt; 'a #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a>) <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; </code><code class="type">['a] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a></pre><div class="info"><div class="info"><code class="code">let se = new stream_seq_engine x0 s esys</code>: The constructed engine <code class="code">se</code>
+ fetches functions <code class="code">f : 'a -&gt; 'a #engine</code> from the stream <code class="code">s</code>, and
+ runs the engines obtained by calling these functions <code class="code">e = f x</code> one
+ after the other. Each function call gets the result of the previous
+ engine as argument. The first call gets <code class="code">x0</code> as argument.<br/> If one of the engines <code class="code">e</code> transitions into an error or aborted state,
+ <code class="code">se</code> will also do that. If <code class="code">se</code> is aborted, this is passed down to
+ the currently running engine <code class="code">e</code>.</div></div></div>
+<pre><span class="VALstream_seq_engine"><span class="keyword">val</span> stream_seq_engine</span> : <code class="type">'a -&gt; ('a -&gt; 'a #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a>) <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; 'a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre><div class="info"><div class="info">Same as function</div></div>
+<div class="ocaml_class ident" name="sync_engine" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"><pre><span class="TYPEsync_engine"><span class="keyword">class</span> <code class="type">['a, 'b] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=sync_engine">sync_engine</a></span> : <code class="type">'a #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> -&gt; 'b #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> -&gt; </code><code class="type">['a * 'b] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a></pre><div class="info"><div class="info">This engine runs two engines in parallel, and waits until both
+ are <code class="code">`Done</code> (synchronization). The product of the two <code class="code">`Done</code> arguments 
+ is taken as the combined result.<br/> If one of the engines goes to the states <code class="code">`Aborted</code> or <code class="code">`Error</code>,
+ the combined engine will follow this transition. The other,
+ non-aborted and non-errorneous engine is aborted in this case.
+ <code class="code">`Error</code> has higher precedence than <code class="code">`Aborted</code>.<br/> If the combined engine is aborted, this request is forwarded
+ to both member engines.</div></div></div>
+<pre><span class="VALsync_engine"><span class="keyword">val</span> sync_engine</span> : <code class="type">'a #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> -&gt; 'b #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> -&gt; ('a * 'b) <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre><div class="info"><div class="info">Same as function</div></div>
+<div class="ocaml_class ident" name="msync_engine" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"><pre><span class="TYPEmsync_engine"><span class="keyword">class</span> <code class="type">['a, 'b] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=msync_engine">msync_engine</a></span> : <code class="type">'a #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> list -&gt; 'a -&gt; 'b -&gt; 'b -&gt; 'b -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; </code><code class="type">['b] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a></pre><div class="info"><div class="info">Multiple synchronization: 
+      <code class="code">let me = new msync_engine el f x0 esys</code> - Runs the engines in <code class="code">el</code> in
+      parallel, and waits until all are <code class="code">`Done</code>. The result of <code class="code">me</code> is
+      then computed by folding the results of the part engines using
+      <code class="code">f</code>, with an initial accumulator <code class="code">x0</code>.<br/>      If one of the engines goes to the states <code class="code">`Aborted</code> or <code class="code">`Error</code>,
+      the combined engine will follow this transition. The other,
+      non-aborted and non-errorneous engines are aborted in this case.
+      <code class="code">`Error</code> has higher precedence than <code class="code">`Aborted</code>.<br/>      If calling <code class="code">f</code> results in an exception, this is handled as if
+      the part engine signals an error.<br/>      If the combined engine is aborted, this request is forwarded
+      to all member engines.</div></div></div>
+<pre><span class="VALmsync_engine"><span class="keyword">val</span> msync_engine</span> : <code class="type">'a #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> list -&gt;
+('a -&gt; 'b -&gt; 'b) -&gt; 'b -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; 'b <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre><div class="info"><div class="info">Same as function</div></div>
+<div class="ocaml_class ident" name="delay_engine" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"><pre><span class="TYPEdelay_engine"><span class="keyword">class</span> <code class="type">['a] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=delay_engine">delay_engine</a></span> : <code class="type">float -&gt; unit -&gt; 'a #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; </code><code class="type">['a] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a></pre><div class="info"><div class="info"><code class="code">let de = delay_engine d f esys</code>: The engine <code class="code">e = f()</code> is created
+      after <code class="code">d</code> seconds, and the result of <code class="code">e</code> becomes the result of <code class="code">de</code>.</div></div></div>
+<pre><span class="VALdelay_engine"><span class="keyword">val</span> delay_engine</span> : <code class="type">float -&gt; (unit -&gt; 'a #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a>) -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; 'a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre><div class="info"><div class="info">Same as function</div></div>
+<div class="ocaml_class ident" name="timeout_engine" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"><pre><span class="TYPEtimeout_engine"><span class="keyword">class</span> <code class="type">['a] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=timeout_engine">timeout_engine</a></span> : <code class="type">float -&gt; exn -&gt; 'a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a> -&gt; </code><code class="type">['a] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a></pre><div class="info"><div class="info"><code class="code">timeout_engine d x e</code>: If the engine <code class="code">e</code> finishes within <code class="code">d</code>
+      seconds, the result remains unchanged. If the engine takes longer,
+      though, it is aborted, and the state transitions to
+      <code class="code">`Error x</code></div></div></div>
+<pre><span class="VALtimeout_engine"><span class="keyword">val</span> timeout_engine</span> : <code class="type">float -&gt; exn -&gt; 'a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a> -&gt; 'a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre><div class="info"><div class="info">Same as function</div></div>
+<div class="ocaml_class ident" name="watchdog" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"><pre><span class="TYPEwatchdog"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=watchdog">watchdog</a></span> : <code class="type">float -&gt; 'a #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> -&gt; </code><code class="type">[unit] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a></pre><div class="info"><div class="info">A watchdog engine checks whether the argument engine makes
+ progress, and if there is no progress for the passed number of
+ seconds, the engine is aborted, and the watchdog state changes
+ to <code class="code">`Error Watchdog_timeout</code>.<br/> The current implementation is not very exact, and it may take
+ a little longer than the passed period of inactivity until the
+ watchdog recognizes inactivity.<br/> If the argument engine terminates, the watchdog changes its state to
+ <code class="code">`Done ()</code><br/> Important note: The watchdog assumes that the <code class="code">`Working</code> state 
+ of the target engine really counts events that indicate progress.
+ This does not work for:<ul><li><code class="code">poll_process_engine</code>: there is no way to check whether a subprocess
+   makes progress</li><li><code class="code">connector</code>: It is usually not possible to reflect the progress
+   on packet level</li><li><code class="code">listener</code>: It is usually not possible to reflect the progress
+   on packet level
+   </li></ul></div></div></div>
+<pre><span class="VALwatchdog"><span class="keyword">val</span> watchdog</span> : <code class="type">float -&gt; 'a #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> -&gt; unit <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre><div class="info"><div class="info">Same as function</div></div>
+<div class="ocaml_class sig" name="serializer_t"><pre><span class="TYPEserializer_t"><span class="keyword">class type</span> <code class="type">['a] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=serializer_t">serializer_t</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">A serializer queues up engines, and starts the next engine when the
+      previous one finishes.</div></div><div class="ocaml_class_content"><pre><span class="METHODserialized"><span class="keyword">method</span> serialized</span> : <code class="code">(<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; 'a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a>) -&gt; 'a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre>
+<div class="info"><div class="info"><code class="code">let se = serialized f</code>: Waits until all the previous engines reach
+	a final state, and then runs <code class="code">e = f esys</code>.<br/>        <code class="code">se</code> enters a final state when <code class="code">e</code> does.</div></div></div></div>
+<div class="ocaml_class ident" name="serializer" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=serializer_t"><pre><span class="TYPEserializer"><span class="keyword">class</span> <code class="type">['a] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=serializer">serializer</a></span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; </code><code class="type">['a] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=serializer_t">serializer_t</a></pre><div class="info"><div class="info">Creates a serializer</div></div></div>
+<pre><span class="VALserializer"><span class="keyword">val</span> serializer</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; 'a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=serializer_t">serializer_t</a></code></pre><div class="info"><div class="info">Same as function</div></div>
+<div class="ocaml_class sig" name="prioritizer_t"><pre><span class="TYPEprioritizer_t"><span class="keyword">class type</span> <code class="type">['a] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=prioritizer_t">prioritizer_t</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">A prioritizer allows to prioritize the execution of engines: At any
+    time, only engines of a certain priority <code class="code">p</code> can be executed. If an
+    engine with a higher priority <code class="code">ph</code> wants to start, it prevents further
+    engines with priority level <code class="code">p</code> from being started until the higher
+    prioritized engines with level <code class="code">ph</code> are done. On the same priority level,
+    there is no limit for the number of executed engines.<br/>    Here, higher priorities have lower numbers.</div></div><div class="ocaml_class_content"><pre><span class="METHODprioritized"><span class="keyword">method</span> prioritized</span> : <code class="code">(<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; 'a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a>) -&gt; int -&gt; 'a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre>
+<div class="info"><div class="info"><code class="code">let pe = prioritized f p</code>: Queues up <code class="code">f</code> on priority level <code class="code">p</code>.
+	The engine  <code class="code">e = f esys</code> can start when there is no waiting
+	engine on a higher priority level (i.e. with a number less than
+	<code class="code">p</code>), and all running engines on lower priority levels are done.<br/>	<code class="code">pe</code> enters a final state when <code class="code">e</code> does.</div></div></div></div>
+<div class="ocaml_class ident" name="prioritizer" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=prioritizer_t"><pre><span class="TYPEprioritizer"><span class="keyword">class</span> <code class="type">['a] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=prioritizer">prioritizer</a></span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; </code><code class="type">['a] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=prioritizer_t">prioritizer_t</a></pre><div class="info"><div class="info">Creates a prioritizer</div></div></div>
+<pre><span class="VALprioritizer"><span class="keyword">val</span> prioritizer</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; 'a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=prioritizer_t">prioritizer_t</a></code></pre><div class="info"><div class="info">Same as function</div></div>
+<div class="ocaml_class sig" name="cache_t"><pre><span class="TYPEcache_t"><span class="keyword">class type</span> <code class="type">['a] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=cache_t">cache_t</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">A cache contains a mutable value that is obtained by running an
+    engine.</div></div><div class="ocaml_class_content"><pre><span class="METHODget_engine"><span class="keyword">method</span> get_engine</span> : <code class="code">unit -&gt; 'a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre>
+<div class="info"><div class="info">Requests the value. If it is not already in the cache, 
+        the engine for getting the value is started, and it is waited
+	until the value is available.</div></div>
+<pre><span class="METHODget_opt"><span class="keyword">method</span> get_opt</span> : <code class="code">unit -&gt; 'a option</code></pre>
+<div class="info"><div class="info">Returns the cached value if available</div></div>
+<pre><span class="METHODput"><span class="keyword">method</span> put</span> : <code class="code">'a -&gt; unit</code></pre>
+<div class="info"><div class="info">Puts a value immediately into the cache. It replaces an existing
+	value. If it is currently tried to obtain a new value by running
+	an engine, this engine is kept running, and <code class="code">get_engine</code> will
+	return its result. Only future calls of <code class="code">get_engine</code> will return
+	the value just put into the cache.</div></div>
+<pre><span class="METHODinvalidate"><span class="keyword">method</span> invalidate</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Invalidates the cache - if a value exists in the cache, it is removed.
+	If in the future the cache value is requested via <code class="code">get_engine</code> 
+        the engine will be started anew to get the value.<br/>        Note that (as for <code class="code">put</code>) any already running <code class="code">get_engine</code> is not
+	interrupted.</div></div>
+<pre><span class="METHODabort"><span class="keyword">method</span> abort</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Any engine running to get the cache value is aborted, and the contents
+	of the cache are invalidated. Note that also the engines returned
+	by <code class="code">get_engine</code> are aborted.</div></div></div></div>
+<div class="ocaml_class ident" name="cache" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=cache_t"><pre><span class="TYPEcache"><span class="keyword">class</span> <code class="type">['a] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=cache">cache</a></span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; 'a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; </code><code class="type">['a] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=cache_t">cache_t</a></pre><div class="info"><div class="info"><code class="code">new cache f esys</code>: A cache that runs <code class="code">f esys</code> to obtain values</div></div></div>
+<pre><span class="VALcache"><span class="keyword">val</span> cache</span> : <code class="type">(<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; 'a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a>) -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; 'a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=cache_t">cache_t</a></code></pre><div class="info"><div class="info">Same as function</div></div>
+<div class="ocaml_class sig" name="engine_mixin"><pre><span class="TYPEengine_mixin"><span class="keyword">class</span> <code class="type">['t] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine_mixin">engine_mixin</a></span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; 't <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine_state">engine_state</a> -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">A useful class fragment that implements <code class="code">state</code> and 
+ <code class="code">request_notification</code>.</div></div><div class="ocaml_class_content"><pre><span class="METHODstate"><span class="keyword">method</span> state</span> : <code class="code">'t <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine_state">engine_state</a></code></pre>
+
+<pre><span class="METHODset_state"><span class="keyword">method</span> <span class="keyword">private</span> set_state</span> : <code class="code">'t <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine_state">engine_state</a> -&gt; unit</code></pre>
+
+<pre><span class="METHODrequest_notification"><span class="keyword">method</span> request_notification</span> : <code class="code">(unit -&gt; bool) -&gt; unit</code></pre>
+
+<pre><span class="METHODnotify"><span class="keyword">method</span> <span class="keyword">private</span> notify</span> : <code class="code">unit -&gt; unit</code></pre>
+
+<pre><span class="METHODevent_system"><span class="keyword">method</span> event_system</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a></code></pre>
+</div></div>
+<div class="ocaml_module sig" name="Operators"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Uq_engines.Operators">Operators</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Handy operators: <code class="code">++</code>, <code class="code">&gt;&gt;</code>, and <code class="code">eps_e</code></div></div><div class="ocaml_module_content">
+<div class="info"><div class="info">The most important operators. This module should be opened.</div></div>
+<pre><span class="VAL(++)"><span class="keyword">val</span> (++)</span> : <code class="type">'a #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> -&gt; ('a -&gt; 'b #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a>) -&gt; 'b <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre><div class="info"><div class="info">Another name for <code class="code">qseq_engine</code>. Use this operator to run engines in
+	sequence:<br/>	<pre class="codepre"><code class="code">
+	    e1 ++ (fun r1 -&gt; e2) ++ (fun r2 -&gt; e3) ++ ...
+	</code></pre><br/>	Here <code class="code">rK</code> is the result of engine <code class="code">eK</code>.<br/>        Change in OCamlnet-3.6.4: <code class="code">++</code> is now <code class="code">qseq_engine</code>, and no longer
+        <code class="code">seq_engine</code>, and hence it does not support progress reporting anymore.
+        Redefine <code class="code">++</code> as <code class="code">seq_engine</code> in your own code if you need the old
+        behavior.</div></div>
+<pre><span class="VAL(&gt;&gt;)"><span class="keyword">val</span> (&gt;&gt;)</span> : <code class="type">'a #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a> -&gt; ('a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=final_state">final_state</a> -&gt; 'b <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=final_state">final_state</a>) -&gt; 'b <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre><div class="info"><div class="info">Another name for <code class="code">fmap_engine</code>. Use this operator to map the
+	final value of an engine:<br/>	<pre class="codepre"><code class="code">
+	    e &gt;&gt; (function `Done x -&gt; ... | `Error e -&gt; ... | `Aborted -&gt; ...)
+	</code></pre></div></div>
+<pre><span class="VALeps_e"><span class="keyword">val</span> eps_e</span> : <code class="type">'t <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine_state">engine_state</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; 't <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre><div class="info"><div class="info">Same as <code class="code">epsilon_engine</code></div></div></div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Basic I/O engines</h1></div></div>
+<div class="ocaml_class sig" name="poll_engine"><pre><span class="TYPEpoll_engine"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=poll_engine">poll_engine</a></span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; (<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=operation">Unixqueue.operation</a> * float) list -&gt; (exn -&gt; bool) option -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">This engine waits until one of the passed operations can be 
+ carried out, or until one of the operations times out. 
+ In these cases, the state of the engine  changes to <code class="code">`Done ev</code>, where 
+ <code class="code">ev</code> is the corresponding event.<br/> The argument list enumerates the operations to watch for. For every
+ operation there may be a positive timeout value, or a negative number
+ to indicate that no timeout is specified.<br/> After one event has been caught, the engine terminates operation.
+ The method <code class="code">restart</code> can be called to activate it again (with the
+ same event condition, and the same notification list). See the
+ description of <code class="code">restart</code> for possible problems.<div class="parameters"><div class="param_info"><code class="code">extra_match</code> : This function is called when an <code class="code">Extra</code> event is
+   found. If the function returns <code class="code">true</code> for the argument exception
+   of <code class="code">Extra</code>, the event is caught; otherwise it is rejected.</div></div></div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"> <pre><span class="keyword">inherit</span> <code class="type"/><code class="type">[<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event">Unixqueue.event</a>] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a></pre></div>
+
+<div class="info"><div class="info"><h1 id="1_TITLE">Additional methods</h1></div></div>
+<pre><span class="METHODrestart"><span class="keyword">method</span> restart</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Activate the engine again when it is already in a final state.
+ This method violates the engine protocol, and should be used
+ with care; it is not allowed to leave a final state.<br/> The notification lists are kept, but note that observers often
+ detach when final states are reached. This may cause problems.</div></div>
+<pre><span class="METHODgroup"><span class="keyword">method</span> group</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">Unixqueue.group</a></code></pre>
+<div class="info"><div class="info">Returns the group the engine is member of</div></div></div></div>
+<div class="ocaml_class ident" name="input_engine" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"><pre><span class="TYPEinput_engine"><span class="keyword">class</span> <code class="type">['a] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=input_engine">input_engine</a></span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; 'a -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; float -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; </code><code class="type">['a] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a></pre><div class="info"><div class="info">Generic input engine for reading from a file descriptor:
+      <code class="code">let e = new input_engine f fd tmo</code> - Waits until the file descriptor
+      becomes readable, and calls then <code class="code">let x = f fd</code> to read from the
+      descriptor. The result <code class="code">x</code> is the result of the engine.<br/>      If the file descriptor does not become readable within <code class="code">tmo</code> seconds,
+      the resulting engine transitions to <code class="code">`Error Timeout</code>.<br/>      Use this class to construct engines reading via <code class="code">Unix.read</code> or
+      comparable I/O functions:<br/>      <pre class="codepre"><code class="code">
+      let read_engine fd tmo esys =
+        new input_engine (fun fd -&gt;
+                            let buf = String.create 4096 in
+                            let n = Unix.read fd buf 0 (String.length buf) in
+                            String.sub buf 0 n
+                         )
+                         fd tmo esys
+      </code></pre><br/>      This engine returns the read data as string.<br/>      See also  <a href="#Uq_io.input_e">Uq_io.input_e</a> for a more generic way of reading with
+      engines.</div></div></div>
+<div class="ocaml_class ident" name="output_engine" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"><pre><span class="TYPEoutput_engine"><span class="keyword">class</span> <code class="type">['a] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=output_engine">output_engine</a></span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; 'a -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; float -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; </code><code class="type">['a] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a></pre><div class="info"><div class="info">Generic output engine for writing to a file descriptor:
+      <code class="code">let e = new output_engine f fd tmo</code> - Waits until the file descriptor
+      becomes writable, and calls then <code class="code">let x = f fd</code> to write to the
+      descriptor. The result <code class="code">x</code> is the result of the engine.<br/>      If the file descriptor does not become writable within <code class="code">tmo</code> seconds,
+      the resulting engine transitions to <code class="code">`Error Timeout</code>.<br/>      Use this class to construct engines writing via <code class="code">Unix.single_write</code> or
+      comparable I/O functions:<br/>      <pre class="codepre"><code class="code">
+      let write_engine fd s tmo esys =
+        new output_engine (fun fd -&gt;
+                             Unix.single_write fd s 0 (String.length s)
+                          )
+                          fd tmo esys
+      </code></pre><br/>      This engine returns the number of written bytes.<br/>      See also  <a href="#Uq_io.output_e">Uq_io.output_e</a> for a more generic way of writing with
+      engines.</div></div></div>
+<div class="ocaml_class ident" name="poll_process_engine" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"><pre><span class="TYPEpoll_process_engine"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=poll_process_engine">poll_process_engine</a></span> : <code class="type">float option -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; </code><code class="type">[<a href="?package=ocaml&amp;module=Unix&amp;type=process_status">Unix.process_status</a>] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a></pre><div class="info"><div class="info"><b>This class is deprecated!</b> Use the classes in  <a href="#Shell_uq">Shell_uq</a> instead.<br/> This engine waits until the process with the ID <code class="code">pid</code> terminates.
+ When this happens, the state of the engine changes to 
+ <code class="code">`Done</code>, and the argument of <code class="code">`Done</code> is the process status.<br/> The engine does not catch stopped processes.<br/> The engine checks the process status every <code class="code">period</code> seconds, and
+ whenever there is a <code class="code">Signal</code> event on the queue. The idea of the
+ latter is that the user of this engine can increase the responsiveness
+ by defining a signal handler for SIGCHLD signals (the handler need
+ not to perform any special action, it must just be defined). When
+ the sub process terminates, a SIGCHLD signal is sent to the current
+ process. If the event loop happens to wait for new conditions (which
+ is usually very likely), a <code class="code">Signal</code> event will be generated, and
+ the engine will check the process status very soon. Note that it is
+ not guaranteed that a terminating process triggers a <code class="code">Signal</code> event,
+ although it is very likely.<br/> You can define an empty SIGCHLD handler with:<br/> <pre class="codepre"><code class="code"> Sys.set_signal Sys.sigchld (Sys.Signal_handle (fun _ -&gt; ())) </code></pre><div class="parameters"><div class="param_info"><code class="code">period</code> : Every <code class="code">period</code> seconds the process status is checked.
+   Defaults to 0.1 seconds.</div></div></div></div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">More I/O</h2><br/>    The module  <a href="#Uq_io">Uq_io</a> provides a bunch of functions to read and write
+    data via various &quot;devices&quot;. All these functions return engines, and
+    are easy to use. Devices can be file descriptors, but also other
+    data structures. In particular, there is also support for buffered I/O
+    and for reading line-by-line from an input device.</div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Transfer engines</h1></div></div>
+<div class="info"><div class="info">Transfer engines copy data between file descriptors. This kind
+    of engine is likely to be declared as deprecated in
+    the future. If possible, one should use multiplex controllers
+    (see below), and for copying streams the generic copier 
+     <a href="#Uq_io.copy_e">Uq_io.copy_e</a> is a better choice.<br/>    The pure types <code class="code">async_in_channel</code> and <code class="code">async_out_channel</code> have been
+    proven to be useful for bridging with  <a href="#Netchannels">Netchannels</a>.</div></div>
+<div class="ocaml_class sig" name="async_out_channel"><pre><span class="TYPEasync_out_channel"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=async_out_channel">async_out_channel</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">An asynchrounous output channel provides methods to output data to
+ a stream descriptor. It is based on <code class="code">raw_out_channel</code>, which is 
+ defined by the Ocamlnet module <code class="code">Netchannels</code> (see there for an 
+ introduction into the idea of using objects as I/O channels).
+ An asynchronous channel can indicate that there is no space in the
+ output buffer. Furthermore, one can request notification in the case
+ that there is no space or again space in the output buffer.</div></div><div class="ocaml_class_content"><div class="info"><div class="info"><h1 id="1_TITLE">Methods from <code class="code">raw_out_channel</code> </h1></div></div>
+<pre><span class="METHODoutput"><span class="keyword">method</span> output</span> : <code class="code">string -&gt; int -&gt; int -&gt; int</code></pre>
+<div class="info"><div class="info"><code class="code">output s k n</code>: Writes the substring of <code class="code">s</code> beginning at index
+ <code class="code">k</code> with length <code class="code">n</code> into the channel. The channel is free to
+ accept only a portion of the string (or even nothing), and 
+ returns the number of bytes it accepts.</div></div>
+<pre><span class="METHODclose_out"><span class="keyword">method</span> close_out</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Closes the channel</div></div>
+<pre><span class="METHODpos_out"><span class="keyword">method</span> pos_out</span> : <code class="code">int</code></pre>
+<div class="info"><div class="info">Returns the number of characters output into the channel</div></div>
+<pre><span class="METHODflush"><span class="keyword">method</span> flush</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Flushes the channel. Asynchronous channels usually ignore
+ flush requests. A potential meaning of flushing could be that
+ no more data are accepted until the current buffer is completely
+ processed. Implementing this is optional.</div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Additional control methods</h1></div></div>
+<pre><span class="METHODcan_output"><span class="keyword">method</span> can_output</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">Whether output is possible, i.e. the output method accepts at least
+ one byte</div></div>
+<pre><span class="METHODrequest_notification"><span class="keyword">method</span> request_notification</span> : <code class="code">(unit -&gt; bool) -&gt; unit</code></pre>
+<div class="info"><div class="info">After the notification has been requested, the passed function is
+ be called whenever <code class="code">can_output</code> changes its value (or might change
+ its value). The function returns <code class="code">true</code> if there is still interest
+ in notification, and <code class="code">false</code> if notification must be disabled.<br/> There can be any number of parallel active notifications. It is
+ allowed that a notification callback requests further notifications.</div></div></div></div>
+<div class="ocaml_class sig" name="async_in_channel"><pre><span class="TYPEasync_in_channel"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=async_in_channel">async_in_channel</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">An asynchrounous input channel provides methods to input data from
+ a stream descriptor. It is based on <code class="code">raw_in_channel</code>, which is 
+ defined by the Ocamlnet module <code class="code">Netchannels</code> (see there for an 
+ introduction into the idea of using objects as I/O channels).
+ An asynchronous channel can indicate that there is no data in the
+ input buffer. Furthermore, one can request notification in the case
+ that there is no data or again data in the input buffer.</div></div><div class="ocaml_class_content"><div class="info"><div class="info"><h1 id="1_TITLE">Methods from <code class="code">raw_in_channel</code> </h1></div></div>
+<pre><span class="METHODinput"><span class="keyword">method</span> input</span> : <code class="code">string -&gt; int -&gt; int -&gt; int</code></pre>
+<div class="info"><div class="info"><code class="code">input s k n</code>: Reads channel data into the substring of <code class="code">s</code>
+ beginning at index <code class="code">k</code> with length <code class="code">n</code>. The channel is free to
+ fill only a portion of the string (or even nothing). The method 
+ returns the number of bytes actually read.<br/> The exception <code class="code">End_of_file</code> indicates that the end of the channel
+ is reached. The return value <code class="code">0</code>, however, means that no data
+ could be read.</div></div>
+<pre><span class="METHODclose_in"><span class="keyword">method</span> close_in</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Closes the channel</div></div>
+<pre><span class="METHODpos_in"><span class="keyword">method</span> pos_in</span> : <code class="code">int</code></pre>
+<div class="info"><div class="info">Returns the number of characters read from the channel</div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Additional control methods</h1></div></div>
+<pre><span class="METHODcan_input"><span class="keyword">method</span> can_input</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">Whether input is possible, i.e. the input method gets at least
+ one byte, or can signal <code class="code">End_of_file</code>.</div></div>
+<pre><span class="METHODrequest_notification"><span class="keyword">method</span> request_notification</span> : <code class="code">(unit -&gt; bool) -&gt; unit</code></pre>
+<div class="info"><div class="info">After the notification has been requested, the passed function is
+ be called whenever <code class="code">can_input</code> changes its value (or might change
+ its value). The function returns <code class="code">true</code> if there is still interest
+ in notification, and <code class="code">false</code> if notification must be disabled.<br/> There can be any number of parallel active notifications. It is
+ allowed that a notification callback requests further notifications.</div></div></div></div>
+<div class="ocaml_class ident" name="pseudo_async_out_channel" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=async_out_channel"><pre><span class="TYPEpseudo_async_out_channel"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=pseudo_async_out_channel">pseudo_async_out_channel</a></span> : <code class="type">#<a href="?package=ocamlnet&amp;module=Netchannels&amp;class=raw_out_channel">Netchannels.raw_out_channel</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=async_out_channel">async_out_channel</a></pre><div class="info"><div class="info">Takes a  <a href="#Netchannels.raw_out_channel">Netchannels.raw_out_channel</a> as an asynchronous channel.
+      It is always possible to output to this channel.</div></div></div>
+<div class="ocaml_class ident" name="pseudo_async_in_channel" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=async_in_channel"><pre><span class="TYPEpseudo_async_in_channel"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=pseudo_async_in_channel">pseudo_async_in_channel</a></span> : <code class="type">#<a href="?package=ocamlnet&amp;module=Netchannels&amp;class=raw_in_channel">Netchannels.raw_in_channel</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=async_in_channel">async_in_channel</a></pre><div class="info"><div class="info">Takes a  <a href="#Netchannels.raw_in_channel">Netchannels.raw_in_channel</a> as an asynchronous channel.
+      It is always possible to input from this channel.</div></div></div>
+<div class="ocaml_class ident" name="receiver" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"><pre><span class="TYPEreceiver"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=receiver">receiver</a></span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; #<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=async_out_channel">async_out_channel</a> -&gt; bool option -&gt; bool option -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; </code><code class="type">[unit] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a></pre><div class="info"><div class="info">This engine copies all data from the <code class="code">src</code> file descriptor to the
+ <code class="code">dst</code> output channel. The engine attaches immediately to the 
+ event system, and detaches automatically. <br/> By default, both the file descriptor and the output channel
+ are closed when the engine stops operation, either successfully
+ or because of an error. <br/> The semantics of the engine is undefined if <code class="code">src</code> is not a
+ stream-oriented descriptor.<br/> The engine goes to <code class="code">`Error</code> state when either reading from <code class="code">src</code>
+ or writing to <code class="code">dst</code> raises an unexpected exception.<br/> For every file descriptor event, the state is advanced from
+ <code class="code">`Working n</code> to <code class="code">`Working (n+1)</code>.<br/> TODO: This class cannot yet cope with Win32 named pipes.<div class="parameters"><div class="param_info"><code class="code">close_src</code> : Whether to close <code class="code">src</code> when the engine stops
+   (default: <code class="code">true</code>)</div><div class="param_info"><code class="code">close_dst</code> : Whether to close <code class="code">dst</code> when the engine stops
+   (default: <code class="code">true</code>)</div></div></div></div></div>
+<div class="ocaml_class ident" name="sender" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"><pre><span class="TYPEsender"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=sender">sender</a></span> : <code class="type">#<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=async_in_channel">async_in_channel</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; bool option -&gt; bool option -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; </code><code class="type">[unit] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a></pre><div class="info"><div class="info">This engine copies all data from the <code class="code">src</code> input channel to the
+ <code class="code">dst</code> file descriptor. The engine attaches immediately to the 
+ event system, and detaches automatically. <br/> By default, both the file descriptor and the output channel
+ are closed when the engine stops operation, either successfully
+ or because of an error. <br/> The semantics of the engine is undefined if <code class="code">dst</code> is not a
+ stream-oriented descriptor.<br/> The engine goes to <code class="code">`Error</code> state when either reading from <code class="code">src</code>
+ or writing to <code class="code">dst</code> raises an unexpected exception.<br/> For every file descriptor event, the state is advanced from
+ <code class="code">`Working n</code> to <code class="code">`Working (n+1)</code>.<br/> TODO: This class cannot yet cope with Win32 named pipes.<div class="parameters"><div class="param_info"><code class="code">close_src</code> : Whether to close <code class="code">src</code> when the engine stops
+   (default: <code class="code">true</code>)</div><div class="param_info"><code class="code">close_dst</code> : Whether to close <code class="code">dst</code> when the engine stops
+   (default: <code class="code">true</code>)</div></div></div></div></div>
+<div class="ocaml_class sig" name="async_out_channel_engine"><pre><span class="TYPEasync_out_channel_engine"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=async_out_channel_engine">async_out_channel_engine</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Combination of engine + async_out_channel</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"> <pre><span class="keyword">inherit</span> <code class="type"/><code class="type">[unit] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a></pre></div>
+
+<div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=async_out_channel"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=async_out_channel">async_out_channel</a></pre></div>
+</div></div>
+<div class="ocaml_class sig" name="async_in_channel_engine"><pre><span class="TYPEasync_in_channel_engine"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=async_in_channel_engine">async_in_channel_engine</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Combination of engine + async_in_channel</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"> <pre><span class="keyword">inherit</span> <code class="type"/><code class="type">[unit] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a></pre></div>
+
+<div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=async_in_channel"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=async_in_channel">async_in_channel</a></pre></div>
+</div></div>
+<div class="ocaml_class ident" name="output_async_descr" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=async_out_channel_engine"><pre><span class="TYPEoutput_async_descr"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=output_async_descr">output_async_descr</a></span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; int option -&gt; bool option -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=async_out_channel_engine">async_out_channel_engine</a></pre><div class="info"><div class="info">This engine implements an <code class="code">async_out_channel</code> for the output
+ descriptor <code class="code">dst</code>. The engine provides an internal buffer to
+ reduce the number of blocked output operations; by default there
+ is even no limit for the growth of the buffer, and because of this
+ the channel never blocks (<code class="code">can_output</code> is always <code class="code">true</code>).<br/> The engine attaches immediately to the event system, and detaches 
+ automatically. By default, the file descriptor is closed when the
+ engine stops operation, either successfully or because of an
+ error. <br/> If the buffer is full, the class accepts no more data until
+ there is again free space in the buffer. This means that writers
+ must be prepared that <code class="code">can_output</code> returns <code class="code">false</code>, and that
+ the <code class="code">output</code> method returns 0. The buffer can only get &quot;full&quot;
+ if the <code class="code">buffer_size</code> argument is passed.<br/> The notification mechanism is shared by the &quot;engine nature&quot; and
+ by the &quot;channel nature&quot; of this class: If either the <code class="code">state</code> or
+ <code class="code">can_output</code> change their values, the notification callbacks
+ are invoked.<br/> The semantics of the engine is undefined if <code class="code">dst</code> is not a
+ stream-oriented descriptor.<br/> TODO: This class cannot yet cope with Win32 named piped.<div class="parameters"><div class="param_info"><code class="code">buffer_size</code> : Limits the size of the buffer</div><div class="param_info"><code class="code">close_dst</code> : Whether to close <code class="code">dst</code> when the engine stops
+    (default: <code class="code">true</code>)</div></div></div></div></div>
+<div class="ocaml_class ident" name="input_async_descr" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=async_in_channel_engine"><pre><span class="TYPEinput_async_descr"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=input_async_descr">input_async_descr</a></span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; int option -&gt; bool option -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=async_in_channel_engine">async_in_channel_engine</a></pre><div class="info"><div class="info">The corresponding class for asynchronous input channels.<br/> TODO: This class cannot yet cope with Win32 named piped.</div></div></div>
+<pre><span class="TYPEcopy_task"><span class="keyword">type</span> copy_task</span> = <code class="type">[ `Bidirectional of <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a>
+| `Tridirectional of <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a>
+| `Uni_socket of <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a>
+| `Unidirectional of <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> ]</code></pre><div class="info"><div class="info">Specifies the task the <code class="code">copier</code> class has to do:<br/> - <code class="code">`Unidirectional(src,dst)</code>: Data from <code class="code">src</code> are copied to <code class="code">dst</code>.
+   EOF of <code class="code">src</code> causes that both descriptors are closed.<ul><li><code class="code">`Uni_socket(src,dst)</code>: Data from <code class="code">src</code> are copied to <code class="code">dst</code>.
+   EOF of <code class="code">src</code> causes that <code class="code">dst</code> is shut down for sending; all descriptors
+   remain open. It is required that <code class="code">dst</code> is a socket.</li><li><code class="code">`Bidirectional(bi1,bi2)</code>: Data from <code class="code">bi1</code> are copied to <code class="code">bi2</code>,
+   and data from <code class="code">bi2</code> are copied to <code class="code">bi1</code>. EOF of one descriptor
+   causes that the other descriptor is shut down for sending.
+   When both descriptors are at EOF, both are closed.
+   It is required that <code class="code">bi1</code> and <code class="code">bi2</code> are sockets.</li><li><code class="code">`Tridirectional(bi,dst,src)</code>: Data from <code class="code">bi</code> are copied to <code class="code">dst</code>,
+   and data from <code class="code">src</code> are copied to <code class="code">bi</code> (i.e. a bidirectional
+   descriptor is split up into two unidirectional descriptors). 
+   EOF of <code class="code">bi</code> causes that <code class="code">dst</code> is closed. EOF of <code class="code">src</code> causes
+   that <code class="code">bi</code> is shut down for sending. EOF in both directions 
+   causes that all descriptors are closed. It is required that
+   <code class="code">bi</code> is a socket.
+   </li></ul></div></div>
+<div class="ocaml_class ident" name="copier" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"><pre><span class="TYPEcopier"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=copier">copier</a></span> : <code class="type"><a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=copy_task">copy_task</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; </code><code class="type">[unit] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">engine</a></pre><div class="info"><div class="info">This engine copies data between file descriptors as specified by
+ the <code class="code">copy_task</code> argument.<br/> The task is done when all input descriptors are at EOF. See
+ the description of <code class="code">copy_task</code> for details, especially whether
+ the descriptors are closed or not.<br/> On error or abort, the descriptors are only closed if they
+ had been closed on regular EOF.<br/> The semantics of the engine is undefined if one of the descriptors
+ is not stream-oriented.<br/> TODO: This class cannot yet cope with Win32 named piped.</div></div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Socket engines</h1></div></div>
+<div class="info"><div class="info">Note that Win32 named pipes are also supported by the following
+    API's, although they are not sockets. These pipes have a feature
+    set comparable to Unix domain sockets.</div></div>
+<pre><span class="TYPEinetspec"><span class="keyword">type</span> inetspec</span> = <code class="type">[ `Sock_inet of <a href="?package=ocaml&amp;module=Unix&amp;type=socket_type">Unix.socket_type</a> * <a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a> * int
+| `Sock_inet_byname of <a href="?package=ocaml&amp;module=Unix&amp;type=socket_type">Unix.socket_type</a> * string * int ]</code></pre>
+<pre><span class="TYPEsockspec"><span class="keyword">type</span> sockspec</span> = <code class="type">[ `Sock_inet of <a href="?package=ocaml&amp;module=Unix&amp;type=socket_type">Unix.socket_type</a> * <a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a> * int
+| `Sock_inet_byname of <a href="?package=ocaml&amp;module=Unix&amp;type=socket_type">Unix.socket_type</a> * string * int
+| `Sock_unix of <a href="?package=ocaml&amp;module=Unix&amp;type=socket_type">Unix.socket_type</a> * string ]</code></pre><div class="info"><div class="info">Extended names for socket addresses. Currently, these naming schemes
+ are supported:<ul><li><code class="code">`Sock_unix(stype,path)</code>: Names the Unix domain socket at <code class="code">path</code>.
+   The socket type <code class="code">stype</code> is an auxiliary piece of information, but
+   not a distinguishing part of the name. <code class="code">path = &quot;&quot;</code> refers to 
+   anonymous sockets. Otherwise, the <code class="code">path</code> must be an absolute path name.</li><li><code class="code">`Sock_inet(stype,addr,port)</code>: Names the Internet socket of type
+   <code class="code">stype</code> bound to the IP address <code class="code">addr</code> and the <code class="code">port</code>.
+   If <code class="code">stype = Unix.SOCK_STREAM</code>, a TCP socket is meant, and if 
+   <code class="code">stype = Unix.SOCK_DGRAM</code>, a UDP socket is meant. It is allowed
+   that <code class="code">addr = Unix.inet_addr_any</code>. If <code class="code">port = 0</code>, the name is to
+   be considered as incomplete.</li><li><code class="code">`Sock_inet_byname(stype,name,port)</code>: Names the Internet socket of
+   type <code class="code">stype</code> bound to the IP address corresponding to the 
+   <code class="code">name</code>, and bound to the <code class="code">port</code>. It is unspecified which naming
+   service is used to resolve <code class="code">name</code> to an IP address, and how it is
+   used. If the <code class="code">name</code> cannot be resolved, no socket is meant; this
+   is usually an error. <code class="code">stype</code> is interpreted as for <code class="code">`Sock_inet</code>.
+   If <code class="code">port = 0</code>, the name is to be considered as incomplete.</li></ul> It is currently not possible to name IP sockets that are bound to
+ several IP addresses but not all IP addresses of the host.</div></div>
+<pre><span class="VALsockspec_of_sockaddr"><span class="keyword">val</span> sockspec_of_sockaddr</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=socket_type">Unix.socket_type</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a> -&gt; <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=sockspec">sockspec</a></code></pre><div class="info"><div class="info">Converts a normal socket address to the extended form</div></div>
+<pre><span class="VALsockspec_of_socksymbol"><span class="keyword">val</span> sockspec_of_socksymbol</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=socket_type">Unix.socket_type</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsockaddr&amp;type=socksymbol">Netsockaddr.socksymbol</a> -&gt; <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=sockspec">sockspec</a></code></pre><div class="info"><div class="info">Converts a  <a href="#Netsockaddr.socksymbol">Netsockaddr.socksymbol</a> to this form</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Client sockets</h2></div></div>
+<pre><span class="TYPEconnect_address"><span class="keyword">type</span> connect_address</span> = <code class="type">[ `Command of string * (int -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; unit)
+| `Socket of <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=sockspec">sockspec</a> * connect_options
+| `W32_pipe of <a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=pipe_mode">Netsys_win32.pipe_mode</a> * string ]</code></pre><div class="info"><div class="info">Specifies the service to connect to:<br/> <ul><li><code class="code">`W32_pipe(mode,name)</code>: A Win32 named pipe</li><li><code class="code">`Command(cmd,handler)</code>: The <code class="code">cmd</code> is started with the shell, 
+   and <code class="code">stdin</code> and <code class="code">stdout</code> are used to transfer data to the
+   process and from the process, respectively. Only <code class="code">SOCK_STREAM</code>
+   type is supported. Note that the passed file descriptors are
+   normal pipes, not sockets (so the descriptors can be individually
+   closed).<br/>   There is not any kind of error detection, so the command should
+   be failsafe. <code class="code">stderr</code> of the command is connected with <code class="code">stderr</code> of
+   the caller process.<br/>   No provisions are taken to wait for the process; this is the
+   task of the caller. After the process has been started, the
+   <code class="code">handler</code> is invoked with the process ID and the event system
+   to give the caller a chance to arrange that the process will be
+   waited for.</li><li><code class="code">`Socket(addr,opts)</code>: Connect to the passed socket address</li></ul></div></div>
+<pre><code><span class="TYPEconnect_options"><span class="keyword">type</span> connect_options</span> = {</code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTconnect_options.conn_bind">conn_bind</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=sockspec">sockspec</a> option</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">Bind the connecting socket to this address (same family as the
+ connected socket required). <code class="code">None</code>: Use an anonymous port.</div></td></tr><tr><td>}</td></tr></table>
+<pre><span class="VALdefault_connect_options"><span class="keyword">val</span> default_connect_options</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=connect_options">connect_options</a></code></pre><div class="info"><div class="info">Returns the default options</div></div>
+<pre><span class="TYPEconnect_status"><span class="keyword">type</span> connect_status</span> = <code class="type">[ `Command of <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> * int
+| `Socket of <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> * <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=sockspec">sockspec</a>
+| `W32_pipe of <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> ]</code></pre><div class="info"><div class="info">This type corresponds with  <a href="#Uq_engines.connect_address">Uq_engines.connect_address</a>: An engine
+ connecting with an address `X will return a status of `X.<br/> - <code class="code">`Socket(fd,addr)</code>: <code class="code">fd</code> is the client socket connected with the
+   service. <code class="code">addr</code> is the socket address of the client that must be
+   used by the server to reach the client.<ul><li><code class="code">`Command(fd, pid)</code>: <code class="code">fd</code> is the Unix domain socket connected with
+   the running command. <code class="code">pid</code> is the process ID.</li><li><code class="code">`W32_pipe fd</code>: <code class="code">fd</code> is the proxy descriptor of the connected
+   Win32 named pipe endpoint. See  <a href="#Netsys_win32">Netsys_win32</a> how to get the
+   <code class="code">w32_pipe</code> object to access the pipe. The proxy descriptor <b>cannot</b>
+   be used for I/O.
+   </li></ul></div></div>
+<pre><span class="VALclient_endpoint"><span class="keyword">val</span> client_endpoint</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=connect_status">connect_status</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></pre><div class="info"><div class="info">Returns the client endpoint contained in the <code class="code">connect_status</code></div></div>
+<pre><span class="VALclient_socket"><span class="keyword">val</span> client_socket</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=connect_status">connect_status</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></pre><div class="info"><div class="info">For backward compatibility. <b>Deprecated name</b> for <code class="code">client_endpoint</code></div></div>
+<div class="ocaml_class sig" name="client_endpoint_connector"><pre><span class="TYPEclient_endpoint_connector"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=client_endpoint_connector">client_endpoint_connector</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">This class type provides engines to connect to a service. In order
+ to get and activate such an engine, call <code class="code">connect</code>.</div></div><div class="ocaml_class_content"><pre><span class="METHODconnect"><span class="keyword">method</span> connect</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=connect_address">connect_address</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=connect_status">connect_status</a> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre>
+<div class="info"><div class="info">Instantiates an engine that connects to the endpoint given by the
+ <code class="code">connect_address</code> argument. If successful, the state of the engine
+ changes to <code class="code">`Done(status)</code> where <code class="code">status</code> contains the socket 
+ details. The connection is established in the background.<br/> The type of status will correspond to the type of connect address
+ (e.g. a <code class="code">`Socket</code> address will return a <code class="code">`Socket</code> status).<br/> The close-on-exec flag of the created socket descriptor is always set.
+ The socket descriptor is always in non-blocking mode.</div></div></div></div>
+<div class="ocaml_class ident" name="client_socket_connector" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=client_endpoint_connector"><pre><span class="TYPEclient_socket_connector"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=client_socket_connector">client_socket_connector</a></span> : <code class="type"/><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=client_endpoint_connector">client_endpoint_connector</a></pre><div class="info"><div class="info">For backward compatibility. <b>Deprecated name</b> for 
+      <code class="code">client_endpoint_connector</code></div></div></div>
+<pre><span class="VALconnector"><span class="keyword">val</span> connector</span> : <code class="type">?proxy:#<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=client_socket_connector">client_socket_connector</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=connect_address">connect_address</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=connect_status">connect_status</a> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre><div class="info"><div class="info">This engine connects to a socket as specified by the <code class="code">connect_address</code>,
+ optionally using the <code class="code">proxy</code>, and changes to the state
+ <code class="code">`Done(status)</code> when the connection is established.<br/> If the <code class="code">proxy</code> does not support the <code class="code">connect_address</code>, the class 
+ will raise <code class="code">Addressing_method_not_supported</code>.<br/> The descriptor <code class="code">fd</code> (part of the <code class="code">connect_status</code>) is in non-blocking mode,
+ and the close-on-exec flag is set.
+ It is the task of the caller to close this descriptor.<br/> The engine attaches automatically to the event system, and detaches
+ when it is possible to do so. This depends on the type of the
+ connection method. For direct socket connections, the engine can
+ often detach immediately when the conection is established. For proxy
+ connections it is required that the engine
+ copies data to and from the file descriptor. In this case, the
+ engine detaches when the file descriptor is closed.<br/> It is possible that name service queries block execution.<br/> If name resolution fails, the engine will enter
+ <code class="code">`Error(Uq_resolver.Host_not_found name)</code>. This is <b>new since
+ Ocamlnet-3.3</b> - before this version, the exception was simply
+ <code class="code">Not_found</code>.</div></div>
+<div class="info"><div class="info"><b>Example</b> of using <code class="code">connector</code>: This engine <code class="code">e</code> connects to the
+    &quot;echo&quot; service as provided by inetd, sends a line of data to it,
+    and awaits the response.<br/>    <pre class="codepre"><code class="code">
+	let e =
+	  Uq_engines.connector
+	    (`Socket(`Sock_inet_byname(Unix.SOCK_STREAM, &quot;localhost&quot;, 7),
+		     Uq_engines.default_connect_options))
+	    esys
+	  ++ (fun cs -&gt;
+		match cs with
+		  | `Socket(fd,_) -&gt;
+		      let mplex =
+			Uq_engines.create_multiplex_controller_for_connected_socket
+			  ~supports_half_open_connection:true
+			  fd esys in
+		      let d_unbuf = `Multiplex mplex in
+		      let d = `Buffer_in(Uq_io.create_in_buffer d_unbuf) in
+		      Uq_io.output_string_e d_unbuf &quot;This is line1\n&quot;
+		      ++ (fun () -&gt;
+			    Uq_io.input_line_e d 
+			    ++ (fun s -&gt;
+				  print_endline s;
+				  eps_e (`Done()) esys
+			       )
+			 )
+		  | _ -&gt; assert false
+	     )
+    </code></pre></div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Server sockets</h2></div></div>
+<pre><span class="TYPElisten_address"><span class="keyword">type</span> listen_address</span> = <code class="type">[ `Socket of <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=sockspec">sockspec</a> * listen_options
+| `W32_pipe of <a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=pipe_mode">Netsys_win32.pipe_mode</a> * string * listen_options ]</code></pre><div class="info"><div class="info">Specifies the resource to listen on:<br/> - <code class="code">`Socket(addr,opts)</code>: It is listened on a socket with address <code class="code">addr</code><ul><li><code class="code">`W32_pipe(mode,name,opts)</code>: It is listened on a pipe server with
+   <code class="code">name</code> which accepts pipe connections in <code class="code">mode</code>.
+   </li></ul></div></div>
+<pre><code><span class="TYPElisten_options"><span class="keyword">type</span> listen_options</span> = {</code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTlisten_options.lstn_backlog">lstn_backlog</span> : <code class="type">int</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">The length of the queue of not yet accepted
+ connections.</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTlisten_options.lstn_reuseaddr">lstn_reuseaddr</span> : <code class="type">bool</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">Whether to allow that the address can be
+ immediately reused after the previous listener
+ has its socket shut down. (Only for Internet
+ sockets.)</div></td></tr><tr><td>}</td></tr></table>
+<pre><span class="VALdefault_listen_options"><span class="keyword">val</span> default_listen_options</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=listen_options">listen_options</a></code></pre><div class="info"><div class="info">Returns the default options</div></div>
+<div class="ocaml_class sig" name="server_endpoint_acceptor"><pre><span class="TYPEserver_endpoint_acceptor"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=server_endpoint_acceptor">server_endpoint_acceptor</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">This class type is for service providers that listen for connections.
+ By calling <code class="code">accept</code>, one gets an engine that waits for the next
+ connection, and establishes it.<br/> There are services that can only accept one connection for a 
+ certain contact address. In this case <code class="code">accept</code> must only be called
+ once. Normally, services can accept any number of connections
+ (multiplexing), and it is allowed to call <code class="code">accept</code> again after
+ the previous accept engine was successful.</div></div><div class="ocaml_class_content"><pre><span class="METHODserver_address"><span class="keyword">method</span> server_address</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=connect_address">connect_address</a></code></pre>
+<div class="info"><div class="info">The contact address under which the clients can establish new
+ connections with this server.</div></div>
+<pre><span class="METHODmultiple_connections"><span class="keyword">method</span> multiple_connections</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">Whether it is possible to accept multiple connections</div></div>
+<pre><span class="METHODaccept"><span class="keyword">method</span> accept</span> : <code class="code">unit -&gt; (<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> * <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=inetspec">inetspec</a> option) <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre>
+<div class="info"><div class="info">Instantiates an engine that accepts connections on the listening
+ endpoint. <br/> If the connection is successfully established, the state of the engine
+ changes to <code class="code">`Done(fd,addr)</code> where <code class="code">fd</code> is the connected file descriptor,
+ and where <code class="code">addr</code> (if not-<code class="code">None</code>) is the endpoint address of the 
+ connecting client (from the server's perspective). Such addresses are
+ only supported for Internet endpoints. If a proxy is used to accept
+ the connections, the returned address is that from the proxy's 
+ view, and usually different from what <code class="code">Unix.getpeername</code> returns.<br/> The close-on-exec flag of the created endpoint descriptor is always set.
+ The endpoint descriptor is always in non-blocking mode.<br/> It is allowed to shut down <code class="code">fd</code> for sending, and it is required to
+ close <code class="code">fd</code> after all data transfers have been performed.<br/> A call of <code class="code">accept</code> allows it only to establish one connection at a time.
+ However, it is allowed to call <code class="code">accept</code> several times to accept several
+ connections, provided the acceptor supports this (returned by
+ <code class="code">multiple_connections</code>). It is only allowed to call <code class="code">accept</code> again
+ when the previous engine was successful.</div></div>
+<pre><span class="METHODshut_down"><span class="keyword">method</span> shut_down</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">The server endpoint is shut down such that no further connections
+ are possible. It is required to call this method even for acceptors
+ that do not support multiple connections. It is also required to
+ call this method when an <code class="code">accept</code> was not successful.<br/> If there is a engine waiting for connections, it is aborted.</div></div></div></div>
+<div class="ocaml_class ident" name="server_socket_acceptor" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=server_endpoint_acceptor"><pre><span class="TYPEserver_socket_acceptor"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=server_socket_acceptor">server_socket_acceptor</a></span> : <code class="type"/><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=server_endpoint_acceptor">server_endpoint_acceptor</a></pre><div class="info"><div class="info">For backward compatibility. <b>Deprecated name</b> for 
+      <code class="code">server_endpoint_acceptor</code></div></div></div>
+<div class="ocaml_class ident" name="direct_acceptor" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=server_endpoint_acceptor"><pre><span class="TYPEdirect_acceptor"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=direct_acceptor">direct_acceptor</a></span> : <code class="type">bool option -&gt; (unit -&gt; unit) option -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=server_endpoint_acceptor">server_endpoint_acceptor</a></pre><div class="info"><div class="info">An implementation of <code class="code">server_endpoint_acceptor</code> for sockets and Win32
+    named pipes. For sockets, the passed descriptor must be the master
+    socket. For Win32 named pipes, the passed descriptor must be the
+    proxy descriptor of the pipe server..</div></div></div>
+<div class="ocaml_class ident" name="direct_socket_acceptor" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=server_endpoint_acceptor"><pre><span class="TYPEdirect_socket_acceptor"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=direct_socket_acceptor">direct_socket_acceptor</a></span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=server_endpoint_acceptor">server_endpoint_acceptor</a></pre><div class="info"><div class="info">For backward compatibility. <b>Deprecated name</b> for <code class="code">direct_acceptor</code></div></div></div>
+<div class="ocaml_class sig" name="server_endpoint_listener"><pre><span class="TYPEserver_endpoint_listener"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=server_endpoint_listener">server_endpoint_listener</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">This class type represents factories for service providers</div></div><div class="ocaml_class_content"><pre><span class="METHODlisten"><span class="keyword">method</span> listen</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=listen_address">listen_address</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=server_endpoint_acceptor">server_endpoint_acceptor</a> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre>
+<div class="info"><div class="info">Instantiates an engine that listens for connections on the socket given
+ by the <code class="code">listen_address</code> argument. If successful, the state of the engine
+ changes to <code class="code">`Done(acc)</code> where <code class="code">acc</code> is the acceptor object guiding
+ you through further operation of the socket (see above).</div></div></div></div>
+<div class="ocaml_class ident" name="server_socket_listener" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=server_endpoint_listener"><pre><span class="TYPEserver_socket_listener"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=server_socket_listener">server_socket_listener</a></span> : <code class="type"/><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=server_endpoint_listener">server_endpoint_listener</a></pre><div class="info"><div class="info">For backward compatibility. <b>Deprecated name</b> for
+      <code class="code">server_endpoint_listener</code></div></div></div>
+<pre><span class="VALlistener"><span class="keyword">val</span> listener</span> : <code class="type">?proxy:#<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=server_socket_listener">server_socket_listener</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=listen_address">listen_address</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=server_socket_acceptor">server_socket_acceptor</a> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre><div class="info"><div class="info">This engine creates a server socket listening on the <code class="code">listen_address</code>.
+ If passed, the <code class="code">proxy</code> is used to create the server socket.<br/> On success, the engine goes to state <code class="code">`Done acc</code>, where <code class="code">acc</code> is
+ the acceptor object (see above). The acceptor object can be used
+ to accept incoming connections.</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Datagrams</h2></div></div>
+<pre><span class="TYPEdatagram_type"><span class="keyword">type</span> datagram_type</span> = <code class="type">[ `Inet6_udp | `Inet_udp | `Unix_dgram ]</code></pre><div class="info"><div class="info">- <code class="code">`Unix_dgram</code>: Datagrams over Unix domain sockets<ul><li><code class="code">`Inet_udp</code>:   Internet v4 UDP protocol</li><li><code class="code">`Inet6_udp</code>:   Internet v6 UDP protocol
+   </li></ul></div></div>
+<div class="ocaml_class sig" name="wrapped_datagram_socket"><pre><span class="TYPEwrapped_datagram_socket"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=wrapped_datagram_socket">wrapped_datagram_socket</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">A <code class="code">wrapped_datagram_socket</code> allows datagrams to be sent via proxies.
+ It provides versions of the <code class="code">sendto</code> and <code class="code">recvfrom</code> functions that
+ use extended socket names (which are proxy-friendly).</div></div><div class="ocaml_class_content"><pre><span class="METHODdescriptor"><span class="keyword">method</span> descriptor</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></pre>
+<div class="info"><div class="info">The underlying file descriptor. This descriptor must not be used
+ to transfer data (<code class="code">Unix.send(to)</code>, <code class="code">Unix.recv(from)</code>, etc.), because the
+ descriptor may be connected with a proxy, and the socket addresses
+ may be wrong that are used by the low-level socket functions.
+ The right way is to use the methods below to transfer data. It is
+ allowed, however, to pass the descriptor to <code class="code">Unix.select</code>, and to check
+ whether transfers are possible. It is also allowed to set or clear
+ non-blocking mode, and the close-on-exec flag, and to modify the
+ socket options.</div></div>
+<pre><span class="METHODsendto"><span class="keyword">method</span> sendto</span> : <code class="code">string -&gt; int -&gt; int -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=msg_flag">Unix.msg_flag</a> list -&gt; <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=sockspec">sockspec</a> -&gt; int</code></pre>
+<div class="info"><div class="info">Send data over the (unconnected) socket</div></div>
+<pre><span class="METHODrecvfrom"><span class="keyword">method</span> recvfrom</span> : <code class="code">string -&gt; int -&gt; int -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=msg_flag">Unix.msg_flag</a> list -&gt; int * <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=sockspec">sockspec</a></code></pre>
+<div class="info"><div class="info">Receive data from the (unconnected) socket. The method will
+ raise EAGAIN if the message cannot be processed for some reason,
+ even if the socket is in blocking mode. In this case, the received
+ message is discarded.</div></div>
+<pre><span class="METHODshut_down"><span class="keyword">method</span> shut_down</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Close the descriptor, shuts down any further needed resources</div></div>
+<pre><span class="METHODdatagram_type"><span class="keyword">method</span> datagram_type</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=datagram_type">datagram_type</a></code></pre>
+
+<pre><span class="METHODsocket_domain"><span class="keyword">method</span> socket_domain</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=socket_domain">Unix.socket_domain</a></code></pre>
+
+<pre><span class="METHODsocket_type"><span class="keyword">method</span> socket_type</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=socket_type">Unix.socket_type</a></code></pre>
+
+<pre><span class="METHODsocket_protocol"><span class="keyword">method</span> socket_protocol</span> : <code class="code">int</code></pre>
+</div></div>
+<div class="ocaml_class sig" name="datagram_socket_provider"><pre><span class="TYPEdatagram_socket_provider"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=datagram_socket_provider">datagram_socket_provider</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">This is a factory for <code class="code">wrapped_datagram_socket</code> objects.</div></div><div class="ocaml_class_content"><pre><span class="METHODcreate_datagram_socket"><span class="keyword">method</span> create_datagram_socket</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=datagram_type">datagram_type</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=wrapped_datagram_socket">wrapped_datagram_socket</a> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre>
+<div class="info"><div class="info">Creates an engine that creates a <code class="code">wrapped_datagram_socket</code> object
+ and that sets up any further resources the objects needs.</div></div></div></div>
+<pre><span class="VALdatagram_provider"><span class="keyword">val</span> datagram_provider</span> : <code class="type">?proxy:#<a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=datagram_socket_provider">datagram_socket_provider</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=datagram_type">datagram_type</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=wrapped_datagram_socket">wrapped_datagram_socket</a> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">engine</a></code></pre><div class="info"><div class="info">This engine creates a datagram socket as demanded by the <code class="code">datagram_type</code>,
+ optionally using <code class="code">proxy</code> for sending and receiving datagrams.<br/> The socket is unconnected.<br/> The socket is in non-blocking mode, and the close-on-exec flag is 
+ set.</div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Multiplex Controllers</h1></div></div>
+<div class="ocaml_class sig" name="multiplex_controller"><pre><span class="TYPEmultiplex_controller"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=multiplex_controller">multiplex_controller</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">A <code class="code">multiplex_controller</code> is a quite low-level device to abstract
+ bidirectional socket connections. It is independent of any real
+ device.<br/> There can be a reader, a writer (or both), or alternatively,
+ the shutdown process may be in progress. One cannot have more than
+ one reader and more than more writer.</div></div><div class="ocaml_class_content"><pre><span class="METHODalive"><span class="keyword">method</span> alive</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">If the controller is alive, the socket is not yet completely down.</div></div>
+<pre><span class="METHODmem_supported"><span class="keyword">method</span> mem_supported</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">Whether <code class="code">start_mem_reading</code> and <code class="code">start_mem_writing</code> are possible</div></div>
+<pre><span class="METHODevent_system"><span class="keyword">method</span> event_system</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a></code></pre>
+<div class="info"><div class="info">Returns the event system</div></div>
+<pre><span class="METHODreading"><span class="keyword">method</span> reading</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">True iff there is a reader</div></div>
+<pre><span class="METHODstart_reading"><span class="keyword">method</span> start_reading</span> : <code class="code">?peek:(unit -&gt; unit) -&gt;
+when_done:(exn option -&gt; int -&gt; unit) -&gt; string -&gt; int -&gt; int -&gt; unit</code></pre>
+<div class="info"><div class="info">Start reading from the connection. When data is available, the
+ <code class="code">when_done</code> callback is invoked. The int is the number of read
+ bytes. It is 0 if an error occurred which is indicated by the
+ exception. The exception <code class="code">End_of_file</code> is used when the end of the
+ data stream is reached. The exception <code class="code">Cancelled</code> indicates that
+ reading has been cancelled in the meantime.<br/> This starts one-time read job only, i.e. it is not restarted
+ after <code class="code">when_done</code> has been invoked.<br/> It is an error to start reading several times.<br/> The function <code class="code">peek</code> is called immediately before data is read in
+ from the underlying communication channel.<br/> For getting an engine-based version of <code class="code">start_reading</code>, use
+ a <code class="code">signal_engine</code>:
+ <pre class="codepre"><code class="code"> 
+    let (e, signal) = signal_engine esys in
+    mplex # start_reading ~when_done:(fun xo n -&gt; signal (xo,n)) ...
+ </code></pre>
+ Now <code class="code">e</code> will transition to <code class="code">`Done(x0,n)</code> when the read is done.</div></div>
+<pre><span class="METHODstart_mem_reading"><span class="keyword">method</span> start_mem_reading</span> : <code class="code">?peek:(unit -&gt; unit) -&gt;
+when_done:(exn option -&gt; int -&gt; unit) -&gt;
+<a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">Netsys_mem.memory</a> -&gt; int -&gt; int -&gt; unit</code></pre>
+<div class="info"><div class="info">Same as <code class="code">start_reading</code>, but puts the data into a <code class="code">memory</code> buffer.
+        There is an optimization for the case that the descriptor is a
+        connected socket, or supports <code class="code">Unix.read</code>. If this is not possible
+        the method raises <code class="code">Mem_not_supported</code>.</div></div>
+<pre><span class="METHODcancel_reading"><span class="keyword">method</span> cancel_reading</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Cancels the read job. The <code class="code">when_done</code> callback is invoked with the
+ number of bytes read so far (which may be 0) and the exception
+ <code class="code">Cancelled</code>.<br/> It is no error if there is no reader.</div></div>
+<pre><span class="METHODwriting"><span class="keyword">method</span> writing</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">True iff there is a writer</div></div>
+<pre><span class="METHODstart_writing"><span class="keyword">method</span> start_writing</span> : <code class="code">when_done:(exn option -&gt; int -&gt; unit) -&gt; string -&gt; int -&gt; int -&gt; unit</code></pre>
+<div class="info"><div class="info">Start writing to the connection. When data is written, the
+ <code class="code">when_done</code> callback is invoked. The int is the number of written
+ bytes. It is 0 if an error occurred which is indicated by the
+ exception. The exception <code class="code">Cancelled</code> indicates that
+ writing has been cancelled in the meantime.<br/> This starts one-time write job only, i.e. it is not restarted
+ after <code class="code">when_done</code> has been invoked.<br/> It is an error to start writing several times.<br/> See the comment for <code class="code">start_reading</code> for how to get an engine-based
+ version of this method.</div></div>
+<pre><span class="METHODstart_mem_writing"><span class="keyword">method</span> start_mem_writing</span> : <code class="code">when_done:(exn option -&gt; int -&gt; unit) -&gt;
+<a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">Netsys_mem.memory</a> -&gt; int -&gt; int -&gt; unit</code></pre>
+<div class="info"><div class="info">Same as <code class="code">start_writing</code>, but takes the data from a <code class="code">memory</code> buffer.
+        There is an optimization for the case that the descriptor is a
+        connected socket, or supports <code class="code">Unix.write</code>. If this is not possible
+        the method raises <code class="code">Mem_not_supported</code>.</div></div>
+<pre><span class="METHODsupports_half_open_connection"><span class="keyword">method</span> supports_half_open_connection</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">Whether the underlying transport mechanism can close the write side
+ of the connection only (half-open connection).</div></div>
+<pre><span class="METHODstart_writing_eof"><span class="keyword">method</span> start_writing_eof</span> : <code class="code">when_done:(exn option -&gt; unit) -&gt; unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Start writing the EOF marker to the connection. When it is written,
+ the <code class="code">when_done</code> callback is invoked. The exception <code class="code">Cancelled</code> indicates
+ that writing has been cancelled in the meantime.<br/> This starts one-time write job only, i.e. it is not restarted
+ after <code class="code">when_done</code> has been invoked.<br/> It is an error to start writing several times. It is an error to
+ write EOF when the socket does not support half-open connections.<br/> See the comment for <code class="code">start_reading</code> for how to get an engine-based
+ version of this method.</div></div>
+<pre><span class="METHODcancel_writing"><span class="keyword">method</span> cancel_writing</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Cancels the write job. The <code class="code">when_done</code> callback is invoked with the
+ number of bytes read so far (which may be 0) and the exception
+ <code class="code">Canelled</code>.<br/> It is no error if there is no writer.</div></div>
+<pre><span class="METHODread_eof"><span class="keyword">method</span> read_eof</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">Whether the EOF marker has been read</div></div>
+<pre><span class="METHODwrote_eof"><span class="keyword">method</span> wrote_eof</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">Whether the EOF marker has been written</div></div>
+<pre><span class="METHODshutting_down"><span class="keyword">method</span> shutting_down</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">True iff the shutdown is in progress</div></div>
+<pre><span class="METHODstart_shutting_down"><span class="keyword">method</span> start_shutting_down</span> : <code class="code">?linger:float -&gt; when_done:(exn option -&gt; unit) -&gt; unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Start shutting down the connection. After going through the shutdown
+ procedure, the <code class="code">when_done</code> callback is invoked. The exception
+ indicates whether an error happened. <code class="code">Cancelled</code> means that the
+ shutdown operation has been cancelled in the meantime.<br/> The underlying file descriptor (if any) is not closed. A shutdown
+ is only a protocol handshake. After a shutdown, both <code class="code">read_eof</code>
+ and <code class="code">wrote_eof</code> are true. Call <code class="code">inactivate</code> to close the descriptor.<br/> Optionally, one can <code class="code">linger</code> for a certain period of time.
+ It is only lingered when the EOF was written before the EOF 
+ is seen on input.
+ Defaults to <code class="code">linger 60.0</code>. Set to 0 to turn off.<br/> See the comment for <code class="code">start_reading</code> for how to get an engine-based
+ version of this method.</div></div>
+<pre><span class="METHODcancel_shutting_down"><span class="keyword">method</span> cancel_shutting_down</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Cancels the shutdown procedure. After that, the state of the 
+ connection is undefined. The <code class="code">when_done</code> callback is invoked with
+ the exception <code class="code">Cancelled</code>.<br/> It is no error if no shutdown is in progress.</div></div>
+<pre><span class="METHODinactivate"><span class="keyword">method</span> inactivate</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Inactivates the connection immediately, and releases any resources
+ the controller is responsible for (e.g. closes file descriptors). 
+ Note that this is more than
+ cancelling all pending operations and shutting the connection down.
+ However, the details of this method are implementation-defined.
+ Callbacks are not invoked.</div></div></div></div>
+<pre><span class="EXCEPTIONMem_not_supported"><span class="keyword">exception</span> Mem_not_supported</span></pre><div class="info"><div class="info">May be raised by multiplex controller methods <code class="code">start_mem_reading</code> and
+      <code class="code">start_mem_writing</code> if these methods are not supported for the kind
+      of file descriptor</div></div>
+<pre><span class="VALcreate_multiplex_controller_for_connected_socket"><span class="keyword">val</span> create_multiplex_controller_for_connected_socket</span> : <code class="type">?close_inactive_descr:bool -&gt;
+?preclose:(unit -&gt; unit) -&gt;
+?supports_half_open_connection:bool -&gt;
+?timeout:float * exn -&gt;
+<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=unix_event_system">Unixqueue.unix_event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=multiplex_controller">multiplex_controller</a></code></pre><div class="info"><div class="info">Creates a multiplex controller for a bidirectional socket (e.g.
+ a TCP socket). It is essential that the socket is in connected state.
+ This function also supports Win32 named pipes.<br/> Note that the file descriptor is not closed when the attached engines
+ are terminated. One can call <code class="code">inactivate</code> manually to do that.<br/> <code class="code">close_inactive_descr</code>: Whether <code class="code">inactivate</code> closes the descriptor.
+ True by default.<br/> <code class="code">preclose</code>: This function is called just before the descriptor is
+ closed.<br/> <code class="code">supports_half_open_connection</code>: This implementation does not know
+ how to find out whether the socket supports half-open connections.
+ You can simply set this boolean because of this. Defaults to <code class="code">false</code>.
+ You can set it to <code class="code">true</code> for TCP connections and for Unix-domain
+ connections with stream semantics.<br/> <code class="code">timeout</code>: If set to <code class="code">(t, x)</code>, a general timeout of <code class="code">t</code> is set.
+ When an operation has been started, and there is no I/O activity within
+ <code class="code">t</code> seconds, neither by the started operation nor by another operation,
+ the connection times out. In this case, the operation returns the
+ exception <code class="code">x</code>.</div></div>
+<div class="ocaml_class sig" name="datagram_multiplex_controller"><pre><span class="TYPEdatagram_multiplex_controller"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=datagram_multiplex_controller">datagram_multiplex_controller</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Additional methods for unconnected datagram handling</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=multiplex_controller"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=multiplex_controller">multiplex_controller</a></pre></div>
+
+<pre><span class="METHODreceived_from"><span class="keyword">method</span> received_from</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a></code></pre>
+<div class="info"><div class="info">Returns the socket address of the last received datagram. This
+ value is updated just before the <code class="code">when_done</code> callback of the
+ reader is invoked.</div></div>
+<pre><span class="METHODsend_to"><span class="keyword">method</span> send_to</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a> -&gt; unit</code></pre>
+<div class="info"><div class="info">Sets the socket address of the next datagram to send.</div></div></div></div>
+<pre><span class="VALcreate_multiplex_controller_for_datagram_socket"><span class="keyword">val</span> create_multiplex_controller_for_datagram_socket</span> : <code class="type">?close_inactive_descr:bool -&gt;
+?preclose:(unit -&gt; unit) -&gt;
+?timeout:float * exn -&gt;
+<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=unix_event_system">Unixqueue.unix_event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=datagram_multiplex_controller">datagram_multiplex_controller</a></code></pre><div class="info"><div class="info">Creates a multiplex controller for datagram sockets (e.g. UDP socket).<br/> Note that the file descriptor is not closed when the attached engines
+ are terminated. One can call <code class="code">inactivate</code> manually to do that.<br/> <code class="code">close_inactive_descr</code>: Whether <code class="code">inactivate</code> closes the descriptor.
+ True by default.<br/> <code class="code">preclose</code>: This function is called just before the descriptor is
+ closed.<br/> <code class="code">timeout</code>: If set to <code class="code">(t, x)</code>, a general timeout of <code class="code">t</code> is set.
+ When an operation has been started, and there is no I/O activity within
+ <code class="code">t</code> seconds, neither by the started operation nor by another operation,
+ the connection times out. In this case, the operation returns the
+ exception <code class="code">x</code>.</div></div>
+<pre><span class="TYPEonshutdown_out_spec"><span class="keyword">type</span> onshutdown_out_spec</span> = <code class="type">[ `Action of
+    <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=async_out_channel_engine">async_out_channel_engine</a> -&gt;
+    <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=multiplex_controller">multiplex_controller</a> -&gt; unit <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine_state">engine_state</a> -&gt; unit
+| `Ignore
+| `Initiate_shutdown ]</code></pre><div class="info"><div class="info">See class <code class="code">output_async_mplex</code> for explanations</div></div>
+<pre><span class="TYPEonshutdown_in_spec"><span class="keyword">type</span> onshutdown_in_spec</span> = <code class="type">[ `Action of
+    <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=async_in_channel_engine">async_in_channel_engine</a> -&gt;
+    <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=multiplex_controller">multiplex_controller</a> -&gt; unit <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine_state">engine_state</a> -&gt; unit
+| `Ignore
+| `Initiate_shutdown ]</code></pre><div class="info"><div class="info">See class <code class="code">input_async_mplex</code> for explanations</div></div>
+<div class="ocaml_class ident" name="output_async_mplex" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=async_out_channel_engine"><pre><span class="TYPEoutput_async_mplex"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=output_async_mplex">output_async_mplex</a></span> : <code class="type">[ `Ignore | `Write_eof ] option -&gt; <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=onshutdown_out_spec">onshutdown_out_spec</a> option -&gt; int option -&gt; <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=multiplex_controller">multiplex_controller</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=async_out_channel_engine">async_out_channel_engine</a></pre><div class="info"><div class="info">Creates an asynchronous output channel writing to the multiplex
+ controller (see also <code class="code">output_async_descr</code> for the corresponding
+ class writing to a single descriptor).<br/> <code class="code">onclose</code>: What to do when the <code class="code">close_out</code> method is invoked.
+ Defaults to <code class="code">`Ignore</code>. <code class="code">`Write_eof</code> means to write the EOF marker.
+ Anyway, after doing the close action, the multiplex controller
+ is shutdown.<br/> <code class="code">onshutdown</code>: What to do when all data (and optionally, the EOF marker)
+ have been written. It is also invoked in case of I/O errors.
+ The default is <code class="code">`Ignore</code>. The value <code class="code">`Initiate_shutdown</code> means that
+ it is started to shutdown the socket. The success of this action
+ is not waited upon, however. One can also pass <code class="code">`Action f</code> in which
+ case the function <code class="code">f</code> is called with this object, the
+ multiplex controller, and the proposed next state as arguments. 
+ By checking the proposed next state the function can see why the
+ shutdown function was called.<br/> <code class="code">buffer_size</code>: The size of the internal buffer. By default unlimited.<br/> Note that the engine is done when the output channel is closed.
+ The socket is not shut down, and the underlying file descriptor
+ is not closed! You can define the <code class="code">shutdown</code> callback to do something
+ in this case.</div></div></div>
+<div class="ocaml_class ident" name="input_async_mplex" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=async_in_channel_engine"><pre><span class="TYPEinput_async_mplex"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=input_async_mplex">input_async_mplex</a></span> : <code class="type"><a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=onshutdown_in_spec">onshutdown_in_spec</a> option -&gt; int option -&gt; <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=multiplex_controller">multiplex_controller</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=async_in_channel_engine">async_in_channel_engine</a></pre><div class="info"><div class="info">Creates an asynchronous input channel reading from the multiplex
+ controller.<br/> <code class="code">onshutdown</code>: See <code class="code">output_async_mplex</code>.<br/> <code class="code">buffer_size</code>: The size of the internal buffer. By default unlimited.<br/> Note that the engine is done when the input channel is closed.
+ The socket is not shut down, and the underlying file descriptor
+ is not closed! You can define the <code class="code">shutdown</code> callback to do something
+ in this case.</div></div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Recursion</h1></div></div>
+<div class="info"><div class="info">When programming with engines, it is normal to use recursion for any
+    kind of loops. For example, to read the lines from a file:<br/>    <pre class="codepre"><code class="code">
+      open Uq_engines.Operators  (* for &quot;&gt;&gt;&quot; and &quot;++&quot; *)
+
+      let fd = 
+        Unix.openfile filename [Unix.O_RDONLY] 0 in
+      let d = 
+        `Buffer_in(Uq_io.create_in_buffer(`Polldescr(`Read_write,fd,esys))) in
+
+      let rec read_lines acc =
+        Uq_io.input_line_e d &gt;&gt;
+          (function                       (* catch exception End_of_file *)
+            | `Done line -&gt; `Done(Some line)
+            | `Error End_of_file -&gt; `Done None
+            | `Error error -&gt; `Error error
+            | `Aborted -&gt; `Aborted
+          ) ++
+          (function
+            | Some line -&gt;
+                read_lines (line :: acc)
+            | None -&gt;
+                eps_e (`Done (List.rev acc)) esys
+          ) in
+
+      let e = read_lines []
+    </code></pre><br/>    There is generally the question whether this style leads to stack
+    overflows. This depends on the mechanisms that come into play:<br/>    - The engine mechanism passing control from one engine to the next is
+      not tail-recursive, and thus the stack can overflow when the
+      recursion becomes too deep<ul><li>The event queue mechanism, however, does not have this problem.
+      Control falls automatically back to the event queue whenever I/O
+      needs to be done.</li></ul>    In this example, this means that only the engine mechanism is used
+    as long as the data is read from the buffer. When the buffer needs
+    to be refilled, however, control is passed back to the event queue
+    (so the stack is cleaned), and the continuation of the execution
+    is only managed via closures (which only allocate memory on the
+    heap, not on the stack). Usually, this is a good compromise: The
+    engine mechnism is a lot faster, but I/O is an indicator for using
+    the better but slower technique.<br/>    Also note another difference: The event queue mechanism allows that
+    other asynchronous code attached to the same event queue may run
+    (control maybe yielded to unrelated execution contexts). The
+    pure engine mechanism does not allow that. This may be handy when
+    exclusive access to variables is needed. (But be careful here -
+    this is very sensitive to minimal changes of the implementation.)<br/>    Certain engines enforce using the event queue mechanisms although they
+    are unrelated to I/O. Especially  <a href="#Uq_engines.delay_engine">Uq_engines.delay_engine</a> is
+    useful here: A &quot;delay&quot; of 0 seconds is already sufficient to
+    go back to the event queue. If recursions sometimes lead to
+    stack overflows the solution is to include such a zero delay
+    before doing the self call.</div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">More Engines</h1></div></div>
+<div class="info"><div class="info">Pointers to other modules related to engines:<br/>  - RPC clients: The function  <a href="#Rpc_proxy.ManagedClient.rpc_engine">Rpc_proxy.ManagedClient.rpc_engine</a> allows
+    to call an RPC via an engine. When the call is done, the engine transitions
+    to <code class="code">`Done r</code>, and <code class="code">r</code> is the result of the remote call.<ul><li>Subprograms: The class  <a href="#Shell_uq.call_engine">Shell_uq.call_engine</a> allows to start an
+    external program, and to monitor it via an engine.
+ </li></ul></div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Debugging</h1></div></div>
+<div class="ocaml_module sig" name="Debug"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Uq_engines.Debug">Debug</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALenable"><span class="keyword">val</span> enable</span> : <code class="type">bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">Enables  <a href="#Netlog">Netlog</a>-style debugging</div></div></div></div>
+</div>

@@ -1,0 +1,28 @@
+<div class="ocaml_toplevel_module"><div class="info">Semaphores</div>
+<div class="info"><div class="info">Semaphores are here defined as values that reside in shared heaps
+    ( <a href="#Netmcore_heap">Netmcore_heap</a>), for example in the header field of 
+     <a href="#Netmcore_array">Netmcore_array</a> or somewhere else in heap-allocated
+    data structures.<br/>    In order to ensure that the semaphore is in the heap, the
+    special function <code class="code">create</code> must be used to initialize it
+    there. As <code class="code">create</code> requires a mutator as argument, this is
+    only possible by calling <code class="code">create</code> from the callback of
+     <a href="#Netmcore_heap.modify">Netmcore_heap.modify</a>.<br/>    Semaphores are special values, and cannot be copied or moved.<br/>    Note that  <a href="#Netsys_posix">Netsys_posix</a> provides wrappers for direct use
+    of the semaphore functionality of the OS. These wrappers, however,
+    cannot be used together with heaps, because semaphores are
+    there represented as bigarrays, which cannot be pushed to heaps.
+    This module here uses a trick to make it possible nevertheless.</div></div>
+<pre><span class="TYPEsemaphore"><span class="keyword">type</span> semaphore</span> </pre>
+<pre><span class="VALdummy"><span class="keyword">val</span> dummy</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Netmcore_sem&amp;type=semaphore">semaphore</a></code></pre><div class="info"><div class="info">A dummy semaphore is non-functional, but can be used to put something
+      into <code class="code">semaphore</code>-typed variables</div></div>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=mutator">Netmcore_heap.mutator</a> -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netmcore_sem&amp;type=semaphore">semaphore</a></code></pre><div class="info"><div class="info"><code class="code">create m value</code>: Creates a semaphore with initial <code class="code">value</code>, and
+      pushes it to the heap, using the mutator <code class="code">m</code>.<br/>      After being pushed to the heap, the semaphore can be used. It is
+      nonsense to copy it outside the heap.</div></div>
+<pre><span class="VALdestroy"><span class="keyword">val</span> destroy</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore_sem&amp;type=semaphore">semaphore</a> -&gt; unit</code></pre><div class="info"><div class="info">Destroys the semaphore</div></div>
+<pre><span class="VALgetvalue"><span class="keyword">val</span> getvalue</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore_sem&amp;type=semaphore">semaphore</a> -&gt; int</code></pre><div class="info"><div class="info">Returns the value of the semaphore</div></div>
+<pre><span class="VALpost"><span class="keyword">val</span> post</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore_sem&amp;type=semaphore">semaphore</a> -&gt; unit</code></pre><div class="info"><div class="info">Increments the semaphore by one, and notifies one of the waiting
+      processes.</div></div>
+<pre><span class="VALwait"><span class="keyword">val</span> wait</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore_sem&amp;type=semaphore">semaphore</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=sem_wait_behavior">Netsys_posix.sem_wait_behavior</a> -&gt; unit</code></pre><div class="info"><div class="info">Decrements the semaphore by one. Semaphores cannot become negative.
+      If the semaphore is already 0, the wait behavior defines how to go
+      on:<ul><li> <a href="#Netsys_posix.SEM_WAIT_BLOCK">Netsys_posix.SEM_WAIT_BLOCK</a>: Wait until the semaphore is
+        posted</li><li> <a href="#Netsys_posix.SEM_WAIT_NONBLOCK">Netsys_posix.SEM_WAIT_NONBLOCK</a>: Raise <code class="code">EAGAIN</code></li></ul>      Waiting is restarted after running a signal handler.</div></div>
+</div>

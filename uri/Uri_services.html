@@ -1,0 +1,11 @@
+<div class="ocaml_toplevel_module"><div class="info">Module that maps the more common IANA well-known ports to and from their
+    textual service names.  To save memory, this module does not contains only
+    the more common services.  Use the <code class="code">Uri_services_full</code> module if you need
+    the complete list.</div>
+<pre><span class="VALservice_of_tcp_port"><span class="keyword">val</span> service_of_tcp_port</span> : <code class="type">int -&gt; string list</code></pre><div class="info"><div class="info">Convert a TCP port number into a list of IANA well-known service names</div></div>
+<pre><span class="VALservice_of_udp_port"><span class="keyword">val</span> service_of_udp_port</span> : <code class="type">int -&gt; string list</code></pre><div class="info"><div class="info">Convert a UDP port number into a list of IANA well-known service names</div></div>
+<pre><span class="VALtcp_port_of_service"><span class="keyword">val</span> tcp_port_of_service</span> : <code class="type">string -&gt; int list</code></pre><div class="info"><div class="info">Convert a IANA well-known service name into a list of valid TCP port numbers</div></div>
+<pre><span class="VALudp_port_of_service"><span class="keyword">val</span> udp_port_of_service</span> : <code class="type">string -&gt; int list</code></pre><div class="info"><div class="info">Convert a IANA well-known service name into a list of valid UDP port numbers</div></div>
+<pre><span class="VALtcp_port_of_uri"><span class="keyword">val</span> tcp_port_of_uri</span> : <code class="type">?default:string -&gt; <a href="?package=uri&amp;module=Uri&amp;type=t">Uri.t</a> -&gt; int option</code></pre><div class="info"><div class="info">Extract a TCP port from a URI, using a default service if the URI does not contain a scheme</div></div>
+<pre><span class="VALudp_port_of_uri"><span class="keyword">val</span> udp_port_of_uri</span> : <code class="type">?default:string -&gt; <a href="?package=uri&amp;module=Uri&amp;type=t">Uri.t</a> -&gt; int option</code></pre><div class="info"><div class="info">Extract a UDP port from a URI, using a default service if the URI does not contain a scheme</div></div>
+</div>

@@ -1,0 +1,30 @@
+<div class="ocaml_toplevel_module"><pre><code><span class="TYPEverb"><span class="keyword">type</span> verb</span> = </code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTverb.Normal"><span class="constructor">Normal</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTverb.Quiet"><span class="constructor">Quiet</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTverb.Verbose"><span class="constructor">Verbose</span></span></code></td></tr></table>
+<pre><code><span class="TYPEcopts"><span class="keyword">type</span> copts</span> = {</code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTcopts.debug">debug</span> : <code class="type">bool</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTcopts.verb">verb</span> : <code class="type"><a href="?package=cmdliner&amp;module=Darcs_ex&amp;type=verb">verb</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTcopts.prehook">prehook</span> : <code class="type">string option</code>;</code></td></tr><tr><td>}</td></tr></table>
+<pre><span class="VALstr"><span class="keyword">val</span> str</span> : <code class="type">('a, unit, string) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format">Pervasives.format</a> -&gt; 'a</code></pre>
+<pre><span class="VALopt_str"><span class="keyword">val</span> opt_str</span> : <code class="type">('a -&gt; string) -&gt; 'a option -&gt; string</code></pre>
+<pre><span class="VALopt_str_str"><span class="keyword">val</span> opt_str_str</span> : <code class="type">string option -&gt; string</code></pre>
+<pre><span class="VALverb_str"><span class="keyword">val</span> verb_str</span> : <code class="type"><a href="?package=cmdliner&amp;module=Darcs_ex&amp;type=verb">verb</a> -&gt; string</code></pre>
+<pre><span class="VALpr_copts"><span class="keyword">val</span> pr_copts</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a> -&gt; <a href="?package=cmdliner&amp;module=Darcs_ex&amp;type=copts">copts</a> -&gt; unit</code></pre>
+<pre><span class="VALinitialize"><span class="keyword">val</span> initialize</span> : <code class="type"><a href="?package=cmdliner&amp;module=Darcs_ex&amp;type=copts">copts</a> -&gt; string -&gt; unit</code></pre>
+<pre><span class="VALrecord"><span class="keyword">val</span> record</span> : <code class="type"><a href="?package=cmdliner&amp;module=Darcs_ex&amp;type=copts">copts</a> -&gt;
+string option -&gt; string option -&gt; bool -&gt; bool -&gt; string list -&gt; unit</code></pre>
+<pre><span class="VALhelp"><span class="keyword">val</span> help</span> : <code class="type">'a -&gt;
+[ `Groff | `Pager | `Plain ] -&gt;
+string list -&gt;
+string option -&gt;
+[&gt; `Error of bool * string
+ | `Help of [ `Groff | `Pager | `Plain ] * string option
+ | `Ok of unit ]</code></pre>
+<pre><span class="VALcopts_sect"><span class="keyword">val</span> copts_sect</span> : <code class="type">string</code></pre>
+<pre><span class="VALhelp_secs"><span class="keyword">val</span> help_secs</span> : <code class="type">[&gt; `Noblank | `P of string | `S of string ] list</code></pre>
+<pre><span class="VALcopts"><span class="keyword">val</span> copts</span> : <code class="type">bool -&gt; <a href="?package=cmdliner&amp;module=Darcs_ex&amp;type=verb">verb</a> -&gt; string option -&gt; <a href="?package=cmdliner&amp;module=Darcs_ex&amp;type=copts">copts</a></code></pre>
+<pre><span class="VALcopts_t"><span class="keyword">val</span> copts_t</span> : <code class="type"><a href="?package=cmdliner&amp;module=Darcs_ex&amp;type=copts">copts</a> <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">Cmdliner.Term.t</a></code></pre>
+<pre><span class="VALinitialize_cmd"><span class="keyword">val</span> initialize_cmd</span> : <code class="type">unit <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">Cmdliner.Term.t</a> * <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=info">Cmdliner.Term.info</a></code></pre>
+<pre><span class="VALrecord_cmd"><span class="keyword">val</span> record_cmd</span> : <code class="type">unit <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">Cmdliner.Term.t</a> * <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=info">Cmdliner.Term.info</a></code></pre>
+<pre><span class="VALhelp_cmd"><span class="keyword">val</span> help_cmd</span> : <code class="type">unit <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">Cmdliner.Term.t</a> * <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=info">Cmdliner.Term.info</a></code></pre>
+<pre><span class="VALdefault_cmd"><span class="keyword">val</span> default_cmd</span> : <code class="type">unit <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">Cmdliner.Term.t</a> * <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=info">Cmdliner.Term.info</a></code></pre>
+<pre><span class="VALcmds"><span class="keyword">val</span> cmds</span> : <code class="type">(unit <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=t">Cmdliner.Term.t</a> * <a href="?package=cmdliner&amp;module=Cmdliner.Term&amp;type=info">Cmdliner.Term.info</a>) list</code></pre>
+
+</div>

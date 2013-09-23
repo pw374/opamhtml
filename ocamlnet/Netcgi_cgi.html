@@ -1,0 +1,17 @@
+<div class="ocaml_toplevel_module"><div class="info">Classical CGI connector.<br/> CGI scripts have poor performance as they are entirely re-run for
+ each request (so it is not possible to cache in the running program
+ database connections for example).  Still they are suitable for
+ moderate frequented websites (especially because they run
+ everywhere) and for development.</div>
+<pre><span class="VALrun"><span class="keyword">val</span> run</span> : <code class="type">?config:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=config">Netcgi.config</a> -&gt;
+?output_type:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=output_type">Netcgi.output_type</a> -&gt;
+?arg_store:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=arg_store">Netcgi.arg_store</a> -&gt;
+?exn_handler:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=exn_handler">Netcgi.exn_handler</a> -&gt; (<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=cgi">Netcgi.cgi</a> -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">run f</code> executes <code class="code">f cgi</code> for each cgi request.  Contrarily to
+      the other connectors, CGI execute the whole code (even the one
+      outside <code class="code">f</code>) each time the script is accessed.  Therefore, one
+      cannot easily cache database connections,...<div class="parameters"><div class="param_info"><code class="code">config</code> : Default:  <a href="#Netcgi.default_config">Netcgi.default_config</a></div><div class="param_info"><code class="code">output_type</code> : Default: <code class="code">`Direct &quot;&quot;</code></div><div class="param_info"><code class="code">arg_store</code> : Default: <code class="code">`Automatic</code> for all arguments.</div><div class="param_info"><code class="code">exn_handler</code> : See  <a href="#Netcgi.exn_handler">Netcgi.exn_handler</a>.  Default: delegate
+      all exceptions to the default handler.</div></div></div></div>
+<pre><span class="VALis_cgi"><span class="keyword">val</span> is_cgi</span> : <code class="type">unit -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">is_cgi</code> says whether the script is run in a CGI environment.
+      This allows for example to call the  <a href="#Netcgi_test">Netcgi_test</a> module if it
+      is not.</div></div>
+</div>

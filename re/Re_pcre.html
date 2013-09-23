@@ -1,0 +1,12 @@
+<div class="ocaml_toplevel_module"><pre><span class="TYPEregexp"><span class="keyword">type</span> regexp</span> = <code class="type"><a href="?package=re&amp;module=Re&amp;type=re">Re.re</a></code></pre>
+<pre><span class="VALregexp"><span class="keyword">val</span> regexp</span> : <code class="type">?flags:[&lt; `CASELESS ] list -&gt; string -&gt; <a href="?package=re&amp;module=Re&amp;type=re">Re.re</a></code></pre>
+<pre><span class="VALextract"><span class="keyword">val</span> extract</span> : <code class="type">rex:<a href="?package=re&amp;module=Re&amp;type=re">Re.re</a> -&gt; string -&gt; string array</code></pre>
+<pre><span class="VALexec"><span class="keyword">val</span> exec</span> : <code class="type">rex:<a href="?package=re&amp;module=Re&amp;type=re">Re.re</a> -&gt; ?pos:int -&gt; string -&gt; <a href="?package=re&amp;module=Re&amp;type=substrings">Re.substrings</a></code></pre>
+<pre><span class="VALget_substring"><span class="keyword">val</span> get_substring</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=substrings">Re.substrings</a> -&gt; int -&gt; string</code></pre>
+<pre><span class="VALget_substring_ofs"><span class="keyword">val</span> get_substring_ofs</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=substrings">Re.substrings</a> -&gt; int -&gt; int * int</code></pre>
+<pre><span class="VALpmatch"><span class="keyword">val</span> pmatch</span> : <code class="type">rex:<a href="?package=re&amp;module=Re&amp;type=re">Re.re</a> -&gt; string -&gt; bool</code></pre>
+<pre><span class="VALsubstitute"><span class="keyword">val</span> substitute</span> : <code class="type">rex:<a href="?package=re&amp;module=Re&amp;type=re">Re.re</a> -&gt; subst:(string -&gt; string) -&gt; string -&gt; string</code></pre>
+<pre><span class="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">rex:<a href="?package=re&amp;module=Re&amp;type=re">Re.re</a> -&gt; string -&gt; string list</code></pre>
+<pre><span class="VALstring_unsafe_sub"><span class="keyword">val</span> string_unsafe_sub</span> : <code class="type">string -&gt; int -&gt; int -&gt; string</code></pre>
+<pre><span class="VALquote"><span class="keyword">val</span> quote</span> : <code class="type">string -&gt; string</code></pre>
+</div>

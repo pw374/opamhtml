@@ -1,0 +1,42 @@
+<div class="ocaml_toplevel_module"><pre><span class="VALcompose"><span class="keyword">val</span> compose</span> : <code class="type">?in_charset:<a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> -&gt;
+?out_charset:<a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> -&gt;
+?from_addr:string * string -&gt;
+?cc_addrs:(string * string) list -&gt;
+?bcc_addrs:(string * string) list -&gt;
+?content_type:string * (string * <a href="?package=ocamlnet&amp;module=Mimestring&amp;type=s_param">Mimestring.s_param</a>) list -&gt;
+?container_type:string * (string * <a href="?package=ocamlnet&amp;module=Mimestring&amp;type=s_param">Mimestring.s_param</a>) list -&gt;
+?attachments:<a href="?package=ocamlnet&amp;module=Netmime&amp;type=complex_mime_message">Netmime.complex_mime_message</a> list -&gt;
+to_addrs:(string * string) list -&gt;
+subject:string -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Netmime&amp;type=complex_mime_message">Netmime.complex_mime_message</a></code></pre>
+<pre><span class="VALwrap_attachment"><span class="keyword">val</span> wrap_attachment</span> : <code class="type">?in_charset:<a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> -&gt;
+?out_charset:<a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> -&gt;
+?content_id:string -&gt;
+?content_description:string -&gt;
+?content_location:string -&gt;
+?content_disposition:string * (string * <a href="?package=ocamlnet&amp;module=Mimestring&amp;type=s_param">Mimestring.s_param</a>) list -&gt;
+content_type:string * (string * <a href="?package=ocamlnet&amp;module=Mimestring&amp;type=s_param">Mimestring.s_param</a>) list -&gt;
+<a href="?package=ocamlnet&amp;module=Netmime&amp;type=mime_body">Netmime.mime_body</a> -&gt; <a href="?package=ocamlnet&amp;module=Netmime&amp;type=complex_mime_message">Netmime.complex_mime_message</a></code></pre>
+<pre><span class="VALwrap_mail"><span class="keyword">val</span> wrap_mail</span> : <code class="type">?in_charset:<a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> -&gt;
+?out_charset:<a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> -&gt;
+?from_addr:string * string -&gt;
+?cc_addrs:(string * string) list -&gt;
+?bcc_addrs:(string * string) list -&gt;
+to_addrs:(string * string) list -&gt;
+subject:string -&gt;
+<a href="?package=ocamlnet&amp;module=Netmime&amp;type=complex_mime_message">Netmime.complex_mime_message</a> -&gt; <a href="?package=ocamlnet&amp;module=Netmime&amp;type=complex_mime_message">Netmime.complex_mime_message</a></code></pre>
+<pre><span class="VALwrap_parts"><span class="keyword">val</span> wrap_parts</span> : <code class="type">?in_charset:<a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> -&gt;
+?out_charset:<a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> -&gt;
+?content_type:string * (string * <a href="?package=ocamlnet&amp;module=Mimestring&amp;type=s_param">Mimestring.s_param</a>) list -&gt;
+?content_id:string -&gt;
+?content_description:string -&gt;
+?content_location:string -&gt;
+?content_disposition:string * (string * <a href="?package=ocamlnet&amp;module=Mimestring&amp;type=s_param">Mimestring.s_param</a>) list -&gt;
+<a href="?package=ocamlnet&amp;module=Netmime&amp;type=complex_mime_message">Netmime.complex_mime_message</a> list -&gt; <a href="?package=ocamlnet&amp;module=Netmime&amp;type=complex_mime_message">Netmime.complex_mime_message</a></code></pre>
+<pre><span class="VALcreate_address_list_tokens"><span class="keyword">val</span> create_address_list_tokens</span> : <code class="type">?in_charset:<a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> -&gt;
+?out_charset:<a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> -&gt;
+(string * string) list -&gt; <a href="?package=ocamlnet&amp;module=Mimestring&amp;type=s_token">Mimestring.s_token</a> list</code></pre>
+<pre><span class="VALcreate_text_tokens"><span class="keyword">val</span> create_text_tokens</span> : <code class="type">?in_charset:<a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> -&gt;
+?out_charset:<a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Mimestring&amp;type=s_token">Mimestring.s_token</a> list</code></pre>
+<pre><span class="VALformat_field_value"><span class="keyword">val</span> format_field_value</span> : <code class="type">string -&gt; <a href="?package=ocamlnet&amp;module=Mimestring&amp;type=s_token">Mimestring.s_token</a> list -&gt; string</code></pre>
+<pre><span class="VALsendmail"><span class="keyword">val</span> sendmail</span> : <code class="type">?mailer:string -&gt; ?crlf:bool -&gt; <a href="?package=ocamlnet&amp;module=Netmime&amp;type=complex_mime_message">Netmime.complex_mime_message</a> -&gt; unit</code></pre>
+</div>

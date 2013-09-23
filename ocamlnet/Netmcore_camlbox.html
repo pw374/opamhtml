@@ -1,0 +1,21 @@
+<div class="ocaml_toplevel_module"><div class="info">Camlboxes for use in netmulticore programs</div>
+<pre><span class="VALcreate_camlbox"><span class="keyword">val</span> create_camlbox</span> : <code class="type">string -&gt; int -&gt; int -&gt; 'a <a href="?package=ocamlnet&amp;module=Netcamlbox&amp;type=camlbox">Netcamlbox.camlbox</a> * <a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a></code></pre><div class="info"><div class="info"><code class="code">create_camlbox prefix n size</code>: Creates a new camlbox with a 
+      unique name derived from <code class="code">prefix</code>. <code class="code">prefix</code> must not contain
+      any slahes. The box can have up to <code class="code">n</code> messages of <code class="code">size</code> bytes.<br/>      The returned camlbox can receive messages. It is only meaningful
+      in the process that created it, and only this process can receive
+      messages.<br/>      Other processes can send messages to this box. They first have
+      to look up the sender object via <code class="code">lookup_camlbox_sender</code> below.<br/>      It is suggested that the result of <code class="code">create_camlbox</code> is immediately
+      coerced to the right type <code class="code">t</code>, e.g.
+      <pre class="codepre"><code class="code">
+        let box = (create_camlbox prefix n size : t camlbox * res_id)
+      </code></pre>
+      as this ensures type safety for all following operations.</div></div>
+<pre><span class="VALlookup_camlbox_address"><span class="keyword">val</span> lookup_camlbox_address</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; <a href="?package=ocamlnet&amp;module=Netcamlbox&amp;type=camlbox_address">Netcamlbox.camlbox_address</a></code></pre><div class="info"><div class="info">Returns the address of the camlbox identified by this resource ID</div></div>
+<pre><span class="VALlookup_camlbox_sender"><span class="keyword">val</span> lookup_camlbox_sender</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; 'a <a href="?package=ocamlnet&amp;module=Netcamlbox&amp;type=camlbox_sender">Netcamlbox.camlbox_sender</a></code></pre><div class="info"><div class="info"><code class="code">lookup_camlbox_sender res_id</code>: 
+      Returns the sender object of the camlbox identified by this resource ID <br/>      It is suggested that the result of <code class="code">lookup_camlbox_sender</code> is immediately
+      coerced to the right type <code class="code">t</code>, e.g.
+      <pre class="codepre"><code class="code">
+        let box = (lookup_camlbox_sender id : t camlbox_sender)
+      </code></pre>
+      as this ensures type safety for all following operations.</div></div>
+</div>

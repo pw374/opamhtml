@@ -1,0 +1,107 @@
+<h1>Modules</h1>
+<table class="indextable">
+    <tr><td class="module"><a href="?package=async_extra&amp;module=Command">Command</a></td><td><div class="info"><code class="code">Async.Command</code> is <code class="code">Core.Command</code> with additional async functions.</div></td></tr>
+<tr><td class="module"><a href="?package=async_extra&amp;module=Dynamic_port_writer">Dynamic_port_writer</a></td><td><div class="info">For communicating a dynamically chosen TCP port from a child process to its parent.<br/>    This is used to fork+exec a child process that will create create a TCP server that
+    listens to a dynamically chosen port, and to make the port number available in the
+    parent process once the child process is listening on the port.<br/>    Here is the intended usage:<br/>    1. The parent <code class="code">create</code>s a <code class="code">Dynamic_port_writer.t</code> value together with a deferred that
+    will eventually be determined with the port assigned to the child process by the OS.<br/>    2. The parent communicates the <code class="code">Dynamic_port_writer.t</code> value to a child it has
+    spawned.  This can happen in a number of ways,<br/>    - via the child's command line using <code class="code">to_string</code> and either <code class="code">arg</code> or <code class="code">of_string</code>.<ul><li>via a config file using &quot;with sexp&quot;</li><li>over the wire using &quot;with bin_io&quot;</li></ul>    3. The child calls <code class="code">Tcp.Server.create</code> with the value returned by <code class="code">where_to_listen</code>.<br/>    Once the server created in step (3) is listening on its OS-assigned port, the parent's
+    deferred obtained in step (1) will soon become determined with the value of the port.<br/>    Code for the parent process would look something like:<br/>    <pre class="codepre"><code class="code">
+      Dynamic_port_writer.create ()
+      &gt;&gt;= fun (dynamic_port_writer, port_d) -&gt;
+      Unix.fork_exec ~prog
+        ~args:([ prog ]
+               @ Dynamic_port_writer.flag_args dynamic_port_writer
+               @ [ ... other args ... ])
+        ()
+      &gt;&gt;= fun _child_pid -&gt;
+      port_d
+      &gt;&gt;= fun r -&gt;
+      let `Port port = ok_exn r in
+      Tcp.connect (Tcp.to_host_and_port &quot;localhost&quot; port)
+      &gt;&gt;= fun (_, reader, writer) -&gt;
+      ...
+    </code></pre><br/>    Code for the <code class="code">Command.t</code> for the child process would look something like:<br/>    <pre class="codepre"><code class="code">
+      Command.basic
+        ~summary:&quot;child&quot;
+        (Command.Spec.(empty +&gt; Dynamic_port_writer.flag))
+        (fun dynamic_port_writer () -&gt;
+           ...
+           Tcp.Server.create
+               (Dynamic_port_writer.where_to_listen dynamic_port_writer)
+               (fun _ reader writer -&gt; ...))
+    </code></pre></div></td></tr>
+<tr><td class="module"><a href="?package=async_extra&amp;module=File_tail">File_tail</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_extra&amp;module=File_writer">File_writer</a></td><td><div class="info"><code class="code">File_writer</code> is a thin wrapper around <code class="code">Writer</code> with a couple of extra features:<br/>   - It keeps track of all the file writers that have been created so that it can
+     iterate over them to find out how many bytes in total they have to write.<ul><li>It keeps track of whether the underlying writer has failed, and if so silently
+     ignores future operations.  This can prevent pointlessly filling up a writer's
+     buffer with data that will never go anywhere.
+</li></ul></div></td></tr>
+<tr><td class="module"><a href="?package=async_extra&amp;module=Import">Import</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_extra&amp;module=Lock_file">Lock_file</a></td><td><div class="info"><code class="code">Async.Lock_file</code> is a wrapper that provides async equivalents for
+    <code class="code">Core.Lock_file</code>.</div></td></tr>
+<tr><td class="module"><a href="?package=async_extra&amp;module=Log">Log</a></td><td><div class="info">A library for general logging.<br/>    Although this module is fully async-safe it exposes almost no Deferreds.  This is
+    partially a design choice to minimize the impact of logging in code, and partially the
+    result of organic design (i.e. older versions of this interface did the same thing).<br/>    A (limited) <code class="code">Blocking</code> module is supplied to accomodate the portion of a program that
+    runs outside of Async.</div></td></tr>
+<tr><td class="module"><a href="?package=async_extra&amp;module=Persistent_singleton">Persistent_singleton</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_extra&amp;module=Rpc">Rpc</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_extra&amp;module=Rpc_intf">Rpc_intf</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_extra&amp;module=Sequencer_table">Sequencer_table</a></td><td><div class="info">A table of sequencers indexed by key, so that at any moment for each key there is at
+    most one job running.<br/>    An <code class="code">'a Sequencer_table.Make(Key).t</code> is similar in concept to:<br/>    <pre class="codepre"><code class="code">
+      { mutable state : 'a option;
+        jobs  : 'a option Throttle.Sequencer.t;
+      } Key.Table.t
+    </code></pre><br/>    It allows one to run jobs that are indexed by a key, while allowing jobs with distinct
+    keys to run simultaneously, and ensuring that for any given key, at most one job with
+    that key is running at a time.  A sequencer table maintains optional state for each
+    key, and supplies that state to each running job indexed by that key.<br/>    The implementation of a sequencer table is optimized for having a large number of keys
+    with state, while only a few keys with active jobs at any given time.  So, it is
+    implemented with two tables, one of states and one of sequencers:<br/>    <pre class="codepre"><code class="code">
+      { states : 'a Key.Table.t;
+        jobs   : ('a option -&gt; unit Deferred.t) Sequencer.t Key.Table.t;
+      }
+    </code></pre><br/>    The implementation automatically adds a sequencer to the <code class="code">jobs</code> table, if necessary,
+    when one adds a job, and automatically removes a sequencer from the <code class="code">jobs</code> table
+    whenever the sequencer has no jobs to run.<br/>    The implementation does not automatically release state; one must call <code class="code">set_state t
+    ~key None</code>.</div></td></tr>
+<tr><td class="module"><a href="?package=async_extra&amp;module=Std">Std</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_extra&amp;module=Tcp">Tcp</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_extra&amp;module=Tcp_file">Tcp_file</a></td><td><div class="info">Access to on-disk files in parallel with serving them over a TCP connection.</div></td></tr>
+<tr><td class="module"><a href="?package=async_extra&amp;module=Typed_tcp">Typed_tcp</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_extra&amp;module=Typed_tcp_intf">Typed_tcp_intf</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_extra&amp;module=Udp">Udp</a></td><td><div class="info">A grab-bag of performance-oriented, UDP-oriented network tools.  These provide some
+    convenience, but they are more complex than basic applications require.<br/>    Defaults are chosen for typical UDP applications.  Buffering is via <code class="code">Iobuf</code>
+    conventions, where a typical packet-handling loop iteration is
+    read-<code class="code">flip_lo</code>-process-<code class="code">reset</code>.<br/>    For zero-copy <code class="code">Bigstring.t</code> transfers, we must ensure no buffering between the receive
+    loop and caller.  So, an interface like <code class="code">Tcp.connect</code>, with something like
+    <code class="code">(Bigstring.t * Socket.Address.Inet.t) Pipe.Reader.t</code>, won't work.<br/>    Instead, we use synchronous callbacks.</div></td></tr>
+<tr><td class="module"><a href="?package=async_extra&amp;module=Unpack_sequence">Unpack_sequence</a></td><td><div class="info"><code class="code">Unpack_sequence</code> implements a way to take an <code class="code">unpack_one</code> function that can unpack a
+    value from a character buffer, and use it to unpack a sequence of packed values
+    coming via a string pipe into a pipe of upacked values.</div></td></tr>
+<tr><td class="module"><a href="?package=async_extra&amp;module=User_and_group">User_and_group</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_extra&amp;module=Versioned_rpc">Versioned_rpc</a></td><td><div class="info">Infrastructure code for managing RPCs which evolve over time to use
+    different types at different versions</div></td></tr>
+<tr><td class="module"><a href="?package=async_extra&amp;module=Versioned_typed_tcp">Versioned_typed_tcp</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_extra&amp;module=Weak_hashtbl">Weak_hashtbl</a></td><td><div class="info">A <code class="code">Weak_hashtbl.t</code> is a hashtable that will drop a key and value if the value is no
+    longer referenced (by any non-weak pointers).  <code class="code">Weak_hashtbl</code> is in Async rather than
+    Core because it relies on finalization in its implementation.  Using non-Async
+    finalizers in an async program is wrong (see Async_gc.mli for details), and having
+    <code class="code">Weak_hashtbl</code> in Async prevents users from making this mistake.  Unlike (OCaml's)
+    <code class="code">Weak.Make</code>, which also describes itself as a &quot;weak hashtable,&quot; <code class="code">Weak_hashtbl</code> gives a
+    dictionary style structure.  In fact, OCaml's Weak.Make may better be described as a
+    weak set.<br/>    There's a tricky type of bug one can write with this module, e.g.:<br/>    <pre class="codepre"><code class="code">
+      type t =
+        { foo : string
+        ; bar : float Incr.t
+        }
+
+      let tbl = Weak_hashtbl.create ()
+      let x1 =
+        let t = Weak_hashtbl.find_or_add tbl key ~default:(fun () -&gt;
+          (... some function that computes a t...))
+        in
+        t.bar
+    </code></pre><br/>    At this point, the value associated with <code class="code">key</code> is unreachable (since all we did with it
+    was project out field bar), so it may disappear from the table at any time.</div></td></tr>
+</table>

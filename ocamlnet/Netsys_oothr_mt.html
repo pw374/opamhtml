@@ -1,0 +1,14 @@
+<div class="ocaml_toplevel_module"><div class="info">Object-oriented thread API</div>
+<div class="info"><div class="info">Makes the most important multi-threading primitives available using
+    object types. These are the essential definitions.</div></div>
+<pre><span class="EXCEPTIONThread_val"><span class="keyword">exception</span> Thread_val</span> <span class="keyword">of</span> <code class="type"><a href="?package=ocaml&amp;module=Thread&amp;type=t">Thread.t</a></code></pre>
+<pre><span class="EXCEPTIONMutex_val"><span class="keyword">exception</span> Mutex_val</span> <span class="keyword">of</span> <code class="type"><a href="?package=ocaml&amp;module=Mutex&amp;type=t">Mutex.t</a></code></pre>
+<pre><span class="EXCEPTIONCondition_val"><span class="keyword">exception</span> Condition_val</span> <span class="keyword">of</span> <code class="type"><a href="?package=ocaml&amp;module=Condition&amp;type=t">Condition.t</a></code></pre><div class="info"><div class="info">These exceptions are returned by the <code class="code">repr</code> method of the 
+      objects</div></div>
+<pre><span class="VALmtthread"><span class="keyword">val</span> mtthread</span> : <code class="type"><a href="?package=ocaml&amp;module=Thread&amp;type=t">Thread.t</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_oothr&amp;type=thread">Netsys_oothr.thread</a></code></pre><div class="info"><div class="info">Create a thread object for a thread</div></div>
+<pre><span class="VALmtmutex"><span class="keyword">val</span> mtmutex</span> : <code class="type"><a href="?package=ocaml&amp;module=Mutex&amp;type=t">Mutex.t</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_oothr&amp;type=mutex">Netsys_oothr.mutex</a></code></pre><div class="info"><div class="info">Create a mutex object for a mutex</div></div>
+<pre><span class="VALmtcondition"><span class="keyword">val</span> mtcondition</span> : <code class="type"><a href="?package=ocaml&amp;module=Condition&amp;type=t">Condition.t</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_oothr&amp;type=condition">Netsys_oothr.condition</a></code></pre><div class="info"><div class="info">Create a condition object for a condition</div></div>
+<pre><span class="VALmtprovider"><span class="keyword">val</span> mtprovider</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Netsys_oothr&amp;type=mtprovider">Netsys_oothr.mtprovider</a></code></pre><div class="info"><div class="info">Create a provider object</div></div>
+<div class="info"><div class="info">/ *</div></div>
+<pre><span class="VALinit"><span class="keyword">val</span> init</span> : <code class="type">unit -&gt; unit</code></pre>
+</div>

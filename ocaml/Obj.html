@@ -1,0 +1,38 @@
+<div class="ocaml_toplevel_module"><div class="info">Operations on internal representations of values.<br/>   Not for the casual user.</div>
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre>
+<pre><span class="VALrepr"><span class="keyword">val</span> repr</span> : <code class="type">'a -&gt; <a href="?package=ocaml&amp;module=Obj&amp;type=t">t</a></code></pre>
+<pre><span class="VALobj"><span class="keyword">val</span> obj</span> : <code class="type"><a href="?package=ocaml&amp;module=Obj&amp;type=t">t</a> -&gt; 'a</code></pre>
+<pre><span class="VALmagic"><span class="keyword">val</span> magic</span> : <code class="type">'a -&gt; 'b</code></pre>
+<pre><span class="VALis_block"><span class="keyword">val</span> is_block</span> : <code class="type"><a href="?package=ocaml&amp;module=Obj&amp;type=t">t</a> -&gt; bool</code></pre>
+<pre><span class="VALis_int"><span class="keyword">val</span> is_int</span> : <code class="type"><a href="?package=ocaml&amp;module=Obj&amp;type=t">t</a> -&gt; bool</code></pre>
+<pre><span class="VALtag"><span class="keyword">val</span> tag</span> : <code class="type"><a href="?package=ocaml&amp;module=Obj&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALset_tag"><span class="keyword">val</span> set_tag</span> : <code class="type"><a href="?package=ocaml&amp;module=Obj&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALsize"><span class="keyword">val</span> size</span> : <code class="type"><a href="?package=ocaml&amp;module=Obj&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALfield"><span class="keyword">val</span> field</span> : <code class="type"><a href="?package=ocaml&amp;module=Obj&amp;type=t">t</a> -&gt; int -&gt; <a href="?package=ocaml&amp;module=Obj&amp;type=t">t</a></code></pre>
+<pre><span class="VALset_field"><span class="keyword">val</span> set_field</span> : <code class="type"><a href="?package=ocaml&amp;module=Obj&amp;type=t">t</a> -&gt; int -&gt; <a href="?package=ocaml&amp;module=Obj&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VALdouble_field"><span class="keyword">val</span> double_field</span> : <code class="type"><a href="?package=ocaml&amp;module=Obj&amp;type=t">t</a> -&gt; int -&gt; float</code></pre>
+<pre><span class="VALset_double_field"><span class="keyword">val</span> set_double_field</span> : <code class="type"><a href="?package=ocaml&amp;module=Obj&amp;type=t">t</a> -&gt; int -&gt; float -&gt; unit</code></pre>
+<pre><span class="VALnew_block"><span class="keyword">val</span> new_block</span> : <code class="type">int -&gt; int -&gt; <a href="?package=ocaml&amp;module=Obj&amp;type=t">t</a></code></pre>
+<pre><span class="VALdup"><span class="keyword">val</span> dup</span> : <code class="type"><a href="?package=ocaml&amp;module=Obj&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Obj&amp;type=t">t</a></code></pre>
+<pre><span class="VALtruncate"><span class="keyword">val</span> truncate</span> : <code class="type"><a href="?package=ocaml&amp;module=Obj&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALadd_offset"><span class="keyword">val</span> add_offset</span> : <code class="type"><a href="?package=ocaml&amp;module=Obj&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Int32&amp;type=t">Int32.t</a> -&gt; <a href="?package=ocaml&amp;module=Obj&amp;type=t">t</a></code></pre>
+<pre><span class="VALlazy_tag"><span class="keyword">val</span> lazy_tag</span> : <code class="type">int</code></pre>
+<pre><span class="VALclosure_tag"><span class="keyword">val</span> closure_tag</span> : <code class="type">int</code></pre>
+<pre><span class="VALobject_tag"><span class="keyword">val</span> object_tag</span> : <code class="type">int</code></pre>
+<pre><span class="VALinfix_tag"><span class="keyword">val</span> infix_tag</span> : <code class="type">int</code></pre>
+<pre><span class="VALforward_tag"><span class="keyword">val</span> forward_tag</span> : <code class="type">int</code></pre>
+<pre><span class="VALno_scan_tag"><span class="keyword">val</span> no_scan_tag</span> : <code class="type">int</code></pre>
+<pre><span class="VALabstract_tag"><span class="keyword">val</span> abstract_tag</span> : <code class="type">int</code></pre>
+<pre><span class="VALstring_tag"><span class="keyword">val</span> string_tag</span> : <code class="type">int</code></pre>
+<pre><span class="VALdouble_tag"><span class="keyword">val</span> double_tag</span> : <code class="type">int</code></pre>
+<pre><span class="VALdouble_array_tag"><span class="keyword">val</span> double_array_tag</span> : <code class="type">int</code></pre>
+<pre><span class="VALcustom_tag"><span class="keyword">val</span> custom_tag</span> : <code class="type">int</code></pre>
+<pre><span class="VALfinal_tag"><span class="keyword">val</span> final_tag</span> : <code class="type">int</code></pre>
+<pre><span class="VALint_tag"><span class="keyword">val</span> int_tag</span> : <code class="type">int</code></pre>
+<pre><span class="VALout_of_heap_tag"><span class="keyword">val</span> out_of_heap_tag</span> : <code class="type">int</code></pre>
+<pre><span class="VALunaligned_tag"><span class="keyword">val</span> unaligned_tag</span> : <code class="type">int</code></pre>
+<div class="info"><div class="info">The following two functions are deprecated.  Use module  <a href="#Marshal">Marshal</a>
+    instead.</div></div>
+<pre><span class="VALmarshal"><span class="keyword">val</span> marshal</span> : <code class="type"><a href="?package=ocaml&amp;module=Obj&amp;type=t">t</a> -&gt; string</code></pre>
+<pre><span class="VALunmarshal"><span class="keyword">val</span> unmarshal</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocaml&amp;module=Obj&amp;type=t">t</a> * int</code></pre>
+</div>

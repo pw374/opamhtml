@@ -1,0 +1,108 @@
+<div class="ocaml_toplevel_module"><div class="info">Lwt unix main loop engine</div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Events</h6></div></div>
+<pre><span class="TYPEevent"><span class="keyword">type</span> event</span> </pre><div class="info"><div class="info">Type of events. An event represent a callback registered to be
+      called when some event occurs.</div></div>
+<pre><span class="VALstop_event"><span class="keyword">val</span> stop_event</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_engine&amp;type=event">event</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">stop_event event</code> stops the given event.</div></div>
+<pre><span class="VALfake_event"><span class="keyword">val</span> fake_event</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_engine&amp;type=event">event</a></code></pre><div class="info"><div class="info">Event which does nothing when stopped.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Event loop functions</h6></div></div>
+<pre><span class="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">bool -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">iter block</code> performs one iteration of the main loop. If <code class="code">block</code>
+      is <code class="code">true</code> the function must blocks until one event become
+      available, otherwise it should just check for available events
+      and return immediatly.</div></div>
+<pre><span class="VALon_readable"><span class="keyword">val</span> on_readable</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; (<a href="?package=lwt&amp;module=Lwt_engine&amp;type=event">event</a> -&gt; unit) -&gt; <a href="?package=lwt&amp;module=Lwt_engine&amp;type=event">event</a></code></pre><div class="info"><div class="info"><code class="code">on_readable fd f</code> calls <code class="code">f</code> each time <code class="code">fd</code> becomes readable.</div></div>
+<pre><span class="VALon_writable"><span class="keyword">val</span> on_writable</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; (<a href="?package=lwt&amp;module=Lwt_engine&amp;type=event">event</a> -&gt; unit) -&gt; <a href="?package=lwt&amp;module=Lwt_engine&amp;type=event">event</a></code></pre><div class="info"><div class="info"><code class="code">on_readable fd f</code> calls <code class="code">f</code> each time <code class="code">fd</code> becomes writable.</div></div>
+<pre><span class="VALon_timer"><span class="keyword">val</span> on_timer</span> : <code class="type">float -&gt; bool -&gt; (<a href="?package=lwt&amp;module=Lwt_engine&amp;type=event">event</a> -&gt; unit) -&gt; <a href="?package=lwt&amp;module=Lwt_engine&amp;type=event">event</a></code></pre><div class="info"><div class="info"><code class="code">on_timer delay repeat f</code> calls <code class="code">f</code> one time after <code class="code">delay</code>
+      seconds. If <code class="code">repeat</code> is <code class="code">true</code> then <code class="code">f</code> is called each <code class="code">delay</code>
+      seconds, otherwise it is called only one time.</div></div>
+<pre><span class="VALreadable_count"><span class="keyword">val</span> readable_count</span> : <code class="type">unit -&gt; int</code></pre><div class="info"><div class="info">Returns the number of events waiting for a file descriptor to
+      become readable.</div></div>
+<pre><span class="VALwritable_count"><span class="keyword">val</span> writable_count</span> : <code class="type">unit -&gt; int</code></pre><div class="info"><div class="info">Returns the number of events waiting for a file descriptor to
+      become writable.</div></div>
+<pre><span class="VALtimer_count"><span class="keyword">val</span> timer_count</span> : <code class="type">unit -&gt; int</code></pre><div class="info"><div class="info">Returns the number of registered timers.</div></div>
+<pre><span class="VALfake_io"><span class="keyword">val</span> fake_io</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; unit</code></pre><div class="info"><div class="info">Simulates activity on the given file descriptor.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Engines</h6></div></div>
+<div class="info"><div class="info">An engine represent a set of functions used to register different
+    kind of callbacks for different kind of events.</div></div>
+<div class="ocaml_class sig" name="abstract"><pre><span class="TYPEabstract"><span class="keyword">class</span> <span class="keyword">virtual </span><a href="?package=lwt&amp;module=Lwt_engine&amp;class=abstract">abstract</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Abstract class for engines.</div></div><div class="ocaml_class_content"><pre><span class="METHODdestroy"><span class="keyword">method</span> destroy</span> : <code class="code">unit</code></pre>
+<div class="info"><div class="info">Destroy the engine, remove all its events and free its
+        associated resources.</div></div>
+<pre><span class="METHODtransfer"><span class="keyword">method</span> transfer</span> : <code class="code"><a href="?package=lwt&amp;module=Lwt_engine&amp;type=abstract">abstract</a> -&gt; unit</code></pre>
+<div class="info"><div class="info"><code class="code">transfer engine</code> moves all events from the current engine to
+        <code class="code">engine</code>. Note that timers are reset in the destination
+        engine, i.e. if a timer with a delay of 2 seconds was
+        registered 1 second ago it will occurs in 2 seconds in the
+        destination engine.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Event loop methods</h6></div></div>
+<pre><span class="METHODiter"><span class="keyword">method</span> <span class="keyword">virtual</span> iter</span> : <code class="code">bool -&gt; unit</code></pre>
+
+<pre><span class="METHODon_readable"><span class="keyword">method</span> on_readable</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; (<a href="?package=lwt&amp;module=Lwt_engine&amp;type=event">event</a> -&gt; unit) -&gt; <a href="?package=lwt&amp;module=Lwt_engine&amp;type=event">event</a></code></pre>
+
+<pre><span class="METHODon_writable"><span class="keyword">method</span> on_writable</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; (<a href="?package=lwt&amp;module=Lwt_engine&amp;type=event">event</a> -&gt; unit) -&gt; <a href="?package=lwt&amp;module=Lwt_engine&amp;type=event">event</a></code></pre>
+
+<pre><span class="METHODon_timer"><span class="keyword">method</span> on_timer</span> : <code class="code">float -&gt; bool -&gt; (<a href="?package=lwt&amp;module=Lwt_engine&amp;type=event">event</a> -&gt; unit) -&gt; <a href="?package=lwt&amp;module=Lwt_engine&amp;type=event">event</a></code></pre>
+
+<pre><span class="METHODfake_io"><span class="keyword">method</span> fake_io</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; unit</code></pre>
+
+<pre><span class="METHODreadable_count"><span class="keyword">method</span> readable_count</span> : <code class="code">int</code></pre>
+
+<pre><span class="METHODwritable_count"><span class="keyword">method</span> writable_count</span> : <code class="code">int</code></pre>
+
+<pre><span class="METHODtimer_count"><span class="keyword">method</span> timer_count</span> : <code class="code">int</code></pre>
+
+<div class="info"><div class="info"><h6 id="6_TITLE">Backend methods</h6></div></div>
+<div class="info"><div class="info">Notes:<br/>      - the callback passed to register methods is of type <code class="code">unit -&gt;
+      unit</code> and not <code class="code">event -&gt; unit</code><ul><li>register methods returns a lazy value which unregister the
+      event when forced
+  </li></ul></div></div>
+<pre><span class="METHODcleanup"><span class="keyword">method</span> <span class="keyword">virtual</span> <span class="keyword">private</span> cleanup</span> : <code class="code">unit</code></pre>
+<div class="info"><div class="info">Cleanup resources associated to the engine.</div></div>
+<pre><span class="METHODregister_readable"><span class="keyword">method</span> <span class="keyword">virtual</span> <span class="keyword">private</span> register_readable</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; (unit -&gt; unit) -&gt; unit <a href="?package=ocaml&amp;module=Lazy&amp;type=t">Lazy.t</a></code></pre>
+
+<pre><span class="METHODregister_writable"><span class="keyword">method</span> <span class="keyword">virtual</span> <span class="keyword">private</span> register_writable</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; (unit -&gt; unit) -&gt; unit <a href="?package=ocaml&amp;module=Lazy&amp;type=t">Lazy.t</a></code></pre>
+
+<pre><span class="METHODregister_timer"><span class="keyword">method</span> <span class="keyword">virtual</span> <span class="keyword">private</span> register_timer</span> : <code class="code">float -&gt; bool -&gt; (unit -&gt; unit) -&gt; unit <a href="?package=ocaml&amp;module=Lazy&amp;type=t">Lazy.t</a></code></pre>
+</div></div>
+<div class="ocaml_class sig" name="t"><pre><span class="TYPEt"><span class="keyword">class type</span> <a href="?package=lwt&amp;module=Lwt_engine&amp;class=t">t</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Type of engines.</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=lwt&amp;module=Lwt_engine&amp;class=abstract"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=lwt&amp;module=Lwt_engine&amp;class=abstract">abstract</a></pre></div>
+
+<pre><span class="METHODiter"><span class="keyword">method</span> iter</span> : <code class="code">bool -&gt; unit</code></pre>
+
+<pre><span class="METHODcleanup"><span class="keyword">method</span> <span class="keyword">private</span> cleanup</span> : <code class="code">unit</code></pre>
+
+<pre><span class="METHODregister_readable"><span class="keyword">method</span> <span class="keyword">private</span> register_readable</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; (unit -&gt; unit) -&gt; unit <a href="?package=ocaml&amp;module=Lazy&amp;type=t">Lazy.t</a></code></pre>
+
+<pre><span class="METHODregister_writable"><span class="keyword">method</span> <span class="keyword">private</span> register_writable</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; (unit -&gt; unit) -&gt; unit <a href="?package=ocaml&amp;module=Lazy&amp;type=t">Lazy.t</a></code></pre>
+
+<pre><span class="METHODregister_timer"><span class="keyword">method</span> <span class="keyword">private</span> register_timer</span> : <code class="code">float -&gt; bool -&gt; (unit -&gt; unit) -&gt; unit <a href="?package=ocaml&amp;module=Lazy&amp;type=t">Lazy.t</a></code></pre>
+</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Predefined engines</h6></div></div>
+<pre><span class="TYPEev_loop"><span class="keyword">type</span> ev_loop</span> </pre><div class="info"><div class="info">Type of libev loops.</div></div>
+<div class="ocaml_class sig" name="libev"><pre><span class="TYPElibev"><span class="keyword">class</span> <a href="?package=lwt&amp;module=Lwt_engine&amp;class=libev">libev</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Engine based on libev. If not compiled with libev support, the
+    creation of the class will raise  <a href="#Lwt_sys.Not_available">Lwt_sys.Not_available</a>.</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=lwt&amp;module=Lwt_engine&amp;class=t"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=lwt&amp;module=Lwt_engine&amp;class=t">t</a></pre></div>
+
+<pre><span class="VALloop"><span class="keyword">val</span> loop</span> : <code class="code"><a href="?package=lwt&amp;module=Lwt_engine&amp;type=ev_loop">ev_loop</a></code></pre>
+<div class="info"><div class="info">The libev loop used for this engine.</div></div>
+<pre><span class="METHODloop"><span class="keyword">method</span> loop</span> : <code class="code"><a href="?package=lwt&amp;module=Lwt_engine&amp;type=ev_loop">ev_loop</a></code></pre>
+<div class="info"><div class="info">Returns <code class="code">loop</code>.</div></div></div></div>
+<div class="ocaml_class ident" name="select" path="?package=lwt&amp;module=Lwt_engine&amp;class=t"><pre><span class="TYPEselect"><span class="keyword">class</span> <a href="?package=lwt&amp;module=Lwt_engine&amp;class=select">select</a></span> : <code class="type"/><a href="?package=lwt&amp;module=Lwt_engine&amp;class=t">t</a></pre><div class="info"><div class="info">Engine based on <code class="code">Unix.select</code>.</div></div></div>
+<div class="ocaml_class sig" name="select_based"><pre><span class="TYPEselect_based"><span class="keyword">class</span> <span class="keyword">virtual </span><a href="?package=lwt&amp;module=Lwt_engine&amp;class=select_based">select_based</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Abstract class for engines based on a select-like function.</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=lwt&amp;module=Lwt_engine&amp;class=t"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=lwt&amp;module=Lwt_engine&amp;class=t">t</a></pre></div>
+
+<pre><span class="METHODselect"><span class="keyword">method</span> <span class="keyword">virtual</span> <span class="keyword">private</span> select</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list -&gt;
+<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list -&gt; float -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list</code></pre>
+<div class="info"><div class="info"><code class="code">select fds_r fds_w timeout</code> waits for either:<br/>        - one of the file descriptor of <code class="code">fds_r</code> to become readable<ul><li>one of the file descriptor of <code class="code">fds_w</code> to become writable</li><li>timeout to expire</li></ul>        and returns the list of readable file descriptor and the list
+        of writable file descriptors.</div></div></div></div>
+<div class="ocaml_class sig" name="poll_based"><pre><span class="TYPEpoll_based"><span class="keyword">class</span> <span class="keyword">virtual </span><a href="?package=lwt&amp;module=Lwt_engine&amp;class=poll_based">poll_based</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Abstract class for engines based on a poll-like function.</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=lwt&amp;module=Lwt_engine&amp;class=t"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=lwt&amp;module=Lwt_engine&amp;class=t">t</a></pre></div>
+
+<pre><span class="METHODpoll"><span class="keyword">method</span> <span class="keyword">virtual</span> <span class="keyword">private</span> poll</span> : <code class="code">(<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> * bool * bool) list -&gt;
+float -&gt; (<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> * bool * bool) list</code></pre>
+<div class="info"><div class="info"><code class="code">poll fds tiomeout</code>, where <code class="code">fds</code> is a list of tuples of the
+        form <code class="code">(fd, check_readable, check_writable)</code>, waits for either:<br/>        - one of the file descriptor with <code class="code">check_readable</code> set to
+          <code class="code">true</code> to become readable<ul><li>one of the file descriptor with <code class="code">check_writable</code> set to
+          <code class="code">true</code> to become writable</li><li>timeout to expire</li></ul>        and returns the list of file descriptors with their readable
+        and writable status.</div></div></div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">The current engine</h6></div></div>
+<pre><span class="VALget"><span class="keyword">val</span> get</span> : <code class="type">unit -&gt; <a href="?package=lwt&amp;module=Lwt_engine&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">get ()</code> returns the engine currently in use.</div></div>
+<pre><span class="VALset"><span class="keyword">val</span> set</span> : <code class="type">?transfer:bool -&gt; ?destroy:bool -&gt; #<a href="?package=lwt&amp;module=Lwt_engine&amp;class=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">set ?transfer ?destroy engine</code> replaces the current engine by
+      the given one.<br/>      If <code class="code">transfer</code> is <code class="code">true</code> (the default) all events from the
+      current engine are transferred to the new one.<br/>      If <code class="code">destroy</code> is <code class="code">true</code> (the default) then the current engine is
+      destroyed before being replaced.</div></div>
+</div>

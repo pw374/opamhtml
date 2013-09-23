@@ -1,0 +1,361 @@
+<div class="ocaml_toplevel_module"><div class="info">FTP client<br/> Currently implements:<ul><li>Core FTP (RFC 959), except compressed transfer modes, and except page
+   files</li><li>Negotiation of FTP extensions (RFC 2389)</li><li>Common FTP extensions (RFC 3659)</li><li>IPv6 (RFC 2428)</li><li>Internationalization (RFC 2640)</li><li>Directory walking (NVFS) and direct access (TVFS)</li></ul> The client is written in asynchronous style (using  <a href="#Uq_engines">Uq_engines</a>).<br/> The interface of this module was changed in Ocamlnet-3.3. Before this
+ release, the module was marked as &quot;experimental&quot;. This is no longer
+ the case, as the interface has been updated, and the missing features
+ have been added (e.g. <code class="code">STOR</code> support).</div>
+<pre><span class="EXCEPTIONFTP_error"><span class="keyword">exception</span> FTP_error</span> <span class="keyword">of</span> <code class="type">exn</code></pre><div class="info"><div class="info">Something went wrong, often on socket level</div></div>
+<pre><span class="EXCEPTIONFTP_protocol_violation"><span class="keyword">exception</span> FTP_protocol_violation</span> <span class="keyword">of</span> <code class="type">string</code></pre><div class="info"><div class="info">The server violates the FTP specification</div></div>
+<pre><span class="EXCEPTIONFTP_timeout"><span class="keyword">exception</span> FTP_timeout</span> <span class="keyword">of</span> <code class="type">string</code></pre><div class="info"><div class="info">A timeout on the control or data connection (this is a fatal error)</div></div>
+<pre><span class="TYPEcmd_state"><span class="keyword">type</span> cmd_state</span> = <code class="type">[ `Init
+| `Not_connected
+| `Pass_acct_seq
+| `Perm_failure
+| `Preliminary
+| `Proto_error
+| `Rename_seq
+| `Restart_seq
+| `Success
+| `Temp_failure
+| `User_acct_seq
+| `User_pass_seq ]</code></pre><div class="info"><div class="info">The command state:<ul><li><code class="code">`Not_connected</code>: Not connected.</li><li><code class="code">`Init</code>: Just connected, no greeting message arrived yet</li><li><code class="code">`Success</code>: Got the greeting message/last command was successful</li><li><code class="code">`Proto_error</code>: <b>currently unused</b></li><li><code class="code">`Temp_failure</code>: Last command was not successful, and the code
+   was between 400 and 499</li><li><code class="code">`Perm_failure</code>: Last command was not successful, and the code
+   was between 500 and 599</li><li><code class="code">`Rename_seq</code>: Used instead of <code class="code">`Success</code> after the RNFR command</li><li><code class="code">`Restart_seq</code>: Used instead of <code class="code">`Success</code> after the REST command</li><li><code class="code">`User_pass_seq</code>: Used instead of <code class="code">`Success</code> after the USER command
+   when a password must be typed in</li><li><code class="code">`User_acct_seq</code>: Used instead of <code class="code">`Success</code> after the USER command
+   when an account ID must be typed in</li><li><code class="code">`Pass_acct_seq</code>: Used instead of <code class="code">`Success</code> after the PASS command
+   when an account iD must be typed in</li><li><code class="code">`Preliminary</code>: a reply with code 100 to 199. There will be another
+   final reply for the command
+   </li></ul></div></div>
+<pre><span class="TYPEport"><span class="keyword">type</span> port</span> = <code class="type">[ `Active of string * int * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a>
+| `Ext_active of string * int * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a>
+| `Ext_passive of int
+| `Passive of string * int
+| `Unspecified ]</code></pre><div class="info"><div class="info">The port of the data connection: <code class="code">`Active</code> means that the server 
+ initiates the data connection to the listening client, and in the
+ case of <code class="code">`Passive</code> the client initiates the data connection to the
+ listening server. The string argument is the IP address as dotted
+ quad, the int argument is the port number, and the descriptor 
+ is the listening master socket.</div></div>
+<pre><span class="TYPEform_code"><span class="keyword">type</span> form_code</span> = <code class="type">[ `ASA | `Non_print | `Telnet ]</code></pre><div class="info"><div class="info">The <code class="code">form_code</code> has a meaning when FTP is used to print files:<ul><li><code class="code">`Non_print</code>: This is not the case.</li><li><code class="code">`Telnet</code>: Telnet control codes are used for vertical movement</li><li><code class="code">`ASA</code>: ASA (Fortran) control codes are used for vertical movement
+   </li></ul></div></div>
+<pre><span class="TYPErepresentation"><span class="keyword">type</span> representation</span> = <code class="type">[ `ASCII of <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=form_code">form_code</a> option | `EBCDIC of <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=form_code">form_code</a> option | `Image ]</code></pre><div class="info"><div class="info">The representation of the transferred file:<ul><li><code class="code">`ASCII</code>: An ASCII variant is used, i.e. the server sends files in
+   ASCII encoding with CR/LF as end-of-line marker. Supported by all
+   servers.</li><li><code class="code">`EBCDIC</code>: An EBCDIC variant is used, i.e. the server sends files in
+   EBCDIC encoding with NEL as end-of-line marker</li><li><code class="code">`Image</code>: The file is transferred in its original binary
+   representation. Supported by all servers.</li></ul> &quot;Local&quot; representations are not supported.<br/> This FTP client does not recode the files such that they match the
+ selected representation. When files are downloaded, they are stored
+ as they are received. When files are uploaded, they are sent as they
+ are. The user of this client must do recodings when necessary
+ (the class  <a href="#Ftp_data_endpoint.data_converter">Ftp_data_endpoint.data_converter</a> may be useful for this).<br/> If no representation is selected, FTP servers assume <code class="code">`ASCII None</code>
+ as default.</div></div>
+<pre><span class="TYPEstructure"><span class="keyword">type</span> structure</span> = <code class="type">[ `File_structure | `Record_structure ]</code></pre><div class="info"><div class="info">The client supports two structures:<ul><li><code class="code">`File_structure</code>: Files are simply contiguous streams of bytes</li><li><code class="code">`Record_structure</code>: Files are sequences of records. FTP does
+   not make a difference between variable and fixed length records.
+   It is not forbidden that the records are themselves structured
+   into lines, in fact it can happen that end-of-line markers are
+   contained in binary records. Operating systems that support 
+   record-structured files often store text files in this format, i.e.
+   every line is stored in its own record, without end-of-line marker.
+   If record structure is selected by a STRU command, it is recommended
+   to use the classes  <a href="#Ftp_data_endpoint.out_record_channel">Ftp_data_endpoint.out_record_channel</a> and
+    <a href="#Ftp_data_endpoint.in_record_channel">Ftp_data_endpoint.in_record_channel</a> for the local representation
+   of the files, otherwise the records may be incorrectly mapped
+   to the local conventions.</li></ul> Page-structured files (i.e. indexed files) are not supported.<br/> If no structure is selected, FTP servers will assume file structure
+ as default.</div></div>
+<pre><span class="TYPEtransmission_mode"><span class="keyword">type</span> transmission_mode</span> = <code class="type">[ `Block_mode | `Stream_mode ]</code></pre><div class="info"><div class="info">The transmission mode selects how the data are encoded in the data
+ connection.<ul><li><code class="code">`Stream_mode</code>: This is the simple format that is responsible for
+   all the failed FTP downloads. It is supported by all FTP servers,
+   actually, you cannot assume a better transmission mode from an
+   unknown FTP server. It is unreliable because it cannot distinguish
+   between a transmission failure and the regular end-of-file condition.</li><li><code class="code">`Block_mode</code>: This is an improved format using frames to protect
+   the transmitted data. Unfortunately, almost no FTP server supports
+   it.</li></ul> Both modes are compatible with both structures, i.e. you can transfer
+ a record-structured file in stream mode and a flat file in block
+ mode. However, in practice this is not the case. Servers that only
+ know flat files are likely to only support stream mode, and servers
+ implementing record structure imply that block transfers base on
+ the record format. So the advice is to use stream mode for flat
+ files, and block mode for record files.</div></div>
+<pre><code><span class="TYPEftp_state"><span class="keyword">type</span> ftp_state</span> = {</code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTftp_state.cmd_state">cmd_state</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=cmd_state">cmd_state</a></code>;</code></td><td class="typefieldcomment" align="left"><div class="info">the command state</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTftp_state.ftp_connected">ftp_connected</span> : <code class="type">bool</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">whether connected with the server</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTftp_state.ftp_data_conn">ftp_data_conn</span> : <code class="type">bool</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">whether there is a clean data conn</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTftp_state.ftp_user">ftp_user</span> : <code class="type">string option</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">successfully sent user identifier</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTftp_state.ftp_password">ftp_password</span> : <code class="type">string option</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">successfully sent password</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTftp_state.ftp_account">ftp_account</span> : <code class="type">string option</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">successfully sent account identifier</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTftp_state.ftp_logged_in">ftp_logged_in</span> : <code class="type">bool</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">whether the user is logged in</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTftp_state.ftp_port">ftp_port</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=port">port</a></code>;</code></td><td class="typefieldcomment" align="left"><div class="info">the selected port</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTftp_state.ftp_repr">ftp_repr</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=representation">representation</a></code>;</code></td><td class="typefieldcomment" align="left"><div class="info">the selected representation</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTftp_state.ftp_structure">ftp_structure</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=structure">structure</a></code>;</code></td><td class="typefieldcomment" align="left"><div class="info">the selected structure</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTftp_state.ftp_trans">ftp_trans</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=transmission_mode">transmission_mode</a></code>;</code></td><td class="typefieldcomment" align="left"><div class="info">the selected trans mode</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTftp_state.ftp_dir">ftp_dir</span> : <code class="type">string list</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">The current directory, expressed as list of CWD changes minus
+ CDUP changes. This is only reasonable if CWD does not include
+ slashes. The list is in reverse order, i.e. deepest directory
+ first.</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTftp_state.ftp_features">ftp_features</span> : <code class="type">(string * string option) list option</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">The list of features returned by the last FEAT command.
+ <code class="code">None</code> means that no FEAT command was yet tried. 
+ <code class="code">Some []</code> means that there are no features (either FEAT
+ returned an empty list, or the FEAT command is not implemented
+ by the server). Otherwise the list enumerates pairs 
+ <code class="code">(label,param)</code> where <code class="code">label</code> is the case-sensitive feature
+ label and <code class="code">param</code> the optional parameter. There is no
+ defined order for the list of features.</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTftp_state.ftp_options">ftp_options</span> : <code class="type">(string * string option) list</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">Remembers the OPTS commands sent to the server. The list
+ enumerates pairs <code class="code">(command,optionparam)</code>, where <code class="code">command</code>
+ is the uppercase command name the option refers to. Only
+ the last negotiated <code class="code">optionparam</code> for the command is remembered.</div></td></tr><tr><td>}</td></tr></table><div class="info"><div class="info">The ftp_state reflects the knowledge of the client about what has been
+ agreed upon with the server.</div></div>
+<pre><span class="TYPEcmd"><span class="keyword">type</span> cmd</span> = <code class="type">[ `ACCT of string
+| `ALLO of int * int option
+| `APPE of string * (<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_state">ftp_state</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=local_sender">Ftp_data_endpoint.local_sender</a>)
+| `CDUP
+| `CWD of string
+| `Connect of string * int
+| `DELE of string
+| `Disconnect
+| `Dummy
+| `EPRT
+| `EPSV of [ `AF of <a href="?package=ocaml&amp;module=Unix&amp;type=socket_domain">Unix.socket_domain</a> | `ALL ] option
+| `FEAT
+| `HELP of string option
+| `LANG of string option
+| `LIST of string option * (<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_state">ftp_state</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=local_receiver">Ftp_data_endpoint.local_receiver</a>)
+| `MDTM of string
+| `MKD of string
+| `MLSD of string option * (<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_state">ftp_state</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=local_receiver">Ftp_data_endpoint.local_receiver</a>)
+| `MLST of string option
+| `MODE of <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=transmission_mode">transmission_mode</a>
+| `NLST of string option * (<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_state">ftp_state</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=local_receiver">Ftp_data_endpoint.local_receiver</a>)
+| `NOOP
+| `OPTS of string * string option
+| `PASS of string
+| `PASV
+| `PORT
+| `PWD
+| `QUIT
+| `REIN
+| `REST of string
+| `RETR of string * (<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_state">ftp_state</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=local_receiver">Ftp_data_endpoint.local_receiver</a>)
+| `RMD of string
+| `RNFR of string
+| `RNTO of string
+| `SITE of string
+| `SIZE of string
+| `SMNT of string
+| `STAT of string option
+| `STOR of string * (<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_state">ftp_state</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=local_sender">Ftp_data_endpoint.local_sender</a>)
+| `STOU of <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_state">ftp_state</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=local_sender">Ftp_data_endpoint.local_sender</a>
+| `STRU of <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=structure">structure</a>
+| `SYST
+| `TYPE of <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=representation">representation</a>
+| `USER of string ]</code></pre><div class="info"><div class="info">An FTP command. Not all commands are implemented by all servers.</div></div>
+<pre><span class="TYPEreply"><span class="keyword">type</span> reply</span> = <code class="type">int * string</code></pre><div class="info"><div class="info">Reply code plus text</div></div>
+<div class="ocaml_class sig" name="ftp_client_pi"><pre><span class="TYPEftp_client_pi"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Ftp_client&amp;class=ftp_client_pi">ftp_client_pi</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">The client protocol interpreter...</div></div><div class="ocaml_class_content"><pre><span class="METHODexec_e"><span class="keyword">method</span> exec_e</span> : <code class="code">?prelim:(<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_state">ftp_state</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=reply">reply</a> -&gt; unit) -&gt;
+<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=cmd">cmd</a> -&gt; (<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_state">ftp_state</a> * <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=reply">reply</a>) <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">Uq_engines.engine</a></code></pre>
+<div class="info"><div class="info">Run another command as engine. The command is first started when
+	the previous command has terminated. The protocol interpreter does 
+	not check whether this command is allowed in the current ftp_state
+	or not.<br/>	When the command is done, the engine transitions to
+	<code class="code">`Done(st,r)</code> where <code class="code">st</code> is the state after the command, and <code class="code">r</code>
+	is the final reply of the server.<br/>	Due to the FTP specification there may be several replies for
+	a command: First, zero or more replies with <code class="code">cmd_state = `Preliminary</code>,
+	and then exactly one reply with a final state. The preliminary replies
+	can be intercepted with the <code class="code">prelim</code> callback.</div></div>
+<pre><span class="METHODsend_abort"><span class="keyword">method</span> send_abort</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Sends immediately an <code class="code">ABOR</code> command, even when a data transfer is
+ in progress.<br/> TODO - not yet implemented</div></div>
+<pre><span class="METHODrun"><span class="keyword">method</span> run</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Starts the event system; same as <code class="code">Unixqueue.run</code></div></div>
+<pre><span class="METHODftp_state"><span class="keyword">method</span> ftp_state</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_state">ftp_state</a></code></pre>
+<div class="info"><div class="info">Returns the current ftp_state</div></div>
+<pre><span class="METHODstate"><span class="keyword">method</span> state</span> : <code class="code">unit <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine_state">Uq_engines.engine_state</a></code></pre>
+<div class="info"><div class="info">The state in the sense of <code class="code">Uq_engines</code>. Possible values are:<ul><li><code class="code">`Working _</code>: The control connection is still active. The <code class="code">int</code>
+   argument is currently meaningless.</li><li><code class="code">`Done()</code>: The control connection has been terminated.</li><li><code class="code">`Error e</code>: A violation of the FTP protocol happened, or another
+   exception <code class="code">e</code> occurred</li><li><code class="code">`Aborted</code>: The <code class="code">abort</code> method was called
+     </li></ul></div></div>
+<pre><span class="METHODabort"><span class="keyword">method</span> abort</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Shuts any active connection immediately down, and changes the
+ state of the engine to <code class="code">`Aborted</code>.</div></div>
+<pre><span class="METHODevent_system"><span class="keyword">method</span> event_system</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a></code></pre>
+<div class="info"><div class="info">The used event system</div></div>
+<pre><span class="METHODrequest_notification"><span class="keyword">method</span> request_notification</span> : <code class="code">(unit -&gt; bool) -&gt; unit</code></pre>
+<div class="info"><div class="info">as in  <a href="#Uq_engines.engine">Uq_engines.engine</a></div></div>
+<pre><span class="METHODis_empty"><span class="keyword">method</span> is_empty</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">Whether the queue is empty</div></div>
+<pre><span class="METHODneed_ip6"><span class="keyword">method</span> need_ip6</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">Whether <code class="code">`EPSV</code> or <code class="code">`EPRT</code> are required instead of
+	<code class="code">`PASV</code> and <code class="code">`PORT</code>, respectively. This is first set after
+	connecting to a server (i.e. when the IP address family is known).
+	Before, it is always <code class="code">false</code>.</div></div>
+<div class="info"><div class="info">Feature tests<br/>      The following methods are first set when the <code class="code">`FEAT</code> command is run.
+      Use <code class="code">feat_method</code> to do so. Until then, always <code class="code">false</code> is returned.</div></div>
+<pre><span class="METHODsupports_tvfs"><span class="keyword">method</span> supports_tvfs</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">Whether TVFS filenames are supported</div></div>
+<pre><span class="METHODsupports_mdtm"><span class="keyword">method</span> supports_mdtm</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">Whether the <code class="code">`MDTM</code> command is supported. Note that <code class="code">`MDTM</code> is sometimes
+	even supported even if the server does not provide the <code class="code">`FEAT</code> command
+	to test for this feature.</div></div>
+<pre><span class="METHODsupports_size"><span class="keyword">method</span> supports_size</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">Whether the <code class="code">`SIZE</code> command is supported. Note that <code class="code">`SIZE</code> is sometimes
+	even supported even if the server does not provide the <code class="code">`FEAT</code> command
+	to test for this feature.</div></div>
+<pre><span class="METHODsupports_mlst"><span class="keyword">method</span> supports_mlst</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">Whether the <code class="code">`MLST</code> and <code class="code">`MLSD</code> commands are supported</div></div>
+<pre><span class="METHODmlst_facts"><span class="keyword">method</span> mlst_facts</span> : <code class="code">string list</code></pre>
+<div class="info"><div class="info">All available facts for <code class="code">`MLST</code> and <code class="code">`MLSD</code></div></div>
+<pre><span class="METHODmlst_enabled_facts"><span class="keyword">method</span> mlst_enabled_facts</span> : <code class="code">string list</code></pre>
+<div class="info"><div class="info">The enabled facts for <code class="code">`MLST</code> and <code class="code">`MLSD</code></div></div>
+<pre><span class="METHODsupports_utf8"><span class="keyword">method</span> supports_utf8</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">Whether the UTF-8 extension is understood by the server (RFC 2640)</div></div></div></div>
+<pre><span class="TYPEftp_method"><span class="keyword">type</span> ftp_method</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_client_pi">ftp_client_pi</a> -&gt; unit <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">Uq_engines.engine</a></code></pre><div class="info"><div class="info">An <code class="code">ftp_method</code> is a small procedure doing some task</div></div>
+<pre><span class="EXCEPTIONFTP_method_temp_failure"><span class="keyword">exception</span> FTP_method_temp_failure</span> <span class="keyword">of</span> <code class="type">int * string</code></pre>
+<pre><span class="EXCEPTIONFTP_method_perm_failure"><span class="keyword">exception</span> FTP_method_perm_failure</span> <span class="keyword">of</span> <code class="type">int * string</code></pre>
+<pre><span class="EXCEPTIONFTP_method_unexpected_reply"><span class="keyword">exception</span> FTP_method_unexpected_reply</span> <span class="keyword">of</span> <code class="type">int * string</code></pre><div class="info"><div class="info">These exceptions may be raised during execution by the FTP method.
+ The int is the unexpected FTP control code and the string the
+ corresponding text. A temporary failure has a code between 400 and
+ 499, and a permanent failure has a code between 500 and 599.</div></div>
+<pre><span class="VALconnect_method"><span class="keyword">val</span> connect_method</span> : <code class="type">host:string -&gt; ?port:int -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">This method connects to the <code class="code">host</code></div></div>
+<pre><span class="VALlogin_method"><span class="keyword">val</span> login_method</span> : <code class="type">user:string -&gt;
+get_password:(unit -&gt; string) -&gt;
+get_account:(unit -&gt; string) -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">This FTP method logs the <code class="code">user</code> in. <code class="code">get_password</code> is called when
+ the FTP server asks for the password (may be skipped). <code class="code">get_account</code>
+ is called when the server asks for the account ID (may be skipped).</div></div>
+<pre><span class="VALquit_method"><span class="keyword">val</span> quit_method</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">Quits and disconnects</div></div>
+<pre><span class="VALwalk_method"><span class="keyword">val</span> walk_method</span> : <code class="type">[ `Dir of string | `File of string | `Stay ] -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">This FTP method walks to the target directory:<br/> - <code class="code">`File name</code>: The <code class="code">name</code> is interpreted as slash-separated path.
+   It is always interpreted relative to the home directory of the 
+   user (i.e. the directory after login), even if it begins with a
+   slash. The FTP command walks to the directory containing <code class="code">name</code>.<ul><li><code class="code">`Dir name</code>: The FTP command walks to the directory <code class="code">name</code> (same
+   syntax as for <code class="code">`File</code>).</li><li><code class="code">`Stay</code>: The FTP command does nothing (stays in the current directory).
+ </li></ul></div></div>
+<pre><span class="TYPEfilename"><span class="keyword">type</span> filename</span> = <code class="type">[ `NVFS of string | `TVFS of string | `Verbatim of string ]</code></pre><div class="info"><div class="info">There are several methods how to specify filenames:<ul><li><code class="code">`NVFS name</code>: The &quot;Network Virtual File System&quot; is the normal way
+   of accessing FTP files. The client walks into the directory containing
+   the file using <code class="code">CWD</code> and <code class="code">CDUP</code> commands, and calls the file operation
+   from this directory. For simplicity, this client interprets slashes
+   in <code class="code">name</code> as path component separators. The FTP server will never
+   see these slashes.</li><li><code class="code">`TVFS name</code>: The optional &quot;Trivial Network File System&quot; avoids the
+   <code class="code">CWD</code> and <code class="code">CDUP</code> commands. The tagged <code class="code">name</code> is normalized (double
+   slashed removed etc.), and is passed to the server as-is. Before using
+   the faster TVFS one should check whether it is supported (feature
+   &quot;TVFS&quot;). Note that even for TVFS there are no special files &quot;.&quot;
+   and &quot;..&quot;!</li><li><code class="code">`Verbatim name</code>: The string <code class="code">name</code> is passed to the server without
+   transforming it in any way.
+   </li></ul></div></div>
+<pre><span class="VALget_method"><span class="keyword">val</span> get_method</span> : <code class="type">file:<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=filename">filename</a> -&gt;
+representation:<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=representation">representation</a> -&gt;
+store:(<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_state">ftp_state</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=local_receiver">Ftp_data_endpoint.local_receiver</a>) -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">This FTP method walks to the right directory and gets <code class="code">file</code> from
+ the server. The file is stored in the <code class="code">local_receiver</code> that can be
+ obtained by calling the <code class="code">store</code> function. The selected <code class="code">representation</code>
+ remains unchanged.</div></div>
+<pre><span class="VALput_method"><span class="keyword">val</span> put_method</span> : <code class="type">?meth:[ `APPE | `STOR ] -&gt;
+file:<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=filename">filename</a> -&gt;
+representation:<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=representation">representation</a> -&gt;
+store:(<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_state">ftp_state</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=local_sender">Ftp_data_endpoint.local_sender</a>) -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">This FTP method walks to the right directory and puts <code class="code">file</code> to
+ the server. The file is taken from the <code class="code">local_sender</code> that can be
+ obtained by calling the <code class="code">store</code> function. The selected <code class="code">representation</code>
+ remains unchanged.<br/> <code class="code">meth</code> selects the method to use (default <code class="code">`STOR</code>).</div></div>
+<pre><span class="VALinvoke_method"><span class="keyword">val</span> invoke_method</span> : <code class="type">command:<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=cmd">cmd</a> -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">This FTP method simply invokes <code class="code">command</code>.</div></div>
+<pre><span class="VALset_structure_method"><span class="keyword">val</span> set_structure_method</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=structure">structure</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">Requests a certain structure for future file transfers</div></div>
+<pre><span class="VALset_mode_method"><span class="keyword">val</span> set_mode_method</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=transmission_mode">transmission_mode</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">Requests a certain mode for future file transfers</div></div>
+<pre><span class="VALrename_method"><span class="keyword">val</span> rename_method</span> : <code class="type">file_from:<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=filename">filename</a> -&gt; file_to:<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=filename">filename</a> -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">Renames the <code class="code">file_from</code> into <code class="code">file_to</code>.<br/> Both file names must be of the same type, either <code class="code">`NVFS</code> or <code class="code">`Verbatim</code>.
+ If <code class="code">`NVFS</code>, both names must be in the same directory.</div></div>
+<pre><span class="VALmkdir_method"><span class="keyword">val</span> mkdir_method</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=filename">filename</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">Creates the named directory</div></div>
+<pre><span class="VALrmdir_method"><span class="keyword">val</span> rmdir_method</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=filename">filename</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">Deletes the named directory</div></div>
+<pre><span class="VALdelete_method"><span class="keyword">val</span> delete_method</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=filename">filename</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">Deletes the named file</div></div>
+<pre><span class="VALlist_method"><span class="keyword">val</span> list_method</span> : <code class="type">dir:<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=filename">filename</a> -&gt;
+representation:<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=representation">representation</a> -&gt;
+store:(<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_state">ftp_state</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=local_receiver">Ftp_data_endpoint.local_receiver</a>) -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">Lists the contents of the directory <code class="code">dir</code> using the LIST command.
+ The <code class="code">representation</code> must not be <code class="code">`Image</code>.</div></div>
+<pre><span class="VALnlst_method"><span class="keyword">val</span> nlst_method</span> : <code class="type">dir:<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=filename">filename</a> -&gt;
+representation:<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=representation">representation</a> -&gt;
+store:(<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_state">ftp_state</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=local_receiver">Ftp_data_endpoint.local_receiver</a>) -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">Lists the contents of the directory <code class="code">dir</code> using the NLST command
+ The <code class="code">representation</code> must not be <code class="code">`Image</code>.</div></div>
+<pre><span class="VALparse_nlst_document"><span class="keyword">val</span> parse_nlst_document</span> : <code class="type">string -&gt; string list</code></pre><div class="info"><div class="info">Returns the filenames contained in the output of <code class="code">`NLST</code></div></div>
+<pre><span class="VALmdtm_method"><span class="keyword">val</span> mdtm_method</span> : <code class="type">file:<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=filename">filename</a> -&gt; process_result:(float -&gt; unit) -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">Determines the date and time of the last modification of <code class="code">file</code>.
+ On success, <code class="code">process_result</code> is called.</div></div>
+<pre><span class="VALsize_method"><span class="keyword">val</span> size_method</span> : <code class="type">file:<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=filename">filename</a> -&gt;
+representation:<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=representation">representation</a> -&gt;
+process_result:(int64 -&gt; unit) -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">Determines the size of <code class="code">file</code>. On success, <code class="code">process_result</code> is called.
+    The size depends on <code class="code">representation</code>.</div></div>
+<pre><span class="VALfeat_method"><span class="keyword">val</span> feat_method</span> : <code class="type">?process_result:((string * string option) list -&gt; unit) -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">Get the list of feature tokens (see also
+       <a href="#Ftp_client.ftp_state.ftp_features">Ftp_client.ftp_state.ftp_features</a>)</div></div>
+<pre><span class="TYPEentry"><span class="keyword">type</span> entry</span> = <code class="type">string * (string * string) list</code></pre><div class="info"><div class="info">A file entry <code class="code">(name, facts)</code>. The facts are given as pairs
+	<code class="code">(factname,value)</code> where <code class="code">factname</code> is always lowercase.
+	For parsers for common facts see below.</div></div>
+<pre><span class="VALmlst_method"><span class="keyword">val</span> mlst_method</span> : <code class="type">file:<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=filename">filename</a> -&gt; process_result:(<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=entry">entry</a> list -&gt; unit) -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">Get the file entry for <code class="code">file</code>.</div></div>
+<pre><span class="VALmlsd_method"><span class="keyword">val</span> mlsd_method</span> : <code class="type">dir:<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=filename">filename</a> -&gt;
+store:(<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_state">ftp_state</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=local_receiver">Ftp_data_endpoint.local_receiver</a>) -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">Gets the entries for this directory.</div></div>
+<pre><span class="VALparse_mlsd_document"><span class="keyword">val</span> parse_mlsd_document</span> : <code class="type">string -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=entry">entry</a> list</code></pre><div class="info"><div class="info">Returns the entries contained in the output of <code class="code">`MLSD</code></div></div>
+<pre><span class="TYPEentry_type"><span class="keyword">type</span> entry_type</span> = <code class="type">[ `Cdir | `Dir | `File | `Other | `Pdir ]</code></pre><div class="info"><div class="info">Types:<ul><li><code class="code">`File</code>: entry refers to file</li><li><code class="code">`Cdir</code>: entry refers to the directory being listed</li><li><code class="code">`Pdir</code>: entry is a parent of the directory being listed</li><li><code class="code">`Dir</code>: entry refers to directory</li><li><code class="code">`Other</code>: entry is neither file nor directory
+   </li></ul></div></div>
+<pre><span class="TYPEentry_perm"><span class="keyword">type</span> entry_perm</span> = <code class="type">[ `Append
+| `Create
+| `Delete
+| `Delete_member
+| `Enter
+| `List
+| `Mkdir
+| `Read
+| `Rename
+| `Write ]</code></pre><div class="info"><div class="info">Permissions:<ul><li><code class="code">`Append</code>: append to file possible</li><li><code class="code">`Create</code>: file can be created in this dir</li><li><code class="code">`Delete</code>: file or dir can be deleted</li><li><code class="code">`Enter</code>: dir can be entered</li><li><code class="code">`Rename</code>: file or dir can be renamed</li><li><code class="code">`List</code>: dir can be listed</li><li><code class="code">`Mkdir</code>: subdir can be created in this dir</li><li><code class="code">`Delete_member</code>: a file or dir can be deleted in this directory</li><li><code class="code">`Read</code>: a file can be retrieved</li><li><code class="code">`Write</code>: a file can be stored
+   </li></ul></div></div>
+<div class="info"><div class="info">The following functions extract commonly used facts from entries.
+    They may raise <code class="code">Not_found</code>.</div></div>
+<pre><span class="VALget_name"><span class="keyword">val</span> get_name</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=entry">entry</a> -&gt; string</code></pre>
+<pre><span class="VALget_size"><span class="keyword">val</span> get_size</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=entry">entry</a> -&gt; int64</code></pre>
+<pre><span class="VALget_modify"><span class="keyword">val</span> get_modify</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=entry">entry</a> -&gt; float</code></pre>
+<pre><span class="VALget_create"><span class="keyword">val</span> get_create</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=entry">entry</a> -&gt; float</code></pre>
+<pre><span class="VALget_type"><span class="keyword">val</span> get_type</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=entry">entry</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=entry_type">entry_type</a></code></pre>
+<pre><span class="VALget_unique"><span class="keyword">val</span> get_unique</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=entry">entry</a> -&gt; string</code></pre>
+<pre><span class="VALget_perm"><span class="keyword">val</span> get_perm</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=entry">entry</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=entry_perm">entry_perm</a> list</code></pre>
+<pre><span class="VALget_lang"><span class="keyword">val</span> get_lang</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=entry">entry</a> -&gt; string</code></pre>
+<pre><span class="VALget_media_type"><span class="keyword">val</span> get_media_type</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=entry">entry</a> -&gt; string</code></pre>
+<pre><span class="VALget_charset"><span class="keyword">val</span> get_charset</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=entry">entry</a> -&gt; string</code></pre>
+<pre><span class="VALget_unix_mode"><span class="keyword">val</span> get_unix_mode</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=entry">entry</a> -&gt; int</code></pre>
+<pre><span class="VALget_unix_uid"><span class="keyword">val</span> get_unix_uid</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=entry">entry</a> -&gt; string</code></pre>
+<pre><span class="VALget_unix_gid"><span class="keyword">val</span> get_unix_gid</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=entry">entry</a> -&gt; string</code></pre>
+<div class="ocaml_class sig" name="ftp_client"><pre><span class="TYPEftp_client"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Ftp_client&amp;class=ftp_client">ftp_client</a></span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> option -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">The ftp client is a user session that may even span several connections.
+ However, only one server is connected at once.</div></div><div class="ocaml_class_content"><pre><span class="METHODexec_e"><span class="keyword">method</span> exec_e</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a> -&gt; unit <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">Uq_engines.engine</a></code></pre>
+<div class="info"><div class="info">Runs the method asynchronously as engine.</div></div>
+<pre><span class="METHODexec"><span class="keyword">method</span> exec</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a> -&gt; unit</code></pre>
+<div class="info"><div class="info">Runs the method synchronously. Note that this implies a call of
+	 <a href="#Unixqueue.run">Unixqueue.run</a>.</div></div>
+<pre><span class="METHODpi"><span class="keyword">method</span> pi</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_client_pi">ftp_client_pi</a></code></pre>
+<div class="info"><div class="info">The curerent protocol interpreter. It is allowed that a different <code class="code">pi</code>
+	is created when a new connection is opened.<br/>	The <code class="code">pi</code> is first available after running the first method. The
+	method fails if <code class="code">pi</code> is unavailable.</div></div>
+<pre><span class="METHODrun"><span class="keyword">method</span> run</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Starts the event system; same as  <a href="#Unixqueue.run">Unixqueue.run</a></div></div>
+<pre><span class="METHODconfigure_timeout"><span class="keyword">method</span> configure_timeout</span> : <code class="code">float -&gt; unit</code></pre>
+<div class="info"><div class="info">Configures a timeout for both the control and the data connection.
+	This must be done before connecting to a server.</div></div>
+<pre><span class="METHODset_socks5_proxy"><span class="keyword">method</span> set_socks5_proxy</span> : <code class="code">string -&gt; int -&gt; unit</code></pre>
+<div class="info"><div class="info">Sets that a SOCKS version 5 proxy is used at this host and port.
+          There is no support for authentication at the proxy. Only
+	  passive mode is supported.</div></div>
+<pre><span class="METHODevent_system"><span class="keyword">method</span> event_system</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a></code></pre>
+
+<pre><span class="METHODreset"><span class="keyword">method</span> reset</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Aborts all current activities if any, and re-initializes the client</div></div></div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Examples and Discussion</h2><br/> To download a single flat file from a server:<br/> <pre class="codepre"><code class="code"> 
+   let buffer = Buffer.create 1000 in
+   let ch = new Netchannels.output_buffer buffer in
+   let client = new ftp_client() in
+   client # exec (connect_method ~host:&quot;127.0.0.1&quot; ());
+   client # exec (login_method ~user:&quot;foo&quot;
+                                ~get_password:(fun () -&gt; &quot;password&quot;)
+                                ~get_account:(fun () -&gt; &quot;foo&quot;) ());
+   client # exec (get_method ~file:(`NVFS &quot;path/to/file&quot;)
+                             ~representation:`Image
+                             ~store:(fun _ -&gt; `File_structure ch) ());
+ </code></pre><br/> The file is stored in <code class="code">buffer</code>. By using a different netchannel, it
+ can be stored whereever wanted.<br/> To download a record-structured text file, use a <code class="code">store</code> like:<br/> <pre class="codepre"><code class="code"> 
+    let ch = (as above) in
+    let rec_ch = new Ftp_data_endpoint.write_out_record_channel
+                       ~repr:(`ASCII_unix `Enc_iso88591)
+                       ch
+    ...
+    ... ~store:(fun _ -&gt; `Record_structure rec_ch)
+ </code></pre><br/> Here, the end-of-record is transcoded to newline. Note that the ASCII
+ variant (<code class="code">`Enc_iso88591</code>) is ignored by <code class="code">write_out_record_channel</code>.
+ <b>Open: How to select record structure using an FTP method.</b><br/> Character conversions: To convert an EBCDIC file to ASCII, use
+ something like<br/> <pre class="codepre"><code class="code"> 
+    let ch = (as above) in
+    let converter = new Ftp_data_endpoint.data_converter
+                         ~fromrepr:(`EBCDIC `Enc_cp1047)
+                         ~torepr:(`ASCII_unix `Enc_iso88591) in
+    let ch_ebcdic = new Netchannels.output_filter converter ch in
+    ...
+    ... ~representation:(`EBCDIC None)
+    ... ~store:(fun _ -&gt; `File_structure ch_ebcdic)
+ </code></pre><br/> The class <code class="code">data_converter</code> also performs the transformation of the 
+ end-of-line convention, unlike the similar class
+ <code class="code">Netconversion.conversion_pipe</code>.</div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Debugging</h1></div></div>
+<div class="ocaml_module sig" name="Debug"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Ftp_client.Debug">Debug</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALenable"><span class="keyword">val</span> enable</span> : <code class="type">bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">Enables  <a href="#Netlog">Netlog</a>-style debugging of this module</div></div></div></div>
+</div>

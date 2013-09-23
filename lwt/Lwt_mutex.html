@@ -1,0 +1,8 @@
+<div class="ocaml_toplevel_module"><pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">unit -&gt; <a href="?package=lwt&amp;module=Lwt_mutex&amp;type=t">t</a></code></pre>
+<pre><span class="VALlock"><span class="keyword">val</span> lock</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_mutex&amp;type=t">t</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<pre><span class="VALunlock"><span class="keyword">val</span> unlock</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_mutex&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VALis_locked"><span class="keyword">val</span> is_locked</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_mutex&amp;type=t">t</a> -&gt; bool</code></pre>
+<pre><span class="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_mutex&amp;type=t">t</a> -&gt; bool</code></pre>
+<pre><span class="VALwith_lock"><span class="keyword">val</span> with_lock</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_mutex&amp;type=t">t</a> -&gt; (unit -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+</div>

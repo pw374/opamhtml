@@ -1,0 +1,110 @@
+<div class="ocaml_toplevel_module"><div class="info"><div class="info"><h6 id="6_TITLE">Callbacks</h6></div></div>
+<pre><span class="TYPEswitch"><span class="keyword">type</span> switch</span> </pre><div class="info"><div class="info">Switches are used to stop signals.</div></div>
+<pre><span class="VALregister"><span class="keyword">val</span> register</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm_widget&amp;type=switch">switch</a> option -&gt; 'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">Lwt_sequence.t</a> -&gt; 'a -&gt; unit</code></pre>
+<pre><span class="VALstop"><span class="keyword">val</span> stop</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm_widget&amp;type=switch">switch</a> -&gt; unit</code></pre>
+<pre><span class="VALexec_callbacks"><span class="keyword">val</span> exec_callbacks</span> : <code class="type">('a -&gt; unit) <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">Lwt_sequence.t</a> -&gt; 'a -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">apply_callbacks callbacks x</code></div></div>
+<pre><span class="VALexec_filters"><span class="keyword">val</span> exec_filters</span> : <code class="type">('a -&gt; bool) <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">Lwt_sequence.t</a> -&gt; 'a -&gt; bool</code></pre>
+<div class="info"><div class="info"><h6 id="6_TITLE">Base class</h6></div></div>
+<div class="ocaml_class sig" name="t"><pre><span class="TYPEt"><span class="keyword">class</span> <a href="?package=lambda-term&amp;module=LTerm_widget&amp;class=t">t</a></span> : <code class="type">string -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">The base class. The parameter is the initial resource class. The
+    resource class is the first part of all resource keys used by the
+    widget.<br/>    For examples, buttons use the resources
+    <code class="code">&quot;button.focused.foreground&quot;</code>, <code class="code">&quot;button.unfocused.bold&quot;</code>, ... so
+    their resource class is <code class="code">&quot;button&quot;</code>.</div></div><div class="ocaml_class_content"><pre><span class="METHODchildren"><span class="keyword">method</span> children</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_widget&amp;type=t">t</a> list</code></pre>
+<div class="info"><div class="info">The children of the widget.</div></div>
+<pre><span class="METHODparent"><span class="keyword">method</span> parent</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_widget&amp;type=t">t</a> option</code></pre>
+<div class="info"><div class="info">The parent of the widget, if any.</div></div>
+<pre><span class="METHODset_parent"><span class="keyword">method</span> set_parent</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_widget&amp;type=t">t</a> option -&gt; unit</code></pre>
+<div class="info"><div class="info">Sets the parent of the widget. This also affect
+         <a href="#queue_draw">queue_draw</a>.</div></div>
+<pre><span class="METHODcan_focus"><span class="keyword">method</span> can_focus</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">Whether the widget can receive the focus or not.</div></div>
+<pre><span class="METHODqueue_draw"><span class="keyword">method</span> queue_draw</span> : <code class="code">unit</code></pre>
+<div class="info"><div class="info">Enqueue a redraw operation. If the widget has a parent, this
+        is the same as calling the  <a href="#queue_draw">queue_draw</a> method of the parent,
+        otherwise this does nothing.</div></div>
+<pre><span class="METHODset_queue_draw"><span class="keyword">method</span> set_queue_draw</span> : <code class="code">(unit -&gt; unit) -&gt; unit</code></pre>
+<div class="info"><div class="info"><code class="code">set_queue_draw f</code> sets the function called when the
+         <a href="#queue_draw">queue_draw</a> method is invoked, for this widget and all its
+        children.</div></div>
+<pre><span class="METHODdraw"><span class="keyword">method</span> draw</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_draw&amp;type=context">LTerm_draw.context</a> -&gt; <a href="?package=lambda-term&amp;module=LTerm_widget&amp;type=t">t</a> -&gt; unit</code></pre>
+<div class="info"><div class="info"><code class="code">draw ctx focused</code> draws the widget on the given
+        context. <code class="code">focused</code> is the focused widget.</div></div>
+<pre><span class="METHODcursor_position"><span class="keyword">method</span> cursor_position</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_geom&amp;type=coord">LTerm_geom.coord</a> option</code></pre>
+<div class="info"><div class="info">Method invoked when the widget has the focus, it returns the
+        position of the cursor inside the widget if it should be
+        displayed.</div></div>
+<pre><span class="METHODallocation"><span class="keyword">method</span> allocation</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_geom&amp;type=rect">LTerm_geom.rect</a></code></pre>
+<div class="info"><div class="info">The zone occuped by the widget.</div></div>
+<pre><span class="METHODset_allocation"><span class="keyword">method</span> set_allocation</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_geom&amp;type=rect">LTerm_geom.rect</a> -&gt; unit</code></pre>
+<div class="info"><div class="info">Sets the zone occuped by the widget.</div></div>
+<pre><span class="METHODsend_event"><span class="keyword">method</span> send_event</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_event&amp;type=t">LTerm_event.t</a> -&gt; unit</code></pre>
+<div class="info"><div class="info">Send an event to the widget. If the widget cannot process the
+        event, it is sent to the parent and so on.</div></div>
+<pre><span class="METHODon_event"><span class="keyword">method</span> on_event</span> : <code class="code">?switch:<a href="?package=lambda-term&amp;module=LTerm_widget&amp;type=switch">switch</a> -&gt; (<a href="?package=lambda-term&amp;module=LTerm_event&amp;type=t">LTerm_event.t</a> -&gt; bool) -&gt; unit</code></pre>
+<div class="info"><div class="info"><code class="code">on_event ?switch f</code> calls <code class="code">f</code> each time an event is
+        received. If <code class="code">f</code> returns <code class="code">true</code>, the event is not passed to
+        other callbacks.</div></div>
+<pre><span class="METHODsize_request"><span class="keyword">method</span> size_request</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_geom&amp;type=size">LTerm_geom.size</a></code></pre>
+<div class="info"><div class="info">The size wanted by the widget.</div></div>
+<pre><span class="METHODresources"><span class="keyword">method</span> resources</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_resources&amp;type=t">LTerm_resources.t</a></code></pre>
+<div class="info"><div class="info">The set of resources used by the widget.</div></div>
+<pre><span class="METHODset_resources"><span class="keyword">method</span> set_resources</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_resources&amp;type=t">LTerm_resources.t</a> -&gt; unit</code></pre>
+<div class="info"><div class="info">Sets the resources of the widget and of all its children.</div></div>
+<pre><span class="METHODresource_class"><span class="keyword">method</span> resource_class</span> : <code class="code">string</code></pre>
+<div class="info"><div class="info">The resource class of the widget.</div></div>
+<pre><span class="METHODset_resource_class"><span class="keyword">method</span> set_resource_class</span> : <code class="code">string -&gt; unit</code></pre>
+<div class="info"><div class="info">Sets the resource class of the widget. This can be used to set
+        an alternative style for the widget.</div></div>
+<pre><span class="METHODupdate_resources"><span class="keyword">method</span> update_resources</span> : <code class="code">unit</code></pre>
+<div class="info"><div class="info">Method invoked when the resources or the resource class of the
+        widget change. The default function does nothing.</div></div></div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Labels</h6></div></div>
+<div class="ocaml_class sig" name="label"><pre><span class="TYPElabel"><span class="keyword">class</span> <a href="?package=lambda-term&amp;module=LTerm_widget&amp;class=label">label</a></span> : <code class="type">string -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">A widget displaying a text.</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=lambda-term&amp;module=LTerm_widget&amp;class=t"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=lambda-term&amp;module=LTerm_widget&amp;class=t">t</a></pre></div>
+
+<pre><span class="METHODtext"><span class="keyword">method</span> text</span> : <code class="code">string</code></pre>
+<div class="info"><div class="info">The text of  the label.</div></div>
+<pre><span class="METHODset_text"><span class="keyword">method</span> set_text</span> : <code class="code">string -&gt; unit</code></pre>
+</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Containers</h6></div></div>
+<pre><span class="EXCEPTIONOut_of_range"><span class="keyword">exception</span> Out_of_range</span></pre>
+<div class="ocaml_class sig" name="box"><pre><span class="TYPEbox"><span class="keyword">class type</span> <a href="?package=lambda-term&amp;module=LTerm_widget&amp;class=box">box</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Type of widgets displaying a list of widget.</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=lambda-term&amp;module=LTerm_widget&amp;class=t"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=lambda-term&amp;module=LTerm_widget&amp;class=t">t</a></pre></div>
+
+<pre><span class="METHODadd"><span class="keyword">method</span> add</span> : <code class="code">'a. ?position:int -&gt; ?expand:bool -&gt; (#<a href="?package=lambda-term&amp;module=LTerm_widget&amp;class=t">t</a> as 'a) -&gt; unit</code></pre>
+<div class="info"><div class="info"><code class="code">add ?position ?expand widget</code> adds a widget to the box. If
+        <code class="code">expand</code> is <code class="code">true</code> (the default) then <code class="code">widget</code> will occupy as
+        much space as possible. If <code class="code">position</code> is not specified then
+        the widget is appended to the end of the widget list. It
+        raises  <a href="#Out_of_range">Out_of_range</a> if the given position is negative or
+        exceed the number of widgets.</div></div>
+<pre><span class="METHODremove"><span class="keyword">method</span> remove</span> : <code class="code">'a. (#<a href="?package=lambda-term&amp;module=LTerm_widget&amp;class=t">t</a> as 'a) -&gt; unit</code></pre>
+<div class="info"><div class="info"><code class="code">remove widget</code> remove a widget from the box.</div></div></div></div>
+<div class="ocaml_class ident" name="hbox" path="?package=lambda-term&amp;module=LTerm_widget&amp;class=box"><pre><span class="TYPEhbox"><span class="keyword">class</span> <a href="?package=lambda-term&amp;module=LTerm_widget&amp;class=hbox">hbox</a></span> : <code class="type"/><a href="?package=lambda-term&amp;module=LTerm_widget&amp;class=box">box</a></pre><div class="info"><div class="info">A widget displaying a list of widgets, listed horizontally.</div></div></div>
+<div class="ocaml_class ident" name="vbox" path="?package=lambda-term&amp;module=LTerm_widget&amp;class=box"><pre><span class="TYPEvbox"><span class="keyword">class</span> <a href="?package=lambda-term&amp;module=LTerm_widget&amp;class=vbox">vbox</a></span> : <code class="type"/><a href="?package=lambda-term&amp;module=LTerm_widget&amp;class=box">box</a></pre><div class="info"><div class="info">A widget displaying a list of widgets, listed vertically.</div></div></div>
+<div class="ocaml_class sig" name="frame"><pre><span class="TYPEframe"><span class="keyword">class</span> <a href="?package=lambda-term&amp;module=LTerm_widget&amp;class=frame">frame</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">A widget displayiing another widget in a box.</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=lambda-term&amp;module=LTerm_widget&amp;class=t"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=lambda-term&amp;module=LTerm_widget&amp;class=t">t</a></pre></div>
+
+<pre><span class="METHODset"><span class="keyword">method</span> set</span> : <code class="code">'a. (#<a href="?package=lambda-term&amp;module=LTerm_widget&amp;class=t">t</a> as 'a) -&gt; unit</code></pre>
+<div class="info"><div class="info">Set the widget that is inside the frame.</div></div>
+<pre><span class="METHODempty"><span class="keyword">method</span> empty</span> : <code class="code">unit</code></pre>
+<div class="info"><div class="info">Remove the child of the frame.</div></div></div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Lines</h6></div></div>
+<div class="ocaml_class ident" name="hline" path="?package=lambda-term&amp;module=LTerm_widget&amp;class=t"><pre><span class="TYPEhline"><span class="keyword">class</span> <a href="?package=lambda-term&amp;module=LTerm_widget&amp;class=hline">hline</a></span> : <code class="type"/><a href="?package=lambda-term&amp;module=LTerm_widget&amp;class=t">t</a></pre><div class="info"><div class="info">A horizontal line.</div></div></div>
+<div class="ocaml_class ident" name="vline" path="?package=lambda-term&amp;module=LTerm_widget&amp;class=t"><pre><span class="TYPEvline"><span class="keyword">class</span> <a href="?package=lambda-term&amp;module=LTerm_widget&amp;class=vline">vline</a></span> : <code class="type"/><a href="?package=lambda-term&amp;module=LTerm_widget&amp;class=t">t</a></pre><div class="info"><div class="info">A vertical line.</div></div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Buttons</h6></div></div>
+<div class="ocaml_class sig" name="button"><pre><span class="TYPEbutton"><span class="keyword">class</span> <a href="?package=lambda-term&amp;module=LTerm_widget&amp;class=button">button</a></span> : <code class="type">string -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=lambda-term&amp;module=LTerm_widget&amp;class=t"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=lambda-term&amp;module=LTerm_widget&amp;class=t">t</a></pre></div>
+
+<pre><span class="METHODlabel"><span class="keyword">method</span> label</span> : <code class="code">string</code></pre>
+<div class="info"><div class="info">The text displayed on the button.</div></div>
+<pre><span class="METHODset_label"><span class="keyword">method</span> set_label</span> : <code class="code">string -&gt; unit</code></pre>
+
+<pre><span class="METHODon_click"><span class="keyword">method</span> on_click</span> : <code class="code">?switch:<a href="?package=lambda-term&amp;module=LTerm_widget&amp;type=switch">switch</a> -&gt; (unit -&gt; unit) -&gt; unit</code></pre>
+<div class="info"><div class="info"><code class="code">on_click ?switch f</code> calls <code class="code">f</code> when the button is clicked.</div></div></div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Running in a terminal</h6></div></div>
+<pre><span class="VALrun"><span class="keyword">val</span> run</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">LTerm.t</a> -&gt;
+?save_state:bool -&gt;
+?load_resources:bool -&gt; ?resources_file:string -&gt; #<a href="?package=lambda-term&amp;module=LTerm_widget&amp;class=t">t</a> -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a> -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">run term ?save_state widget w</code> runs on the given terminal using
+      <code class="code">widget</code> as main widget. It returns when <code class="code">w</code> terminates. If
+      <code class="code">save_state</code> is <code class="code">true</code> (the default) then the state of the
+      terminal is saved and restored when <code class="code">w</code> terminates.<br/>      If <code class="code">load_resources</code> is <code class="code">true</code> (the default) then
+      <code class="code">resources_file</code> (which default to &quot;.lambda-termrc&quot; in the home
+      directory) is loaded and the result is set to <code class="code">w</code>.</div></div>
+</div>

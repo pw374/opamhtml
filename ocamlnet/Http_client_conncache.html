@@ -1,0 +1,38 @@
+<div class="ocaml_toplevel_module"><div class="info">Connection cache</div>
+<div class="info"><div class="info">This module allows one to create special connection caches, e.g.
+    by deriving from the official ones</div></div>
+<pre><span class="TYPEchannel_binding_id"><span class="keyword">type</span> channel_binding_id</span> = <code class="type">int</code></pre><div class="info"><div class="info">Same as in  <a href="#Http_client.channel_binding_id">Http_client.channel_binding_id</a></div></div>
+<pre><span class="TYPEconn_state"><span class="keyword">type</span> conn_state</span> = <code class="type">[ `Active of &lt;  &gt; | `Inactive of <a href="?package=ocamlnet&amp;module=Http_client_conncache&amp;type=channel_binding_id">channel_binding_id</a> ]</code></pre><div class="info"><div class="info">A TCP connection may be either <code class="code">`Inactive</code>, i.e. it is not used
+ by any pipeline, or <code class="code">`Active obj</code>, i.e. it is in use by the pipeline
+ <code class="code">obj</code> (this is the  <a href="#Http_client.pipeline">Http_client.pipeline</a> coerced to <code class="code">&lt; &gt;</code>).<br/> Since Ocamlnet-3.3, <code class="code">`Inactive</code> connections carry the channel binding
+ ID as argument.</div></div>
+<pre><span class="TYPEpeer"><span class="keyword">type</span> peer</span> = <code class="type">[ `Direct of string * int
+| `Http_proxy of string * int
+| `Http_proxy_connect of (string * int) * (string * int)
+| `Socks5 of (string * int) * (string * int) ]</code></pre>
+<div class="ocaml_class sig" name="connection_cache"><pre><span class="TYPEconnection_cache"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Http_client_conncache&amp;class=connection_cache">connection_cache</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><pre><span class="METHODget_connection_state"><span class="keyword">method</span> get_connection_state</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocamlnet&amp;module=Http_client_conncache&amp;type=conn_state">conn_state</a></code></pre>
+<div class="info"><div class="info">Returns the state of the file descriptor, or raises <code class="code">Not_found</code></div></div>
+<pre><span class="METHODset_connection_state"><span class="keyword">method</span> set_connection_state</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocamlnet&amp;module=Http_client_conncache&amp;type=peer">peer</a> -&gt; <a href="?package=ocamlnet&amp;module=Http_client_conncache&amp;type=conn_state">conn_state</a> -&gt; unit</code></pre>
+<div class="info"><div class="info">Sets the state of the file descriptor. It is allowed that
+ inactive descriptors are simply closed and forgotten. It is
+ also possible that this method raises <code class="code">Not_found</code>, leaving it
+ to the caller to close the connection.</div></div>
+<pre><span class="METHODfind_inactive_connection"><span class="keyword">method</span> find_inactive_connection</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Http_client_conncache&amp;type=peer">peer</a> -&gt; <a href="?package=ocamlnet&amp;module=Http_client_conncache&amp;type=channel_binding_id">channel_binding_id</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></pre>
+<div class="info"><div class="info">Returns an inactive connection to the passed peer, or raise
+ <code class="code">Not_found</code>. Since Ocamlnet-3.3, the required channel binding ID
+ is also an argument of this method.</div></div>
+<pre><span class="METHODfind_my_connections"><span class="keyword">method</span> find_my_connections</span> : <code class="code">&lt;  &gt; -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list</code></pre>
+<div class="info"><div class="info">Returns all active connections owned by the object</div></div>
+<pre><span class="METHODclose_connection"><span class="keyword">method</span> close_connection</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; unit</code></pre>
+<div class="info"><div class="info">Deletes the connection from the cache, and closes it</div></div>
+<pre><span class="METHODclose_all"><span class="keyword">method</span> close_all</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Closes all descriptors known to the cache</div></div></div></div>
+<div class="ocaml_class ident" name="restrictive_cache" path="?package=ocamlnet&amp;module=Http_client_conncache&amp;class=connection_cache"><pre><span class="TYPErestrictive_cache"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Http_client_conncache&amp;class=restrictive_cache">restrictive_cache</a></span> : <code class="type">unit -&gt; </code><a href="?package=ocamlnet&amp;module=Http_client_conncache&amp;class=connection_cache">connection_cache</a></pre><div class="info"><div class="info">A restrictive cache closes connections as soon as there are no
+ pending requests.</div></div></div>
+<div class="ocaml_class ident" name="aggressive_cache" path="?package=ocamlnet&amp;module=Http_client_conncache&amp;class=connection_cache"><pre><span class="TYPEaggressive_cache"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Http_client_conncache&amp;class=aggressive_cache">aggressive_cache</a></span> : <code class="type">unit -&gt; </code><a href="?package=ocamlnet&amp;module=Http_client_conncache&amp;class=connection_cache">connection_cache</a></pre><div class="info"><div class="info">This type of cache tries to keep connections as long open as
+ possible. The consequence is that users are responsible for
+ closing the descriptors (by calling <code class="code">close_connection_cache</code>) when the
+ cache is no longer in use. It is also possible to derive a special
+ version of the cache from this class, e.g. for closing descriptors
+ when they are idle for some time.</div></div></div>
+</div>

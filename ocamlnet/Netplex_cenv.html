@@ -1,0 +1,165 @@
+<div class="ocaml_toplevel_module"><div class="info">Container environment<br/> Some helper functions to explore the environment from a container.
+ Most of the following functions <b>must</b> be called from a container context,
+ i.e. from a process or thread that acts as container, otherwise
+ the exception <code class="code">Not_in_container_thread</code> is raised. There are also some
+ functions that can be called from controller context for convenience.<br/> <b>Thread safety:</b> Full. The functions in this module can be called from any
+ thread.</div>
+<pre><span class="EXCEPTIONNot_in_container_thread"><span class="keyword">exception</span> Not_in_container_thread</span></pre><div class="info"><div class="info">Raised when the caller's thread is not a container thread</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Logging</h2></div></div>
+<div class="info"><div class="info">Logging functions can be invoked from both container and controller 
+    contexts.</div></div>
+<pre><span class="VALlog"><span class="keyword">val</span> log</span> : <code class="type">Netplex_types.level -&gt; string -&gt; unit</code></pre><div class="info"><div class="info">Writes a log message</div></div>
+<pre><span class="VALlogf"><span class="keyword">val</span> logf</span> : <code class="type">Netplex_types.level -&gt; ('a, unit, string, unit) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format4">Pervasives.format4</a> -&gt; 'a</code></pre><div class="info"><div class="info">Writes a log message like <code class="code">printf</code></div></div>
+<pre><span class="VALreport_connection_string"><span class="keyword">val</span> report_connection_string</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; string -&gt; string</code></pre><div class="info"><div class="info">Output a log line for the <code class="code">netplex.connections</code> admin message.
+      The string is the detail to report.</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Timer</h2></div></div>
+<div class="info"><div class="info">Timer functions can only be invoked from container contexts. 
+    More documentation is available in  <a href="#Netplex_advanced.timers">Netplex_advanced.timers</a>.</div></div>
+<pre><span class="TYPEtimer"><span class="keyword">type</span> timer</span> </pre><div class="info"><div class="info">A timer</div></div>
+<pre><span class="VALcreate_timer"><span class="keyword">val</span> create_timer</span> : <code class="type">(<a href="?package=ocamlnet&amp;module=Netplex_cenv&amp;type=timer">timer</a> -&gt; bool) -&gt; float -&gt; <a href="?package=ocamlnet&amp;module=Netplex_cenv&amp;type=timer">timer</a></code></pre><div class="info"><div class="info"><code class="code">create_timer f tmo</code>: Creates a timer with timeout value <code class="code">tmo</code>:
+      In <code class="code">tmo</code> seconds <code class="code">f</code> is called, and if this function returns <code class="code">true</code>,
+      the timer remains active, and another round of timing is arranged.
+      If the functions returns <code class="code">false</code> or raises an exception, the timer
+      is stopped.<br/>      Timers are also stopped on container shutdown.<br/>      Timers are attached to the container event system, and run only
+      if this event system runs. Also note that <code class="code">f</code> is always called from
+      the main thread of the container.</div></div>
+<pre><span class="VALcancel_timer"><span class="keyword">val</span> cancel_timer</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netplex_cenv&amp;type=timer">timer</a> -&gt; unit</code></pre><div class="info"><div class="info">Cancels the timer: The callback function is not called any longer</div></div>
+<pre><span class="VALcancel_all_timers"><span class="keyword">val</span> cancel_all_timers</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info">Cancels all active timers</div></div>
+<pre><span class="VALtimer_id"><span class="keyword">val</span> timer_id</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netplex_cenv&amp;type=timer">timer</a> -&gt; int</code></pre><div class="info"><div class="info">Returns an ID, e.g. useful for debugging</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Container variables</h2></div></div>
+<div class="info"><div class="info">Container variables exist once per container. Primary access is
+    done via the <code class="code">var</code> and <code class="code">set_var</code> methods of the container class.
+    The following functions are often more convenient, however.<br/>    These functions can only be invoked from container contexts. <br/>    More documentation:  <a href="#Netplex_advanced.contvars">Netplex_advanced.contvars</a></div></div>
+<pre><span class="EXCEPTIONContainer_variable_not_found"><span class="keyword">exception</span> Container_variable_not_found</span> <span class="keyword">of</span> <code class="type">string</code></pre><div class="info"><div class="info">The variable does not exist</div></div>
+<pre><span class="EXCEPTIONContainer_variable_type_mismatch"><span class="keyword">exception</span> Container_variable_type_mismatch</span> <span class="keyword">of</span> <code class="type">string</code></pre><div class="info"><div class="info">The (dynamically typed) variable has the wrong type</div></div>
+<pre><span class="VALint_var"><span class="keyword">val</span> int_var</span> : <code class="type">string -&gt; int</code></pre>
+<pre><span class="VALstring_var"><span class="keyword">val</span> string_var</span> : <code class="type">string -&gt; string</code></pre>
+<pre><span class="VALfloat_var"><span class="keyword">val</span> float_var</span> : <code class="type">string -&gt; float</code></pre>
+<pre><span class="VALbool_var"><span class="keyword">val</span> bool_var</span> : <code class="type">string -&gt; bool</code></pre><div class="info"><div class="info">Access a variable with simple type. May raise 
+      <code class="code">Container_variable_not_found</code> or <code class="code">Container_variable_type_mismatch</code></div></div>
+<pre><span class="VALset_int_var"><span class="keyword">val</span> set_int_var</span> : <code class="type">string -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALset_string_var"><span class="keyword">val</span> set_string_var</span> : <code class="type">string -&gt; string -&gt; unit</code></pre>
+<pre><span class="VALset_float_var"><span class="keyword">val</span> set_float_var</span> : <code class="type">string -&gt; float -&gt; unit</code></pre>
+<pre><span class="VALset_bool_var"><span class="keyword">val</span> set_bool_var</span> : <code class="type">string -&gt; bool -&gt; unit</code></pre><div class="info"><div class="info">Set a variable with simple type</div></div>
+<pre><span class="VALmake_var_type"><span class="keyword">val</span> make_var_type</span> : <code class="type">('a -&gt; Netplex_types.encap) -&gt;
+(Netplex_types.encap -&gt; 'a) -&gt; (string -&gt; 'a) * (string -&gt; 'a -&gt; unit)</code></pre><div class="info"><div class="info">Create get and set functions for any (monomorphic) type. For example,
+      to create such function for a type <code class="code">foo</code>, do<br/>      <pre class="codepre"><code class="code"> 
+          module E = Netplex_encap.Make_encap(struct type t = foo end)
+          let (get, set) = 
+            make_var_type E.wrap E.unwrap
+      </code></pre><br/>      Read on for using functors to create <code class="code">get</code> and <code class="code">set</code>.</div></div>
+<div class="ocaml_module sig" name="TYPE"><pre><span class="keyword">module type</span> <a href="?package=ocamlnet&amp;module=Netplex_cenv.TYPE">TYPE</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Just a (monomorphic) type <code class="code">t</code></div></div><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre></div></div>
+<div class="ocaml_module sig" name="VAR_TYPE"><pre><span class="keyword">module type</span> <a href="?package=ocamlnet&amp;module=Netplex_cenv.VAR_TYPE">VAR_TYPE</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">A (monomorphic) type <code class="code">t</code> with two functions <code class="code">get</code> and <code class="code">set</code>
+      accessing the container variables</div></div><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre>
+<pre><span class="VALget"><span class="keyword">val</span> get</span> : <code class="type">string -&gt; <a href="?package=ocamlnet&amp;module=Netplex_cenv.VAR_TYPE&amp;type=t">t</a></code></pre>
+<pre><span class="VALset"><span class="keyword">val</span> set</span> : <code class="type">string -&gt; <a href="?package=ocamlnet&amp;module=Netplex_cenv.VAR_TYPE&amp;type=t">t</a> -&gt; unit</code></pre></div></div>
+<div class="ocaml_module ident" name="Make_var_type" path="?package=ocamlnet&amp;module=Netplex_cenv.VAR_TYPE"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_cenv.Make_var_type">Make_var_type</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">T</code><code class="code"> : </code><code class="code"><a href="?package=ocamlnet&amp;module=Netplex_cenv.TYPE">TYPE</a></code><code class="code">) -&gt; </code><code class="code"><a href="?package=ocamlnet&amp;module=Netplex_cenv.VAR_TYPE">VAR_TYPE</a></code> with type <a href="?package=ocamlnet&amp;module=Netplex_cenv.VAR_TYPE&amp;type=t">t</a> = T.t</div></code></pre><div class="info"><div class="info">Creates <code class="code">get</code> and <code class="code">set</code> like <code class="code">make_var_type</code>. Call it like<br/>      <pre class="codepre"><code class="code">
+         module Foo_var = 
+           Make_var_type(struct t = foo end)
+      </code></pre><br/>      and use <code class="code">Foo_var.get</code> and <code class="code">Foo_var.set</code> to access the container
+      variables of type <code class="code">foo</code>.</div></div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">System control</h2></div></div>
+<div class="info"><div class="info">System control functions can be invoked from both container and controller 
+    contexts.</div></div>
+<pre><span class="VALsystem_shutdown"><span class="keyword">val</span> system_shutdown</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info">Initiates a system shutdown (like the <code class="code">shutdown</code> method of the
+      controller)</div></div>
+<pre><span class="VALsystem_restart"><span class="keyword">val</span> system_restart</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info">Initiates a system restart (like the <code class="code">restart</code> method of the
+      controller)</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Inter-Container Communication</h2></div></div>
+<div class="info"><div class="info">These functions can only be invoked from container contexts, 
+    except <code class="code">send_message</code>.</div></div>
+<pre><span class="VALsend_message"><span class="keyword">val</span> send_message</span> : <code class="type">string -&gt; string -&gt; string array -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">send_message service_pattern msg_name msg_arguments</code>: Sends
+       a message to all services and message receivers matching
+       <code class="code">service_pattern</code>. The pattern may include the wildcard <code class="code">*</code>.<br/>       See the  <a href="#Netplex_types.controller.send_message">Netplex_types.controller.send_message</a> method for
+       the notification guarantees.<br/>       This function can be invoked from both container and controller
+       contexts.</div></div>
+<pre><span class="VALlookup"><span class="keyword">val</span> lookup</span> : <code class="type">string -&gt; string -&gt; string option</code></pre><div class="info"><div class="info"><code class="code">lookup service_name protocol_name</code> tries to find a Unix domain
+      socket for the service and returns it.<br/>      On Win32, the returned path refers to a file describing the
+      IPC mechanism. Use  <a href="#Netplex_sockserv.any_file_client_connector">Netplex_sockserv.any_file_client_connector</a>
+      to convert the path into an RPC connector.</div></div>
+<pre><span class="VALlookup_container_sockets"><span class="keyword">val</span> lookup_container_sockets</span> : <code class="type">string -&gt; string -&gt; string array</code></pre><div class="info"><div class="info"><code class="code">lookup_container_sockets service_name protocol_name</code>: returns
+      the Unix Domain paths of all container sockets for this service and
+      protocol. These are the sockets declared with address type
+      &quot;container&quot; in the config file.<br/>      On Win32, the returned paths refer to files describing the
+      IPC mechanism. Use  <a href="#Netplex_sockserv.any_file_client_connector">Netplex_sockserv.any_file_client_connector</a>
+      to convert the paths into RPC connectors.<br/>      Container sockets are explained here:
+       <a href="#Netplex_advanced.contsocks">Netplex_advanced.contsocks</a></div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Direct container and admin interface access</h2></div></div>
+<pre><span class="VALself_cont"><span class="keyword">val</span> self_cont</span> : <code class="type">unit -&gt; Netplex_types.container</code></pre><div class="info"><div class="info">Returns the container running the code of the caller,
+      or raise <code class="code">Not_in_container_thread</code> if called from outside a 
+      container context.</div></div>
+<pre><span class="VALself_obj"><span class="keyword">val</span> self_obj</span> : <code class="type">unit -&gt;
+[ `Container of Netplex_types.container
+| `Controller of Netplex_types.controller ]</code></pre><div class="info"><div class="info">Returns the container or the controller running the code of the
+      caller, or raise <code class="code">Not_found</code> if called from
+      neither a container not a controller thread.</div></div>
+<pre><span class="VALcurrent_sys_id"><span class="keyword">val</span> current_sys_id</span> : <code class="type">unit -&gt; [ `Process of int | `Thread of int ]</code></pre><div class="info"><div class="info">Returns the system-dependent thread identifier of the caller
+      (which must be in container or controller context)</div></div>
+<pre><span class="VALadmin_connector"><span class="keyword">val</span> admin_connector</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=mode2">Rpc_client.mode2</a></code></pre><div class="info"><div class="info">Determines the admin socket of the controller, and returns an RPC
+      client connector suitable for connecting with the admin interface
+      of the controller. For instance to initiate a system shutdown from
+      the context of a container:<br/>      <pre class="codepre"><code class="code">
+         let conn = Netplex_cenv.admin_connector() in
+         let client = Netplex_ctrl_clnt.Admin.V2.create_client2 conn in
+         Netplex_ctrl_clnt.Admin.V2.system_shutdown client ();
+         Rpc_client.shut_down client
+       </code></pre><br/>      Note that the admin interface is going to evolve, and it is advisable
+      to avoid admin calls whenever possible.<br/>      This function must be called from container context.</div></div>
+<pre><span class="VALrun_in_controller_context"><span class="keyword">val</span> run_in_controller_context</span> : <code class="type">Netplex_types.controller -&gt; (unit -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">run_in_controller_context ctrl f</code>: Arranges that <code class="code">f()</code> is executed
+      in the context of the controller. <b>This is only possible for
+      multi-threading but not for multi-processing style!</b> For
+      programs using multi-processing, see  <a href="#Netplex_cenv.Make_lever">Netplex_cenv.Make_lever</a>
+      for a workaround.<br/>      This function can be called from any thread. The function <code class="code">f</code> is
+      executed by pushing it onto the event queue, and calling it when
+      the pushed event is reached. This is usually a safe point for
+      many kinds of operations, but if controller methods are invoked
+      the details are left unspecified.<br/>      For example, this allows it to start helper threads via
+       <a href="#Netplex_kit.add_helper_service">Netplex_kit.add_helper_service</a> at any time.<br/>      An example can be found here:  <a href="#Netplex_advanced.levers">Netplex_advanced.levers</a></div></div>
+<pre><span class="VALrun_in_container_context"><span class="keyword">val</span> run_in_container_context</span> : <code class="type">Netplex_types.container -&gt; (unit -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">run_in_container_context cont f</code>: Arranges that <code class="code">f()</code> is executed
+      in the context of the container <code class="code">cont</code>. <b>This is only possible for
+      multi-threading but not for multi-processing style!</b><br/>      This function can be called from any thread. The function <code class="code">f</code> is
+      executed by pushing it onto the event queue, and calling it when
+      the pushed event is reached. This is usually a safe point for
+      many kinds of operations, but if container method are invoked
+      the details are left unspecified.<br/>      There is no guarantee that <code class="code">f</code> is called anytime soon - if the
+      container is busy with something else than with the event queue
+      the execution will be blocked until these other activities are
+      over.</div></div>
+<div class="info"><div class="info">Levers are a way to send messages to the controller, and to effectively
+    run functions there that were previously registered. <br/>    More documentation:  <a href="#Netplex_advanced.levers">Netplex_advanced.levers</a></div></div>
+<div class="ocaml_module sig" name="FUN_TYPE"><pre><span class="keyword">module type</span> <a href="?package=ocamlnet&amp;module=Netplex_cenv.FUN_TYPE">FUN_TYPE</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Abstraction for function types <code class="code">s-&gt;t</code></div></div><div class="ocaml_module_content">
+<pre><span class="TYPEs"><span class="keyword">type</span> s</span> </pre><div class="info"><div class="info">argument type</div></div>
+<pre><span class="TYPEr"><span class="keyword">type</span> r</span> </pre><div class="info"><div class="info">result type</div></div></div></div>
+<div class="ocaml_module sig" name="LEVER"><pre><span class="keyword">module type</span> <a href="?package=ocamlnet&amp;module=Netplex_cenv.LEVER">LEVER</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEs"><span class="keyword">type</span> s</span> </pre><div class="info"><div class="info">argument type</div></div>
+<pre><span class="TYPEr"><span class="keyword">type</span> r</span> </pre><div class="info"><div class="info">result type</div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Netplex_cenv.LEVER&amp;type=s">s</a> -&gt; <a href="?package=ocamlnet&amp;module=Netplex_cenv.LEVER&amp;type=r">r</a></code></pre>
+<pre><span class="VALregister"><span class="keyword">val</span> register</span> : <code class="type">Netplex_types.controller -&gt; (Netplex_types.controller -&gt; <a href="?package=ocamlnet&amp;module=Netplex_cenv.LEVER&amp;type=t">t</a>) -&gt; <a href="?package=ocamlnet&amp;module=Netplex_cenv.LEVER&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">let reg_lever = register ctrl raw_lever</code>:
+        Registers <code class="code">raw_lever</code> in the controller <code class="code">ctrl</code>, so one can call
+        <code class="code">reg_lever</code> to activate it. For example:<br/>        <pre class="codepre"><code class="code"> 
+           module LT = struct type s = unit type r = int end
+           module L = Make_lever(LT)
+         
+           let get_num_services =
+             L.register ctrl (fun ctrl () -&gt; List.length ctrl#services)
+        </code></pre><br/>        The registration must be done in controller context, e.g.
+        in the <code class="code">pre_start_hook</code> of a container.<br/>        From the running container, one can now call:<br/>        <pre class="codepre"><code class="code"> get_num_services() </code></pre><br/>        to get the current length of the <code class="code">ctrl#services</code> list.</div></div></div></div>
+<div class="ocaml_module ident" name="Make_lever" path="?package=ocamlnet&amp;module=Netplex_cenv.LEVER"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_cenv.Make_lever">Make_lever</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">T</code><code class="code"> : </code><code class="code"><a href="?package=ocamlnet&amp;module=Netplex_cenv.FUN_TYPE">FUN_TYPE</a></code><code class="code">) -&gt; </code><code class="code"><a href="?package=ocamlnet&amp;module=Netplex_cenv.LEVER">LEVER</a></code> with type <a href="?package=ocamlnet&amp;module=Netplex_cenv.LEVER&amp;type=r">r</a> = T.r and type <a href="?package=ocamlnet&amp;module=Netplex_cenv.LEVER&amp;type=s">s</a> = T.s</div></code></pre><div class="info"><div class="info">Creates a <code class="code">LEVER</code> module from a function type as specified in
+      <code class="code">FUN_TYPE</code></div></div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Persistent kernel objects</h2></div></div>
+<pre><span class="VALpmanage"><span class="keyword">val</span> pmanage</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Netsys_pmanage&amp;type=pmanage">Netsys_pmanage.pmanage</a></code></pre><div class="info"><div class="info">Access the manager for persistent kernel objects with limited
+      lifetime. Among these objects there are shared memory objects,
+      and named semaphores. These objects can usually be deleted when
+      the program finishes (or crashes), but this is not done automatically
+      because of kernel persistency.<br/>      See  <a href="#Netplex_admin.unlink">Netplex_admin.unlink</a> for more information.</div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Debugging</h1></div></div>
+<div class="ocaml_module sig" name="Debug"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_cenv.Debug">Debug</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALenable"><span class="keyword">val</span> enable</span> : <code class="type">bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">Enables  <a href="#Netlog">Netlog</a>-style debugging</div></div></div></div>
+<pre><span class="VALregister_par"><span class="keyword">val</span> register_par</span> : <code class="type">Netplex_types.parallelizer -&gt; unit</code></pre>
+<pre><span class="VALregister_cont"><span class="keyword">val</span> register_cont</span> : <code class="type">Netplex_types.container -&gt; Netplex_types.par_thread -&gt; unit</code></pre>
+<pre><span class="VALunregister_cont"><span class="keyword">val</span> unregister_cont</span> : <code class="type">Netplex_types.container -&gt; Netplex_types.par_thread -&gt; unit</code></pre>
+<pre><span class="VALregister_ctrl"><span class="keyword">val</span> register_ctrl</span> : <code class="type">Netplex_types.controller -&gt; unit</code></pre>
+<pre><span class="VALunregister_ctrl"><span class="keyword">val</span> unregister_ctrl</span> : <code class="type">Netplex_types.controller -&gt; unit</code></pre>
+</div>

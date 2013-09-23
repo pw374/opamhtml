@@ -1,0 +1,11 @@
+<div class="ocaml_toplevel_module"><div class="info">Interaction with the garbage collector</div>
+<div class="info"><div class="info">This module offer a convenient way to add a finaliser launching a
+    thread to a value, without having to use <code class="code">Lwt_unix.run</code> in the
+    finaliser.</div></div>
+<pre><span class="VALfinalise"><span class="keyword">val</span> finalise</span> : <code class="type">('a -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; 'a -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">finalise f x</code> ensures <code class="code">f x</code> is evaluated after <code class="code">x</code> has been
+      garbage collected. If <code class="code">f x</code> yields, then Lwt will waits for its
+      termination at the end of the program.<br/>      Note that <code class="code">f x</code> is not called at garbage collection time, but
+      latter in the main loop.</div></div>
+<pre><span class="VALfinalise_or_exit"><span class="keyword">val</span> finalise_or_exit</span> : <code class="type">('a -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; 'a -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">finalise_or_exit f x</code> call <code class="code">f x</code> when <code class="code">x</code> is garbage collected
+      or (exclusively) when the program exit.</div></div>
+</div>

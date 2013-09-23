@@ -1,0 +1,137 @@
+<div class="ocaml_toplevel_module"><div class="info">Base64, Quoted Printable, URL encoding, HTML escaping</div>
+<div class="ocaml_module sig" name="Base64"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netencoding.Base64">Base64</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<div class="info"><div class="info">Base64 encoding as described in RFC 2045</div></div>
+<pre><span class="VALencode"><span class="keyword">val</span> encode</span> : <code class="type">?pos:int -&gt; ?len:int -&gt; ?linelength:int -&gt; ?crlf:bool -&gt; string -&gt; string</code></pre><div class="info"><div class="info">Compute the &quot;base 64&quot; encoding of the given string argument.
+ Note that the result is a string that only contains the characters
+ a-z, A-Z, 0-9, +, /, =, and optionally spaces, CR and LF characters.<br/> If <code class="code">pos</code> and/or <code class="code">len</code> are passed, only the substring starting at
+ <code class="code">pos</code> (default: 0) with length <code class="code">len</code> (default: rest of the string)
+ is encoded.<br/> The result is divided up into lines not longer than <code class="code">linelength</code>
+ (without counting the line separator); default: do not divide lines.
+ If <code class="code">linelength</code> is smaller than 4, no line division is performed.
+ If <code class="code">linelength</code> is not divisible by 4, the produced lines are a 
+ bit shorter than <code class="code">linelength</code>.<br/> If <code class="code">crlf</code> (default: false) the lines are ended by CRLF; otherwise 
+ they are only ended by LF.
+ (You need the crlf option to produce correct MIME messages.)</div></div>
+<pre><span class="VALurl_encode"><span class="keyword">val</span> url_encode</span> : <code class="type">?pos:int -&gt; ?len:int -&gt; ?linelength:int -&gt; ?crlf:bool -&gt; string -&gt; string</code></pre><div class="info"><div class="info">Same as <code class="code">encode</code> but use slightly different characters that can be
+ part of URLs without additional encodings.
+ The encoded string consists only of the characters a-z, A-Z, 0-9, 
+ -, /, .
+ <code class="code">url_encode</code> does <b>not</b> implement the Base 64 encoding as described
+ in the standard!<span class="warning">Deprecated.</span> Since Ocamlnet 0.98, this function is deprecated,
+   as it is non-standard, and it has a confusing name.<br/></div></div>
+<pre><span class="VALdecode"><span class="keyword">val</span> decode</span> : <code class="type">?pos:int -&gt;
+?len:int -&gt; ?url_variant:bool -&gt; ?accept_spaces:bool -&gt; string -&gt; string</code></pre><div class="info"><div class="info">Decodes the given string argument. <br/> If <code class="code">pos</code> and/or <code class="code">len</code> are passed, only the substring starting at
+ <code class="code">pos</code> (default: 0) with length <code class="code">len</code> (default: rest of the string)
+ is decoded.<br/> If <code class="code">url_variant</code> (default: <code class="code">true</code>) is set, the functions also
+ accepts the characters '-' and '.' as produced by <code class="code">url_encode</code>.<br/> If <code class="code">accept_spaces</code> (default: <code class="code">false</code>) is set, the function ignores
+ white space contained in the string to decode (otherwise the
+ function fails if it finds white space). Furthermore, the character
+ '&gt;' is considered as &quot;space&quot;, too (so you don't have trouble with
+ mbox mailboxes that accidentally quote &quot;From&quot;).</div></div>
+<div class="ocaml_class ident" name="encoding_pipe" path="?package=ocamlnet&amp;module=Netchannels&amp;class=pipe"><pre><span class="TYPEencoding_pipe"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netencoding.Base64&amp;class=encoding_pipe">encoding_pipe</a></span> : <code class="type">int option -&gt; bool option -&gt; unit -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=pipe">Netchannels.pipe</a></pre><div class="info"><div class="info">This pipe encodes the data written into the pipe. 
+ <code class="code">linelength</code> and <code class="code">crlf</code> work as in <code class="code">encode</code>.</div></div></div>
+<div class="ocaml_class ident" name="decoding_pipe" path="?package=ocamlnet&amp;module=Netchannels&amp;class=pipe"><pre><span class="TYPEdecoding_pipe"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netencoding.Base64&amp;class=decoding_pipe">decoding_pipe</a></span> : <code class="type">bool option -&gt; bool option -&gt; unit -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=pipe">Netchannels.pipe</a></pre><div class="info"><div class="info">This pipe decodes the data written into the pipe.
+ <code class="code">url_variant</code> and <code class="code">accept_spaces</code> work as in <code class="code">decode</code>.</div></div></div></div></div>
+<div class="ocaml_module sig" name="QuotedPrintable"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netencoding.QuotedPrintable">QuotedPrintable</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<div class="info"><div class="info">This module implements the &quot;Quoted Printable&quot; encoding as
+ described in RFC 2045.<br/> This implementation assumes that the encoded string has a text MIME
+ type. On input both CR/LF and LF are accepted as end-of-line (eol) terminators,
+ but the output normalizes the eol delimiter as the <code class="code">crlf</code> argument
+ specifies. Note that this implies that<ul><li>If <code class="code">crlf</code>, the output uses CR/LF as line separator as MIME prescribes</li><li>the encoding is not invertible for binary data
+     </li></ul></div></div>
+<pre><span class="VALencode"><span class="keyword">val</span> encode</span> : <code class="type">?crlf:bool -&gt; ?pos:int -&gt; ?len:int -&gt; string -&gt; string</code></pre><div class="info"><div class="info">Encodes the string and returns it.<br/> Since OcamlNet 0.98, soft line breaks are added to the output
+ to ensure that all output lines have a length &lt;= 76 bytes.<br/> Note unsafe characters:
+   As recommended by RFC 2045, the characters <code class="code">!#$@[]^`{|}~</code>
+   and the double quotes
+   are additionally represented as hex tokens.        
+   Furthermore, the letter 'F' is considered as unsafe if it
+   occurs at the beginning of the line, so the encoded text
+   never contains the word &quot;From&quot; at the beginning of a line.<br/> If <code class="code">pos</code> and/or <code class="code">len</code> are passed, only the substring starting at
+ <code class="code">pos</code> (default: 0) with length <code class="code">len</code> (default: rest of the string)
+ is encoded.<br/> If <code class="code">crlf</code> is set (the default), the output text uses CR/LF as
+ line separator. Otherwise only LF is used.</div></div>
+<pre><span class="VALdecode"><span class="keyword">val</span> decode</span> : <code class="type">?pos:int -&gt; ?len:int -&gt; string -&gt; string</code></pre><div class="info"><div class="info">Decodes the string and returns it.<br/> Most format errors cause an <code class="code">Invalid_argument</code> exception.<br/> If <code class="code">pos</code> and/or <code class="code">len</code> are passed, only the substring starting at
+ <code class="code">pos</code> (default: 0) with length <code class="code">len</code> (default: rest of the string)
+ is decoded.</div></div>
+<div class="ocaml_class ident" name="encoding_pipe" path="?package=ocamlnet&amp;module=Netchannels&amp;class=pipe"><pre><span class="TYPEencoding_pipe"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netencoding.QuotedPrintable&amp;class=encoding_pipe">encoding_pipe</a></span> : <code class="type">bool option -&gt; unit -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=pipe">Netchannels.pipe</a></pre><div class="info"><div class="info">This pipe encodes the data written into the pipe.</div></div></div>
+<div class="ocaml_class ident" name="decoding_pipe" path="?package=ocamlnet&amp;module=Netchannels&amp;class=pipe"><pre><span class="TYPEdecoding_pipe"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netencoding.QuotedPrintable&amp;class=decoding_pipe">decoding_pipe</a></span> : <code class="type">unit -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=pipe">Netchannels.pipe</a></pre><div class="info"><div class="info">This pipe decodes the data written into the pipe.</div></div></div></div></div>
+<div class="ocaml_module sig" name="Q"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netencoding.Q">Q</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<div class="info"><div class="info">The &quot;Q&quot; encoding as described by RFC 2047.</div></div>
+<pre><span class="VALencode"><span class="keyword">val</span> encode</span> : <code class="type">?pos:int -&gt; ?len:int -&gt; string -&gt; string</code></pre><div class="info"><div class="info">Note:
+ All characters except alphanumeric characters are protected by
+ hex tokens.
+ In particular, spaces are represented as &quot;=20&quot;, not as &quot;_&quot;.</div></div>
+<pre><span class="VALdecode"><span class="keyword">val</span> decode</span> : <code class="type">?pos:int -&gt; ?len:int -&gt; string -&gt; string</code></pre></div></div>
+<div class="ocaml_module sig" name="Url"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netencoding.Url">Url</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<div class="info"><div class="info">Encoding/Decoding within URLs:<br/> The following two functions perform the '%'-substitution for
+ characters that may otherwise be interpreted as metacharacters.<br/> According to: RFC 1738, RFC 1630<br/> Option <code class="code">plus</code>: This option has been added because there are some
+ implementations that do not map ' ' to '+', for example Javascript's
+ <code class="code">escape</code> function. The default is <code class="code">true</code> because this is the RFC-
+ compliant definition.</div></div>
+<pre><span class="VALdecode"><span class="keyword">val</span> decode</span> : <code class="type">?plus:bool -&gt; ?pos:int -&gt; ?len:int -&gt; string -&gt; string</code></pre><div class="info"><div class="info">Option <code class="code">plus</code>: Whether '+' is converted to space. The default
+ is true. If false, '+' is returned as it is.<br/> The optional arguments <code class="code">pos</code> and <code class="code">len</code> may restrict the string
+ to process to this substring.</div></div>
+<pre><span class="VALencode"><span class="keyword">val</span> encode</span> : <code class="type">?plus:bool -&gt; string -&gt; string</code></pre><div class="info"><div class="info">Option <code class="code">plus</code>: Whether spaces are converted to '+'. The default
+ is true. If false, spaces are converted to &quot;%20&quot;, and
+ only %xx sequences are produced.</div></div>
+<div class="info"><div class="info">URL-encoded parameters:<br/> The following two functions create and analyze URL-encoded parameters.
+ Format: <code class="code">name1=val1&amp;name2=val2&amp;...</code></div></div>
+<pre><span class="VALmk_url_encoded_parameters"><span class="keyword">val</span> mk_url_encoded_parameters</span> : <code class="type">(string * string) list -&gt; string</code></pre><div class="info"><div class="info">The argument is a list of (name,value) pairs. The result is the
+ single URL-encoded parameter string.</div></div>
+<pre><span class="VALdest_url_encoded_parameters"><span class="keyword">val</span> dest_url_encoded_parameters</span> : <code class="type">string -&gt; (string * string) list</code></pre><div class="info"><div class="info">The argument is the URL-encoded parameter string. The result is
+ the corresponding list of (name,value) pairs.
+ Note: Whitespace within the parameter string is ignored.
+ If there is a format error, the function fails.</div></div></div></div>
+<div class="ocaml_module sig" name="Html"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netencoding.Html">Html</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<div class="info"><div class="info">Encodes characters that need protection by converting them to
+ entity references. E.g. <code class="code">&quot;&lt;&quot;</code> is converted to <code class="code">&quot;&amp;lt;&quot;</code>.
+ As the entities may be named, there is a dependency on the character
+ set.</div></div>
+<div class="info"><div class="info">Legacy functions:</div></div>
+<pre><span class="VALencode_from_latin1"><span class="keyword">val</span> encode_from_latin1</span> : <code class="type">string -&gt; string</code></pre>
+<pre><span class="VALdecode_to_latin1"><span class="keyword">val</span> decode_to_latin1</span> : <code class="type">string -&gt; string</code></pre>
+<div class="info"><div class="info">These functions have a more general interface and should be preferred
+ in new programs.</div></div>
+<pre><span class="VALunsafe_chars_html4"><span class="keyword">val</span> unsafe_chars_html4</span> : <code class="type">string</code></pre><div class="info"><div class="info">The string contains '&lt;', '&gt;', '&quot;', '&amp;' and the control characters
+ 0-8, 11-12, 14-31, 127.</div></div>
+<pre><span class="VALencode"><span class="keyword">val</span> encode</span> : <code class="type">in_enc:<a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> -&gt;
+?out_enc:<a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> -&gt;
+?prefer_name:bool -&gt; ?unsafe_chars:string -&gt; unit -&gt; string -&gt; string</code></pre><div class="info"><div class="info">The input string that is encoded as <code class="code">in_enc</code> is recoded to 
+ <code class="code">out_enc</code>, and the following characters are encoded as HTML
+ entity (<code class="code">&amp;name;</code> or <code class="code">&amp;#num;</code>):<ul><li>The ASCII characters contained in <code class="code">unsafe_chars</code></li><li>The characters that cannot be represented in <code class="code">out_enc</code>. By
+   default (<code class="code">out_enc=`Enc_usascii</code>), only ASCII characters can be
+   represented, and thus all code points &gt;= 128 are encoded as
+   HTML entities. If you pass <code class="code">out_enc=`Enc_utf8</code>, all characters
+   can be represented.</li></ul> For example, the string <code class="code">&quot;(a&lt;b) &amp; (c&gt;d)&quot;</code> is encoded as
+ <code class="code">&quot;(a&amp;lt;b) &amp;amp; (c&amp;gt;d)&quot;</code>.<br/> It is required that <code class="code">out_enc</code> is an ASCII-compatible encoding.<br/> The option <code class="code">prefer_name</code> selects whether named entities (e.g. <code class="code">&amp;lt;</code>)
+ or numeric entities (e.g. <code class="code">&amp;#60;</code>) are prefered.<br/> The efficiency of the function can be improved when the same encoding
+ is applied to several strings. Create a specialized encoding function
+ by passing all arguments up to the unit argument, and apply this
+ function several times. For example:
+ <pre class="codepre"><code class="code">
+     let my_enc = encode ~in_enc:`Enc_utf8 () in
+     let s1' = my_enc s1 in
+     let s2' = my_enc s2 in ...
+ </code></pre></div></div>
+<pre><span class="TYPEentity_set"><span class="keyword">type</span> entity_set</span> = <code class="type">[ `Empty | `Html | `Xml ]</code></pre>
+<pre><span class="VALdecode"><span class="keyword">val</span> decode</span> : <code class="type">in_enc:<a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> -&gt;
+out_enc:<a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> -&gt;
+?lookup:(string -&gt; string) -&gt;
+?subst:(int -&gt; string) -&gt; ?entity_base:<a href="?package=ocamlnet&amp;module=Netencoding.Html&amp;type=entity_set">entity_set</a> -&gt; unit -&gt; string -&gt; string</code></pre><div class="info"><div class="info">The input string is recoded from <code class="code">in_enc</code> to <code class="code">out_enc</code>, and HTML
+ entities (<code class="code">&amp;name;</code> or <code class="code">&amp;#num;</code>) are resolved. The input encoding 
+ <code class="code">in_enc</code> must be ASCII-compatible.<br/> By default, the function knows all entities defined for HTML 4 (this
+ can be changed using <code class="code">entity_base</code>, see below). If other
+ entities occur, the function <code class="code">lookup</code> is called and the name of
+ the entity is passed as input string to the function. It is
+ expected that <code class="code">lookup</code> returns the value of the entity, and that this
+ value is already encoded as <code class="code">out_enc</code>.
+ By default, <code class="code">lookup</code> raises a <code class="code">Failure</code> exception.<br/> If a character cannot be represented in the output encoding,
+ the function <code class="code">subst</code> is called. <code class="code">subst</code> must return a substitute
+ string for the character.
+ By default, <code class="code">subst</code> raises a <code class="code">Failure</code> exception.<br/> The option <code class="code">entity_base</code> determines which set of entities are
+ considered as the known entities that can be decoded without
+ help by the <code class="code">lookup</code> function: <code class="code">`Html</code> selects all entities defined
+ for HTML 4, <code class="code">`Xml</code> selects only <code class="code">&amp;lt;</code>, <code class="code">&amp;gt;</code>, <code class="code">&amp;amp;</code>, <code class="code">&amp;quot;</code>,
+ and <code class="code">&amp;apos;</code>,
+ and <code class="code">`Empty</code> selects the empty set (i.e. <code class="code">lookup</code> is always called).</div></div></div></div>
+</div>

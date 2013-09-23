@@ -1,0 +1,10 @@
+<div class="ocaml_toplevel_module"><div class="info">This module is here to ensure that we don't use the functions in <code class="code">Caml.Printexc</code>
+    inadvertently</div>
+<pre><span class="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">exn -&gt; [ `Deprecated_use_Exn_to_string_instead ]</code></pre>
+<pre><span class="VALprint"><span class="keyword">val</span> print</span> : <code class="type">exn -&gt; [ `Deprecated_use_Exn_to_string_instead ]</code></pre>
+<pre><span class="VALcatch"><span class="keyword">val</span> catch</span> : <code class="type">('a -&gt; 'b) -&gt; 'a -&gt; [ `Deprecated_use_Exn_handle_uncaught_instead ]</code></pre>
+<pre><span class="VALprint_backtrace"><span class="keyword">val</span> print_backtrace</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a> -&gt; unit</code></pre>
+<pre><span class="VALget_backtrace"><span class="keyword">val</span> get_backtrace</span> : <code class="type">unit -&gt; string</code></pre>
+<pre><span class="VALrecord_backtrace"><span class="keyword">val</span> record_backtrace</span> : <code class="type">bool -&gt; unit</code></pre>
+<pre><span class="VALbacktrace_status"><span class="keyword">val</span> backtrace_status</span> : <code class="type">unit -&gt; bool</code></pre>
+</div>

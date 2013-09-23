@@ -1,0 +1,8 @@
+<div class="ocaml_toplevel_module"><pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> </pre><div class="info"><div class="info">A &quot;force_once&quot; is a thunk that can only be forced once.  Subsequent forces
+    will raise an exception.</div></div>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">(unit -&gt; 'a) -&gt; 'a <a href="?package=core_kernel&amp;module=Force_once&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create f</code> creates a new force_once</div></div>
+<pre><span class="VALforce"><span class="keyword">val</span> force</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Force_once&amp;type=t">t</a> -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">force t</code> runs the thunk if it hadn't already been forced, else it raises an
+    exception.</div></div>
+<pre><span class="VALignore"><span class="keyword">val</span> ignore</span> : <code class="type">unit -&gt; unit <a href="?package=core_kernel&amp;module=Force_once&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">ignore ()</code> = create (fun () -&gt; ())</div></div>
+<pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type">('a -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a>) -&gt; 'a <a href="?package=core_kernel&amp;module=Force_once&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+</div>

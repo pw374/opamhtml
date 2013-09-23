@@ -1,0 +1,168 @@
+<div class="ocaml_toplevel_module"><pre><span class="TYPEversion"><span class="keyword">type</span> version</span> = <code class="type">[ `HTTP_1_0 | `HTTP_1_1 ]</code></pre>
+<pre><span class="TYPEmeth"><span class="keyword">type</span> meth</span> = <code class="type">[ `DELETE | `GET | `HEAD | `PATCH | `POST | `PUT ]</code></pre>
+<pre><span class="TYPEinformational_status"><span class="keyword">type</span> informational_status</span> = <code class="type">[ `Continue | `Switching_protocols ]</code></pre>
+<pre><span class="TYPEsuccess_status"><span class="keyword">type</span> success_status</span> = <code class="type">[ `Accepted
+| `Created
+| `No_content
+| `Non_authoritative_information
+| `OK
+| `Partial_content
+| `Reset_content ]</code></pre>
+<pre><span class="TYPEredirection_status"><span class="keyword">type</span> redirection_status</span> = <code class="type">[ `Found
+| `Moved_permanently
+| `Multiple_choices
+| `Not_modified
+| `See_other
+| `Temporary_redirect
+| `Use_proxy ]</code></pre>
+<pre><span class="TYPEclient_error_status"><span class="keyword">type</span> client_error_status</span> = <code class="type">[ `Bad_request
+| `Conflict
+| `Expectation_failed
+| `Forbidden
+| `Gone
+| `Length_required
+| `Method_not_allowed
+| `Not_acceptable
+| `Not_found
+| `Payment_required
+| `Precondition_failed
+| `Proxy_authentication_required
+| `Request_URI_too_large
+| `Request_entity_too_large
+| `Request_time_out
+| `Requested_range_not_satisfiable
+| `Unauthorized
+| `Unprocessable_entity
+| `Unsupported_media_type ]</code></pre>
+<pre><span class="TYPEserver_error_status"><span class="keyword">type</span> server_error_status</span> = <code class="type">[ `Bad_gateway
+| `Gateway_time_out
+| `HTTP_version_not_supported
+| `Internal_server_error
+| `Not_implemented
+| `Service_unavailable ]</code></pre>
+<pre><span class="TYPEerror_status"><span class="keyword">type</span> error_status</span> = <code class="type">[ `Bad_gateway
+| `Bad_request
+| `Conflict
+| `Expectation_failed
+| `Forbidden
+| `Gateway_time_out
+| `Gone
+| `HTTP_version_not_supported
+| `Internal_server_error
+| `Length_required
+| `Method_not_allowed
+| `Not_acceptable
+| `Not_found
+| `Not_implemented
+| `Payment_required
+| `Precondition_failed
+| `Proxy_authentication_required
+| `Request_URI_too_large
+| `Request_entity_too_large
+| `Request_time_out
+| `Requested_range_not_satisfiable
+| `Service_unavailable
+| `Unauthorized
+| `Unprocessable_entity
+| `Unsupported_media_type ]</code></pre>
+<pre><span class="TYPEstatus"><span class="keyword">type</span> status</span> = <code class="type">[ `Accepted
+| `Bad_gateway
+| `Bad_request
+| `Conflict
+| `Continue
+| `Created
+| `Expectation_failed
+| `Forbidden
+| `Found
+| `Gateway_time_out
+| `Gone
+| `HTTP_version_not_supported
+| `Internal_server_error
+| `Length_required
+| `Method_not_allowed
+| `Moved_permanently
+| `Multiple_choices
+| `No_content
+| `Non_authoritative_information
+| `Not_acceptable
+| `Not_found
+| `Not_implemented
+| `Not_modified
+| `OK
+| `Partial_content
+| `Payment_required
+| `Precondition_failed
+| `Proxy_authentication_required
+| `Request_URI_too_large
+| `Request_entity_too_large
+| `Request_time_out
+| `Requested_range_not_satisfiable
+| `Reset_content
+| `See_other
+| `Service_unavailable
+| `Switching_protocols
+| `Temporary_redirect
+| `Unauthorized
+| `Unprocessable_entity
+| `Unsupported_media_type
+| `Use_proxy ]</code></pre>
+<pre><span class="TYPEstatus_code"><span class="keyword">type</span> status_code</span> = <code class="type">[ `Accepted
+| `Bad_gateway
+| `Bad_request
+| `Code of int
+| `Conflict
+| `Continue
+| `Created
+| `Expectation_failed
+| `Forbidden
+| `Found
+| `Gateway_time_out
+| `Gone
+| `HTTP_version_not_supported
+| `Internal_server_error
+| `Length_required
+| `Method_not_allowed
+| `Moved_permanently
+| `Multiple_choices
+| `No_content
+| `Non_authoritative_information
+| `Not_acceptable
+| `Not_found
+| `Not_implemented
+| `Not_modified
+| `OK
+| `Partial_content
+| `Payment_required
+| `Precondition_failed
+| `Proxy_authentication_required
+| `Request_URI_too_large
+| `Request_entity_too_large
+| `Request_time_out
+| `Requested_range_not_satisfiable
+| `Reset_content
+| `See_other
+| `Service_unavailable
+| `Switching_protocols
+| `Temporary_redirect
+| `Unauthorized
+| `Unprocessable_entity
+| `Unsupported_media_type
+| `Use_proxy ]</code></pre>
+<pre><span class="VALstring_of_version"><span class="keyword">val</span> string_of_version</span> : <code class="type"><a href="?package=cohttp&amp;module=Code&amp;type=version">version</a> -&gt; string</code></pre><div class="info"><div class="info">pretty print an HTTP version</div></div>
+<pre><span class="VALversion_of_string"><span class="keyword">val</span> version_of_string</span> : <code class="type">string -&gt; <a href="?package=cohttp&amp;module=Code&amp;type=version">version</a> option</code></pre><div class="info"><div class="info">parse an HTTP version from a string <b>Raises</b> <code>Invalid_HTTP_version</code> if given string doesn't represent a supported HTTP
+  version<br/></div></div>
+<pre><span class="VALstring_of_method"><span class="keyword">val</span> string_of_method</span> : <code class="type"><a href="?package=cohttp&amp;module=Code&amp;type=meth">meth</a> -&gt; string</code></pre><div class="info"><div class="info">pretty print an HTTP method</div></div>
+<pre><span class="VALmethod_of_string"><span class="keyword">val</span> method_of_string</span> : <code class="type">string -&gt; <a href="?package=cohttp&amp;module=Code&amp;type=meth">meth</a> option</code></pre><div class="info"><div class="info">parse an HTTP method from a string <b>Raises</b> <code>Invalid_HTTP_method</code> if given string doesn't represent a supported
+  method<br/></div></div>
+<pre><span class="VALstatus_of_code"><span class="keyword">val</span> status_of_code</span> : <code class="type">int -&gt; <a href="?package=cohttp&amp;module=Code&amp;type=status_code">status_code</a></code></pre><div class="info"><div class="info">converts an integer HTTP status to the corresponding status value <b>Raises</b> <code>Invalid_code</code> if given integer isn't a valid HTTP status code<br/></div></div>
+<pre><span class="VALcode_of_status"><span class="keyword">val</span> code_of_status</span> : <code class="type"><a href="?package=cohttp&amp;module=Code&amp;type=status_code">status_code</a> -&gt; int</code></pre><div class="info"><div class="info">converts an HTTP status to the corresponding integer value</div></div>
+<pre><span class="VALstring_of_status"><span class="keyword">val</span> string_of_status</span> : <code class="type"><a href="?package=cohttp&amp;module=Code&amp;type=status_code">status_code</a> -&gt; string</code></pre><div class="info"><div class="info">converts an HTTP status to a human-readable string value</div></div>
+<pre><span class="VALreason_phrase_of_code"><span class="keyword">val</span> reason_phrase_of_code</span> : <code class="type">int -&gt; string</code></pre><div class="info"><div class="info">converts an HTTP status to the corresponding RFC reason phrase</div></div>
+<pre><span class="VALis_informational"><span class="keyword">val</span> is_informational</span> : <code class="type">int -&gt; bool</code></pre><div class="info"><div class="info"> <b>Returns</b> true on &quot;informational&quot; status codes, false elsewhere</div></div>
+<pre><span class="VALis_success"><span class="keyword">val</span> is_success</span> : <code class="type">int -&gt; bool</code></pre><div class="info"><div class="info"> <b>Returns</b> true on &quot;success&quot; status codes, false elsewhere</div></div>
+<pre><span class="VALis_redirection"><span class="keyword">val</span> is_redirection</span> : <code class="type">int -&gt; bool</code></pre><div class="info"><div class="info"> <b>Returns</b> true on &quot;redirection&quot; status codes, false elsewhere</div></div>
+<pre><span class="VALis_client_error"><span class="keyword">val</span> is_client_error</span> : <code class="type">int -&gt; bool</code></pre><div class="info"><div class="info"> <b>Returns</b> true on &quot;client error&quot; status codes, false elsewhere</div></div>
+<pre><span class="VALis_server_error"><span class="keyword">val</span> is_server_error</span> : <code class="type">int -&gt; bool</code></pre><div class="info"><div class="info"> <b>Returns</b> true on &quot;server error&quot; status codes, false elsewhere</div></div>
+<pre><span class="VALis_error"><span class="keyword">val</span> is_error</span> : <code class="type">int -&gt; bool</code></pre><div class="info"><div class="info"> <b>Returns</b> true on &quot;client error&quot; and &quot;server error&quot; status code, false
+  elsewhere</div></div>
+</div>

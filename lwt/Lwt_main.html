@@ -1,0 +1,17 @@
+<div class="ocaml_toplevel_module"><div class="info">Main loop and event queue</div>
+<div class="info"><div class="info">This module controls the ``main-loop'' of Lwt.</div></div>
+<pre><span class="VALrun"><span class="keyword">val</span> run</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a> -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">run t</code> calls the Lwt scheduler repeatedly until <code class="code">t</code> terminates,
+      then returns the value returned by the thread. It <code class="code">t</code> fails with
+      an exception, this exception is raised.<br/>      Note that you should avoid using <code class="code">run</code> inside threads<ul><li>The calling threads will not resume before <code class="code">run</code>
+        returns.</li><li>Successive invocations of <code class="code">run</code> are serialized: an
+        invocation of <code class="code">run</code> will not terminate before all
+        subsequent invocations are terminated.</li></ul>      Note also that it is not safe to call <code class="code">run</code> in a function
+      registered with <code class="code">Pervasives.at_exit</code>, use the  <a href="#at_exit">at_exit</a>
+      function of this module instead.</div></div>
+<pre><span class="VALyield"><span class="keyword">val</span> yield</span> : <code class="type">unit -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">yield ()</code> is a threads which suspends itself and then resumes
+      as soon as possible and terminates.</div></div>
+<pre><span class="VALenter_iter_hooks"><span class="keyword">val</span> enter_iter_hooks</span> : <code class="type">(unit -&gt; unit) <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">Lwt_sequence.t</a></code></pre><div class="info"><div class="info">Functions that are called before the main iteration.</div></div>
+<pre><span class="VALleave_iter_hooks"><span class="keyword">val</span> leave_iter_hooks</span> : <code class="type">(unit -&gt; unit) <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">Lwt_sequence.t</a></code></pre><div class="info"><div class="info">Functions that are called after the main iteration.</div></div>
+<pre><span class="VALexit_hooks"><span class="keyword">val</span> exit_hooks</span> : <code class="type">(unit -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">Lwt_sequence.t</a></code></pre><div class="info"><div class="info">Sets of functions executed just before the program exit.<br/>      Notes:<ul><li>each hook is called exactly one time</li><li>exceptions raised by hooks are ignored </li></ul></div></div>
+<pre><span class="VALat_exit"><span class="keyword">val</span> at_exit</span> : <code class="type">(unit -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">at_exit hook</code> adds hook at the left of <code class="code">exit_hooks</code></div></div>
+</div>

@@ -1,0 +1,42 @@
+<div class="ocaml_toplevel_module"><div class="info">Buffer for page-aligned I/O</div>
+<div class="info"><div class="info">This kind of buffer uses page-aligned bigarrays. Data can only be
+    added to the end, or deleted at the beginning of the buffer.<br/>    The idea of this buffer is that input data is added to the last
+    page of the buffer only (with <code class="code">add_inplace</code>). If then all previous
+    input was already a multiple of the page size, it is ensured that
+    the new input is added at a page boundary. This kind of input operation
+    can often be accelerated by the OS (&quot;zero copy network I/O&quot;).</div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -&gt; <a href="?package=ocamlnet&amp;module=Netpagebuffer&amp;type=t">t</a></code></pre><div class="info"><div class="info">create <code class="code">blocksize</code>: creates new buffer with this <code class="code">blocksize</code>, which must
+      be a whole multiple of the page size of the OS<br/>      The <code class="code">blocksize</code> is normally either<ul><li> <a href="#Netsys_mem.default_block_size">Netsys_mem.default_block_size</a>, or</li><li> <a href="#Netsys_mem.small_block_size">Netsys_mem.small_block_size</a></li></ul>      These cases are optimized, and the buffer is allocated in a shared
+      pool.</div></div>
+<pre><span class="VALcontents"><span class="keyword">val</span> contents</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netpagebuffer&amp;type=t">t</a> -&gt; string</code></pre><div class="info"><div class="info">Returns the contents as string</div></div>
+<pre><span class="VALlength"><span class="keyword">val</span> length</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netpagebuffer&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">The length</div></div>
+<pre><span class="VALsub"><span class="keyword">val</span> sub</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netpagebuffer&amp;type=t">t</a> -&gt; int -&gt; int -&gt; string</code></pre><div class="info"><div class="info">Returns a substring</div></div>
+<pre><span class="VALblit_to_string"><span class="keyword">val</span> blit_to_string</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netpagebuffer&amp;type=t">t</a> -&gt; int -&gt; string -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">Blits contents to a string</div></div>
+<pre><span class="VALblit_to_memory"><span class="keyword">val</span> blit_to_memory</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netpagebuffer&amp;type=t">t</a> -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">Netsys_mem.memory</a> -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">Blits contents to another memory buffer</div></div>
+<pre><span class="VALadd_string"><span class="keyword">val</span> add_string</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netpagebuffer&amp;type=t">t</a> -&gt; string -&gt; unit</code></pre><div class="info"><div class="info">Adds a string to the end of the buffer</div></div>
+<pre><span class="VALadd_sub_string"><span class="keyword">val</span> add_sub_string</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netpagebuffer&amp;type=t">t</a> -&gt; string -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">Adds a sub string to the end of the buffer</div></div>
+<pre><span class="VALadd_sub_memory"><span class="keyword">val</span> add_sub_memory</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netpagebuffer&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">Netsys_mem.memory</a> -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">Adds a sub memory buffer to the end of the buffer</div></div>
+<pre><span class="VALadd_inplace"><span class="keyword">val</span> add_inplace</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netpagebuffer&amp;type=t">t</a> -&gt; (<a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">Netsys_mem.memory</a> -&gt; int -&gt; int -&gt; int) -&gt; int</code></pre><div class="info"><div class="info"><code class="code">add_inplace b f</code>: Calls <code class="code">f m pos len</code> where <code class="code">m</code> is the last page
+      of the buffer, and <code class="code">pos</code> is the first free byte on the page, and
+      <code class="code">len</code> is the number of free bytes on the page. The function <code class="code">f</code> is
+      expected to store new data in <code class="code">m</code> from <code class="code">pos</code> to <code class="code">pos+n-1</code> and to
+      return <code class="code">n</code>. The number <code class="code">n</code> is also returned as final result.<br/>      It is ensured that <code class="code">f</code> is called with a value of <code class="code">len&gt;=1</code>.</div></div>
+<pre><span class="VALpage_for_additions"><span class="keyword">val</span> page_for_additions</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netpagebuffer&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">Netsys_mem.memory</a> * int * int</code></pre><div class="info"><div class="info"><code class="code">let (m,pos,len) = page_for_additions b</code>: Returns the last page 
+      in <code class="code">m</code>, the first free byte on the page in <code class="code">pos</code>, and 
+      the number of free bytes on the page in <code class="code">len</code>. (The same values
+      the function <code class="code">f</code> would have got as arguments in <code class="code">add_inplace</code>.)</div></div>
+<pre><span class="VALadvance"><span class="keyword">val</span> advance</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netpagebuffer&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">advance b n</code>: Marks further <code class="code">n</code> bytes in the last page of the
+      buffer as used. These bytes are not modified in any way - it is
+      expected that the user calls <code class="code">page_for_additions</code> first, and sets
+      these <code class="code">n</code> bytes to new values directly.</div></div>
+<pre><span class="VALpage_for_consumption"><span class="keyword">val</span> page_for_consumption</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netpagebuffer&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">Netsys_mem.memory</a> * int * int</code></pre><div class="info"><div class="info"><code class="code">let (m,pos,len) = page_for_consumption b</code>: Returns the first page 
+      in <code class="code">m</code>, the first used byte on the page in <code class="code">pos</code>, and 
+      the number of used bytes on the page in <code class="code">len</code>.</div></div>
+<pre><span class="VALdelete_hd"><span class="keyword">val</span> delete_hd</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netpagebuffer&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">delete_hd b n</code>: Deletes <code class="code">n</code> bytes from the beginning of the buffer</div></div>
+<pre><span class="VALclear"><span class="keyword">val</span> clear</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netpagebuffer&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Deletes all contents of the buffer</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Searching</h2></div></div>
+<pre><span class="VALindex_from"><span class="keyword">val</span> index_from</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netpagebuffer&amp;type=t">t</a> -&gt; int -&gt; char -&gt; int</code></pre><div class="info"><div class="info"><code class="code">index_from nb k c</code>: Searches the character <code class="code">c</code> in the buffer beginning
+ at position <code class="code">k</code>. If found, the position of the left-most occurence is
+ returned. Otherwise, <code class="code">Not_found</code> is raised.</div></div>
+</div>

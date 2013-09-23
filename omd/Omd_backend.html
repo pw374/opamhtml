@@ -1,0 +1,35 @@
+<div class="ocaml_toplevel_module"><pre><span class="TYPEcode_stylist"><span class="keyword">type</span> code_stylist</span> = <code class="type">&lt; style : lang:string -&gt; string -&gt; string &gt;</code></pre><div class="info"><div class="info">has at least a method <code class="code">style</code> that takes a language name and some
+    code and returns that code with style.</div></div>
+<pre><span class="VALdefault_language"><span class="keyword">val</span> default_language</span> : <code class="type">string <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">default language for code blocks can be set to any name, 
+    by default it is the empty string</div></div>
+<pre><span class="VALmake_paragraphs"><span class="keyword">val</span> make_paragraphs</span> : <code class="type"><a href="?package=omd&amp;module=Omd_representation&amp;type=t">Omd_representation.t</a> -&gt; <a href="?package=omd&amp;module=Omd_representation&amp;type=t">Omd_representation.t</a></code></pre><div class="info"><div class="info">Since <code class="code">Omd_parser.parse</code> doesn't build paragraphs, if you want
+    Markdown-style paragraphs, you need to apply this function to
+    the result of <code class="code">Omd_parser.parse</code>.</div></div>
+<pre><span class="VALhtml_of_md"><span class="keyword">val</span> html_of_md</span> : <code class="type">?pindent:bool -&gt;
+?nl2br:bool -&gt; ?cs:<a href="?package=omd&amp;module=Omd_backend&amp;type=code_stylist">code_stylist</a> -&gt; <a href="?package=omd&amp;module=Omd_representation&amp;type=t">Omd_representation.t</a> -&gt; string</code></pre><div class="info"><div class="info"><code class="code">html_of_md md</code> returns a string containing the HTML version of
+    <code class="code">md</code>. Note that <code class="code">md</code> uses the internal representation of
+    Markdown.</div></div>
+<pre><span class="VALheaders_of_md"><span class="keyword">val</span> headers_of_md</span> : <code class="type"><a href="?package=omd&amp;module=Omd_representation&amp;type=t">Omd_representation.t</a> -&gt; (<a href="?package=omd&amp;module=Omd_representation&amp;type=element">Omd_representation.element</a> * string * string) list</code></pre><div class="info"><div class="info"><code class="code">headers_of_md md</code> returns a list of 3-tuples; in each of them the
+    first element is the header (e.g., <code class="code">H1(foo)</code>), the second is the
+    HTML id (as produced by <code class="code">html_of_md</code>), and the thrid element is
+    the HTML version of <code class="code">foo</code>.  The third elements of those 3-tuples
+    exist because if you use <code class="code">html_and_headers_of_md</code>, then you have
+    the guarantee that the HTML version of <code class="code">foo</code> is the same for
+    both the headers and the HTML version of <code class="code">md</code>.</div></div>
+<pre><span class="VALhtml_and_headers_of_md"><span class="keyword">val</span> html_and_headers_of_md</span> : <code class="type">?pindent:bool -&gt;
+?nl2br:bool -&gt;
+?cs:<a href="?package=omd&amp;module=Omd_backend&amp;type=code_stylist">code_stylist</a> -&gt;
+<a href="?package=omd&amp;module=Omd_representation&amp;type=t">Omd_representation.t</a> -&gt;
+string * (<a href="?package=omd&amp;module=Omd_representation&amp;type=element">Omd_representation.element</a> * <a href="?package=omd&amp;module=Omd_utils.StringSet&amp;type=elt">Omd_utils.StringSet.elt</a> * string) list</code></pre><div class="info"><div class="info"><code class="code">html_and_headers_of_md md</code> is the same as <code class="code">(html_of_md md,
+    headers_of_md md)</code> except that it's two times faster.
+    If you need headers and html, don't use <code class="code">html_of_md</code>
+    and <code class="code">headers_of_md</code> but this function instead.
+    Optional parameters</div></div>
+<pre><span class="VALtext_of_md"><span class="keyword">val</span> text_of_md</span> : <code class="type"><a href="?package=omd&amp;module=Omd_representation&amp;type=t">Omd_representation.t</a> -&gt; string</code></pre><div class="info"><div class="info"><code class="code">text_of_md md</code> is basically the same as <code class="code">html_of_md md</code> but without
+    the HTML tags in the output.</div></div>
+<pre><span class="VALmarkdown_of_md"><span class="keyword">val</span> markdown_of_md</span> : <code class="type"><a href="?package=omd&amp;module=Omd_representation&amp;type=t">Omd_representation.t</a> -&gt; string</code></pre><div class="info"><div class="info"><code class="code">markdown_of_md md</code> is basically the same as <code class="code">html_of_md md</code> but
+    with the output in Markdown syntax rather than HTML.</div></div>
+<pre><span class="VALsexpr_of_md"><span class="keyword">val</span> sexpr_of_md</span> : <code class="type"><a href="?package=omd&amp;module=Omd_representation&amp;type=t">Omd_representation.t</a> -&gt; string</code></pre><div class="info"><div class="info"><code class="code">sexpr_of_md md</code> is basically the same as <code class="code">html_of_md md</code> but with
+    the output in s-expressions rather than HTML. This is mainly used
+    for debugging.</div></div>
+</div>

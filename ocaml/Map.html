@@ -1,0 +1,87 @@
+<div class="ocaml_toplevel_module"><div class="info">Association tables over ordered types.<br/>   This module implements applicative association tables, also known as
+   finite maps or dictionaries, given a total ordering function
+   over the keys.
+   All operations over maps are purely applicative (no side-effects).
+   The implementation uses balanced binary trees, and therefore searching
+   and insertion take time logarithmic in the size of the map.</div>
+<div class="ocaml_module sig" name="OrderedType"><pre><span class="keyword">module type</span> <a href="?package=ocaml&amp;module=Map.OrderedType">OrderedType</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Input signature of the functor  <a href="#Map.Make">Map.Make</a>.</div></div><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">The type of the map keys.</div></div>
+<pre><span class="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="?package=ocaml&amp;module=Map.OrderedType&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Map.OrderedType&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">A total ordering function over the keys.
+          This is a two-argument function <code class="code">f</code> such that
+          <code class="code">f e1 e2</code> is zero if the keys <code class="code">e1</code> and <code class="code">e2</code> are equal,
+          <code class="code">f e1 e2</code> is strictly negative if <code class="code">e1</code> is smaller than <code class="code">e2</code>,
+          and <code class="code">f e1 e2</code> is strictly positive if <code class="code">e1</code> is greater than <code class="code">e2</code>.
+          Example: a suitable ordering function is the generic structural
+          comparison function  <a href="#Pervasives.compare">Pervasives.compare</a>.</div></div></div></div>
+<div class="ocaml_module sig" name="S"><pre><span class="keyword">module type</span> <a href="?package=ocaml&amp;module=Map.S">S</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Output signature of the functor  <a href="#Map.Make">Map.Make</a>.</div></div><div class="ocaml_module_content">
+<pre><span class="TYPEkey"><span class="keyword">type</span> key</span> </pre><div class="info"><div class="info">The type of the map keys.</div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">+'a </code>t</span> </pre><div class="info"><div class="info">The type of maps from type <code class="code">key</code> to type <code class="code">'a</code>.</div></div>
+<pre><span class="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a></code></pre><div class="info"><div class="info">The empty map.</div></div>
+<pre><span class="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; bool</code></pre><div class="info"><div class="info">Test whether a map is empty or not.</div></div>
+<pre><span class="VALmem"><span class="keyword">val</span> mem</span> : <code class="type"><a href="?package=ocaml&amp;module=Map.S&amp;type=key">key</a> -&gt; 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">mem x m</code> returns <code class="code">true</code> if <code class="code">m</code> contains a binding for <code class="code">x</code>,
+       and <code class="code">false</code> otherwise.</div></div>
+<pre><span class="VALadd"><span class="keyword">val</span> add</span> : <code class="type"><a href="?package=ocaml&amp;module=Map.S&amp;type=key">key</a> -&gt; 'a -&gt; 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">add x y m</code> returns a map containing the same bindings as
+       <code class="code">m</code>, plus a binding of <code class="code">x</code> to <code class="code">y</code>. If <code class="code">x</code> was already bound
+       in <code class="code">m</code>, its previous binding disappears.</div></div>
+<pre><span class="VALsingleton"><span class="keyword">val</span> singleton</span> : <code class="type"><a href="?package=ocaml&amp;module=Map.S&amp;type=key">key</a> -&gt; 'a -&gt; 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">singleton x y</code> returns the one-element map that contains a binding <code class="code">y</code>
+        for <code class="code">x</code>. <b>Since</b> 3.12.0</div></div>
+<pre><span class="VALremove"><span class="keyword">val</span> remove</span> : <code class="type"><a href="?package=ocaml&amp;module=Map.S&amp;type=key">key</a> -&gt; 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">remove x m</code> returns a map containing the same bindings as
+       <code class="code">m</code>, except for <code class="code">x</code> which is unbound in the returned map.</div></div>
+<pre><span class="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type">(<a href="?package=ocaml&amp;module=Map.S&amp;type=key">key</a> -&gt; 'a option -&gt; 'b option -&gt; 'c option) -&gt; 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; 'b <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; 'c <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">merge f m1 m2</code> computes a map whose keys is a subset of keys of <code class="code">m1</code>
+        and of <code class="code">m2</code>. The presence of each such binding, and the corresponding
+        value, is determined with the function <code class="code">f</code>. <b>Since</b> 3.12.0</div></div>
+<pre><span class="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">('a -&gt; 'a -&gt; int) -&gt; 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">Total ordering between maps.  The first argument is a total ordering
+        used to compare data associated with equal keys in the two maps.</div></div>
+<pre><span class="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">('a -&gt; 'a -&gt; bool) -&gt; 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">equal cmp m1 m2</code> tests whether the maps <code class="code">m1</code> and <code class="code">m2</code> are
+       equal, that is, contain equal keys and associate them with
+       equal data.  <code class="code">cmp</code> is the equality predicate used to compare
+       the data associated with the keys.</div></div>
+<pre><span class="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(<a href="?package=ocaml&amp;module=Map.S&amp;type=key">key</a> -&gt; 'a -&gt; unit) -&gt; 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">iter f m</code> applies <code class="code">f</code> to all bindings in map <code class="code">m</code>.
+       <code class="code">f</code> receives the key as first argument, and the associated value
+       as second argument.  The bindings are passed to <code class="code">f</code> in increasing
+       order with respect to the ordering over the type of the keys.</div></div>
+<pre><span class="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">(<a href="?package=ocaml&amp;module=Map.S&amp;type=key">key</a> -&gt; 'a -&gt; 'b -&gt; 'b) -&gt; 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; 'b -&gt; 'b</code></pre><div class="info"><div class="info"><code class="code">fold f m a</code> computes <code class="code">(f kN dN ... (f k1 d1 a)...)</code>,
+       where <code class="code">k1 ... kN</code> are the keys of all bindings in <code class="code">m</code>
+       (in increasing order), and <code class="code">d1 ... dN</code> are the associated data.</div></div>
+<pre><span class="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">(<a href="?package=ocaml&amp;module=Map.S&amp;type=key">key</a> -&gt; 'a -&gt; bool) -&gt; 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">for_all p m</code> checks if all the bindings of the map
+        satisfy the predicate <code class="code">p</code>. <b>Since</b> 3.12.0</div></div>
+<pre><span class="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">(<a href="?package=ocaml&amp;module=Map.S&amp;type=key">key</a> -&gt; 'a -&gt; bool) -&gt; 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">exists p m</code> checks if at least one binding of the map
+        satisfy the predicate <code class="code">p</code>. <b>Since</b> 3.12.0</div></div>
+<pre><span class="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">(<a href="?package=ocaml&amp;module=Map.S&amp;type=key">key</a> -&gt; 'a -&gt; bool) -&gt; 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">filter p m</code> returns the map with all the bindings in <code class="code">m</code>
+        that satisfy predicate <code class="code">p</code>. <b>Since</b> 3.12.0</div></div>
+<pre><span class="VALpartition"><span class="keyword">val</span> partition</span> : <code class="type">(<a href="?package=ocaml&amp;module=Map.S&amp;type=key">key</a> -&gt; 'a -&gt; bool) -&gt; 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> * 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">partition p m</code> returns a pair of maps <code class="code">(m1, m2)</code>, where
+        <code class="code">m1</code> contains all the bindings of <code class="code">s</code> that satisfy the
+        predicate <code class="code">p</code>, and <code class="code">m2</code> is the map with all the bindings of
+        <code class="code">s</code> that do not satisfy <code class="code">p</code>. <b>Since</b> 3.12.0</div></div>
+<pre><span class="VALcardinal"><span class="keyword">val</span> cardinal</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">Return the number of bindings of a map. <b>Since</b> 3.12.0</div></div>
+<pre><span class="VALbindings"><span class="keyword">val</span> bindings</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; (<a href="?package=ocaml&amp;module=Map.S&amp;type=key">key</a> * 'a) list</code></pre><div class="info"><div class="info">Return the list of all bindings of the given map.
+       The returned list is sorted in increasing order with respect
+       to the ordering <code class="code">Ord.compare</code>, where <code class="code">Ord</code> is the argument
+       given to  <a href="#Map.Make">Map.Make</a>. <b>Since</b> 3.12.0</div></div>
+<pre><span class="VALmin_binding"><span class="keyword">val</span> min_binding</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Map.S&amp;type=key">key</a> * 'a</code></pre><div class="info"><div class="info">Return the smallest binding of the given map
+       (with respect to the <code class="code">Ord.compare</code> ordering), or raise
+       <code class="code">Not_found</code> if the map is empty. <b>Since</b> 3.12.0</div></div>
+<pre><span class="VALmax_binding"><span class="keyword">val</span> max_binding</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Map.S&amp;type=key">key</a> * 'a</code></pre><div class="info"><div class="info">Same as  <a href="#Map.S.min_binding">Map.S.min_binding</a>, but returns the largest binding
+        of the given map. <b>Since</b> 3.12.0</div></div>
+<pre><span class="VALchoose"><span class="keyword">val</span> choose</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Map.S&amp;type=key">key</a> * 'a</code></pre><div class="info"><div class="info">Return one binding of the given map, or raise <code class="code">Not_found</code> if
+       the map is empty. Which binding is chosen is unspecified,
+       but equal bindings will be chosen for equal maps. <b>Since</b> 3.12.0</div></div>
+<pre><span class="VALsplit"><span class="keyword">val</span> split</span> : <code class="type"><a href="?package=ocaml&amp;module=Map.S&amp;type=key">key</a> -&gt; 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> * 'a option * 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">split x m</code> returns a triple <code class="code">(l, data, r)</code>, where
+          <code class="code">l</code> is the map with all the bindings of <code class="code">m</code> whose key
+        is strictly less than <code class="code">x</code>;
+          <code class="code">r</code> is the map with all the bindings of <code class="code">m</code> whose key
+        is strictly greater than <code class="code">x</code>;
+          <code class="code">data</code> is <code class="code">None</code> if <code class="code">m</code> contains no binding for <code class="code">x</code>,
+          or <code class="code">Some v</code> if <code class="code">m</code> binds <code class="code">v</code> to <code class="code">x</code>. <b>Since</b> 3.12.0</div></div>
+<pre><span class="VALfind"><span class="keyword">val</span> find</span> : <code class="type"><a href="?package=ocaml&amp;module=Map.S&amp;type=key">key</a> -&gt; 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">find x m</code> returns the current binding of <code class="code">x</code> in <code class="code">m</code>,
+       or raises <code class="code">Not_found</code> if no such binding exists.</div></div>
+<pre><span class="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -&gt; 'b) -&gt; 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; 'b <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">map f m</code> returns a map with same domain as <code class="code">m</code>, where the
+       associated value <code class="code">a</code> of all bindings of <code class="code">m</code> has been
+       replaced by the result of the application of <code class="code">f</code> to <code class="code">a</code>.
+       The bindings are passed to <code class="code">f</code> in increasing order
+       with respect to the ordering over the type of the keys.</div></div>
+<pre><span class="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">(<a href="?package=ocaml&amp;module=Map.S&amp;type=key">key</a> -&gt; 'a -&gt; 'b) -&gt; 'a <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a> -&gt; 'b <a href="?package=ocaml&amp;module=Map.S&amp;type=t">t</a></code></pre><div class="info"><div class="info">Same as  <a href="#Map.S.map">Map.S.map</a>, but the function receives as arguments both the
+       key and the associated value for each binding of the map.</div></div></div></div>
+<div class="ocaml_module ident" name="Make" path="?package=ocaml&amp;module=Map.S"><pre><span class="keyword">module</span> <a href="?package=ocaml&amp;module=Map.Make">Make</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">Ord</code><code class="code"> : </code><code class="code"><a href="?package=ocaml&amp;module=Map.OrderedType">OrderedType</a></code><code class="code">) -&gt; </code><code class="code"><a href="?package=ocaml&amp;module=Map.S">S</a></code> with type <a href="?package=ocaml&amp;module=Map.S&amp;type=key">key</a> = Ord.t</div></code></pre><div class="info"><div class="info">Functor building an implementation of the map structure
+   given a totally ordered type.</div></div></div>
+</div>

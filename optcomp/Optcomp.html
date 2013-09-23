@@ -1,0 +1,15 @@
+<div class="ocaml_toplevel_module"><pre><code><span class="TYPEmode"><span class="keyword">type</span> mode</span> = </code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTmode.O"><span class="constructor">O</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTmode.R"><span class="constructor">R</span></span></code></td></tr></table>
+<pre><span class="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">'a Camlp4.PreCast.Gram.not_filtered -&gt; 'a</code></pre>
+<pre><span class="VALlexer"><span class="keyword">val</span> lexer</span> : <code class="type">string -&gt;
+<a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a> -&gt;
+(Camlp4.PreCast.Gram.Token.t * Camlp4.PreCast.Gram.Loc.t) <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a></code></pre>
+<div class="ocaml_module ident" name="File_map" path="?package=ocaml&amp;module=Map.Make"><pre><span class="keyword">module</span> <a href="?package=optcomp&amp;module=Optcomp.File_map">File_map</a> : <code class="type"><code class="code"><a href="?package=ocaml&amp;module=Map.Make">Map.Make</a></code>(<code class="code"><a href="?package=ocaml&amp;module=String">String</a></code>)</code></pre></div>
+<pre><span class="VALprint"><span class="keyword">val</span> print</span> : <code class="type"><a href="?package=optcomp&amp;module=Optcomp&amp;type=mode">mode</a> -&gt;
+string -&gt;
+int -&gt;
+int -&gt;
+<a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a> <a href="?package=optcomp&amp;module=Optcomp.File_map&amp;type=t">File_map.t</a> -&gt;
+(Camlp4.Sig.camlp4_token * Camlp4.PreCast.Loc.t) <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a> -&gt; unit</code></pre>
+<pre><span class="VALmain"><span class="keyword">val</span> main</span> : <code class="type"><a href="?package=optcomp&amp;module=Optcomp&amp;type=mode">mode</a> -&gt; unit</code></pre>
+</div>

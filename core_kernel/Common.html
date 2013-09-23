@@ -1,0 +1,200 @@
+<div class="ocaml_toplevel_module"><div class="info">Basic types and definitions required throughout the system.</div>
+<pre><span class="EXCEPTIONBug"><span class="keyword">exception</span> Bug</span> <span class="keyword">of</span> <code class="type">string</code></pre>
+<pre><span class="EXCEPTIONFinally"><span class="keyword">exception</span> Finally</span> <span class="keyword">of</span> <code class="type">exn * exn</code></pre><div class="info"><div class="info">Raised when finalization after an exception failed, too.
+    The first exception argument is the one raised by the initial
+    function, the second exception the one raised by the finalizer.</div></div>
+<pre><span class="VALunimplemented"><span class="keyword">val</span> unimplemented</span> : <code class="type">string -&gt; 'a <a href="?package=core_kernel&amp;module=Or_error&amp;type=t">Or_error.t</a></code></pre><div class="info"><div class="info">For marking a given value as unimplemented.  Typically combined with conditional
+    compilation, where on some platforms the function is defined normally, and on some
+    platforms it is defined as unimplemented.  The supplied string should be the name of
+    the function that is unimplemented.</div></div>
+<pre><span class="TYPEread_only"><span class="keyword">type</span> read_only</span> </pre><div class="info"><div class="info">Types for use as markers in phantom types.  One should not expose functions for
+    converting between read_only/immutable/read_write because the private types expose the
+    subtyping. Users would say &quot;(db :&gt; read_only Db.t)&quot; to cast.  The difference between
+    read-only and immutable is that someone else can change a read-only object, while
+    immutable never changes.</div></div>
+<pre><span class="TYPEimmutable"><span class="keyword">type</span> immutable</span> = <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=read_only">read_only</a></code><span class="keyword">private</span></pre>
+<pre><span class="TYPEread_write"><span class="keyword">type</span> read_write</span> = <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=read_only">read_only</a></code><span class="keyword">private</span></pre>
+<pre><span class="TYPEnever_returns"><span class="keyword">type</span> never_returns</span> = <code class="type"><a href="?package=core_kernel&amp;module=Never_returns&amp;type=never_returns">Never_returns.never_returns</a></code></pre><div class="info"><div class="info"><code class="code">never_returns</code> should be used as the return type of functions that don't return and
+    might block forever, rather than <code class="code">'a</code> or <code class="code">_</code>.  This forces callers of such functions
+    to have a call to <code class="code">never_returns</code> at the call site, which makes it clear to readers
+    what's going on. We do not intend to use this type for functions such as <code class="code">failwithf</code>
+    that always raise an exception.</div></div>
+<pre><span class="VALnever_returns"><span class="keyword">val</span> never_returns</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=never_returns">never_returns</a> -&gt; 'a</code></pre>
+<div class="info"><div class="info"><h6 id="6_TITLE">Error handling</h6></div></div>
+<pre><span class="VALprotect"><span class="keyword">val</span> protect</span> : <code class="type">f:(unit -&gt; 'a) -&gt; finally:(unit -&gt; unit) -&gt; 'a</code></pre><div class="info"><div class="info">See exn.mli</div></div>
+<pre><span class="VALprotectx"><span class="keyword">val</span> protectx</span> : <code class="type">f:('b -&gt; 'a) -&gt; 'b -&gt; finally:('b -&gt; unit) -&gt; 'a</code></pre>
+<div class="info"><div class="info"><h6 id="6_TITLE">Input Output</h6></div></div>
+<pre><span class="VALfst3"><span class="keyword">val</span> fst3</span> : <code class="type">'a * 'b * 'c -&gt; 'a</code></pre><div class="info"><div class="info"><h6 id="6_TITLE">triple handling </h6></div></div>
+<pre><span class="VALsnd3"><span class="keyword">val</span> snd3</span> : <code class="type">'b * 'a * 'c -&gt; 'a</code></pre>
+<pre><span class="VALtrd3"><span class="keyword">val</span> trd3</span> : <code class="type">'b * 'c * 'a -&gt; 'a</code></pre>
+<pre><span class="VALuw"><span class="keyword">val</span> uw</span> : <code class="type">'a option -&gt; 'a</code></pre><div class="info"><div class="info"><h6 id="6_TITLE">Option handling</h6></div></div>
+<pre><span class="VALis_none"><span class="keyword">val</span> is_none</span> : <code class="type">'a option -&gt; bool</code></pre>
+<pre><span class="VALis_some"><span class="keyword">val</span> is_some</span> : <code class="type">'a option -&gt; bool</code></pre>
+<pre><span class="VAL(|!)"><span class="keyword">val</span> (|!)</span> : <code class="type">'a -&gt; ('a -&gt; 'b) -&gt; 'b</code></pre><div class="info"><div class="info"><h6 id="6_TITLE">Functions from fn.ml</h6></div></div>
+<pre><span class="VAL(|&gt;)"><span class="keyword">val</span> (|&gt;)</span> : <code class="type">'a -&gt; ('a -&gt; 'b) -&gt; 'b</code></pre>
+<pre><span class="VALident"><span class="keyword">val</span> ident</span> : <code class="type">'a -&gt; 'a</code></pre>
+<pre><span class="VALconst"><span class="keyword">val</span> const</span> : <code class="type">'a -&gt; 'b -&gt; 'a</code></pre>
+<pre><span class="VAL(==&gt;)"><span class="keyword">val</span> (==&gt;)</span> : <code class="type">bool -&gt; bool -&gt; bool</code></pre>
+<pre><span class="VALfailwiths"><span class="keyword">val</span> failwiths</span> : <code class="type">string -&gt; 'a -&gt; ('a -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a>) -&gt; 'b</code></pre>
+<pre><span class="VALfailwithp"><span class="keyword">val</span> failwithp</span> : <code class="type"><a href="?package=ocaml&amp;module=Lexing&amp;type=position">Lexing.position</a> -&gt; string -&gt; 'a -&gt; ('a -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a>) -&gt; 'b</code></pre>
+<pre><span class="VALfailwithf"><span class="keyword">val</span> failwithf</span> : <code class="type">('r, unit, string, unit -&gt; 'a) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format4">Pervasives.format4</a> -&gt; 'r</code></pre>
+<pre><span class="VALinvalid_argf"><span class="keyword">val</span> invalid_argf</span> : <code class="type">('r, unit, string, unit -&gt; 'a) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format4">Pervasives.format4</a> -&gt; 'r</code></pre>
+<pre><span class="VALdoes_raise"><span class="keyword">val</span> does_raise</span> : <code class="type">(unit -&gt; 'a) -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">does_raise f</code> returns <code class="code">true</code> iff <code class="code">f ()</code> raises. It is intended to be used in unit
+    tests and should probably not be used in regular code.</div></div>
+<pre><span class="VALok_exn"><span class="keyword">val</span> ok_exn</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Or_error&amp;type=t">Or_error.t</a> -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">Or_error.ok_exn</code></div></div>
+<pre><span class="VALerror"><span class="keyword">val</span> error</span> : <code class="type">string -&gt; 'a -&gt; ('a -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a>) -&gt; 'b <a href="?package=core_kernel&amp;module=Or_error&amp;type=t">Or_error.t</a></code></pre><div class="info"><div class="info"><code class="code">Or_error.error</code></div></div>
+<pre><code><span class="TYPEreturn"><span class="keyword">type</span> <code class="type">'a </code>return</span> = {<span class="keyword">private</span></code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTreturn.return">return</span> : <code class="type">'b. 'a -&gt; 'b</code>;</code></td></tr><tr><td>}</td></tr></table><div class="info"><div class="info"><code class="code">with_return f</code> allows for something like the return statement in C within <code class="code">f</code>.  There
+   are three ways <code class="code">f</code> can terminate:<br/>   1. If <code class="code">f</code> calls <code class="code">r.return x</code>, then <code class="code">x</code> is returned by <code class="code">with_return</code>.
+   2. If <code class="code">f</code> evaluates to a value <code class="code">x</code>, then <code class="code">x</code> is returned by <code class="code">with_return</code>.
+   3. If <code class="code">f</code> raises an exception, it escapes <code class="code">with_return</code>.<br/>   Here is a typical example:<br/>   <pre class="codepre"><code class="code">
+   let find l ~f =
+     with_return (fun r -&gt;
+        List.iter l ~f:(fun x -&gt; if f x then r.return (Some x));
+        None
+      )
+   </code></pre><br/>   It is only because of a deficiency of ML types that <code class="code">with_return</code> doesn't have type:<br/>   <pre class="codepre"><code class="code"> val with_return : 'a. (('a -&gt; ('b. 'b)) -&gt; 'a) -&gt; 'a </code></pre><br/>   but we can slightly increase the scope of 'b, without changing the meaning of the type
+   and then we get<br/>   <pre class="codepre"><code class="code">
+   type 'a return = { return : 'b . 'a -&gt; 'b }
+   val with_return : ('a return -&gt; 'a) -&gt; 'a
+   </code></pre><br/>   But the actual reason we chose to use a record type with polymorphic field is that
+   otherwise we would have to clobber the namespace of functions with <code class="code">return</code> and that is
+   undesirable because <code class="code">return</code> would get hidden as soon as we open any monad. We
+   considered names different than <code class="code">return</code> but everything seemed worse than just having
+   <code class="code">return</code> as a record field. We are clobbering the namespace of record fields but that
+   is much more acceptable.</div></div>
+<pre><span class="VALwith_return"><span class="keyword">val</span> with_return</span> : <code class="type">('a <a href="?package=core_kernel&amp;module=Common&amp;type=return">return</a> -&gt; 'a) -&gt; 'a</code></pre>
+<pre><span class="VALphys_equal"><span class="keyword">val</span> phys_equal</span> : <code class="type">'a -&gt; 'a -&gt; bool</code></pre><div class="info"><div class="info">We disable <code class="code">==</code> and <code class="code">!=</code> and replace them with the longer and more mnemonic
+    <code class="code">phys_equal</code> because they too easily lead to mistakes (for example they don't even
+    work right on Int64 or Float).  One can usually use the <code class="code">equal</code> function for a
+    specific type, or use (=) or (&lt;&gt;) for built in types like char, int, float,</div></div>
+<pre><span class="VAL(==)"><span class="keyword">val</span> (==)</span> : <code class="type">[ `Consider_using_phys_equal ] -&gt;
+[ `Consider_using_phys_equal ] -&gt; [ `Consider_using_phys_equal ]</code></pre>
+<pre><span class="VAL(!=)"><span class="keyword">val</span> (!=)</span> : <code class="type">[ `Consider_using_phys_equal ] -&gt;
+[ `Consider_using_phys_equal ] -&gt; [ `Consider_using_phys_equal ]</code></pre>
+<pre><span class="VALforce"><span class="keyword">val</span> force</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Lazy&amp;type=t">Lazy.t</a> -&gt; 'a</code></pre>
+<pre><span class="VALstage"><span class="keyword">val</span> stage</span> : <code class="type">'a -&gt; 'a <a href="?package=core_kernel&amp;module=Staged&amp;type=t">Staged.t</a></code></pre><div class="info"><div class="info">See  <a href="#module : Staged ">module : Staged </a> for documentation</div></div>
+<pre><span class="VALunstage"><span class="keyword">val</span> unstage</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Staged&amp;type=t">Staged.t</a> -&gt; 'a</code></pre>
+<pre><span class="EXCEPTIONC_malloc_exn"><span class="keyword">exception</span> C_malloc_exn</span> <span class="keyword">of</span> <code class="type">int * int</code></pre><div class="info"><div class="info">Raised if malloc in C bindings fail (errno * size).</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Deprecated operations</h6><br/>  The following section contains definitions that hide operations from the standard
+  library that are considered problematic or confusing, or simply redundant.</div></div>
+<pre><span class="VALseek_out"><span class="keyword">val</span> seek_out</span> : <code class="type">[ `Deprecated_use_out_channel ] -&gt;
+[ `Deprecated_use_out_channel ] -&gt; [ `Deprecated_use_out_channel ]</code></pre>
+<pre><span class="VALpos_out"><span class="keyword">val</span> pos_out</span> : <code class="type">[ `Deprecated_use_out_channel ] -&gt; [ `Deprecated_use_out_channel ]</code></pre>
+<pre><span class="VALout_channel_length"><span class="keyword">val</span> out_channel_length</span> : <code class="type">[ `Deprecated_use_out_channel ] -&gt; [ `Deprecated_use_out_channel ]</code></pre>
+<pre><span class="VALseek_in"><span class="keyword">val</span> seek_in</span> : <code class="type">[ `Deprecated_use_in_channel ] -&gt;
+[ `Deprecated_use_in_channel ] -&gt; [ `Deprecated_use_in_channel ]</code></pre>
+<pre><span class="VALpos_in"><span class="keyword">val</span> pos_in</span> : <code class="type">[ `Deprecated_use_in_channel ] -&gt; [ `Deprecated_use_in_channel ]</code></pre>
+<pre><span class="VALin_channel_length"><span class="keyword">val</span> in_channel_length</span> : <code class="type">[ `Deprecated_use_in_channel ] -&gt; [ `Deprecated_use_in_channel ]</code></pre>
+<pre><span class="VALmodf"><span class="keyword">val</span> modf</span> : <code class="type">[ `Deprecated_use_float_modf ] -&gt; [ `Deprecated_use_float_modf ]</code></pre>
+<pre><span class="VALtruncate"><span class="keyword">val</span> truncate</span> : <code class="type">[ `Deprecated_use_float_iround_towards_zero ] -&gt;
+[ `Deprecated_use_float_iround_towards_zero ]</code></pre>
+<pre><span class="VALclose_in"><span class="keyword">val</span> close_in</span> : <code class="type">[ `Deprecated_use_in_channel ] -&gt; [ `Deprecated_use_in_channel ]</code></pre><div class="info"><div class="info">we have our own version of these two, the INRIA version doesn't release the runtime
+    lock.</div></div>
+<pre><span class="VALclose_out"><span class="keyword">val</span> close_out</span> : <code class="type">[ `Deprecated_use_out_channel ] -&gt; [ `Deprecated_use_out_channel ]</code></pre>
+<pre><span class="VAL(&amp;)"><span class="keyword">val</span> (&amp;)</span> : <code class="type">[ `Deprecated_use_two_ampersands ] -&gt;
+[ `Deprecated_use_two_ampersands ] -&gt; [ `Deprecated_use_two_ampersands ]</code></pre>
+<pre><span class="VALmax_int"><span class="keyword">val</span> max_int</span> : <code class="type">[ `Deprecated_use_int_module ]</code></pre>
+<pre><span class="VALmin_int"><span class="keyword">val</span> min_int</span> : <code class="type">[ `Deprecated_use_int_module ]</code></pre>
+<pre><span class="VALceil"><span class="keyword">val</span> ceil</span> : <code class="type">[ `Deprecated_use__Float__round_up ] -&gt; [ `Deprecated_use__Float__round_up ]</code></pre>
+<pre><span class="VALfloor"><span class="keyword">val</span> floor</span> : <code class="type">[ `Deprecated_use__Float__round_down ] -&gt;
+[ `Deprecated_use__Float__round_down ]</code></pre>
+<pre><span class="VALabs_float"><span class="keyword">val</span> abs_float</span> : <code class="type">[ `Deprecated_use_float_module ] -&gt; [ `Deprecated_use_float_module ]</code></pre>
+<pre><span class="VALmod_float"><span class="keyword">val</span> mod_float</span> : <code class="type">[ `Deprecated_use_float_module ] -&gt; [ `Deprecated_use_float_module ]</code></pre>
+<pre><span class="VALfrexp"><span class="keyword">val</span> frexp</span> : <code class="type">[ `Deprecated_use_float_module ] -&gt;
+[ `Deprecated_use_float_module ] -&gt; [ `Deprecated_use_float_module ]</code></pre>
+<pre><span class="VALldexp"><span class="keyword">val</span> ldexp</span> : <code class="type">[ `Deprecated_use_float_module ] -&gt;
+[ `Deprecated_use_float_module ] -&gt; [ `Deprecated_use_float_module ]</code></pre>
+<pre><span class="VALfloat_of_int"><span class="keyword">val</span> float_of_int</span> : <code class="type">[ `Deprecated_use_float_module ] -&gt; [ `Deprecated_use_float_module ]</code></pre>
+<pre><span class="VALmax_float"><span class="keyword">val</span> max_float</span> : <code class="type">[ `Deprecated_use_float_module ]</code></pre>
+<pre><span class="VALmin_float"><span class="keyword">val</span> min_float</span> : <code class="type">[ `Deprecated_use_float_module ]</code></pre>
+<pre><span class="VALepsilon_float"><span class="keyword">val</span> epsilon_float</span> : <code class="type">[ `Deprecated_use_float_module ]</code></pre>
+<pre><span class="VALclassify_float"><span class="keyword">val</span> classify_float</span> : <code class="type">[ `Deprecated_use_float_module ] -&gt; [ `Deprecated_use_float_module ]</code></pre>
+<pre><span class="VALstring_of_float"><span class="keyword">val</span> string_of_float</span> : <code class="type">[ `Deprecated_use_float_module ] -&gt; [ `Deprecated_use_float_module ]</code></pre>
+<pre><span class="VALfloat_of_string"><span class="keyword">val</span> float_of_string</span> : <code class="type">[ `Deprecated_use_float_module ] -&gt; [ `Deprecated_use_float_module ]</code></pre>
+<pre><span class="VALinfinity"><span class="keyword">val</span> infinity</span> : <code class="type">[ `Deprecated_use_float_module ]</code></pre>
+<pre><span class="VALneg_infinity"><span class="keyword">val</span> neg_infinity</span> : <code class="type">[ `Deprecated_use_float_module ]</code></pre>
+<pre><span class="VALnan"><span class="keyword">val</span> nan</span> : <code class="type">[ `Deprecated_use_float_module ]</code></pre>
+<pre><span class="VALint_of_float"><span class="keyword">val</span> int_of_float</span> : <code class="type">[ `Deprecated_use_float_module ] -&gt; [ `Deprecated_use_float_module ]</code></pre>
+<pre><span class="TYPEfpclass"><span class="keyword">type</span> fpclass</span> = <code class="type">[ `Deprecated_use_float_module ]</code></pre>
+<pre><span class="VALcompare_read_only"><span class="keyword">val</span> compare_read_only</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=read_only">read_only</a> -&gt; <a href="?package=core_kernel&amp;module=Common&amp;type=read_only">read_only</a> -&gt; int</code></pre>
+<pre><span class="VALbin_read_only"><span class="keyword">val</span> bin_read_only</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=read_only">read_only</a> <a href="?package=bin_prot&amp;module=Type_class&amp;type=t">Bin_prot.Type_class.t</a></code></pre>
+<pre><span class="VALbin_read_read_only"><span class="keyword">val</span> bin_read_read_only</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=read_only">read_only</a> <a href="?package=bin_prot&amp;module=Read_ml&amp;type=reader">Bin_prot.Read_ml.reader</a></code></pre>
+<pre><span class="VALbin_read_read_only_"><span class="keyword">val</span> bin_read_read_only_</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=read_only">read_only</a> <a href="?package=bin_prot&amp;module=Unsafe_read_c&amp;type=reader">Bin_prot.Unsafe_read_c.reader</a></code></pre>
+<pre><span class="VALbin_read_read_only__"><span class="keyword">val</span> bin_read_read_only__</span> : <code class="type">(int -&gt; <a href="?package=core_kernel&amp;module=Common&amp;type=read_only">read_only</a>) <a href="?package=bin_prot&amp;module=Unsafe_read_c&amp;type=reader">Bin_prot.Unsafe_read_c.reader</a></code></pre>
+<pre><span class="VALbin_reader_read_only"><span class="keyword">val</span> bin_reader_read_only</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=read_only">read_only</a> <a href="?package=bin_prot&amp;module=Type_class&amp;type=reader">Bin_prot.Type_class.reader</a></code></pre>
+<pre><span class="VALbin_size_read_only"><span class="keyword">val</span> bin_size_read_only</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=read_only">read_only</a> <a href="?package=bin_prot&amp;module=Size&amp;type=sizer">Bin_prot.Size.sizer</a></code></pre>
+<pre><span class="VALbin_write_read_only"><span class="keyword">val</span> bin_write_read_only</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=read_only">read_only</a> <a href="?package=bin_prot&amp;module=Write_ml&amp;type=writer">Bin_prot.Write_ml.writer</a></code></pre>
+<pre><span class="VALbin_write_read_only_"><span class="keyword">val</span> bin_write_read_only_</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=read_only">read_only</a> <a href="?package=bin_prot&amp;module=Unsafe_write_c&amp;type=writer">Bin_prot.Unsafe_write_c.writer</a></code></pre>
+<pre><span class="VALbin_writer_read_only"><span class="keyword">val</span> bin_writer_read_only</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=read_only">read_only</a> <a href="?package=bin_prot&amp;module=Type_class&amp;type=writer">Bin_prot.Type_class.writer</a></code></pre>
+<pre><span class="VALread_only_of_sexp"><span class="keyword">val</span> read_only_of_sexp</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; <a href="?package=core_kernel&amp;module=Common&amp;type=read_only">read_only</a></code></pre>
+<pre><span class="VALsexp_of_read_only"><span class="keyword">val</span> sexp_of_read_only</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=read_only">read_only</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<pre><span class="VALcompare_immutable"><span class="keyword">val</span> compare_immutable</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=immutable">immutable</a> -&gt; <a href="?package=core_kernel&amp;module=Common&amp;type=immutable">immutable</a> -&gt; int</code></pre>
+<pre><span class="VALbin_immutable"><span class="keyword">val</span> bin_immutable</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=immutable">immutable</a> <a href="?package=bin_prot&amp;module=Type_class&amp;type=t">Bin_prot.Type_class.t</a></code></pre>
+<pre><span class="VALbin_read_immutable"><span class="keyword">val</span> bin_read_immutable</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=immutable">immutable</a> <a href="?package=bin_prot&amp;module=Read_ml&amp;type=reader">Bin_prot.Read_ml.reader</a></code></pre>
+<pre><span class="VALbin_read_immutable_"><span class="keyword">val</span> bin_read_immutable_</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=immutable">immutable</a> <a href="?package=bin_prot&amp;module=Unsafe_read_c&amp;type=reader">Bin_prot.Unsafe_read_c.reader</a></code></pre>
+<pre><span class="VALbin_read_immutable__"><span class="keyword">val</span> bin_read_immutable__</span> : <code class="type">(int -&gt; <a href="?package=core_kernel&amp;module=Common&amp;type=immutable">immutable</a>) <a href="?package=bin_prot&amp;module=Unsafe_read_c&amp;type=reader">Bin_prot.Unsafe_read_c.reader</a></code></pre>
+<pre><span class="VALbin_reader_immutable"><span class="keyword">val</span> bin_reader_immutable</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=immutable">immutable</a> <a href="?package=bin_prot&amp;module=Type_class&amp;type=reader">Bin_prot.Type_class.reader</a></code></pre>
+<pre><span class="VALbin_size_immutable"><span class="keyword">val</span> bin_size_immutable</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=immutable">immutable</a> <a href="?package=bin_prot&amp;module=Size&amp;type=sizer">Bin_prot.Size.sizer</a></code></pre>
+<pre><span class="VALbin_write_immutable"><span class="keyword">val</span> bin_write_immutable</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=immutable">immutable</a> <a href="?package=bin_prot&amp;module=Write_ml&amp;type=writer">Bin_prot.Write_ml.writer</a></code></pre>
+<pre><span class="VALbin_write_immutable_"><span class="keyword">val</span> bin_write_immutable_</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=immutable">immutable</a> <a href="?package=bin_prot&amp;module=Unsafe_write_c&amp;type=writer">Bin_prot.Unsafe_write_c.writer</a></code></pre>
+<pre><span class="VALbin_writer_immutable"><span class="keyword">val</span> bin_writer_immutable</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=immutable">immutable</a> <a href="?package=bin_prot&amp;module=Type_class&amp;type=writer">Bin_prot.Type_class.writer</a></code></pre>
+<pre><span class="VALimmutable_of_sexp"><span class="keyword">val</span> immutable_of_sexp</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; <a href="?package=core_kernel&amp;module=Common&amp;type=immutable">immutable</a></code></pre>
+<pre><span class="VALsexp_of_immutable"><span class="keyword">val</span> sexp_of_immutable</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=immutable">immutable</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<pre><span class="VALcompare_read_write"><span class="keyword">val</span> compare_read_write</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=read_write">read_write</a> -&gt; <a href="?package=core_kernel&amp;module=Common&amp;type=read_write">read_write</a> -&gt; int</code></pre>
+<pre><span class="VALbin_read_write"><span class="keyword">val</span> bin_read_write</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=read_write">read_write</a> <a href="?package=bin_prot&amp;module=Type_class&amp;type=t">Bin_prot.Type_class.t</a></code></pre>
+<pre><span class="VALbin_read_read_write"><span class="keyword">val</span> bin_read_read_write</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=read_write">read_write</a> <a href="?package=bin_prot&amp;module=Read_ml&amp;type=reader">Bin_prot.Read_ml.reader</a></code></pre>
+<pre><span class="VALbin_read_read_write_"><span class="keyword">val</span> bin_read_read_write_</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=read_write">read_write</a> <a href="?package=bin_prot&amp;module=Unsafe_read_c&amp;type=reader">Bin_prot.Unsafe_read_c.reader</a></code></pre>
+<pre><span class="VALbin_read_read_write__"><span class="keyword">val</span> bin_read_read_write__</span> : <code class="type">(int -&gt; <a href="?package=core_kernel&amp;module=Common&amp;type=read_write">read_write</a>) <a href="?package=bin_prot&amp;module=Unsafe_read_c&amp;type=reader">Bin_prot.Unsafe_read_c.reader</a></code></pre>
+<pre><span class="VALbin_reader_read_write"><span class="keyword">val</span> bin_reader_read_write</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=read_write">read_write</a> <a href="?package=bin_prot&amp;module=Type_class&amp;type=reader">Bin_prot.Type_class.reader</a></code></pre>
+<pre><span class="VALbin_size_read_write"><span class="keyword">val</span> bin_size_read_write</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=read_write">read_write</a> <a href="?package=bin_prot&amp;module=Size&amp;type=sizer">Bin_prot.Size.sizer</a></code></pre>
+<pre><span class="VALbin_write_read_write"><span class="keyword">val</span> bin_write_read_write</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=read_write">read_write</a> <a href="?package=bin_prot&amp;module=Write_ml&amp;type=writer">Bin_prot.Write_ml.writer</a></code></pre>
+<pre><span class="VALbin_write_read_write_"><span class="keyword">val</span> bin_write_read_write_</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=read_write">read_write</a> <a href="?package=bin_prot&amp;module=Unsafe_write_c&amp;type=writer">Bin_prot.Unsafe_write_c.writer</a></code></pre>
+<pre><span class="VALbin_writer_read_write"><span class="keyword">val</span> bin_writer_read_write</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=read_write">read_write</a> <a href="?package=bin_prot&amp;module=Type_class&amp;type=writer">Bin_prot.Type_class.writer</a></code></pre>
+<pre><span class="VALread_write_of_sexp"><span class="keyword">val</span> read_write_of_sexp</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; <a href="?package=core_kernel&amp;module=Common&amp;type=read_write">read_write</a></code></pre>
+<pre><span class="VALsexp_of_read_write"><span class="keyword">val</span> sexp_of_read_write</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=read_write">read_write</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<pre><span class="VALsexp_of_never_returns"><span class="keyword">val</span> sexp_of_never_returns</span> : <code class="type"><a href="?package=core_kernel&amp;module=Common&amp;type=never_returns">never_returns</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre><div class="info"><div class="info"><code class="code">never_returns</code> should be used as the return type of functions that don't return and
+    might block forever, rather than <code class="code">'a</code> or <code class="code">_</code>.  This forces callers of such functions
+    to have a call to <code class="code">never_returns</code> at the call site, which makes it clear to readers
+    what's going on. We do not intend to use this type for functions such as <code class="code">failwithf</code>
+    that always raise an exception.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Error handling</h6></div></div>
+<div class="info"><div class="info">See exn.mli</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Input Output</h6></div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">triple handling </h6></div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Option handling</h6></div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Functions from fn.ml</h6></div></div>
+<div class="info"><div class="info"><code class="code">does_raise f</code> returns <code class="code">true</code> iff <code class="code">f ()</code> raises. It is intended to be used in unit
+    tests and should probably not be used in regular code.</div></div>
+<div class="info"><div class="info"><code class="code">Or_error.ok_exn</code></div></div>
+<div class="info"><div class="info"><code class="code">Or_error.error</code></div></div>
+<div class="info"><div class="info"><code class="code">with_return f</code> allows for something like the return statement in C within <code class="code">f</code>.  There
+   are three ways <code class="code">f</code> can terminate:<br/>   1. If <code class="code">f</code> calls <code class="code">r.return x</code>, then <code class="code">x</code> is returned by <code class="code">with_return</code>.
+   2. If <code class="code">f</code> evaluates to a value <code class="code">x</code>, then <code class="code">x</code> is returned by <code class="code">with_return</code>.
+   3. If <code class="code">f</code> raises an exception, it escapes <code class="code">with_return</code>.<br/>   Here is a typical example:<br/>   <pre class="codepre"><code class="code">
+   let find l ~f =
+     with_return (fun r -&gt;
+        List.iter l ~f:(fun x -&gt; if f x then r.return (Some x));
+        None
+      )
+   </code></pre><br/>   It is only because of a deficiency of ML types that <code class="code">with_return</code> doesn't have type:<br/>   <pre class="codepre"><code class="code"> val with_return : 'a. (('a -&gt; ('b. 'b)) -&gt; 'a) -&gt; 'a </code></pre><br/>   but we can slightly increase the scope of 'b, without changing the meaning of the type
+   and then we get<br/>   <pre class="codepre"><code class="code">
+   type 'a return = { return : 'b . 'a -&gt; 'b }
+   val with_return : ('a return -&gt; 'a) -&gt; 'a
+   </code></pre><br/>   But the actual reason we chose to use a record type with polymorphic field is that
+   otherwise we would have to clobber the namespace of functions with <code class="code">return</code> and that is
+   undesirable because <code class="code">return</code> would get hidden as soon as we open any monad. We
+   considered names different than <code class="code">return</code> but everything seemed worse than just having
+   <code class="code">return</code> as a record field. We are clobbering the namespace of record fields but that
+   is much more acceptable.</div></div>
+<div class="info"><div class="info">We disable <code class="code">==</code> and <code class="code">!=</code> and replace them with the longer and more mnemonic
+    <code class="code">phys_equal</code> because they too easily lead to mistakes (for example they don't even
+    work right on Int64 or Float).  One can usually use the <code class="code">equal</code> function for a
+    specific type, or use (=) or (&lt;&gt;) for built in types like char, int, float,</div></div>
+<div class="info"><div class="info">See  <a href="#module : Staged ">module : Staged </a> for documentation</div></div>
+<div class="info"><div class="info">Raised if malloc in C bindings fail (errno * size).</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Deprecated operations</h6><br/>  The following section contains definitions that hide operations from the standard
+  library that are considered problematic or confusing, or simply redundant.</div></div>
+<div class="info"><div class="info">we have our own version of these two, the INRIA version doesn't release the runtime
+    lock.</div></div>
+</div>

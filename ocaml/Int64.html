@@ -1,0 +1,90 @@
+<div class="ocaml_toplevel_module"><div class="info">64-bit integers.<br/>   This module provides operations on the type <code class="code">int64</code> of
+   signed 64-bit integers.  Unlike the built-in <code class="code">int</code> type,
+   the type <code class="code">int64</code> is guaranteed to be exactly 64-bit wide on all
+   platforms.  All arithmetic operations over <code class="code">int64</code> are taken
+   modulo 2<sup class="superscript">64</sup><br/>   Performance notice: values of type <code class="code">int64</code> occupy more memory
+   space than values of type <code class="code">int</code>, and arithmetic operations on
+   <code class="code">int64</code> are generally slower than those on <code class="code">int</code>.  Use <code class="code">int64</code>
+   only when the application requires exact 64-bit arithmetic.</div>
+<pre><span class="VALzero"><span class="keyword">val</span> zero</span> : <code class="type">int64</code></pre><div class="info"><div class="info">The 64-bit integer 0.</div></div>
+<pre><span class="VALone"><span class="keyword">val</span> one</span> : <code class="type">int64</code></pre><div class="info"><div class="info">The 64-bit integer 1.</div></div>
+<pre><span class="VALminus_one"><span class="keyword">val</span> minus_one</span> : <code class="type">int64</code></pre><div class="info"><div class="info">The 64-bit integer -1.</div></div>
+<pre><span class="VALneg"><span class="keyword">val</span> neg</span> : <code class="type">int64 -&gt; int64</code></pre><div class="info"><div class="info">Unary negation.</div></div>
+<pre><span class="VALadd"><span class="keyword">val</span> add</span> : <code class="type">int64 -&gt; int64 -&gt; int64</code></pre><div class="info"><div class="info">Addition.</div></div>
+<pre><span class="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">int64 -&gt; int64 -&gt; int64</code></pre><div class="info"><div class="info">Subtraction.</div></div>
+<pre><span class="VALmul"><span class="keyword">val</span> mul</span> : <code class="type">int64 -&gt; int64 -&gt; int64</code></pre><div class="info"><div class="info">Multiplication.</div></div>
+<pre><span class="VALdiv"><span class="keyword">val</span> div</span> : <code class="type">int64 -&gt; int64 -&gt; int64</code></pre><div class="info"><div class="info">Integer division.  Raise <code class="code">Division_by_zero</code> if the second
+   argument is zero.  This division rounds the real quotient of
+   its arguments towards zero, as specified for  <a href="#Pervasives.(/)">Pervasives.(/)</a>.</div></div>
+<pre><span class="VALrem"><span class="keyword">val</span> rem</span> : <code class="type">int64 -&gt; int64 -&gt; int64</code></pre><div class="info"><div class="info">Integer remainder.  If <code class="code">y</code> is not zero, the result
+   of <code class="code">Int64.rem x y</code> satisfies the following property:
+   <code class="code">x = Int64.add (Int64.mul (Int64.div x y) y) (Int64.rem x y)</code>.
+   If <code class="code">y = 0</code>, <code class="code">Int64.rem x y</code> raises <code class="code">Division_by_zero</code>.</div></div>
+<pre><span class="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type">int64 -&gt; int64</code></pre><div class="info"><div class="info">Successor.  <code class="code">Int64.succ x</code> is <code class="code">Int64.add x Int64.one</code>.</div></div>
+<pre><span class="VALpred"><span class="keyword">val</span> pred</span> : <code class="type">int64 -&gt; int64</code></pre><div class="info"><div class="info">Predecessor.  <code class="code">Int64.pred x</code> is <code class="code">Int64.sub x Int64.one</code>.</div></div>
+<pre><span class="VALabs"><span class="keyword">val</span> abs</span> : <code class="type">int64 -&gt; int64</code></pre><div class="info"><div class="info">Return the absolute value of its argument.</div></div>
+<pre><span class="VALmax_int"><span class="keyword">val</span> max_int</span> : <code class="type">int64</code></pre><div class="info"><div class="info">The greatest representable 64-bit integer, 2<sup class="superscript">63</sup> - 1.</div></div>
+<pre><span class="VALmin_int"><span class="keyword">val</span> min_int</span> : <code class="type">int64</code></pre><div class="info"><div class="info">The smallest representable 64-bit integer, -2<sup class="superscript">63</sup>.</div></div>
+<pre><span class="VALlogand"><span class="keyword">val</span> logand</span> : <code class="type">int64 -&gt; int64 -&gt; int64</code></pre><div class="info"><div class="info">Bitwise logical and.</div></div>
+<pre><span class="VALlogor"><span class="keyword">val</span> logor</span> : <code class="type">int64 -&gt; int64 -&gt; int64</code></pre><div class="info"><div class="info">Bitwise logical or.</div></div>
+<pre><span class="VALlogxor"><span class="keyword">val</span> logxor</span> : <code class="type">int64 -&gt; int64 -&gt; int64</code></pre><div class="info"><div class="info">Bitwise logical exclusive or.</div></div>
+<pre><span class="VALlognot"><span class="keyword">val</span> lognot</span> : <code class="type">int64 -&gt; int64</code></pre><div class="info"><div class="info">Bitwise logical negation</div></div>
+<pre><span class="VALshift_left"><span class="keyword">val</span> shift_left</span> : <code class="type">int64 -&gt; int -&gt; int64</code></pre><div class="info"><div class="info"><code class="code">Int64.shift_left x y</code> shifts <code class="code">x</code> to the left by <code class="code">y</code> bits.
+   The result is unspecified if <code class="code">y &lt; 0</code> or <code class="code">y &gt;= 64</code>.</div></div>
+<pre><span class="VALshift_right"><span class="keyword">val</span> shift_right</span> : <code class="type">int64 -&gt; int -&gt; int64</code></pre><div class="info"><div class="info"><code class="code">Int64.shift_right x y</code> shifts <code class="code">x</code> to the right by <code class="code">y</code> bits.
+   This is an arithmetic shift: the sign bit of <code class="code">x</code> is replicated
+   and inserted in the vacated bits.
+   The result is unspecified if <code class="code">y &lt; 0</code> or <code class="code">y &gt;= 64</code>.</div></div>
+<pre><span class="VALshift_right_logical"><span class="keyword">val</span> shift_right_logical</span> : <code class="type">int64 -&gt; int -&gt; int64</code></pre><div class="info"><div class="info"><code class="code">Int64.shift_right_logical x y</code> shifts <code class="code">x</code> to the right by <code class="code">y</code> bits.
+   This is a logical shift: zeroes are inserted in the vacated bits
+   regardless of the sign of <code class="code">x</code>.
+   The result is unspecified if <code class="code">y &lt; 0</code> or <code class="code">y &gt;= 64</code>.</div></div>
+<pre><span class="VALof_int"><span class="keyword">val</span> of_int</span> : <code class="type">int -&gt; int64</code></pre><div class="info"><div class="info">Convert the given integer (type <code class="code">int</code>) to a 64-bit integer
+    (type <code class="code">int64</code>).</div></div>
+<pre><span class="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type">int64 -&gt; int</code></pre><div class="info"><div class="info">Convert the given 64-bit integer (type <code class="code">int64</code>) to an
+   integer (type <code class="code">int</code>).  On 64-bit platforms, the 64-bit integer
+   is taken modulo 2<sup class="superscript">63</sup>, i.e. the high-order bit is lost
+   during the conversion.  On 32-bit platforms, the 64-bit integer
+   is taken modulo 2<sup class="superscript">31</sup>, i.e. the top 33 bits are lost
+   during the conversion.</div></div>
+<pre><span class="VALof_float"><span class="keyword">val</span> of_float</span> : <code class="type">float -&gt; int64</code></pre><div class="info"><div class="info">Convert the given floating-point number to a 64-bit integer,
+   discarding the fractional part (truncate towards 0).
+   The result of the conversion is undefined if, after truncation,
+   the number is outside the range [ <a href="#Int64.min_int">Int64.min_int</a>,  <a href="#Int64.max_int">Int64.max_int</a>].</div></div>
+<pre><span class="VALto_float"><span class="keyword">val</span> to_float</span> : <code class="type">int64 -&gt; float</code></pre><div class="info"><div class="info">Convert the given 64-bit integer to a floating-point number.</div></div>
+<pre><span class="VALof_int32"><span class="keyword">val</span> of_int32</span> : <code class="type">int32 -&gt; int64</code></pre><div class="info"><div class="info">Convert the given 32-bit integer (type <code class="code">int32</code>)
+   to a 64-bit integer (type <code class="code">int64</code>).</div></div>
+<pre><span class="VALto_int32"><span class="keyword">val</span> to_int32</span> : <code class="type">int64 -&gt; int32</code></pre><div class="info"><div class="info">Convert the given 64-bit integer (type <code class="code">int64</code>) to a
+   32-bit integer (type <code class="code">int32</code>). The 64-bit integer
+   is taken modulo 2<sup class="superscript">32</sup>, i.e. the top 32 bits are lost
+   during the conversion.</div></div>
+<pre><span class="VALof_nativeint"><span class="keyword">val</span> of_nativeint</span> : <code class="type">nativeint -&gt; int64</code></pre><div class="info"><div class="info">Convert the given native integer (type <code class="code">nativeint</code>)
+   to a 64-bit integer (type <code class="code">int64</code>).</div></div>
+<pre><span class="VALto_nativeint"><span class="keyword">val</span> to_nativeint</span> : <code class="type">int64 -&gt; nativeint</code></pre><div class="info"><div class="info">Convert the given 64-bit integer (type <code class="code">int64</code>) to a
+   native integer.  On 32-bit platforms, the 64-bit integer
+   is taken modulo 2<sup class="superscript">32</sup>.  On 64-bit platforms,
+   the conversion is exact.</div></div>
+<pre><span class="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -&gt; int64</code></pre><div class="info"><div class="info">Convert the given string to a 64-bit integer.
+   The string is read in decimal (by default) or in hexadecimal,
+   octal or binary if the string begins with <code class="code">0x</code>, <code class="code">0o</code> or <code class="code">0b</code>
+   respectively.
+   Raise <code class="code">Failure &quot;int_of_string&quot;</code> if the given string is not
+   a valid representation of an integer, or if the integer represented
+   exceeds the range of integers representable in type <code class="code">int64</code>.</div></div>
+<pre><span class="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">int64 -&gt; string</code></pre><div class="info"><div class="info">Return the string representation of its argument, in decimal.</div></div>
+<pre><span class="VALbits_of_float"><span class="keyword">val</span> bits_of_float</span> : <code class="type">float -&gt; int64</code></pre><div class="info"><div class="info">Return the internal representation of the given float according
+   to the IEEE 754 floating-point 'double format' bit layout.
+   Bit 63 of the result represents the sign of the float;
+   bits 62 to 52 represent the (biased) exponent; bits 51 to 0
+   represent the mantissa.</div></div>
+<pre><span class="VALfloat_of_bits"><span class="keyword">val</span> float_of_bits</span> : <code class="type">int64 -&gt; float</code></pre><div class="info"><div class="info">Return the floating-point number whose internal representation,
+   according to the IEEE 754 floating-point 'double format' bit layout,
+   is the given <code class="code">int64</code>.</div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type">int64</code></pre><div class="info"><div class="info">An alias for the type of 64-bit integers.</div></div>
+<pre><span class="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="?package=ocaml&amp;module=Int64&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Int64&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">The comparison function for 64-bit integers, with the same specification as
+     <a href="#Pervasives.compare">Pervasives.compare</a>.  Along with the type <code class="code">t</code>, this function <code class="code">compare</code>
+    allows the module <code class="code">Int64</code> to be passed as argument to the functors
+     <a href="#Set.Make">Set.Make</a> and  <a href="#Map.Make">Map.Make</a>.</div></div>
+<pre><span class="VALformat"><span class="keyword">val</span> format</span> : <code class="type">string -&gt; int64 -&gt; string</code></pre><div class="info"><div class="info">Do not use this deprecated function.  Instead,
+   used  <a href="#Printf.sprintf">Printf.sprintf</a> with a <code class="code">%L...</code> format.</div></div>
+</div>

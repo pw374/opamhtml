@@ -1,0 +1,151 @@
+<div class="ocaml_toplevel_module"><div class="info">Process management</div>
+<div class="info"><div class="info">This modules allow you to spawn processes and communicate with them.</div></div>
+<pre><span class="TYPEcommand"><span class="keyword">type</span> command</span> = <code class="type">string * string array</code></pre><div class="info"><div class="info">A command. The first field is the name of the executable and
+        the second is the list of arguments. For example:<br/>        <pre class="codepre"><code class="code">
+          (&quot;ls&quot;, [|&quot;ls&quot;; &quot;-l&quot;|])
+        </code></pre>.<br/>        Notes:<br/>        - if the name is the empty string, then the first argument
+        will be used. You should specify a name only if you do not
+        want the executable to be searched in the PATH. On Windows the
+        only way to enable automatic seach in PATH is to pass an empty
+        name.<br/>        - it is possible to ``inline'' an argument, i.e. split it into
+        multiple arguments. To do that prefix it with <code class="code">&quot;\000&quot;</code>. For
+        example:<br/>        <pre class="codepre"><code class="code">
+          (&quot;&quot;, [|&quot;echo&quot;; &quot;\000foo bar&quot;|])
+        </code></pre><br/>        is the same as:<br/>        <pre class="codepre"><code class="code">
+          (&quot;&quot;, [|&quot;echo&quot;; &quot;foo&quot;; &quot;bar&quot;|])
+        </code></pre>.</div></div>
+<pre><span class="VALshell"><span class="keyword">val</span> shell</span> : <code class="type">string -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a></code></pre><div class="info"><div class="info">A command executed with the shell. (with <code class="code">&quot;/bin/sh -c &lt;cmd&gt;&quot;</code> on
+      Unix and <code class="code">&quot;cmd.exe /c &lt;cmd&gt;&quot;</code> on Windows).</div></div>
+<div class="info"><div class="info">All the following functions take an optionnal argument
+    <code class="code">timeout</code>. If specified, after expiration, the process will be
+    sent a <code class="code">Unix.sigkill</code> signal and channels will be closed.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">High-level functions</h6></div></div>
+<div class="info"><div class="info"><div class="h8">Redirections</div></div></div>
+<pre><span class="TYPEredirection"><span class="keyword">type</span> redirection</span> = <code class="type">[ `Close
+| `Dev_null
+| `FD_copy of <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a>
+| `FD_move of <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a>
+| `Keep ]</code></pre><div class="info"><div class="info">A file descriptor redirection. It describe how standard file
+    descriptors are redirected in the child process.</div></div>
+<div class="info"><div class="info">Note: all optionnal redirection argumetns default to <code class="code">`Keep</code></div></div>
+<div class="info"><div class="info"><div class="h8">Executing</div></div></div>
+<pre><span class="VALexec"><span class="keyword">val</span> exec</span> : <code class="type">?timeout:float -&gt;
+?env:string array -&gt;
+?stdin:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt;
+?stdout:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt;
+?stderr:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=process_status">Unix.process_status</a> <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Executes the given command and returns its exit status.</div></div>
+<div class="info"><div class="info"><div class="h8">Receiving</div></div></div>
+<pre><span class="VALpread"><span class="keyword">val</span> pread</span> : <code class="type">?timeout:float -&gt;
+?env:string array -&gt;
+?stdin:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; ?stderr:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; string <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<pre><span class="VALpread_chars"><span class="keyword">val</span> pread_chars</span> : <code class="type">?timeout:float -&gt;
+?env:string array -&gt;
+?stdin:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; ?stderr:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; char <a href="?package=lwt&amp;module=Lwt_stream&amp;type=t">Lwt_stream.t</a></code></pre>
+<pre><span class="VALpread_line"><span class="keyword">val</span> pread_line</span> : <code class="type">?timeout:float -&gt;
+?env:string array -&gt;
+?stdin:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; ?stderr:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; string <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<pre><span class="VALpread_lines"><span class="keyword">val</span> pread_lines</span> : <code class="type">?timeout:float -&gt;
+?env:string array -&gt;
+?stdin:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; ?stderr:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; string <a href="?package=lwt&amp;module=Lwt_stream&amp;type=t">Lwt_stream.t</a></code></pre>
+<div class="info"><div class="info"><div class="h8">Sending</div></div></div>
+<pre><span class="VALpwrite"><span class="keyword">val</span> pwrite</span> : <code class="type">?timeout:float -&gt;
+?env:string array -&gt;
+?stdout:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; ?stderr:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; string -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<pre><span class="VALpwrite_chars"><span class="keyword">val</span> pwrite_chars</span> : <code class="type">?timeout:float -&gt;
+?env:string array -&gt;
+?stdout:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt;
+?stderr:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; char <a href="?package=lwt&amp;module=Lwt_stream&amp;type=t">Lwt_stream.t</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<pre><span class="VALpwrite_line"><span class="keyword">val</span> pwrite_line</span> : <code class="type">?timeout:float -&gt;
+?env:string array -&gt;
+?stdout:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; ?stderr:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; string -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<pre><span class="VALpwrite_lines"><span class="keyword">val</span> pwrite_lines</span> : <code class="type">?timeout:float -&gt;
+?env:string array -&gt;
+?stdout:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt;
+?stderr:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; string <a href="?package=lwt&amp;module=Lwt_stream&amp;type=t">Lwt_stream.t</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<div class="info"><div class="info"><div class="h8">Mapping</div></div></div>
+<pre><span class="VALpmap"><span class="keyword">val</span> pmap</span> : <code class="type">?timeout:float -&gt;
+?env:string array -&gt; ?stderr:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; string -&gt; string <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<pre><span class="VALpmap_chars"><span class="keyword">val</span> pmap_chars</span> : <code class="type">?timeout:float -&gt;
+?env:string array -&gt;
+?stderr:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; char <a href="?package=lwt&amp;module=Lwt_stream&amp;type=t">Lwt_stream.t</a> -&gt; char <a href="?package=lwt&amp;module=Lwt_stream&amp;type=t">Lwt_stream.t</a></code></pre>
+<pre><span class="VALpmap_line"><span class="keyword">val</span> pmap_line</span> : <code class="type">?timeout:float -&gt;
+?env:string array -&gt; ?stderr:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; string -&gt; string <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<pre><span class="VALpmap_lines"><span class="keyword">val</span> pmap_lines</span> : <code class="type">?timeout:float -&gt;
+?env:string array -&gt;
+?stderr:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; string <a href="?package=lwt&amp;module=Lwt_stream&amp;type=t">Lwt_stream.t</a> -&gt; string <a href="?package=lwt&amp;module=Lwt_stream&amp;type=t">Lwt_stream.t</a></code></pre>
+<div class="info"><div class="info"><h6 id="6_TITLE">Spawning processes</h6></div></div>
+<pre><code><span class="TYPEstate"><span class="keyword">type</span> state</span> = </code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTstate.Running"><span class="constructor">Running</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">The process is still running</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTstate.Exited"><span class="constructor">Exited</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=process_status">Unix.process_status</a></code></code></td><td class="typefieldcomment" align="left"><div class="info">The process has exited</div></td></tr></table><div class="info"><div class="info">State of a sub-process</div></div>
+<div class="ocaml_class sig" name="process_none"><pre><span class="TYPEprocess_none"><span class="keyword">class</span> <a href="?package=lwt&amp;module=Lwt_process&amp;class=process_none">process_none</a></span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> option -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> option -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> option -&gt; string array option -&gt; float option -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><pre><span class="METHODpid"><span class="keyword">method</span> pid</span> : <code class="code">int</code></pre>
+<div class="info"><div class="info">Pid of the sub-process</div></div>
+<pre><span class="METHODstate"><span class="keyword">method</span> state</span> : <code class="code"><a href="?package=lwt&amp;module=Lwt_process&amp;type=state">state</a></code></pre>
+<div class="info"><div class="info">Return the state of the process</div></div>
+<pre><span class="METHODkill"><span class="keyword">method</span> kill</span> : <code class="code">int -&gt; unit</code></pre>
+<div class="info"><div class="info"><code class="code">kill signum</code> sends <code class="code">signum</code> to the process if it is still
+        running.</div></div>
+<pre><span class="METHODterminate"><span class="keyword">method</span> terminate</span> : <code class="code">unit</code></pre>
+<div class="info"><div class="info">Terminates the process. It is equivalent to <code class="code">kill Sys.sigkill</code>
+        on Unix but also works on windows (unlike  <a href="#kill">kill</a>).</div></div>
+<pre><span class="METHODstatus"><span class="keyword">method</span> status</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=process_status">Unix.process_status</a> <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<div class="info"><div class="info">Threads which wait for the sub-process to exit then returns its
+        exit status</div></div>
+<pre><span class="METHODrusage"><span class="keyword">method</span> rusage</span> : <code class="code"><a href="?package=lwt&amp;module=Lwt_unix&amp;type=resource_usage">Lwt_unix.resource_usage</a> <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<div class="info"><div class="info">Threads which wait for the sub-process to exit then returns
+        its resource usages</div></div>
+<pre><span class="METHODclose"><span class="keyword">method</span> close</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=process_status">Unix.process_status</a> <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<div class="info"><div class="info">Closes the process and returns its exit status. This close all
+        channels used to communicate with the process</div></div></div></div>
+<pre><span class="VALopen_process_none"><span class="keyword">val</span> open_process_none</span> : <code class="type">?timeout:float -&gt;
+?env:string array -&gt;
+?stdin:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt;
+?stdout:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; ?stderr:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=process_none">process_none</a></code></pre>
+<pre><span class="VALwith_process_none"><span class="keyword">val</span> with_process_none</span> : <code class="type">?timeout:float -&gt;
+?env:string array -&gt;
+?stdin:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt;
+?stdout:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt;
+?stderr:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; (<a href="?package=lwt&amp;module=Lwt_process&amp;type=process_none">process_none</a> -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<div class="ocaml_class sig" name="process_in"><pre><span class="TYPEprocess_in"><span class="keyword">class</span> <a href="?package=lwt&amp;module=Lwt_process&amp;class=process_in">process_in</a></span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> option -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> option -&gt; string array option -&gt; float option -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=lwt&amp;module=Lwt_process&amp;class=process_none"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=lwt&amp;module=Lwt_process&amp;class=process_none">process_none</a></pre></div>
+
+<pre><span class="METHODstdout"><span class="keyword">method</span> stdout</span> : <code class="code"><a href="?package=lwt&amp;module=Lwt_io&amp;type=input_channel">Lwt_io.input_channel</a></code></pre>
+<div class="info"><div class="info">The standard output of the process</div></div></div></div>
+<pre><span class="VALopen_process_in"><span class="keyword">val</span> open_process_in</span> : <code class="type">?timeout:float -&gt;
+?env:string array -&gt;
+?stdin:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; ?stderr:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=process_in">process_in</a></code></pre>
+<pre><span class="VALwith_process_in"><span class="keyword">val</span> with_process_in</span> : <code class="type">?timeout:float -&gt;
+?env:string array -&gt;
+?stdin:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt;
+?stderr:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; (<a href="?package=lwt&amp;module=Lwt_process&amp;type=process_in">process_in</a> -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<div class="ocaml_class sig" name="process_out"><pre><span class="TYPEprocess_out"><span class="keyword">class</span> <a href="?package=lwt&amp;module=Lwt_process&amp;class=process_out">process_out</a></span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> option -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> option -&gt; string array option -&gt; float option -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=lwt&amp;module=Lwt_process&amp;class=process_none"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=lwt&amp;module=Lwt_process&amp;class=process_none">process_none</a></pre></div>
+
+<pre><span class="METHODstdin"><span class="keyword">method</span> stdin</span> : <code class="code"><a href="?package=lwt&amp;module=Lwt_io&amp;type=output_channel">Lwt_io.output_channel</a></code></pre>
+<div class="info"><div class="info">The standard input of the process</div></div></div></div>
+<pre><span class="VALopen_process_out"><span class="keyword">val</span> open_process_out</span> : <code class="type">?timeout:float -&gt;
+?env:string array -&gt;
+?stdout:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; ?stderr:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=process_out">process_out</a></code></pre>
+<pre><span class="VALwith_process_out"><span class="keyword">val</span> with_process_out</span> : <code class="type">?timeout:float -&gt;
+?env:string array -&gt;
+?stdout:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt;
+?stderr:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; (<a href="?package=lwt&amp;module=Lwt_process&amp;type=process_out">process_out</a> -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<div class="ocaml_class sig" name="process"><pre><span class="TYPEprocess"><span class="keyword">class</span> <a href="?package=lwt&amp;module=Lwt_process&amp;class=process">process</a></span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> option -&gt; string array option -&gt; float option -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=lwt&amp;module=Lwt_process&amp;class=process_none"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=lwt&amp;module=Lwt_process&amp;class=process_none">process_none</a></pre></div>
+
+<pre><span class="METHODstdin"><span class="keyword">method</span> stdin</span> : <code class="code"><a href="?package=lwt&amp;module=Lwt_io&amp;type=output_channel">Lwt_io.output_channel</a></code></pre>
+
+<pre><span class="METHODstdout"><span class="keyword">method</span> stdout</span> : <code class="code"><a href="?package=lwt&amp;module=Lwt_io&amp;type=input_channel">Lwt_io.input_channel</a></code></pre>
+</div></div>
+<pre><span class="VALopen_process"><span class="keyword">val</span> open_process</span> : <code class="type">?timeout:float -&gt;
+?env:string array -&gt; ?stderr:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=process">process</a></code></pre>
+<pre><span class="VALwith_process"><span class="keyword">val</span> with_process</span> : <code class="type">?timeout:float -&gt;
+?env:string array -&gt;
+?stderr:<a href="?package=lwt&amp;module=Lwt_process&amp;type=redirection">redirection</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; (<a href="?package=lwt&amp;module=Lwt_process&amp;type=process">process</a> -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<div class="ocaml_class sig" name="process_full"><pre><span class="TYPEprocess_full"><span class="keyword">class</span> <a href="?package=lwt&amp;module=Lwt_process&amp;class=process_full">process_full</a></span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; string array option -&gt; float option -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=lwt&amp;module=Lwt_process&amp;class=process_none"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=lwt&amp;module=Lwt_process&amp;class=process_none">process_none</a></pre></div>
+
+<pre><span class="METHODstdin"><span class="keyword">method</span> stdin</span> : <code class="code"><a href="?package=lwt&amp;module=Lwt_io&amp;type=output_channel">Lwt_io.output_channel</a></code></pre>
+
+<pre><span class="METHODstdout"><span class="keyword">method</span> stdout</span> : <code class="code"><a href="?package=lwt&amp;module=Lwt_io&amp;type=input_channel">Lwt_io.input_channel</a></code></pre>
+
+<pre><span class="METHODstderr"><span class="keyword">method</span> stderr</span> : <code class="code"><a href="?package=lwt&amp;module=Lwt_io&amp;type=input_channel">Lwt_io.input_channel</a></code></pre>
+</div></div>
+<pre><span class="VALopen_process_full"><span class="keyword">val</span> open_process_full</span> : <code class="type">?timeout:float -&gt; ?env:string array -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=process_full">process_full</a></code></pre>
+<pre><span class="VALwith_process_full"><span class="keyword">val</span> with_process_full</span> : <code class="type">?timeout:float -&gt;
+?env:string array -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a> -&gt; (<a href="?package=lwt&amp;module=Lwt_process&amp;type=process_full">process_full</a> -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+</div>

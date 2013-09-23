@@ -1,0 +1,63 @@
+<div class="ocaml_toplevel_module"><div class="info"><h1 id="1_TITLE">Generic anonymous semaphores</h1></div>
+<div class="info"><div class="info">This module purely exists to also support &quot;kind of anonymous&quot;
+    sempahores on MacOS X (which only has named semaphores). On
+    other OS, it is just a wrapper for the functions in
+     <a href="#Netsys_posix">Netsys_posix</a>.<br/>    Note that on OS X named semaphores have a max name length of
+    31 characters (including the / at the beginning), and that
+    <code class="code">Netsys_sem</code> uses 9 characters for its own purposes, leaving
+    22 characters for the prefix. (On other OS this is less restricted.)</div></div>
+<pre><span class="VALhave_anon_semaphores"><span class="keyword">val</span> have_anon_semaphores</span> : <code class="type">unit -&gt; bool</code></pre><div class="info"><div class="info">Returns <code class="code">true</code> if anonymous semaphores are supported on this 
+      system, either natively or emulated via named semaphores.</div></div>
+<div class="info"><div class="info"><b>Constants.</b></div></div>
+<pre><span class="VALsem_value_max"><span class="keyword">val</span> sem_value_max</span> : <code class="type">int</code></pre><div class="info"><div class="info">The maximum value of a semaphore, but at most <code class="code">max_int</code></div></div>
+<pre><span class="VALsem_size"><span class="keyword">val</span> sem_size</span> : <code class="type">int</code></pre><div class="info"><div class="info">The size of an anonymous semaphore in bytes (<code class="code">sizeof(sem_t)</code>)</div></div>
+<div class="info"><div class="info"><b>Types.</b></div></div>
+<pre><span class="TYPEcontainer"><span class="keyword">type</span> container</span> </pre><div class="info"><div class="info">The container of the semaphore is the shared memory object</div></div>
+<pre><span class="TYPEprefix"><span class="keyword">type</span> prefix</span> = <code class="type">string</code></pre><div class="info"><div class="info">A name starting with a slash. Must not contain further slashes</div></div>
+<pre><span class="TYPEanon_semaphore"><span class="keyword">type</span> anon_semaphore</span> </pre>
+<pre><span class="TYPEsem_open_flag"><span class="keyword">type</span> sem_open_flag</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=sem_open_flag">Netsys_posix.sem_open_flag</a></code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsem_open_flag.SEM_O_CREAT"><span class="constructor">SEM_O_CREAT</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsem_open_flag.SEM_O_EXCL"><span class="constructor">SEM_O_EXCL</span></span></code></td></tr></table><div class="info"><div class="info"><b>Container functions.</b></div></div>
+<pre><span class="VALcontainer"><span class="keyword">val</span> container</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=prefix">prefix</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=container">container</a></code></pre><div class="info"><div class="info"><code class="code">container prefix</code>: The prefix shall identify the container uniquely.
+      Once can e.g. use the path of the shared memory object. The prefix
+      is used to construct names for persistent objects.<br/>      <b>Note that containers have kernel persistence! They are not
+      automatically deleted when the process finishes. Call <code class="code">drop</code>
+      to delete containers, or <code class="code">create_container</code> to force their
+      creation as fresh objects.</b><br/>      If the container does not exist yet, it is created. Otherwise the
+      container is just opened.</div></div>
+<pre><span class="VALcreate_container"><span class="keyword">val</span> create_container</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=prefix">prefix</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=container">container</a></code></pre><div class="info"><div class="info"><code class="code">create_container prefix</code>: Like <code class="code">container</code>, but the container is
+      always created. A previous instance is first deleted.</div></div>
+<pre><span class="VALprefix"><span class="keyword">val</span> prefix</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=container">container</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=prefix">prefix</a></code></pre><div class="info"><div class="info">Return the prefix</div></div>
+<pre><span class="VALdrop"><span class="keyword">val</span> drop</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=container">container</a> -&gt; unit</code></pre><div class="info"><div class="info">Drop the semaphores in this container, and delete the container.<br/>      This function is a no-op if the OS supports anonymous semaphores
+      directly (because in this case the deletion of the container will
+      automatically destroy the semaphores).</div></div>
+<div class="info"><div class="info">Note that there is a general problem when a container is deleted
+    or dropped by a process while it is still being used by another one.
+    This will generally not generate errors, but can cause a lot of
+    confusion, because the processes will partly access the same
+    semaphores, and partly different semaphores.</div></div>
+<pre><span class="VALunlink"><span class="keyword">val</span> unlink</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=prefix">prefix</a> -&gt; unit</code></pre><div class="info"><div class="info">Unlinks the identified container if it exists, and unlinks all
+      possible named semaphores.</div></div>
+<div class="info"><div class="info"><b>Semaphore functions.</b></div></div>
+<pre><span class="VALsem_init"><span class="keyword">val</span> sem_init</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=container">container</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_types&amp;type=memory">Netsys_types.memory</a> -&gt; int -&gt; bool -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=anon_semaphore">anon_semaphore</a></code></pre><div class="info"><div class="info"><code class="code">sem_init cont mem pos pshared init_value</code>: Initializes the memory
+      at position <code class="code">pos</code> to <code class="code">pos + sem_size() - 1</code> as anonymous semaphore.
+      If <code class="code">pshared</code> the semaphore is shared between processes. 
+      <code class="code">init_value</code> is the initial non-negative value (max is 
+      <code class="code">sem_value_max</code>).</div></div>
+<pre><span class="VALsem_destroy"><span class="keyword">val</span> sem_destroy</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=container">container</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=anon_semaphore">anon_semaphore</a> -&gt; unit</code></pre><div class="info"><div class="info">Destroys the anonymous semaphore</div></div>
+<pre><span class="VALas_sem"><span class="keyword">val</span> as_sem</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=container">container</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_types&amp;type=memory">Netsys_types.memory</a> -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=anon_semaphore">anon_semaphore</a></code></pre><div class="info"><div class="info"><code class="code">as_sem mem pos</code>: Interprets the memory at position <code class="code">pos</code>
+      to <code class="code">pos + sem_size() - 1</code> as anonymous semaphore.
+      The memory region must already have been initialized.</div></div>
+<pre><span class="VALsem_getvalue"><span class="keyword">val</span> sem_getvalue</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=anon_semaphore">anon_semaphore</a> -&gt; int</code></pre><div class="info"><div class="info">Returns the value of the semaphore. If the value is bigger than
+      what can be represented as <code class="code">int</code>, an <code class="code">EINVAL</code> error is returned.<br/>      The returned value is non-negative - if the underlying POSIX
+      function reports a negative value zero is returned instead.<br/>      <b>Unavailable on MacOS.</b></div></div>
+<pre><span class="VALsem_post"><span class="keyword">val</span> sem_post</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=anon_semaphore">anon_semaphore</a> -&gt; unit</code></pre><div class="info"><div class="info">Unlocks the semaphore (increases the value by 1)</div></div>
+<pre><span class="TYPEsem_wait_behavior"><span class="keyword">type</span> sem_wait_behavior</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=sem_wait_behavior">Netsys_posix.sem_wait_behavior</a></code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsem_wait_behavior.SEM_WAIT_BLOCK"><span class="constructor">SEM_WAIT_BLOCK</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsem_wait_behavior.SEM_WAIT_NONBLOCK"><span class="constructor">SEM_WAIT_NONBLOCK</span></span></code></td></tr></table>
+<pre><span class="VALsem_wait"><span class="keyword">val</span> sem_wait</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=anon_semaphore">anon_semaphore</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=sem_wait_behavior">sem_wait_behavior</a> -&gt; unit</code></pre><div class="info"><div class="info">Locks the semaphore (decreases the value by 1). If the semaphore
+      value is already zero, and <code class="code">SEM_WAIT_BLOCK</code> is given, the function
+      waits until another process or thread posts. If <code class="code">SEM_WAIT_NONBLOCK</code>
+      the error <code class="code">EAGAIN</code> is returned.<br/>      <code class="code">sem_wait</code> may be interrupted by signals.</div></div>
+<div class="ocaml_module sig" name="Debug"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netsys_sem.Debug">Debug</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALenable"><span class="keyword">val</span> enable</span> : <code class="type">bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre></div></div>
+<pre><span class="VALforce_emulation"><span class="keyword">val</span> force_emulation</span> : <code class="type">unit -&gt; unit</code></pre>
+</div>

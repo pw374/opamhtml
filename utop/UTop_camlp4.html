@@ -1,0 +1,9 @@
+<div class="ocaml_toplevel_module"><pre><span class="VALparse_toplevel_phrase"><span class="keyword">val</span> parse_toplevel_phrase</span> : <code class="type">string -&gt; bool -&gt; Parsetree.toplevel_phrase <a href="?package=utop&amp;module=UTop&amp;type=result">UTop.result</a></code></pre><div class="info"><div class="info">Toplevel phrase parser for utop using camlp4.</div></div>
+<pre><span class="VALparse_toplevel_phrase_camlp4"><span class="keyword">val</span> parse_toplevel_phrase_camlp4</span> : <code class="type">string -&gt; bool -&gt; Camlp4.PreCast.Ast.str_item <a href="?package=utop&amp;module=UTop&amp;type=result">UTop.result</a></code></pre><div class="info"><div class="info">Camlp4 toplevel phrase parser. Same as  <a href="#parse_toplevel_phrase">parse_toplevel_phrase</a>
+      but the result is not converted to an OCaml ast.</div></div>
+<pre><span class="VALconvert_camlp4_toplevel_phrase"><span class="keyword">val</span> convert_camlp4_toplevel_phrase</span> : <code class="type">Camlp4.PreCast.Ast.str_item -&gt; Parsetree.toplevel_phrase <a href="?package=utop&amp;module=UTop&amp;type=result">UTop.result</a></code></pre><div class="info"><div class="info">Converts a camlp4 toplevel phrase into a standard OCaml toplevel
+      phrase. Note that a camlp4 ast may not be convertible to an
+      OCaml one, in which case it returns  <a href="#UTop.Error">UTop.Error</a>.</div></div>
+<pre><span class="VALget_camlp4_error_message"><span class="keyword">val</span> get_camlp4_error_message</span> : <code class="type">exn -&gt; <a href="?package=utop&amp;module=UTop&amp;type=location">UTop.location</a> * string</code></pre><div class="info"><div class="info"><code class="code">get_camlp4_error_message exn</code> returns the location and error
+      message for the exception <code class="code">exn</code> as printed by camlp4.</div></div>
+</div>

@@ -1,0 +1,32 @@
+<div class="ocaml_toplevel_module"><div class="info">Note: This lodule is deprecated. Use  <a href="#Lwt_list">Lwt_list</a> and  <a href="#Lwt_pool">Lwt_pool</a>
+    instead.</div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Lists iterators</h2></div></div>
+<pre><span class="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; 'a list -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">iter f l</code> start a thread for each element in <code class="code">l</code>.  The threads
+        are started according to the list order, but then can run
+        concurrently.  It terminates when all the threads are
+        terminated, if all threads are successful.  It fails if any of
+        the threads fail.</div></div>
+<pre><span class="VALiter_serial"><span class="keyword">val</span> iter_serial</span> : <code class="type">('a -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; 'a list -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Similar to <code class="code">iter</code> but wait for one thread to terminate before
+        starting the next one.</div></div>
+<pre><span class="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -&gt; 'b <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; 'a list -&gt; 'b list <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">map f l</code> apply <code class="code">f</code> to each element in <code class="code">l</code> and collect the
+        results of the threads thus created.  The threads are started
+        according to the list order, but then can run concurrently.
+        <code class="code">map f l</code> fails if any of the threads fail.</div></div>
+<pre><span class="VALmap_with_waiting_action"><span class="keyword">val</span> map_with_waiting_action</span> : <code class="type">('a -&gt; 'b <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; ('a -&gt; unit) -&gt; 'a list -&gt; 'b list <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">map_with_waiting_action f wa l</code> apply <code class="code">f</code> to each element
+        in <code class="code">l</code> and collect the results of the threads thus created.
+        The threads are started according to the list order, but
+        then can run concurrently.  The difference with <code class="code">map f l</code> is
+        that function wa will be called on the element that the
+        function is waiting for its termination.</div></div>
+<pre><span class="VALmap_serial"><span class="keyword">val</span> map_serial</span> : <code class="type">('a -&gt; 'b <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; 'a list -&gt; 'b list <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Similar to <code class="code">map</code> but wait for one thread to terminate before
+        starting the next one.</div></div>
+<pre><span class="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">('a -&gt; 'b -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; 'a -&gt; 'b list -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Similar to <code class="code">List.fold_left</code>.</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Regions</h2></div></div>
+<pre><span class="TYPEregion"><span class="keyword">type</span> region</span> </pre>
+<pre><span class="VALmake_region"><span class="keyword">val</span> make_region</span> : <code class="type">int -&gt; <a href="?package=lwt&amp;module=Lwt_util&amp;type=region">region</a></code></pre><div class="info"><div class="info"><code class="code">make_region sz</code> create a region of size <code class="code">sz</code>.</div></div>
+<pre><span class="VALresize_region"><span class="keyword">val</span> resize_region</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_util&amp;type=region">region</a> -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">resize_region reg sz</code> resize the region <code class="code">reg</code> to size <code class="code">sz</code>.</div></div>
+<pre><span class="VALrun_in_region"><span class="keyword">val</span> run_in_region</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_util&amp;type=region">region</a> -&gt; int -&gt; (unit -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">run_in_region reg size f</code> execute the thread produced by the
+          function <code class="code">f</code> in the region <code class="code">reg</code>. The thread is not started
+          before some room is available in the region.</div></div>
+<pre><span class="VALjoin"><span class="keyword">val</span> join</span> : <code class="type">unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a> list -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Same as <code class="code">Lwt.join</code></div></div>
+</div>

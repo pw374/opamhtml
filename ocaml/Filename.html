@@ -1,0 +1,75 @@
+<div class="ocaml_toplevel_module"><div class="info">Operations on file names.</div>
+<pre><span class="VALcurrent_dir_name"><span class="keyword">val</span> current_dir_name</span> : <code class="type">string</code></pre><div class="info"><div class="info">The conventional name for the current directory (e.g. <code class="code">.</code> in Unix).</div></div>
+<pre><span class="VALparent_dir_name"><span class="keyword">val</span> parent_dir_name</span> : <code class="type">string</code></pre><div class="info"><div class="info">The conventional name for the parent of the current directory
+   (e.g. <code class="code">..</code> in Unix).</div></div>
+<pre><span class="VALdir_sep"><span class="keyword">val</span> dir_sep</span> : <code class="type">string</code></pre><div class="info"><div class="info">The directory separator (e.g. <code class="code">/</code> in Unix). <b>Since</b> 3.11.2</div></div>
+<pre><span class="VALconcat"><span class="keyword">val</span> concat</span> : <code class="type">string -&gt; string -&gt; string</code></pre><div class="info"><div class="info"><code class="code">concat dir file</code> returns a file name that designates file
+   <code class="code">file</code> in directory <code class="code">dir</code>.</div></div>
+<pre><span class="VALis_relative"><span class="keyword">val</span> is_relative</span> : <code class="type">string -&gt; bool</code></pre><div class="info"><div class="info">Return <code class="code">true</code> if the file name is relative to the current
+   directory, <code class="code">false</code> if it is absolute (i.e. in Unix, starts
+   with <code class="code">/</code>).</div></div>
+<pre><span class="VALis_implicit"><span class="keyword">val</span> is_implicit</span> : <code class="type">string -&gt; bool</code></pre><div class="info"><div class="info">Return <code class="code">true</code> if the file name is relative and does not start
+   with an explicit reference to the current directory (<code class="code">./</code> or
+   <code class="code">../</code> in Unix), <code class="code">false</code> if it starts with an explicit reference
+   to the root directory or the current directory.</div></div>
+<pre><span class="VALcheck_suffix"><span class="keyword">val</span> check_suffix</span> : <code class="type">string -&gt; string -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">check_suffix name suff</code> returns <code class="code">true</code> if the filename <code class="code">name</code>
+   ends with the suffix <code class="code">suff</code>.</div></div>
+<pre><span class="VALchop_suffix"><span class="keyword">val</span> chop_suffix</span> : <code class="type">string -&gt; string -&gt; string</code></pre><div class="info"><div class="info"><code class="code">chop_suffix name suff</code> removes the suffix <code class="code">suff</code> from
+   the filename <code class="code">name</code>. The behavior is undefined if <code class="code">name</code> does not
+   end with the suffix <code class="code">suff</code>.</div></div>
+<pre><span class="VALchop_extension"><span class="keyword">val</span> chop_extension</span> : <code class="type">string -&gt; string</code></pre><div class="info"><div class="info">Return the given file name without its extension. The extension
+   is the shortest suffix starting with a period and not including
+   a directory separator, <code class="code">.xyz</code> for instance.<br/>   Raise <code class="code">Invalid_argument</code> if the given name does not contain
+   an extension.</div></div>
+<pre><span class="VALbasename"><span class="keyword">val</span> basename</span> : <code class="type">string -&gt; string</code></pre><div class="info"><div class="info">Split a file name into directory name / base file name.
+   If <code class="code">name</code> is a valid file name, then <code class="code">concat (dirname name) (basename name)</code>
+   returns a file name which is equivalent to <code class="code">name</code>. Moreover,
+   after setting the current directory to <code class="code">dirname name</code> (with  <a href="#Sys.chdir">Sys.chdir</a>),
+   references to <code class="code">basename name</code> (which is a relative file name)
+   designate the same file as <code class="code">name</code> before the call to  <a href="#Sys.chdir">Sys.chdir</a>.<br/>   This function conforms to the specification of POSIX.1-2008 for the
+   <code class="code">basename</code> utility.</div></div>
+<pre><span class="VALdirname"><span class="keyword">val</span> dirname</span> : <code class="type">string -&gt; string</code></pre><div class="info"><div class="info">See  <a href="#Filename.basename">Filename.basename</a>.
+   This function conforms to the specification of POSIX.1-2008 for the
+   <code class="code">dirname</code> utility.</div></div>
+<pre><span class="VALtemp_file"><span class="keyword">val</span> temp_file</span> : <code class="type">?temp_dir:string -&gt; string -&gt; string -&gt; string</code></pre><div class="info"><div class="info"><code class="code">temp_file prefix suffix</code> returns the name of a
+   fresh temporary file in the temporary directory.
+   The base name of the temporary file is formed by concatenating
+   <code class="code">prefix</code>, then a suitably chosen integer number, then <code class="code">suffix</code>.
+   The optional argument <code class="code">temp_dir</code> indicates the temporary directory
+   to use, defaulting to the current result of  <a href="#Filename.get_temp_dir_name">Filename.get_temp_dir_name</a>.
+   The temporary file is created empty, with permissions <code class="code">0o600</code>
+   (readable and writable only by the file owner).  The file is
+   guaranteed to be different from any other file that existed when
+   <code class="code">temp_file</code> was called.
+   Raise <code class="code">Sys_error</code> if the file could not be created.<b>Before 3.11.2</b> no ?temp_dir optional argument<br/></div></div>
+<pre><span class="VALopen_temp_file"><span class="keyword">val</span> open_temp_file</span> : <code class="type">?mode:<a href="?package=ocaml&amp;module=Pervasives&amp;type=open_flag">Pervasives.open_flag</a> list -&gt;
+?temp_dir:string -&gt; string -&gt; string -&gt; string * <a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a></code></pre><div class="info"><div class="info">Same as  <a href="#Filename.temp_file">Filename.temp_file</a>, but returns both the name of a fresh
+   temporary file, and an output channel opened (atomically) on
+   this file.  This function is more secure than <code class="code">temp_file</code>: there
+   is no risk that the temporary file will be modified (e.g. replaced
+   by a symbolic link) before the program opens it.  The optional argument
+   <code class="code">mode</code> is a list of additional flags to control the opening of the file.
+   It can contain one or several of <code class="code">Open_append</code>, <code class="code">Open_binary</code>,
+   and <code class="code">Open_text</code>.  The default is <code class="code">[Open_text]</code> (open in text mode).
+   Raise <code class="code">Sys_error</code> if the file could not be opened.<b>Before 3.11.2</b> no ?temp_dir optional argument<br/></div></div>
+<pre><span class="VALget_temp_dir_name"><span class="keyword">val</span> get_temp_dir_name</span> : <code class="type">unit -&gt; string</code></pre><div class="info"><div class="info">The name of the temporary directory:
+    Under Unix, the value of the <code class="code">TMPDIR</code> environment variable, or &quot;/tmp&quot;
+    if the variable is not set.
+    Under Windows, the value of the <code class="code">TEMP</code> environment variable, or &quot;.&quot;
+    if the variable is not set.
+    The temporary directory can be changed with  <a href="#Filename.set_temp_dir_name">Filename.set_temp_dir_name</a>. <b>Since</b> 4.00.0</div></div>
+<pre><span class="VALset_temp_dir_name"><span class="keyword">val</span> set_temp_dir_name</span> : <code class="type">string -&gt; unit</code></pre><div class="info"><div class="info">Change the temporary directory returned by  <a href="#Filename.get_temp_dir_name">Filename.get_temp_dir_name</a>
+    and used by  <a href="#Filename.temp_file">Filename.temp_file</a> and  <a href="#Filename.open_temp_file">Filename.open_temp_file</a>. <b>Since</b> 4.00.0</div></div>
+<pre><span class="VALtemp_dir_name"><span class="keyword">val</span> temp_dir_name</span> : <code class="type">string</code></pre><div class="info"><div class="info"> <b>Since</b> 3.09.1<span class="warning">Deprecated.</span> The name of the initial temporary directory:
+    Under Unix, the value of the <code class="code">TMPDIR</code> environment variable, or &quot;/tmp&quot;
+    if the variable is not set.
+    Under Windows, the value of the <code class="code">TEMP</code> environment variable, or &quot;.&quot;
+    if the variable is not set.
+    This function is deprecated;  <a href="#Filename.get_temp_dir_name">Filename.get_temp_dir_name</a> should be
+    used instead.<br/></div></div>
+<pre><span class="VALquote"><span class="keyword">val</span> quote</span> : <code class="type">string -&gt; string</code></pre><div class="info"><div class="info">Return a quoted version of a file name, suitable for use as
+    one argument in a command line, escaping all meta-characters.
+    Warning: under Windows, the output is only suitable for use
+    with programs that follow the standard Windows quoting
+    conventions.</div></div>
+</div>

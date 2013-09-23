@@ -1,0 +1,120 @@
+<div class="ocaml_toplevel_module"><div class="info">Unicode data</div>
+<div class="ocaml_module sig" name="Type"><pre><span class="keyword">module type</span> <a href="?package=camomile&amp;module=Unidata.Type">Type</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALread_data"><span class="keyword">val</span> read_data</span> : <code class="type">?datadir:string -&gt; string -&gt; 'a</code></pre>
+<pre><span class="TYPEgeneral_category_type"><span class="keyword">type</span> general_category_type</span> = <code class="type">[ `Cc
+| `Cf
+| `Cn
+| `Co
+| `Cs
+| `Ll
+| `Lm
+| `Lo
+| `Lt
+| `Lu
+| `Mc
+| `Me
+| `Mn
+| `Nd
+| `Nl
+| `No
+| `Pc
+| `Pd
+| `Pe
+| `Pf
+| `Pi
+| `Po
+| `Ps
+| `Sc
+| `Sk
+| `Sm
+| `So
+| `Zl
+| `Zp
+| `Zs ]</code></pre>
+<pre><span class="VALcat_of_name"><span class="keyword">val</span> cat_of_name</span> : <code class="type">string -&gt; <a href="?package=camomile&amp;module=Unidata.Type&amp;type=general_category_type">general_category_type</a></code></pre>
+<pre><span class="VALnum_of_cat"><span class="keyword">val</span> num_of_cat</span> : <code class="type"><a href="?package=camomile&amp;module=Unidata.Type&amp;type=general_category_type">general_category_type</a> -&gt; int</code></pre>
+<pre><span class="VALcat_of_num"><span class="keyword">val</span> cat_of_num</span> : <code class="type">int -&gt; <a href="?package=camomile&amp;module=Unidata.Type&amp;type=general_category_type">general_category_type</a></code></pre>
+<pre><span class="TYPEscript_type"><span class="keyword">type</span> script_type</span> = <code class="type">[ `Arabic
+| `Armenian
+| `Bengali
+| `Bopomofo
+| `Buhid
+| `Canadian_Aboriginal
+| `Cherokee
+| `Common
+| `Cyrillic
+| `Deseret
+| `Devanagari
+| `Ethiopic
+| `Georgian
+| `Gothic
+| `Greek
+| `Gujarati
+| `Gurmukhi
+| `Han
+| `Hangul
+| `Hanunoo
+| `Hebrew
+| `Hiragana
+| `Inherited
+| `Kannada
+| `Katakana
+| `Khmer
+| `Lao
+| `Latin
+| `Malayalam
+| `Mongolian
+| `Myanmar
+| `Ogham
+| `Old_Italic
+| `Oriya
+| `Runic
+| `Sinhala
+| `Syriac
+| `Tagalog
+| `Tagbanwa
+| `Tamil
+| `Telugu
+| `Thaana
+| `Thai
+| `Tibetan
+| `Yi ]</code></pre>
+<pre><span class="VALscript_of_name"><span class="keyword">val</span> script_of_name</span> : <code class="type">string -&gt; <a href="?package=camomile&amp;module=Unidata.Type&amp;type=script_type">script_type</a></code></pre>
+<pre><span class="VALscript_of_num"><span class="keyword">val</span> script_of_num</span> : <code class="type">int -&gt; <a href="?package=camomile&amp;module=Unidata.Type&amp;type=script_type">script_type</a></code></pre>
+<pre><span class="VALnum_of_script"><span class="keyword">val</span> num_of_script</span> : <code class="type"><a href="?package=camomile&amp;module=Unidata.Type&amp;type=script_type">script_type</a> -&gt; int</code></pre>
+<pre><span class="TYPEdecomposition_type"><span class="keyword">type</span> decomposition_type</span> = <code class="type">[ `Canon
+| `Circle
+| `Compat
+| `Final
+| `Font
+| `Fraction
+| `Initial
+| `Isolated
+| `Medial
+| `Narrow
+| `NoBreak
+| `Small
+| `Square
+| `Sub
+| `Super
+| `Vertical
+| `Wide ]</code></pre>
+<pre><span class="TYPEdecomposition_info"><span class="keyword">type</span> decomposition_info</span> = <code class="type">[ `Canonform
+| `Composite of <a href="?package=camomile&amp;module=Unidata.Type&amp;type=decomposition_type">decomposition_type</a> * <a href="?package=camomile&amp;module=UChar&amp;type=t">UChar.t</a> list
+| `HangulSyllable ]</code></pre>
+<pre><span class="TYPEce_type"><span class="keyword">type</span> ce_type</span> = <code class="type">int</code></pre>
+<pre><span class="VALprimary"><span class="keyword">val</span> primary</span> : <code class="type"><a href="?package=camomile&amp;module=Unidata.Type&amp;type=ce_type">ce_type</a> -&gt; int</code></pre>
+<pre><span class="VALsecondary"><span class="keyword">val</span> secondary</span> : <code class="type"><a href="?package=camomile&amp;module=Unidata.Type&amp;type=ce_type">ce_type</a> -&gt; int</code></pre>
+<pre><span class="VALtertiary"><span class="keyword">val</span> tertiary</span> : <code class="type"><a href="?package=camomile&amp;module=Unidata.Type&amp;type=ce_type">ce_type</a> -&gt; int</code></pre>
+<pre><span class="VALcompose_ce"><span class="keyword">val</span> compose_ce</span> : <code class="type">int -&gt; int -&gt; int -&gt; <a href="?package=camomile&amp;module=Unidata.Type&amp;type=ce_type">ce_type</a></code></pre>
+<pre><span class="VALcomplete_ignorable"><span class="keyword">val</span> complete_ignorable</span> : <code class="type"><a href="?package=camomile&amp;module=Unidata.Type&amp;type=ce_type">ce_type</a></code></pre>
+<pre><span class="TYPEce_tbl"><span class="keyword">type</span> ce_tbl</span> = <code class="type">(<a href="?package=camomile&amp;module=UChar&amp;type=t">UChar.t</a> list * <a href="?package=camomile&amp;module=Unidata.Type&amp;type=ce_type">ce_type</a> list) list <a href="?package=camomile&amp;module=UCharTbl&amp;type=t">UCharTbl.t</a></code></pre>
+<pre><span class="TYPEvariable_option"><span class="keyword">type</span> variable_option</span> = <code class="type">[ `Blanked | `Non_ignorable | `Shift_Trimmed | `Shifted ]</code></pre>
+<pre><code><span class="TYPEcol_info"><span class="keyword">type</span> col_info</span> = {</code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTcol_info.variable_top">variable_top</span> : <code class="type">int</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTcol_info.variable_option">variable_option</span> : <code class="type"><a href="?package=camomile&amp;module=Unidata.Type&amp;type=variable_option">variable_option</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTcol_info.french_accent">french_accent</span> : <code class="type">bool</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTcol_info.hiraganaQ">hiraganaQ</span> : <code class="type">bool</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTcol_info.hiraganaQ_weight">hiraganaQ_weight</span> : <code class="type">int</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTcol_info.tbl">tbl</span> : <code class="type"><a href="?package=camomile&amp;module=Unidata.Type&amp;type=ce_tbl">ce_tbl</a></code>;</code></td></tr><tr><td>}</td></tr></table>
+<pre><span class="VALget_col_info"><span class="keyword">val</span> get_col_info</span> : <code class="type">?locale:string -&gt; unit -&gt; <a href="?package=camomile&amp;module=Unidata.Type&amp;type=col_info">col_info</a></code></pre>
+<pre><span class="VALce"><span class="keyword">val</span> ce</span> : <code class="type"><a href="?package=camomile&amp;module=Unidata.Type&amp;type=ce_tbl">ce_tbl</a> -&gt; <a href="?package=camomile&amp;module=UChar&amp;type=t">UChar.t</a> -&gt; (<a href="?package=camomile&amp;module=UChar&amp;type=t">UChar.t</a> list * <a href="?package=camomile&amp;module=Unidata.Type&amp;type=ce_type">ce_type</a> list) list</code></pre>
+<pre><code><span class="TYPElocaledata"><span class="keyword">type</span> localedata</span> = {</code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTlocaledata.col_info">col_info</span> : <code class="type"><a href="?package=camomile&amp;module=Unidata.Type&amp;type=col_info">col_info</a> option</code>;</code></td></tr><tr><td>}</td></tr></table></div></div>
+<div class="ocaml_module ident" name="Make" path="?package=camomile&amp;module=Unidata.Type"><pre><span class="keyword">module</span> <a href="?package=camomile&amp;module=Unidata.Make">Make</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">Config</code><code class="code"> : </code><code class="code"><a href="?package=camomile&amp;module=ConfigInt.Type">ConfigInt.Type</a></code><code class="code">) -&gt; </code><code class="code"><a href="?package=camomile&amp;module=Unidata.Type">Type</a></code></div></code></pre></div>
+</div>

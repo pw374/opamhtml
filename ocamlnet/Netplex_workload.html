@@ -1,0 +1,50 @@
+<div class="ocaml_toplevel_module"><div class="info">Workload management<br/> Workload managers control when additional containers are started or
+ idle containers are stopped. See  <a href="#Netplex_intro.workload">Netplex_intro.workload</a> for 
+ additional documentation how they are configured.</div>
+<pre><span class="VALcreate_constant_workload_manager"><span class="keyword">val</span> create_constant_workload_manager</span> : <code class="type">?restart:bool -&gt;
+?greedy_accepts:bool -&gt;
+?max_jobs_per_thread:int -&gt; int -&gt; Netplex_types.workload_manager</code></pre><div class="info"><div class="info">A constant number of threads is created (the int argument). <br/> <code class="code">restart</code>: If threads
+ crash, new threads are created until the specified number is again
+ reached. This is on by default.<br/> <code class="code">greedy_accepts</code>: whether greedy accepts are allowed (default: false)<br/> <code class="code">max_jobs_per_thread</code>: if passed, limits the number of jobs (connections)
+ that can be simultaneously processed by a thread/process. By default
+ there is no limit.</div></div>
+<pre><span class="VALconstant_workload_manager_factory"><span class="keyword">val</span> constant_workload_manager_factory</span> : <code class="type">Netplex_types.workload_manager_factory</code></pre><div class="info"><div class="info">Reads a workload_manager section like<br/> <pre class="codepre"><code class="code"> workload_manager {
+      type = &quot;constant&quot;;
+      threads = &lt;n&gt;;
+      max_jobs_per_thread = &lt;n&gt;;
+      greedy_accepts = &lt;bool&gt;;
+    }
+ </code></pre></div></div>
+<div class="ocaml_class sig" name="dynamic_workload_config"><pre><span class="TYPEdynamic_workload_config"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netplex_workload&amp;class=dynamic_workload_config">dynamic_workload_config</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><pre><span class="METHODmax_jobs_per_thread"><span class="keyword">method</span> max_jobs_per_thread</span> : <code class="code">int</code></pre>
+<div class="info"><div class="info">How many jobs every thread can execute concurrently until it is
+ considered as fully loaded. For configurations where the threads
+ can only handle one connection at a time this number must be 1.</div></div>
+<pre><span class="METHODrecommended_jobs_per_thread"><span class="keyword">method</span> recommended_jobs_per_thread</span> : <code class="code">int</code></pre>
+<div class="info"><div class="info">The number of jobs every thread can execute with normal
+ service quality. Must be less than or equal to
+ <code class="code">max_jobs_per_thread</code></div></div>
+<pre><span class="METHODmin_free_job_capacity"><span class="keyword">method</span> min_free_job_capacity</span> : <code class="code">int</code></pre>
+<div class="info"><div class="info">The manager starts as many threads as required to ensure that this
+ number of jobs can be executed. Must be at least 1.</div></div>
+<pre><span class="METHODmax_free_job_capacity"><span class="keyword">method</span> max_free_job_capacity</span> : <code class="code">int</code></pre>
+<div class="info"><div class="info">If more job capacity is available than this number, threads are
+ terminated. Must be greater than or equal to 
+ <code class="code">min_free_job_capacity</code>.</div></div>
+<pre><span class="METHODinactivity_timeout"><span class="keyword">method</span> inactivity_timeout</span> : <code class="code">int</code></pre>
+<div class="info"><div class="info">After this number of seconds a free thread can be terminated</div></div>
+<pre><span class="METHODmax_threads"><span class="keyword">method</span> max_threads</span> : <code class="code">int</code></pre>
+<div class="info"><div class="info">The manager does not start more threads than this number</div></div>
+<pre><span class="METHODgreedy_accepts"><span class="keyword">method</span> greedy_accepts</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">Whether greedy accepts are permitted</div></div></div></div>
+<pre><span class="VALcreate_dynamic_workload_manager"><span class="keyword">val</span> create_dynamic_workload_manager</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netplex_workload&amp;type=dynamic_workload_config">dynamic_workload_config</a> -&gt; Netplex_types.workload_manager</code></pre>
+<pre><span class="VALdynamic_workload_manager_factory"><span class="keyword">val</span> dynamic_workload_manager_factory</span> : <code class="type">Netplex_types.workload_manager_factory</code></pre><div class="info"><div class="info">Reads a workload_manager section like<br/> <pre class="codepre"><code class="code"> workload_manager {
+      type = &quot;dynamic&quot;;
+      max_jobs_per_thread = &lt;n&gt;;
+      min_free_jobs_capacity = &lt;n&gt;;
+      max_free_jobs_capacity = &lt;n&gt;;
+      max_threads = &lt;n&gt;;
+      greedy_accepts = &lt;bool&gt;;
+    }
+ </code></pre></div></div>
+<pre><span class="VALworkload_manager_factories"><span class="keyword">val</span> workload_manager_factories</span> : <code class="type">Netplex_types.workload_manager_factory list</code></pre><div class="info"><div class="info">All built-in workload manager factories</div></div>
+</div>

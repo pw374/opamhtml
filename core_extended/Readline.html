@@ -1,0 +1,26 @@
+<div class="ocaml_toplevel_module"><div class="info">Interactive line editing.<br/>   This implements very basic <code class="code">readline</code> abilities: backspace, left and right
+   arrows work as expected.
+   There's also a history that can be browsed through the <code class="code">up</code> and <code class="code">down</code> arrows.</div>
+<pre><span class="TYPEcompleter"><span class="keyword">type</span> completer</span> = <code class="type">left:string -&gt; right:string -&gt; string list</code></pre>
+<div class="ocaml_module sig" name="History"><pre><span class="keyword">module</span> <a href="?package=core_extended&amp;module=Readline.History">History</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">A mutable variable representing the history.</div></div><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre>
+<pre><span class="VALnull"><span class="keyword">val</span> null</span> : <code class="type"><a href="?package=core_extended&amp;module=Readline.History&amp;type=t">t</a></code></pre><div class="info"><div class="info">A value which is always empty</div></div>
+<pre><span class="VALdefault"><span class="keyword">val</span> default</span> : <code class="type"><a href="?package=core_extended&amp;module=Readline.History&amp;type=t">t</a></code></pre>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -&gt; <a href="?package=core_extended&amp;module=Readline.History&amp;type=t">t</a></code></pre>
+<pre><span class="VALflush"><span class="keyword">val</span> flush</span> : <code class="type"><a href="?package=core_extended&amp;module=Readline.History&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type"><a href="?package=core_extended&amp;module=Readline.History&amp;type=t">t</a> -&gt; string list</code></pre>
+<pre><span class="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">?size:int -&gt; string list -&gt; <a href="?package=core_extended&amp;module=Readline.History&amp;type=t">t</a></code></pre></div></div>
+<pre><span class="VALinput_line"><span class="keyword">val</span> input_line</span> : <code class="type">?history:<a href="?package=core_extended&amp;module=Readline.History&amp;type=t">History.t</a> -&gt;
+?prompt:string -&gt;
+?text:string -&gt; ?tab_completion:<a href="?package=core_extended&amp;module=Readline&amp;type=completer">completer</a> -&gt; unit -&gt; string option</code></pre><div class="info"><div class="info"><div class="parameters"><div class="param_info"><code class="code">prompt</code> : the string to use as a prompt (default value <code class="code">&quot;&gt;&quot;</code>)</div><div class="param_info"><code class="code">history</code> : the mutable value used as a history. The deault value is
+   <code class="code">History.default</code>. If you don't want any history ou should use <code class="code">History.null</code></div><div class="param_info"><code class="code">tab_completion</code> : the function use to complete on tab. By default there
+   is no completion.</div></div> <b>Returns</b> <code class="code">None</code> on <code class="code">EOF</code> (i.e. the user typed <code class="code">ctrl + d</code>)</div></div>
+<pre><span class="VALinput_line_eof"><span class="keyword">val</span> input_line_eof</span> : <code class="type">?history:<a href="?package=core_extended&amp;module=Readline.History&amp;type=t">History.t</a> -&gt;
+?prompt:string -&gt; ?text:string -&gt; ?tab_completion:<a href="?package=core_extended&amp;module=Readline&amp;type=completer">completer</a> -&gt; unit -&gt; string</code></pre>
+<pre><span class="VALpassword"><span class="keyword">val</span> password</span> : <code class="type">?prompt:string -&gt; unit -&gt; string option</code></pre><div class="info"><div class="info">Prompts for a password. Displays '*' instead of typed characters. <b>Returns</b> <code class="code">None</code> on <code class="code">EOF</code></div></div>
+<pre><span class="VALconfirm"><span class="keyword">val</span> confirm</span> : <code class="type">?prompt:string -&gt; string -&gt; bool</code></pre><div class="info"><div class="info">Prompts for an answer. Returns true if the answer equals the given string
+    (ignoring case), false otherwise.</div></div>
+<pre><span class="VALchoice"><span class="keyword">val</span> choice</span> : <code class="type">(string * 'a) list -&gt; 'a option</code></pre><div class="info"><div class="info"><code class="code"> choice [&quot;a&quot;,a;&quot;b&quot;,b] </code>
+    Prompts the user to choose a between several value (associated to strings)
+    and returns the value chosen by the user. <b>Returns</b> <code class="code">None</code> on <code class="code">EOF</code>.</div></div>
+</div>

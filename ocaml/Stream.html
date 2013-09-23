@@ -1,0 +1,45 @@
+<div class="ocaml_toplevel_module"><div class="info">Streams and parsers.</div>
+<pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> </pre><div class="info"><div class="info">The type of streams holding values of type <code class="code">'a</code>.</div></div>
+<pre><span class="EXCEPTIONFailure"><span class="keyword">exception</span> Failure</span></pre><div class="info"><div class="info">Raised by parsers when none of the first components of the stream
+   patterns is accepted.</div></div>
+<pre><span class="EXCEPTIONError"><span class="keyword">exception</span> Error</span> <span class="keyword">of</span> <code class="type">string</code></pre><div class="info"><div class="info">Raised by parsers when the first component of a stream pattern is
+   accepted, but one of the following components is rejected.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Stream builders</h6></div></div>
+<pre><span class="VALfrom"><span class="keyword">val</span> from</span> : <code class="type">(int -&gt; 'a option) -&gt; 'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">Stream.from f</code> returns a stream built from the function <code class="code">f</code>.
+   To create a new stream element, the function <code class="code">f</code> is called with
+   the current stream count. The user function <code class="code">f</code> must return either
+   <code class="code">Some &lt;value&gt;</code> for a value or <code class="code">None</code> to specify the end of the
+   stream.<br/>   Do note that the indices passed to <code class="code">f</code> may not start at <code class="code">0</code> in the
+   general case. For example, <code class="code">[&lt; '0; '1; Stream.from f &gt;]</code> would call
+   <code class="code">f</code> the first time with count <code class="code">2</code>.</div></div>
+<pre><span class="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">'a list -&gt; 'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a></code></pre><div class="info"><div class="info">Return the stream holding the elements of the list in the same
+   order.</div></div>
+<pre><span class="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -&gt; char <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a></code></pre><div class="info"><div class="info">Return the stream of the characters of the string parameter.</div></div>
+<pre><span class="VALof_channel"><span class="keyword">val</span> of_channel</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a> -&gt; char <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a></code></pre><div class="info"><div class="info">Return the stream of the characters read from the input channel.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Stream iterator</h6></div></div>
+<pre><span class="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -&gt; unit) -&gt; 'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">Stream.iter f s</code> scans the whole stream s, applying function <code class="code">f</code>
+   in turn to each stream element encountered.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Predefined parsers</h6></div></div>
+<pre><span class="VALnext"><span class="keyword">val</span> next</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a> -&gt; 'a</code></pre><div class="info"><div class="info">Return the first element of the stream and remove it from the
+   stream. Raise Stream.Failure if the stream is empty.</div></div>
+<pre><span class="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Return <code class="code">()</code> if the stream is empty, else raise <code class="code">Stream.Failure</code>.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Useful functions</h6></div></div>
+<pre><span class="VALpeek"><span class="keyword">val</span> peek</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a> -&gt; 'a option</code></pre><div class="info"><div class="info">Return <code class="code">Some</code> of &quot;the first element&quot; of the stream, or <code class="code">None</code> if
+   the stream is empty.</div></div>
+<pre><span class="VALjunk"><span class="keyword">val</span> junk</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Remove the first element of the stream, possibly unfreezing
+   it before.</div></div>
+<pre><span class="VALcount"><span class="keyword">val</span> count</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">Return the current count of the stream elements, i.e. the number
+   of the stream elements discarded.</div></div>
+<pre><span class="VALnpeek"><span class="keyword">val</span> npeek</span> : <code class="type">int -&gt; 'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a> -&gt; 'a list</code></pre><div class="info"><div class="info"><code class="code">npeek n</code> returns the list of the <code class="code">n</code> first elements of
+   the stream, or all its remaining elements if less than <code class="code">n</code>
+   elements are available.</div></div>
+<pre><span class="VALiapp"><span class="keyword">val</span> iapp</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a> -&gt; 'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a> -&gt; 'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a></code></pre>
+<pre><span class="VALicons"><span class="keyword">val</span> icons</span> : <code class="type">'a -&gt; 'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a> -&gt; 'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a></code></pre>
+<pre><span class="VALising"><span class="keyword">val</span> ising</span> : <code class="type">'a -&gt; 'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a></code></pre>
+<pre><span class="VALlapp"><span class="keyword">val</span> lapp</span> : <code class="type">(unit -&gt; 'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a>) -&gt; 'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a> -&gt; 'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a></code></pre>
+<pre><span class="VALlcons"><span class="keyword">val</span> lcons</span> : <code class="type">(unit -&gt; 'a) -&gt; 'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a> -&gt; 'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a></code></pre>
+<pre><span class="VALlsing"><span class="keyword">val</span> lsing</span> : <code class="type">(unit -&gt; 'a) -&gt; 'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a></code></pre>
+<pre><span class="VALsempty"><span class="keyword">val</span> sempty</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a></code></pre>
+<pre><span class="VALslazy"><span class="keyword">val</span> slazy</span> : <code class="type">(unit -&gt; 'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a>) -&gt; 'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a></code></pre>
+<pre><span class="VALdump"><span class="keyword">val</span> dump</span> : <code class="type">('a -&gt; unit) -&gt; 'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a> -&gt; unit</code></pre>
+</div>

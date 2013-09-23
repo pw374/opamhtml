@@ -1,0 +1,64 @@
+<div class="ocaml_toplevel_module"><div class="info">UCS4 encoded string. The type is the bigarray of 32-bit integers.
+   Bigarray.cma or Bigarray.cmxa must be linked when this module is used.</div>
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type">(int32, <a href="?package=ocaml&amp;module=Bigarray&amp;type=int32_elt">Bigarray.int32_elt</a>, <a href="?package=ocaml&amp;module=Bigarray&amp;type=c_layout">Bigarray.c_layout</a>) <a href="?package=ocaml&amp;module=Bigarray.Array1&amp;type=t">Bigarray.Array1.t</a></code></pre>
+<pre><span class="EXCEPTIONMalformed_code"><span class="keyword">exception</span> Malformed_code</span></pre>
+<pre><span class="VALvalidate"><span class="keyword">val</span> validate</span> : <code class="type"><a href="?package=camomile&amp;module=UCS4&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">validate s</code>
+   If <code class="code">s</code> is valid UCS4 then successes otherwise raises <code class="code">Malformed_code</code>.
+   Other functions assume strings are valid UCS4, so it is prudent
+   to test their validity for strings from untrusted origins.</div></div>
+<div class="info"><div class="info">All functions below assume strings are valid UCS4.  If not,
+   the result is unspecified.</div></div>
+<pre><span class="VALget"><span class="keyword">val</span> get</span> : <code class="type"><a href="?package=camomile&amp;module=UCS4&amp;type=t">t</a> -&gt; int -&gt; <a href="?package=camomile&amp;module=UChar&amp;type=t">UChar.t</a></code></pre><div class="info"><div class="info"><code class="code">get s n</code> returns <code class="code">n</code>-th Unicode character of <code class="code">s</code>.</div></div>
+<pre><span class="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -&gt; (int -&gt; <a href="?package=camomile&amp;module=UChar&amp;type=t">UChar.t</a>) -&gt; <a href="?package=camomile&amp;module=UCS4&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">init len f</code>
+   returns a new string which contains <code class="code">len</code> Unicode characters.
+   The i-th Unicode character is initialised by <code class="code">f i</code></div></div>
+<pre><span class="VALlength"><span class="keyword">val</span> length</span> : <code class="type"><a href="?package=camomile&amp;module=UCS4&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info"><code class="code">length s</code> returns the number of Unicode characters contained in <code class="code">s</code></div></div>
+<pre><span class="TYPEindex"><span class="keyword">type</span> index</span> = <code class="type">int</code></pre><div class="info"><div class="info">Positions in the string represented by the number of characters
+   from the head.
+   The location of the first character is <code class="code">0</code></div></div>
+<pre><span class="VALnth"><span class="keyword">val</span> nth</span> : <code class="type"><a href="?package=camomile&amp;module=UCS4&amp;type=t">t</a> -&gt; int -&gt; <a href="?package=camomile&amp;module=UCS4&amp;type=index">index</a></code></pre><div class="info"><div class="info"><code class="code">nth s n</code> returns the position of the <code class="code">n</code>-th Unicode character. 
+   The call requires O(n)-time</div></div>
+<pre><span class="VALfirst"><span class="keyword">val</span> first</span> : <code class="type"><a href="?package=camomile&amp;module=UCS4&amp;type=t">t</a> -&gt; <a href="?package=camomile&amp;module=UCS4&amp;type=index">index</a></code></pre><div class="info"><div class="info"><code class="code">first s</code> : The position of the head of the last Unicode character.</div></div>
+<pre><span class="VALlast"><span class="keyword">val</span> last</span> : <code class="type"><a href="?package=camomile&amp;module=UCS4&amp;type=t">t</a> -&gt; <a href="?package=camomile&amp;module=UCS4&amp;type=index">index</a></code></pre><div class="info"><div class="info"><code class="code">last s</code> : The position of the head of the last Unicode character.</div></div>
+<pre><span class="VALlook"><span class="keyword">val</span> look</span> : <code class="type"><a href="?package=camomile&amp;module=UCS4&amp;type=t">t</a> -&gt; <a href="?package=camomile&amp;module=UCS4&amp;type=index">index</a> -&gt; <a href="?package=camomile&amp;module=UChar&amp;type=t">UChar.t</a></code></pre><div class="info"><div class="info"><code class="code">look s i</code>
+   returns the Unicode character of the location <code class="code">i</code> in the string <code class="code">s</code>.</div></div>
+<pre><span class="VALout_of_range"><span class="keyword">val</span> out_of_range</span> : <code class="type"><a href="?package=camomile&amp;module=UCS4&amp;type=t">t</a> -&gt; <a href="?package=camomile&amp;module=UCS4&amp;type=index">index</a> -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">out_of_range s i</code>
+   tests whether <code class="code">i</code> points the valid position of <code class="code">s</code>.</div></div>
+<pre><span class="VALcompare_index"><span class="keyword">val</span> compare_index</span> : <code class="type"><a href="?package=camomile&amp;module=UCS4&amp;type=t">t</a> -&gt; <a href="?package=camomile&amp;module=UCS4&amp;type=index">index</a> -&gt; <a href="?package=camomile&amp;module=UCS4&amp;type=index">index</a> -&gt; int</code></pre><div class="info"><div class="info"><code class="code">compare_aux s i1 i2</code> returns
+   If <code class="code">i1</code> is the position located before <code class="code">i2</code>, a value &lt; 0,
+   If <code class="code">i1</code> and <code class="code">i2</code> points the same location, 0,
+   If <code class="code">i1</code> is the position located after <code class="code">i2</code>, a value &gt; 0.</div></div>
+<pre><span class="VALnext"><span class="keyword">val</span> next</span> : <code class="type"><a href="?package=camomile&amp;module=UCS4&amp;type=t">t</a> -&gt; <a href="?package=camomile&amp;module=UCS4&amp;type=index">index</a> -&gt; <a href="?package=camomile&amp;module=UCS4&amp;type=index">index</a></code></pre><div class="info"><div class="info"><code class="code">next s i</code>
+   returns the position of the head of the Unicode character
+   located immediately after <code class="code">i</code>. 
+   If <code class="code">i</code> is a valid position, the function always success.
+   If <code class="code">i</code> is a valid position and there is no Unicode character after <code class="code">i</code>,
+   the position outside <code class="code">s</code> is returned.  
+   If <code class="code">i</code> is not a valid position, the behaviour is undefined.</div></div>
+<pre><span class="VALprev"><span class="keyword">val</span> prev</span> : <code class="type"><a href="?package=camomile&amp;module=UCS4&amp;type=t">t</a> -&gt; <a href="?package=camomile&amp;module=UCS4&amp;type=index">index</a> -&gt; <a href="?package=camomile&amp;module=UCS4&amp;type=index">index</a></code></pre><div class="info"><div class="info"><code class="code">prev s i</code>
+   returns the position of the head of the Unicode character
+   located immediately before <code class="code">i</code>. 
+   If <code class="code">i</code> is a valid position, the function always success.
+   If <code class="code">i</code> is a valid position and there is no Unicode character before <code class="code">i</code>,
+   the position outside <code class="code">s</code> is returned.  
+   If <code class="code">i</code> is not a valid position, the behaviour is undefined.</div></div>
+<pre><span class="VALmove"><span class="keyword">val</span> move</span> : <code class="type"><a href="?package=camomile&amp;module=UCS4&amp;type=t">t</a> -&gt; <a href="?package=camomile&amp;module=UCS4&amp;type=index">index</a> -&gt; int -&gt; <a href="?package=camomile&amp;module=UCS4&amp;type=index">index</a></code></pre><div class="info"><div class="info"><code class="code">move s i n</code> :
+   If n &gt;= 0, returns <code class="code">n</code>-th Unicode character after <code class="code">i</code>.
+   If n &lt; 0, returns <code class="code">-n</code>-th Unicode character before <code class="code">i</code>.
+   If there is no such character, the result is unspecified.</div></div>
+<pre><span class="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(<a href="?package=camomile&amp;module=UChar&amp;type=t">UChar.t</a> -&gt; unit) -&gt; <a href="?package=camomile&amp;module=UCS4&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">iter f s</code> :
+   Apply <code class="code">f</code> to all Unicode characters in <code class="code">s</code>.  
+   The order of application is same to the order 
+   in the Unicode characters in <code class="code">s</code>.</div></div>
+<pre><span class="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="?package=camomile&amp;module=UCS4&amp;type=t">t</a> -&gt; <a href="?package=camomile&amp;module=UCS4&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">Code point comparison</div></div>
+<div class="ocaml_module sig" name="Buf"><pre><span class="keyword">module</span> <a href="?package=camomile&amp;module=UCS4.Buf">Buf</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Buffer module for UCS4</div></div><div class="ocaml_module_content">
+<pre><span class="TYPEbuf"><span class="keyword">type</span> buf</span> </pre><div class="info"><div class="info"><code class="code">create n</code> creates the buffer with the initial size <code class="code">n</code>.</div></div>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -&gt; <a href="?package=camomile&amp;module=UCS4.Buf&amp;type=buf">buf</a></code></pre>
+<div class="info"><div class="info">The rest of functions is similar to the ones of Buffer in stdlib.</div></div>
+<pre><span class="VALcontents"><span class="keyword">val</span> contents</span> : <code class="type"><a href="?package=camomile&amp;module=UCS4.Buf&amp;type=buf">buf</a> -&gt; <a href="?package=camomile&amp;module=UCS4&amp;type=t">t</a></code></pre>
+<pre><span class="VALclear"><span class="keyword">val</span> clear</span> : <code class="type"><a href="?package=camomile&amp;module=UCS4.Buf&amp;type=buf">buf</a> -&gt; unit</code></pre>
+<pre><span class="VALreset"><span class="keyword">val</span> reset</span> : <code class="type"><a href="?package=camomile&amp;module=UCS4.Buf&amp;type=buf">buf</a> -&gt; unit</code></pre>
+<pre><span class="VALadd_char"><span class="keyword">val</span> add_char</span> : <code class="type"><a href="?package=camomile&amp;module=UCS4.Buf&amp;type=buf">buf</a> -&gt; <a href="?package=camomile&amp;module=UChar&amp;type=t">UChar.t</a> -&gt; unit</code></pre>
+<pre><span class="VALadd_string"><span class="keyword">val</span> add_string</span> : <code class="type"><a href="?package=camomile&amp;module=UCS4.Buf&amp;type=buf">buf</a> -&gt; <a href="?package=camomile&amp;module=UCS4&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VALadd_buffer"><span class="keyword">val</span> add_buffer</span> : <code class="type"><a href="?package=camomile&amp;module=UCS4.Buf&amp;type=buf">buf</a> -&gt; <a href="?package=camomile&amp;module=UCS4.Buf&amp;type=buf">buf</a> -&gt; unit</code></pre></div></div>
+</div>

@@ -1,0 +1,120 @@
+<div class="ocaml_toplevel_module"><div class="info">Managed Strings</div>
+<div class="info"><div class="info">Managed strings are used in XDR context for constant strings that
+    are stored either as string or as memory (bigarray of char).<br/>    A managed string <code class="code">ms</code> is declared in the XDR file as in<br/>    <pre class="codepre"><code class="code">
+      typedef _managed string ms&lt;&gt;;
+    </code></pre><br/>    In the encoded XDR stream there is no difference between strings and
+    managed strings, i.e. the wire representation is identical. Only
+    the Ocaml type differs to which the managed string is mapped. This
+    type is  <a href="#Xdr_mstring.mstring">Xdr_mstring.mstring</a> (below).<br/>    In the RPC context there is often the problem that the I/O backend
+    would profit from a different string representation than the user of
+    the RPC layer. To bridge this gap, managed strings have been invented.
+    Generally, the user can determine how to represent strings (usually
+    either as an Ocaml string, or as memory), and the I/O backend
+    can request to transform to a different representation when this
+    leads to an improvement (i.e. copy operations can be saved).<br/>    Only large managed strings result in a speedup of the program
+    (at least several K).<br/>    <h2 id="2_TITLE">How to practically use managed strings</h2><br/>    There are two cases: The encoding case, and the decoding case.
+    In the encoding case the <code class="code">mstring</code> object is created by the user
+    and passed to the RPC library. This happens when a client prepares
+    an argument for calling a remote procedure, or when the server
+    sends a response back to the caller. In the decoding case the client
+    analyzes the response from an RPC call, or the server looks at the
+    arguments of an RPC invocation. The difference here is that in the
+    encoding case user code can directly create <code class="code">mstring</code> objects by
+    calling functions of this module, whereas in the decoding case the
+    RPC library creates the <code class="code">mstring</code> objects.<br/>    For simplicity, let us only look at this problem from the perspective
+    of an RPC client.<br/>    <b>Encoding.</b> Image a client wants to call an RPC, and one of the
+    arguments is a managed string. This means we finally need an <code class="code">mstring</code>
+    object that can be put into the argument list of the call.<br/>    This library supports two string representation specially: The normal
+    Ocaml <code class="code">string</code> type, and  <a href="#Netsys_mem.memory">Netsys_mem.memory</a> which is actually just
+    a bigarray of char's. There are two factories <code class="code">fac</code>,<br/>     -  <a href="#Xdr_mstring.string_based_mstrings">Xdr_mstring.string_based_mstrings</a>, and<ul><li> <a href="#Xdr_mstring.memory_based_mstrings">Xdr_mstring.memory_based_mstrings</a>,</li></ul>    and both can be used to create the <code class="code">mstring</code> to pass to the
+    RPC layer. It should be noted that this layer can process the
+    <code class="code">memory</code> representation a bit better. So, if the original <code class="code">data</code>
+    value is a string, the factory for <code class="code">string</code> should be used, and
+    if it is a char bigarray, the factory for <code class="code">memory</code> should be used.
+    Now, the <code class="code">mstring</code> object is created by<br/>     - <code class="code">let mstring = fac # create_from_string data pos len copy_flag</code>, or by<ul><li><code class="code">let mstring = fac # create_from_memory data pos len copy_flag</code>.</li></ul>    Of course, if <code class="code">fac</code> is the factory for strings, the <code class="code">create_from_string</code>
+    method works better, and if <code class="code">fac</code> is for <code class="code">memory</code>, the <code class="code">create_from_memory</code>
+    method works better. <code class="code">pos</code> and <code class="code">len</code> can select a substring of <code class="code">data</code>.
+    If <code class="code">copy_flag</code> is <code class="code">false</code>, the <code class="code">mstring</code> object does not copy the data
+    if possible, but just keeps a reference to <code class="code">data</code> until it is accessed;
+    otherwise if <code class="code">copy_flag</code> is <code class="code">true</code>, a copy is made immediately.
+    Of couse, delaying the copy is better, but this requires that <code class="code">data</code>
+    is not modified until the RPC call is completed.<br/>    <b>Decoding.</b> Now, the call is done, and the client looks at the
+    result. There is also an <code class="code">mstring</code> object in the result. As noted
+    above, this <code class="code">mstring</code> object was already created by the RPC library
+    (and currently this library prefers string-based objects if not
+    told otherwise). The user code can now access this <code class="code">mstring</code>
+    object with the access methods of the <code class="code">mstring</code> class (see below).
+    As these methods are quite limited, it makes normally only sense
+    to output the <code class="code">mstring</code> contents to a file descriptor.<br/>    The user can request a different factory for managed strings. The 
+    function  <a href="#Rpc_client.set_mstring_factories">Rpc_client.set_mstring_factories</a> can be used for this
+    purpose. (Similar ways exist for managed clients, and for RPC servers.)<br/>    <b>Potential.</b> Before introducing managed strings, a clean analysis
+    was done how many copy operations can be avoided by using this
+    technique. Example: The first N bytes of a file are taken as 
+    argument of an RPC call. Instead of reading these bytes into a
+    normal Ocaml string, an optimal implementation uses now a <code class="code">memory</code>
+    buffer for this purpose. This gives:<br/>    - Old implementation with strings and ocamlnet-2:
+      Data is copied <b>six</b> times from reading it from the file until
+      writing it to the socket.<ul><li>New implementation with memory-based mstrings:
+      Data is copied only <b>twice</b>! The first copy reads it from the
+      file into the input buffer (a <code class="code">memory</code> value), and the second copy
+      writes the data into the socket.</li></ul>    Part of the optimization is that <code class="code">Unix.read</code> and <code class="code">Unix.write</code>
+    do a completely avoidable copy of the data which is prevented by
+    switching to  <a href="#Netsys_mem.mem_read">Netsys_mem.mem_read</a> and  <a href="#Netsys_mem.mem_write">Netsys_mem.mem_write</a>,
+    respectively. The latter two functions exploit an optimization
+    that is only possible when the data is <code class="code">memory</code>-typed.<br/>    The possible optimizations for the decoding side of the problem
+    are slightly less impressive, but still worth doing it.</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Interface</h2></div></div>
+<div class="ocaml_class sig" name="mstring"><pre><span class="TYPEmstring"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;class=mstring">mstring</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">The object holding the string value</div></div><div class="ocaml_class_content"><pre><span class="METHODlength"><span class="keyword">method</span> length</span> : <code class="code">int</code></pre>
+<div class="info"><div class="info">The length of the managed string</div></div>
+<pre><span class="METHODblit_to_string"><span class="keyword">method</span> blit_to_string</span> : <code class="code">int -&gt; string -&gt; int -&gt; int -&gt; unit</code></pre>
+<div class="info"><div class="info"><code class="code">blit_to_string mpos s spos len</code>: Copies the substring of the
+	managed string from <code class="code">mpos</code> to <code class="code">mpos+len-1</code> to the substring of
+	<code class="code">s</code> from <code class="code">spos</code> to <code class="code">spos+len-1</code></div></div>
+<pre><span class="METHODblit_to_memory"><span class="keyword">method</span> blit_to_memory</span> : <code class="code">int -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">Netsys_mem.memory</a> -&gt; int -&gt; int -&gt; unit</code></pre>
+<div class="info"><div class="info"><code class="code">blit_to_string mpos mem mempos len</code>: Copies the substring of the
+	managed string from <code class="code">mpos</code> to <code class="code">mpos+len-1</code> to the substring of
+	<code class="code">mem</code> from <code class="code">mempos</code> to <code class="code">mempos+len-1</code></div></div>
+<pre><span class="METHODas_string"><span class="keyword">method</span> as_string</span> : <code class="code">string * int</code></pre>
+<div class="info"><div class="info">Returns the contents as string. It is undefined whether the returned
+	string is a copy or the underlying buffer. The int is the position
+	where the contents start</div></div>
+<pre><span class="METHODas_memory"><span class="keyword">method</span> as_memory</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">Netsys_mem.memory</a> * int</code></pre>
+<div class="info"><div class="info">Returns the contents as memory. It is undefined whether the returned
+	memory is a copy or the underlying buffer. The int is the position
+	where the contents start</div></div>
+<pre><span class="METHODpreferred"><span class="keyword">method</span> preferred</span> : <code class="code">[ `Memory | `String ]</code></pre>
+<div class="info"><div class="info">Whether <code class="code">as_memory</code> or <code class="code">as_string</code> is cheaper</div></div></div></div>
+<div class="ocaml_class sig" name="mstring_factory"><pre><span class="TYPEmstring_factory"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;class=mstring_factory">mstring_factory</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">The object creating new <code class="code">mstring</code> objects</div></div><div class="ocaml_class_content"><pre><span class="METHODcreate_from_string"><span class="keyword">method</span> create_from_string</span> : <code class="code">string -&gt; int -&gt; int -&gt; bool -&gt; <a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring">mstring</a></code></pre>
+<div class="info"><div class="info"><code class="code">create_from_string s pos len must_copy</code>: Creates the <code class="code">mstring</code> from the
+	sub string of s starting at <code class="code">pos</code> with length <code class="code">len</code><br/>	If <code class="code">must_copy</code> the mstring object must create a copy. Otherwise
+	it can just keep the string passed in.</div></div>
+<pre><span class="METHODcreate_from_memory"><span class="keyword">method</span> create_from_memory</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">Netsys_mem.memory</a> -&gt; int -&gt; int -&gt; bool -&gt; <a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring">mstring</a></code></pre>
+<div class="info"><div class="info"><code class="code">create_from_memory m pos len must_copy</code>: Creates the <code class="code">mstring</code> from the
+	sub string of m starting at <code class="code">pos</code> with length <code class="code">len</code><br/>	If <code class="code">must_copy</code> the mstring object must create a copy. Otherwise
+	it can just keep the memory passed in.</div></div></div></div>
+<pre><span class="VALstring_based_mstrings"><span class="keyword">val</span> string_based_mstrings</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring_factory">mstring_factory</a></code></pre><div class="info"><div class="info">Uses strings to represent mstrings</div></div>
+<pre><span class="VALstring_to_mstring"><span class="keyword">val</span> string_to_mstring</span> : <code class="type">?pos:int -&gt; ?len:int -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring">mstring</a></code></pre><div class="info"><div class="info">Represent a string as mstring (no copy)</div></div>
+<pre><span class="VALmemory_based_mstrings"><span class="keyword">val</span> memory_based_mstrings</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring_factory">mstring_factory</a></code></pre><div class="info"><div class="info">Uses memory to represent mstrings. The memory bigarrays are allocated
+      with <code class="code">Bigarray.Array1.create</code></div></div>
+<pre><span class="VALmemory_to_mstring"><span class="keyword">val</span> memory_to_mstring</span> : <code class="type">?pos:int -&gt; ?len:int -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">Netsys_mem.memory</a> -&gt; <a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring">mstring</a></code></pre><div class="info"><div class="info">Represent memory as mstring (no copy)</div></div>
+<pre><span class="VALpaligned_memory_based_mstrings"><span class="keyword">val</span> paligned_memory_based_mstrings</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring_factory">mstring_factory</a></code></pre><div class="info"><div class="info">Uses memory to represent mstrings. The memory bigarrays are allocated
+      with  <a href="#Netsys_mem.alloc_memory_pages">Netsys_mem.alloc_memory_pages</a> if available, and 
+      <code class="code">Bigarray.Array1.create</code> if not.</div></div>
+<pre><span class="VALmemory_pool_based_mstrings"><span class="keyword">val</span> memory_pool_based_mstrings</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory_pool">Netsys_mem.memory_pool</a> -&gt; <a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring_factory">mstring_factory</a></code></pre><div class="info"><div class="info">Uses memory to represent mstrings. The memory bigarrays are obtained
+      from the pool. The length of these mstrings is limited by the 
+      blocksize of the pool.</div></div>
+<pre><span class="VALlength_mstrings"><span class="keyword">val</span> length_mstrings</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring">mstring</a> list -&gt; int</code></pre><div class="info"><div class="info">returns the sum of the lengths of the mstrings</div></div>
+<pre><span class="VALconcat_mstrings"><span class="keyword">val</span> concat_mstrings</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring">mstring</a> list -&gt; string</code></pre><div class="info"><div class="info">concatenates the mstrings and return them as single string. The returned
+      string may be shared with one of the mstrings passed in.</div></div>
+<pre><span class="VALprefix_mstrings"><span class="keyword">val</span> prefix_mstrings</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring">mstring</a> list -&gt; int -&gt; string</code></pre><div class="info"><div class="info"><code class="code">prefix_mstrings l n</code>: returns the first <code class="code">n</code> chars of the 
+      concatenated mstrings <code class="code">l</code> as single string</div></div>
+<pre><span class="VALblit_mstrings_to_memory"><span class="keyword">val</span> blit_mstrings_to_memory</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring">mstring</a> list -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">Netsys_mem.memory</a> -&gt; unit</code></pre><div class="info"><div class="info">blits the mstrings one after the other to the memory, so that
+      they appear there concatenated</div></div>
+<pre><span class="VALshared_sub_mstring"><span class="keyword">val</span> shared_sub_mstring</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring">mstring</a> -&gt; int -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring">mstring</a></code></pre><div class="info"><div class="info"><code class="code">shared_sub_mstring ms pos len</code>: returns an mstring that includes
+      a substring of <code class="code">ms</code>, starting at <code class="code">pos</code>, and with <code class="code">len</code> bytes. 
+      The returned mstring shares the buffer with the original mstring <code class="code">ms</code></div></div>
+<pre><span class="VALshared_sub_mstrings"><span class="keyword">val</span> shared_sub_mstrings</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring">mstring</a> list -&gt; int -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring">mstring</a> list</code></pre><div class="info"><div class="info">Same for a list of mstrings</div></div>
+<pre><span class="VALcopy_mstring"><span class="keyword">val</span> copy_mstring</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring">mstring</a> -&gt; <a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring">mstring</a></code></pre><div class="info"><div class="info">Create a copy</div></div>
+<pre><span class="VALcopy_mstrings"><span class="keyword">val</span> copy_mstrings</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring">mstring</a> list -&gt; <a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring">mstring</a> list</code></pre><div class="info"><div class="info">Create a copy</div></div>
+<pre><span class="TYPEnamed_mstring_factories"><span class="keyword">type</span> named_mstring_factories</span> = <code class="type">(string, <a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring_factory">mstring_factory</a>) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">Hashtbl.t</a></code></pre>
+</div>

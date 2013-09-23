@@ -1,0 +1,16 @@
+<div class="ocaml_toplevel_module"><div class="info">Streaming utilities (experimental)</div>
+<div class="info"><div class="info">This module offers a streaming interface for representing long lists
+   of elements that cannot fit in memory.
+   Stream items are serialized as chunks of configurable length.<br/>   Stream format (independent from the biniou serialization format):<br/><span class="verbatim">  ( ONE INT64 BYTE* )* ZERO</span><br/>  where <code class="code">INT64</code> is the length of a chunk (unsigned big-endian 64-bit int),
+  i.e. the number of following <code class="code">BYTE</code>s.
+  <code class="code">ONE</code> and <code class="code">ZERO</code> are the single-byte representations of 1 and 0 and are used
+  to indicate whether the end of the stream is reached.</div></div>
+<pre><span class="VALread_stream"><span class="keyword">val</span> read_stream</span> : <code class="type">(string -&gt; 'a array) -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a> -&gt; 'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a></code></pre><div class="info"><div class="info"><code class="code">read_stream of_string ic</code> creates an OCaml stream from
+      an input channel <code class="code">ic</code>. The data come in chunks and each chunk
+      is converted from a string to an array by calling <code class="code">of_string</code>.</div></div>
+<pre><span class="VALwrite_stream"><span class="keyword">val</span> write_stream</span> : <code class="type">?chunk_len:int -&gt;
+('a array -&gt; string) -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a> -&gt; 'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">write_stream to_string oc st</code> writes an OCaml stream to the
+      output channel <code class="code">oc</code>. It creates chunks of <code class="code">chunk_len</code>,
+      except for the last chunk which is usually smaller.<div class="parameters"><div class="param_info"><code class="code">chunk_len</code> : has a default value of 1024.</div></div></div></div>
+<pre><span class="VALtest"><span class="keyword">val</span> test</span> : <code class="type">int list -&gt; bool</code></pre>
+</div>

@@ -1,0 +1,8 @@
+<div class="ocaml_toplevel_module"><div class="info">Loading of key bindings</div>
+<pre><span class="EXCEPTIONParse_error"><span class="keyword">exception</span> Parse_error</span> <span class="keyword">of</span> <code class="type">string * int * string</code></pre><div class="info"><div class="info"><code class="code">Parse_error(source, line, message)</code> is raised when the inputrc
+      file contains errors.</div></div>
+<pre><span class="VALload"><span class="keyword">val</span> load</span> : <code class="type">?file:string -&gt; unit -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">load ?file ()</code> loads key bindings from <code class="code">file</code>, which defaults
+      to ~/.lambda-term-inputrc, if it exists.</div></div>
+<pre><span class="VALdefault"><span class="keyword">val</span> default</span> : <code class="type">string</code></pre><div class="info"><div class="info">The name of the default key bindings file,
+      i.e. ~/.lambda-term-inputrc.</div></div>
+</div>

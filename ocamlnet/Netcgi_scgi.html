@@ -1,0 +1,31 @@
+<div class="ocaml_toplevel_module"><div class="info">SCGI connector.<br/>    The  <a href="http://www.mems-exchange.org/software/scgi/">SCGI</a> connects
+    your web applications through a TCP/IP socket (thus the application
+    can run on a machine different from the web server).<br/>    See the  <a href="#Netcgi_scgi.setup">Netcgi_scgi.setup</a> section at the end of this file to know
+    how to configure your web server.</div>
+<pre><span class="VALrun"><span class="keyword">val</span> run</span> : <code class="type">?config:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=config">Netcgi.config</a> -&gt;
+?allow:(<a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a> -&gt; bool) -&gt;
+?output_type:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=output_type">Netcgi.output_type</a> -&gt;
+?arg_store:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=arg_store">Netcgi.arg_store</a> -&gt;
+?exn_handler:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=exn_handler">Netcgi.exn_handler</a> -&gt;
+?sockaddr:<a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a> -&gt; ?port:int -&gt; (<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=cgi">Netcgi.cgi</a> -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">run f</code> executes <code class="code">f cgi</code> for each SCGI request.<div class="parameters"><div class="param_info"><code class="code">config</code> : Default:  <a href="#Netcgi.default_config">Netcgi.default_config</a></div><div class="param_info"><code class="code">allow</code> : Tells whether a connection from the socket is allowed.
+        Default: allow from all.</div><div class="param_info"><code class="code">output_type</code> : Default: <code class="code">`Direct &quot;&quot;</code></div><div class="param_info"><code class="code">arg_store</code> : Default: <code class="code">`Automatic</code> for all arguments.</div><div class="param_info"><code class="code">sockaddr</code> : The socket used by the web server to send the requests.</div><div class="param_info"><code class="code">exn_handler</code> : See  <a href="#Netcgi.exn_handler">Netcgi.exn_handler</a>.  Default: delegate
+        all exceptions to the default handler.</div><div class="param_info"><code class="code">sockaddr</code> : The sockaddr for listening. Overrides <code class="code">port</code></div><div class="param_info"><code class="code">port</code> : The port for listening. Needs to be specified if no
+        <code class="code">sockaddr</code> is passed.</div></div></div></div>
+<pre><span class="VALhandle_request"><span class="keyword">val</span> handle_request</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netcgi&amp;type=config">Netcgi.config</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=output_type">Netcgi.output_type</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=arg_store">Netcgi.arg_store</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=exn_handler">Netcgi.exn_handler</a> -&gt;
+(<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=cgi">Netcgi.cgi</a> -&gt; unit) -&gt;
+log:(string -&gt; unit) option -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocamlnet&amp;module=Netcgi&amp;type=connection_directive">Netcgi.connection_directive</a></code></pre><div class="info"><div class="info"><code class="code">handle_request config output_type arg_store eh f ~log fd</code>:
+      This is a 
+      lower-level interface that processes exactly one request arriving 
+      on the existing connection <code class="code">fd</code>.<br/>      <code class="code">log</code> is the error logger function or <code class="code">None</code>, in which case 
+      errors are passed through to the FCGI client.<br/>      The other arguments are just like for <code class="code">run</code>.<br/>      The return value indicates whether the connection can be kept
+      open or must be closed.</div></div>
+<div class="info"><div class="info"><h2 id="setup">Setup</h2><br/>    Add to httpd.conf or to, say, scgi.conf in /etc/apache/conf.d
+    <pre class="codepre"><code class="code">
+    LoadModule scgi_module /usr/lib/apache/1.3/mod_scgi.so
+    # Serve the URL /scgi by contacting 127.0.0.1 on port 8888
+    SCGIMount /scgi 127.0.0.1:8888
+    </code></pre></div></div>
+</div>

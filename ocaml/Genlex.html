@@ -1,0 +1,37 @@
+<div class="ocaml_toplevel_module"><div class="info">A generic lexical analyzer.<br/>   This module implements a simple 'standard' lexical analyzer, presented
+   as a function from character streams to token streams. It implements
+   roughly the lexical conventions of OCaml, but is parameterized by the
+   set of keywords of your language.<br/>   Example: a lexer suitable for a desk calculator is obtained by
+   <pre class="codepre"><code class="code">     let lexer = make_lexer [&quot;+&quot;;&quot;-&quot;;&quot;*&quot;;&quot;/&quot;;&quot;let&quot;;&quot;=&quot;; &quot;(&quot;; &quot;)&quot;]  </code></pre><br/>   The associated parser would be a function from <code class="code">token stream</code>
+   to, for instance, <code class="code">int</code>, and would have rules such as:<br/>   <pre class="codepre"><code class="code">
+           let rec parse_expr = parser
+             | [&lt; n1 = parse_atom; n2 = parse_remainder n1 &gt;] -&gt; n2
+           and parse_atom = parser
+             | [&lt; 'Int n &gt;] -&gt; n
+             | [&lt; 'Kwd &quot;(&quot;; n = parse_expr; 'Kwd &quot;)&quot; &gt;] -&gt; n
+           and parse_remainder n1 = parser
+             | [&lt; 'Kwd &quot;+&quot;; n2 = parse_expr &gt;] -&gt; n1+n2
+             | [&lt; &gt;] -&gt; n1
+   </code></pre><br/>   One should notice that the use of the <code class="code">parser</code> keyword and associated
+   notation for streams are only available through camlp4 extensions. This
+   means that one has to preprocess its sources <i>e. g.</i> by using the
+   <code class="code">&quot;-pp&quot;</code> command-line switch of the compilers.</div>
+<pre><code><span class="TYPEtoken"><span class="keyword">type</span> token</span> = </code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTtoken.Kwd"><span class="constructor">Kwd</span></span> <span class="keyword">of</span> <code class="type">string</code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTtoken.Ident"><span class="constructor">Ident</span></span> <span class="keyword">of</span> <code class="type">string</code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTtoken.Int"><span class="constructor">Int</span></span> <span class="keyword">of</span> <code class="type">int</code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTtoken.Float"><span class="constructor">Float</span></span> <span class="keyword">of</span> <code class="type">float</code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTtoken.String"><span class="constructor">String</span></span> <span class="keyword">of</span> <code class="type">string</code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTtoken.Char"><span class="constructor">Char</span></span> <span class="keyword">of</span> <code class="type">char</code></code></td></tr></table><div class="info"><div class="info">The type of tokens. The lexical classes are: <code class="code">Int</code> and <code class="code">Float</code>
+   for integer and floating-point numbers; <code class="code">String</code> for
+   string literals, enclosed in double quotes; <code class="code">Char</code> for
+   character literals, enclosed in single quotes; <code class="code">Ident</code> for
+   identifiers (either sequences of letters, digits, underscores
+   and quotes, or sequences of 'operator characters' such as
+   <code class="code">+</code>, <code class="code">*</code>, etc); and <code class="code">Kwd</code> for keywords (either identifiers or
+   single 'special characters' such as <code class="code">(</code>, <code class="code">}</code>, etc).</div></div>
+<pre><span class="VALmake_lexer"><span class="keyword">val</span> make_lexer</span> : <code class="type">string list -&gt; char <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a> -&gt; <a href="?package=ocaml&amp;module=Genlex&amp;type=token">token</a> <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a></code></pre><div class="info"><div class="info">Construct the lexer function. The first argument is the list of
+   keywords. An identifier <code class="code">s</code> is returned as <code class="code">Kwd s</code> if <code class="code">s</code>
+   belongs to this list, and as <code class="code">Ident s</code> otherwise.
+   A special character <code class="code">s</code> is returned as <code class="code">Kwd s</code> if <code class="code">s</code>
+   belongs to this list, and cause a lexical error (exception
+   <code class="code">Stream.Error</code> with the offending lexeme as its parameter) otherwise.
+   Blanks and newlines are skipped. Comments delimited by <code class="code">(*</code> and <code class="code">*)</code>
+   are skipped as well, and can be nested. A <code class="code">Stream.Failure</code> exception
+   is raised if end of stream is unexpectedly reached.</div></div>
+</div>

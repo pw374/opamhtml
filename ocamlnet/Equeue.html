@@ -1,0 +1,62 @@
+<div class="ocaml_toplevel_module"><div class="info"><code class="code">Equeue</code> implements generic event queues. An <b>event system</b> 
+ consists of an event queue, a list of event handlers, and an 
+ event source. The queue has FIFO semantics, i.e. the first event
+ is processed next, and new events are appended to its end. When
+ an event is delivered to an event handler, all handlers are tried
+ until a handler accepts the event (or the event is dropped if no
+ such handler can be found). See below how a handler can indicate
+ whether to accept or reject an event.<br/> When the queue is empty, the event source is called once. The source
+ can add events to the queue, in order to continue event processing.
+ If the queue remains empty, the execution of the event system
+ stops.</div>
+<div class="info"><div class="info"><b>THREAD SAFETY</b><br/> The module can be used in multi-threaded program provided no
+ event system is shared by several threads, or if so, access to
+ functions is serialized.</div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> </pre><div class="info"><div class="info">This is the type of an event system with events of type 'a</div></div>
+<pre><span class="EXCEPTIONReject"><span class="keyword">exception</span> Reject</span></pre><div class="info"><div class="info">May be raised by event handlers to reject events</div></div>
+<pre><span class="EXCEPTIONTerminate"><span class="keyword">exception</span> Terminate</span></pre><div class="info"><div class="info">May be raised by event handlers to accept events while terminating
+ themselves</div></div>
+<pre><span class="EXCEPTIONOut_of_handlers"><span class="keyword">exception</span> Out_of_handlers</span></pre><div class="info"><div class="info">Raised by <code class="code">run</code> when the event source adds new events to the queue
+ but there are no event handlers to process them</div></div>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">?string_of_event:('a -&gt; string) -&gt; ('a <a href="?package=ocamlnet&amp;module=Equeue&amp;type=t">t</a> -&gt; unit) -&gt; 'a <a href="?package=ocamlnet&amp;module=Equeue&amp;type=t">t</a></code></pre><div class="info"><div class="info">Creates a new event system that has an event source, but is 
+ otherwise empty. The argument of type <code class="code">'a t -&gt; unit</code> is the
+ event source. The source can call <code class="code">add_event</code> to put new events
+ into the queue.<div class="parameters"><div class="param_info"><code class="code">string_of_event</code> : Optionally, one can pass a printer for events.
+   This has only an effect for debugging output.</div></div></div></div>
+<pre><span class="VALadd_event"><span class="keyword">val</span> add_event</span> : <code class="type">'a <a href="?package=ocamlnet&amp;module=Equeue&amp;type=t">t</a> -&gt; 'a -&gt; unit</code></pre><div class="info"><div class="info">Puts an event into the event queue of the system.</div></div>
+<pre><span class="VALadd_handler"><span class="keyword">val</span> add_handler</span> : <code class="type">'a <a href="?package=ocamlnet&amp;module=Equeue&amp;type=t">t</a> -&gt; ('a <a href="?package=ocamlnet&amp;module=Equeue&amp;type=t">t</a> -&gt; 'a -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info">Adds a handler to the list of handlers of the system.<br/> An event handler is called with the event system and the event as
+ arguments. The handler can return in various ways:<br/> - Return normally: This means that the event is accepted by the
+   handler. No other handler will be asked to process the event.<ul><li>Raise <code class="code">Reject</code>: The event is rejected by the handler. The other
+   handlers are asked to process the event.</li><li>Raise <code class="code">Terminate</code>: The event is accepted, but the handler is
+   terminated, i.e. will never be called again.</li><li>Raise another exception: The event is deferred, and will be
+   processed again in the future, but after the already queued events.
+   Furthermore, the exception falls through to the caller of
+   <code class="code">run</code>.</li></ul> The handler can add new events and new event handlers. The latter
+ will be activated when the next event is processed.</div></div>
+<pre><span class="VALrun"><span class="keyword">val</span> run</span> : <code class="type">'a <a href="?package=ocamlnet&amp;module=Equeue&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Running a system means that, unless the queue is empty, the events
+ at the time of the <code class="code">run</code> invocation and all later added events are
+ gone through. Each event is presented to the handlers until one
+ handler accepts the event. Events rejected by all handlers are
+ dropped silently. If there is no pending event the default event
+ source is called once. If there are still no events the system stops
+ and returns. If there are events to process but no handlers which
+ can do them all events are silently dropped, and the default event
+ source is called once.<br/> The exception <code class="code">Out_of_handlers</code> is raised if there are events but no
+ handlers after the event source has been called. This is considered
+ as a programming error, and would cause infinite looping if not
+ detected.<br/> Note that there is an implicit order among the handlers which is
+ simply the order the handlers have been added to the system. This
+ means that you can set a fallback handler which catches any unprocessed
+ event by adding it last.<br/> Note that the events are processed in the order they happen. There
+ is no mechanism to assign priorities to events.<br/> Handlers are allowed to raise arbitrary exceptions. Exceptions other
+ than Reject and Terminate are not caught, so the caller has to do this
+ if appropriate. It is possible to restart an event system by just
+ calling <code class="code">run</code> again.</div></div>
+<pre><span class="VALis_running"><span class="keyword">val</span> is_running</span> : <code class="type">'a <a href="?package=ocamlnet&amp;module=Equeue&amp;type=t">t</a> -&gt; bool</code></pre><div class="info"><div class="info">Returns whether the event loop is active</div></div>
+<div class="ocaml_module sig" name="Debug"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Equeue.Debug">Debug</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEdebug_target"><span class="keyword">type</span> debug_target</span> = <code class="type">[ `Any | `Process of int | `Thread of int ]</code></pre>
+<pre><span class="VALenable"><span class="keyword">val</span> enable</span> : <code class="type">bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">Enable  <a href="#Netlog">Netlog</a> debugging</div></div>
+<pre><span class="VALset_debug_mode"><span class="keyword">val</span> set_debug_mode</span> : <code class="type">bool -&gt; unit</code></pre><div class="info"><div class="info">Sets <code class="code">enable</code>.</div></div>
+<pre><span class="VALset_debug_target"><span class="keyword">val</span> set_debug_target</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Equeue.Debug&amp;type=debug_target">debug_target</a> -&gt; unit</code></pre><div class="info"><div class="info">Restricts debugging to this target.</div></div>
+<pre><span class="VALtest_debug_target"><span class="keyword">val</span> test_debug_target</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Equeue.Debug&amp;type=debug_target">debug_target</a> -&gt; bool</code></pre></div></div>
+</div>

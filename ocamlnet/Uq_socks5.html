@@ -1,0 +1,24 @@
+<div class="ocaml_toplevel_module"><div class="info"><div class="info">This module implements a SOCKS version 5 client (see RFC 1928) for
+ use with the  <a href="#Uq_engines.connector">Uq_engines.connector</a>,  <a href="#Uq_engines.listener">Uq_engines.listener</a>, and
+  <a href="#Uq_engines.datagram_provider">Uq_engines.datagram_provider</a> engine factories.<br/> This implementation supports IPv4 and IPv6.</div></div>
+<pre><span class="EXCEPTIONSocks_error"><span class="keyword">exception</span> Socks_error</span> <span class="keyword">of</span> <code class="type">string</code></pre><div class="info"><div class="info">Raised when error messages of the SOCKS proxy are received, or
+ because of other SOCKS-related problems.</div></div>
+<div class="ocaml_class sig" name="proxy_client"><pre><span class="TYPEproxy_client"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Uq_socks5&amp;class=proxy_client">proxy_client</a></span> : <code class="type"><a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=connect_address">Uq_engines.connect_address</a> -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">The object created by <code class="code">new proxy_client addr</code> can be passed as <code class="code">proxy</code> 
+ to the  <a href="#Uq_engines.connector">Uq_engines.connector</a>,  <a href="#Uq_engines.listener">Uq_engines.listener</a>, and 
+  <a href="#Uq_engines.datagram_provider">Uq_engines.datagram_provider</a> functions to use
+ the SOCKS proxy for connections, servers, and datagram socket, 
+ respectively.<br/> The SOCKS client supports the following methods:<ul><li><code class="code">connect</code>: Only TCP connections are supported (UDP could be made
+   working - TODO)</li><li><code class="code">listen</code>: This works (only) for TCP sockets, too</li><li><code class="code">create_datagram_socket</code>: Creates unconnected datagram sockets that
+   can be sent and received with object methods</li></ul> Note that socket addresses are resolved by the proxy host; this applies
+ to both <code class="code">`Sock_inet</code> and <code class="code">`Sock_inet_byname</code>. For the latter this means
+ that name resolution is done by the proxy.<br/> The nature of SOCKS restricts the functionality:<ul><li><code class="code">`Sock_unix</code> addresses are not supported (i.e. you cannot connect
+   to a Unix domain socket on the proxy host)</li><li>Listening server sockets can only accept one connection; after that
+   they are &quot;dead&quot; and must be shut down first. The method
+   <code class="code">multiple_connections</code> is <code class="code">false</code> because of this.</li><li>Further restrictions can be enforced by the SOCKS proxy and
+   its configuration.</li></ul></div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=client_endpoint_connector"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=client_endpoint_connector">Uq_engines.client_endpoint_connector</a></pre></div>
+
+<div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=server_endpoint_listener"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=server_endpoint_listener">Uq_engines.server_endpoint_listener</a></pre></div>
+
+<div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=datagram_socket_provider"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=datagram_socket_provider">Uq_engines.datagram_socket_provider</a></pre></div>
+</div></div>
+</div>

@@ -1,0 +1,12 @@
+<div class="ocaml_toplevel_module"><div class="info">Atomically edit a file without long-term locking<br/>   See documentation for the function <code class="code">atomic_edit</code></div>
+<pre><code><span class="TYPEreturn_type"><span class="keyword">type</span> return_type</span> = </code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTreturn_type.Ok"><span class="constructor">Ok</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTreturn_type.Changed"><span class="constructor">Changed</span></span> <span class="keyword">of</span> <code class="type">string * string</code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTreturn_type.Abort"><span class="constructor">Abort</span></span></code></td></tr></table><div class="info"><div class="info">the return value of <code class="code">atomic_edit</code></div><div class="info"><code class="code">atomic_edit ~f filepath</code> edit <code class="code">filepath</code> by making a unique copy (peer)
+    that can be openly changed without holding any locks on the original. When
+    the function returns, a short term exclusive lock is held while overwriting
+    the original with the edited copy. If the mtime of the original is changed
+    since the copy was made, the replacement is aborted (indicating another
+    <code class="code">atomic_edit</code> was first to update the file, or some other process) and
+    Changed is returned with a tuple <code class="code">(warning message * terd file)</code>. The terd
+    file contains the edits and might be used to diff or re-edit.</div></div>
+<pre><span class="VALatomic_edit"><span class="keyword">val</span> atomic_edit</span> : <code class="type">f:(string -&gt; [ `Abort | `Ok ]) -&gt; string -&gt; <a href="?package=core_extended&amp;module=Atomic_edit&amp;type=return_type">return_type</a></code></pre>
+</div>

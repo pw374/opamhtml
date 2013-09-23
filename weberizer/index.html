@@ -1,0 +1,22 @@
+<h1>Modules</h1>
+<table class="indextable">
+    <tr><td class="module"><a href="?package=weberizer&amp;module=Weberizer">Weberizer</a></td><td><div class="info">Simple templating library.  It reads HTML files &quot;with variables&quot;
+    and can either output an OCaml module (reusable template with some
+    static checks) or perform substitutions and return the HTML.<br/>    To parametrize the HTML, you can add the following arguments to
+    any HTML tag:
+    <span class="verbatim">    ml:content=&quot;&lt;ident&gt;&quot;
+    ml:content=&quot;&lt;ident&gt; &lt;arg1&gt; ... &lt;argN&gt;&quot;
+    ml:strip=&quot;true&quot;   ml:strip=&quot;if empty&quot;
+    ml:replace=&quot;&lt;ident&gt;&quot;					     </span><br/>    - The argument <code class="code">ml:content=&quot;v&quot;</code> (<code class="code">v</code> is any valid OCaml variable
+      name) tells that the content of the HTML tag must be replaced by
+      the HTML contained in the OCaml variable <code class="code">v</code>.<ul><li><code class="code">ml:content=&quot;f v1 ... vN&quot;</code> does the same but uses the return
+      value of the OCaml function <code class="code">f</code> on the list <code class="code">[v1; ...; vN]</code> as
+      the replacement HTML.</li><li><code class="code">ml:strip=&quot;true&quot;</code> says that the HTML tag should be removed
+      and replaced by the content.</li><li><code class="code">ml:strip=&quot;if empty&quot;</code> says that the HTML tag should be removed
+      only if the replacement content is empty.</li><li><code class="code">ml:replace=&quot;v&quot;</code> is the same as <code class="code">ml:content=&quot;v&quot;</code> except that it
+      adds <code class="code">ml:strip=&quot;true&quot;</code>.</li></ul>    A special value of &lt;ident&gt; is &quot;include&quot;.  It serves to include the
+    files passed as arguments and does not define a new function.<br/>    Inside HTML arguments themselves, one can use<ul><li><code class="code">${&lt;ident&gt;}</code> which is replaced by the content (a string) of the
+      variable &lt;indent&gt;;</li><li><code class="code">${f v1 ... vN}</code> which is replaced by the string returned by the
+      function <code class="code">f</code> applied to the list <code class="code">[v1; ...; vN]</code>. </li></ul></div></td></tr>
+<tr><td class="module"><a href="?package=weberizer&amp;module=Weberizer_compile">Weberizer_compile</a></td><td/></tr>
+</table>

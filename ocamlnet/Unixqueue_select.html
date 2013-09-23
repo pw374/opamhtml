@@ -1,0 +1,45 @@
+<div class="ocaml_toplevel_module"><div class="ocaml_class sig" name="sb_event_system"><pre><span class="TYPEsb_event_system"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Unixqueue_select&amp;class=sb_event_system">sb_event_system</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><pre><span class="METHODnew_group"><span class="keyword">method</span> new_group</span> : <code class="code">unit -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue_util&amp;type=group">Unixqueue_util.group</a></code></pre>
+
+<pre><span class="METHODnew_wait_id"><span class="keyword">method</span> new_wait_id</span> : <code class="code">unit -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue_util&amp;type=wait_id">Unixqueue_util.wait_id</a></code></pre>
+
+<pre><span class="METHODexists_resource"><span class="keyword">method</span> exists_resource</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue_util&amp;type=operation">Unixqueue_util.operation</a> -&gt; bool</code></pre>
+
+<pre><span class="METHODadd_resource"><span class="keyword">method</span> add_resource</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue_util&amp;type=group">Unixqueue_util.group</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue_util&amp;type=operation">Unixqueue_util.operation</a> * float -&gt; unit</code></pre>
+
+<pre><span class="METHODadd_weak_resource"><span class="keyword">method</span> add_weak_resource</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue_util&amp;type=group">Unixqueue_util.group</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue_util&amp;type=operation">Unixqueue_util.operation</a> * float -&gt; unit</code></pre>
+
+<pre><span class="METHODadd_close_action"><span class="keyword">method</span> add_close_action</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue_util&amp;type=group">Unixqueue_util.group</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> * (<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; unit) -&gt; unit</code></pre>
+
+<pre><span class="METHODadd_abort_action"><span class="keyword">method</span> add_abort_action</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue_util&amp;type=group">Unixqueue_util.group</a> -&gt; (<a href="?package=ocamlnet&amp;module=Unixqueue_util&amp;type=group">Unixqueue_util.group</a> -&gt; exn -&gt; unit) -&gt; unit</code></pre>
+
+<pre><span class="METHODremove_resource"><span class="keyword">method</span> remove_resource</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue_util&amp;type=group">Unixqueue_util.group</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue_util&amp;type=operation">Unixqueue_util.operation</a> -&gt; unit</code></pre>
+
+<pre><span class="METHODadd_handler"><span class="keyword">method</span> add_handler</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue_util&amp;type=group">Unixqueue_util.group</a> -&gt;
+(<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt;
+ <a href="?package=ocamlnet&amp;module=Unixqueue_util&amp;type=event">Unixqueue_util.event</a> <a href="?package=ocamlnet&amp;module=Equeue&amp;type=t">Equeue.t</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue_util&amp;type=event">Unixqueue_util.event</a> -&gt; unit) -&gt;
+unit</code></pre>
+
+<pre><span class="METHODadd_event"><span class="keyword">method</span> add_event</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue_util&amp;type=event">Unixqueue_util.event</a> -&gt; unit</code></pre>
+
+<pre><span class="METHODclear"><span class="keyword">method</span> clear</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue_util&amp;type=group">Unixqueue_util.group</a> -&gt; unit</code></pre>
+
+<pre><span class="METHODrun"><span class="keyword">method</span> run</span> : <code class="code">unit -&gt; unit</code></pre>
+
+<pre><span class="METHODis_running"><span class="keyword">method</span> is_running</span> : <code class="code">bool</code></pre>
+
+<pre><span class="METHODwhen_blocking"><span class="keyword">method</span> when_blocking</span> : <code class="code">(unit -&gt; unit) -&gt; unit</code></pre>
+
+<pre><span class="METHODsetup"><span class="keyword">method</span> <span class="keyword">private</span> setup</span> : <code class="code">unit -&gt;
+<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list * float</code></pre>
+
+<pre><span class="METHODqueue_events"><span class="keyword">method</span> <span class="keyword">private</span> queue_events</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list -&gt; bool</code></pre>
+
+<pre><span class="METHODsource"><span class="keyword">method</span> <span class="keyword">private</span> source</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue_util&amp;type=event">Unixqueue_util.event</a> <a href="?package=ocamlnet&amp;module=Equeue&amp;type=t">Equeue.t</a> -&gt; unit</code></pre>
+</div></div>
+<div class="ocaml_class ident" name="select_based_event_system" path="?package=ocamlnet&amp;module=Unixqueue_select&amp;class=sb_event_system"><pre><span class="TYPEselect_based_event_system"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Unixqueue_select&amp;class=select_based_event_system">select_based_event_system</a></span> : <code class="type">unit -&gt; </code><a href="?package=ocamlnet&amp;module=Unixqueue_select&amp;class=sb_event_system">sb_event_system</a></pre><div class="info"><div class="info">This the old <code class="code">Unix.select</code>-based imeplementation of event systems
+      which was the default one until Ocamlnet-2.2.<br/>      Please avoid in new code. This module merely exists to allow
+      comparisons between the old implementation and the new one.<br/>      Note that this class definition also includes some private
+      methods. These are required in some other Unixqueue implementations
+      inheriting from this class.</div></div></div>
+<pre><span class="VALselect_based_event_system"><span class="keyword">val</span> select_based_event_system</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a></code></pre><div class="info"><div class="info">Create a new <code class="code">Unix.select</code>-based event system</div></div>
+</div>

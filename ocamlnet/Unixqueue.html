@@ -1,0 +1,239 @@
+<div class="ocaml_toplevel_module"><div class="info"><div class="info">Unixqueues are one of the two forms of system event loops provided
+    by Ocamlnet. Besides Unixqueue, there is also pollset (see
+     <a href="#Netsys_pollset">Netsys_pollset</a>). The pollsets are much simpler (there is no
+    queuing of events), and nowadays Unixqueue bases upon pollset,
+    and extends its functionality. Historically, however, Unixqueue
+    precede pollset, and there are still implementations of the former
+    in Ocamlnet not using pollset as its base data structure.<br/>    The common idea of both data structures is the generalization of 
+    watching for events, as it is also provided by the <code class="code">Unix.select</code>
+    function. Note, however, that recent implementations no longer
+    use <code class="code">Unix.select</code>, but better system interfaces for the same.<br/>    When there is something to do for a file descriptor (reading, 
+    writing, accepting out-of-band data), this is called an <b>event</b>,
+    and the task of Unixqueue is to check when events happen, and to
+    tell some consumer about the events.<br/>    There are three further types of events: Timeout events, signal
+    events, and user-defined events.<br/>    The events are queued up, and they are presented to event handlers
+    that may process them.<br/>    You can describe what types of event conditions are watched by adding
+    <b>resources</b>. You can think a resource being a condition (bound to
+    a real resource of the operating system) for which 
+    events are generated if the condition becomes true. Currently, only
+    file descriptors and timers are supported as resources.</div></div>
+<div class="info"><div class="info"><b>Relation to other modules.</b> This module is thought as the primary
+    interface to Unixqueues. If there isn't any specialty one has to deal
+    with, just use this module:<br/>    - It defines all required types like <code class="code">group</code>, <code class="code">wait_id</code>, etc. Note that
+      these types are reexported from <code class="code">Unixqueue_util</code>. Please consider
+      this as implementation detail, and don't use it in your code.<ul><li>It defines a standard implementation <code class="code">standard_event_system</code>, which
+      is a good default implementation, although it might not be the best
+      available for all purposes.</li><li>It defines a set of access functions like <code class="code">add_event</code> which 
+      simply call the methods of the event system object of the same name.
+      Note that these functions work for all event system implementation,
+      not only for <code class="code">standard_event_system</code>.</li></ul>    There are further modules that have to do with Unixqueue:<br/>    -  <a href="#Unixqueue_pollset">Unixqueue_pollset</a> is the implementation behind 
+      <code class="code">standard_event_system</code>. If you want to use other pollsets than
+      the standard one, it is possible to create Unixqueues on top of these
+      by using this module directly.<ul><li> <a href="#Unixqueue_select">Unixqueue_select</a> is the historic default implementation. It
+      calls directly <code class="code">Unix.select</code>. It is still available because it 
+      serves as a reference implementation for now.</li><li><code class="code">Unixqueue_util</code> is an internal module with implementation details.
+      Please don't call it directly.</li><li> <a href="#Uq_gtk">Uq_gtk</a> is an implementation of Unixqueue mapping to the 
+      GTK event loop. Useful for multiplexing event-based I/O and
+      GTK graphics operations.</li><li> <a href="#Uq_tcl">Uq_tcl</a> is an implementation of Unixqueue mapping to the 
+      TCL event loop. Useful for multiplexing event-based I/O and
+      event-based code written in TCL (especially TK).
+ </li></ul></div></div>
+<div class="info"><div class="info"><b>Thread safety.</b> The default implementation of Unixqueue is
+    thread-safe, and operations can be called from different threads.
+    For other implementations, please look at the modules implementing
+    them.</div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Types and exceptions</h1></div></div>
+<pre><span class="TYPEgroup"><span class="keyword">type</span> group</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue_util&amp;type=group">Unixqueue_util.group</a></code></pre><div class="info"><div class="info">A group is an abstract tag for a set of events, resources, and
+ event handlers. Usually every event handler creates a new group,
+ and all events and resources processed by the handler are 
+ members of this group.</div></div>
+<pre><span class="EXCEPTIONAbort"><span class="keyword">exception</span> Abort</span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a> * exn</code></pre><div class="info"><div class="info">Event handlers can raise this exception to cancel a group 
+ of handlers, events, and resources. If an abort action
+ is defined for the group, it will be executed. Next, all members
+ of the group are removed from the event system. <br/> First argument is the group. The second argument
+ is an arbitrary exception (must not be <code class="code">Abort</code> again) which is
+ passed to the abort action.<br/> Abort handlers are a questionable feature of Unixqueues. You
+ can also call the <code class="code">clear</code> operation, and raise the exception
+ directly. <b>Do not use in new code!</b></div></div>
+<pre><span class="TYPEwait_id"><span class="keyword">type</span> wait_id</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue_util&amp;type=wait_id">Unixqueue_util.wait_id</a></code></pre><div class="info"><div class="info">A wait identifier is used to distinguish between several
+ timers, see type <code class="code">operation</code>.</div></div>
+<pre><span class="TYPEoperation"><span class="keyword">type</span> operation</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue_util&amp;type=operation">Unixqueue_util.operation</a></code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELToperation.Wait_in"><span class="constructor">Wait_in</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></code></td><td class="typefieldcomment" align="left"><div class="info">wait for input data</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELToperation.Wait_out"><span class="constructor">Wait_out</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></code></td><td class="typefieldcomment" align="left"><div class="info">wait until output can be written</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELToperation.Wait_oob"><span class="constructor">Wait_oob</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></code></td><td class="typefieldcomment" align="left"><div class="info">wait for out-of-band data</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELToperation.Wait"><span class="constructor">Wait</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=wait_id">wait_id</a></code></code></td><td class="typefieldcomment" align="left"><div class="info">wait only for timeout</div></td></tr></table><div class="info"><div class="info">An <code class="code">operation</code> specifies the condition to wait for. Every kind
+ of operation may have an associated timer (not only <code class="code">Wait</code>).</div></div>
+<pre><span class="TYPEevent"><span class="keyword">type</span> event</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue_util&amp;type=event">Unixqueue_util.event</a></code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTevent.Input_arrived"><span class="constructor">Input_arrived</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a> * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></code></td><td class="typefieldcomment" align="left"><div class="info">Input data has arrived</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTevent.Output_readiness"><span class="constructor">Output_readiness</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a> * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></code></td><td class="typefieldcomment" align="left"><div class="info">Output is possible now</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTevent.Out_of_band"><span class="constructor">Out_of_band</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a> * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></code></td><td class="typefieldcomment" align="left"><div class="info">OOB data has arrived</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTevent.Timeout"><span class="constructor">Timeout</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a> * <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=operation">operation</a></code></code></td><td class="typefieldcomment" align="left"><div class="info">A timer has expired</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTevent.Signal"><span class="constructor">Signal</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">A signal has happened</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTevent.Extra"><span class="constructor">Extra</span></span> <span class="keyword">of</span> <code class="type">exn</code></code></td><td class="typefieldcomment" align="left"><div class="info">User-generated event</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTevent.Immediate"><span class="constructor">Immediate</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a> * (unit -&gt; unit)</code></code></td><td class="typefieldcomment" align="left"><div class="info">immediate event</div></td></tr></table><div class="info"><div class="info">An <code class="code">event</code> is triggered when the condition of an <code class="code">operation</code>
+ becomes true, when a signal happens, or when the event is
+ (artificially) added to the event queue (<code class="code">add_event</code>, below).
+ The events resulting from an <code class="code">operation</code> carry the group of
+ the resource with them. <br/> The event <code class="code">Signal</code> is triggered when the <code class="code">EINTR</code> condition is
+ caught; this normally means that a signal has just been delivered.
+ The generation of <code class="code">Signal</code> events should be considered as
+ unreliable, not every signal delivery can be detected. Reasons for
+ the unrealiability are that user-supplied code happens to
+ get the <code class="code">EINTR</code> condition and not the <code class="code">Unixqueue</code> event loop,
+ and that there are known race conditions in the O'Caml signal
+ handling routines that may cause signals to be lost. However,
+ it can be expected that almost all signals will trigger <code class="code">Signal</code>.<br/> The event <code class="code">Extra</code> can only be artificially added to the queue,
+ and the argument of <code class="code">Extra</code> is an exception value that distinguishes
+ between several kinds of user-generated events.<br/> The event <code class="code">Immediate(g,f)</code> also can only be artificially added to
+ the queue. In contrast to other events, it is not passed to handlers
+ when the event is processed. Instead, an immediate event is processed
+ by calling <code class="code">f()</code>. This is a more direct way of notification, and
+ it is not necessary to define a handler. Even an immediate event is
+ member of a group <code class="code">g</code>, and if the <code class="code">clear</code> function is called for <code class="code">g</code>,
+ the callback function <code class="code">f</code> will no longer be called.</div></div>
+<div class="ocaml_class sig" name="event_system"><pre><span class="TYPEevent_system"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Unixqueue&amp;class=event_system">event_system</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">The <code class="code">event_system</code> manages events, handlers, resources, groups,
+ etc. It is now a class type, and you may invoke the operations directly
+ for the class. The operations are still available as functions (below).<br/> A <b>resource</b> is an operation with an optional timer. The operation
+ describes the condition to watch for, and the timer defines the
+ maximum period of time for that. If the condition becomes true,
+ an <code class="code">Input_arrived</code>, <code class="code">Output_readiness</code>, or <code class="code">Out_of_band</code> event
+ will be triggered. If the timer expires, a <code class="code">Timeout</code> event will be
+ generated. After the event the resource remains active, and the
+ timeout period begins anew.<br/> A resource is usually bound to a file descriptor. It is allowed
+ to watch the same descriptor for several different conditions,
+ but it is forbidden to watch the same descriptor for the same kind
+ of condition several times.<br/> As a special case, the operation <code class="code">Wait</code> is not bound to a
+ file descriptor, but simply starts a timer. The argument of <code class="code">Wait</code>
+ can be used to distinguish between several timers that are active
+ at the same time.<br/> <b>Event handlers</b> get the events one after the other, and 
+ process them. When a handler is called for an event, there are
+ several possible reactions: (1) The handler can return normally,
+ which means that the event has been accepted, and will not be
+ passed to any other handler. (2) The handler can raise
+  <a href="#Equeue.Reject">Equeue.Reject</a>, which means that the handler cannot process
+ the event, and that another handler should get it. (3) The handler
+ can raise  <a href="#Equeue.Terminate">Equeue.Terminate</a> which means that the event has been
+ accepted, and that the handler is terminated (it will never be
+ called again). (4) The handler can raise <code class="code">Abort</code> which means that
+ the event is deferred, and that a special abort mechanism is
+ triggered (see the description for <code class="code">Abort</code> above), this is also
+ terminates the handler. The deferred event will again be processed
+ in the future. (5) The handler can raise any other exception.
+ This causes that the event is deferred, and the exception falls
+ through to the caller of <code class="code">run</code>.<br/> <b>Groups</b> are used to simplify the association of events to
+ handlers, and to simplify the termination of handlers (see <code class="code">clear</code>).
+ If an event is associated with a group, only handlers associated with
+ the same group will get them.<br/> There is a special <b>Close handler</b> which is useful to close file
+ descriptors no longer needed. It is called when all resources are
+ removed from the event system dealing with the file descriptor. 
+ The close handler should close the descriptor. Note that close handlers
+ are only useful under certain circumstances.</div></div><div class="ocaml_class_content"><pre><span class="METHODnew_group"><span class="keyword">method</span> new_group</span> : <code class="code">unit -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a></code></pre>
+
+<pre><span class="METHODnew_wait_id"><span class="keyword">method</span> new_wait_id</span> : <code class="code">unit -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=wait_id">wait_id</a></code></pre>
+
+<pre><span class="METHODexists_resource"><span class="keyword">method</span> exists_resource</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=operation">operation</a> -&gt; bool</code></pre>
+
+<pre><span class="METHODadd_resource"><span class="keyword">method</span> add_resource</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=operation">operation</a> * float -&gt; unit</code></pre>
+
+<pre><span class="METHODadd_weak_resource"><span class="keyword">method</span> add_weak_resource</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=operation">operation</a> * float -&gt; unit</code></pre>
+
+<pre><span class="METHODadd_close_action"><span class="keyword">method</span> add_close_action</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> * (<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; unit) -&gt; unit</code></pre>
+
+<pre><span class="METHODadd_abort_action"><span class="keyword">method</span> add_abort_action</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a> -&gt; (<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a> -&gt; exn -&gt; unit) -&gt; unit</code></pre>
+
+<pre><span class="METHODremove_resource"><span class="keyword">method</span> remove_resource</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=operation">operation</a> -&gt; unit</code></pre>
+
+<pre><span class="METHODadd_handler"><span class="keyword">method</span> add_handler</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a> -&gt; (<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event">event</a> <a href="?package=ocamlnet&amp;module=Equeue&amp;type=t">Equeue.t</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event">event</a> -&gt; unit) -&gt; unit</code></pre>
+
+<pre><span class="METHODadd_event"><span class="keyword">method</span> add_event</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event">event</a> -&gt; unit</code></pre>
+
+<pre><span class="METHODclear"><span class="keyword">method</span> clear</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a> -&gt; unit</code></pre>
+
+<pre><span class="METHODrun"><span class="keyword">method</span> run</span> : <code class="code">unit -&gt; unit</code></pre>
+
+<pre><span class="METHODis_running"><span class="keyword">method</span> is_running</span> : <code class="code">bool</code></pre>
+
+<pre><span class="METHODwhen_blocking"><span class="keyword">method</span> when_blocking</span> : <code class="code">(unit -&gt; unit) -&gt; unit</code></pre>
+</div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Creating event systems</h1></div></div>
+<div class="ocaml_class ident" name="standard_event_system" path="?package=ocamlnet&amp;module=Unixqueue&amp;class=event_system"><pre><span class="TYPEstandard_event_system"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Unixqueue&amp;class=standard_event_system">standard_event_system</a></span> : <code class="type">unit -&gt; </code><a href="?package=ocamlnet&amp;module=Unixqueue&amp;class=event_system">event_system</a></pre><div class="info"><div class="info">The standard implementation of an event system. It uses 
+       <a href="#Unixqueue_pollset.pollset_event_system">Unixqueue_pollset.pollset_event_system</a> on top of
+       <a href="#Netsys_pollset_generic.standard_pollset">Netsys_pollset_generic.standard_pollset</a>.</div></div></div>
+<pre><span class="VALstandard_event_system"><span class="keyword">val</span> standard_event_system</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">event_system</a></code></pre><div class="info"><div class="info">Create a new, empty, standard event system</div></div>
+<div class="ocaml_class ident" name="unix_event_system" path="?package=ocamlnet&amp;module=Unixqueue&amp;class=event_system"><pre><span class="TYPEunix_event_system"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Unixqueue&amp;class=unix_event_system">unix_event_system</a></span> : <code class="type">unit -&gt; </code><a href="?package=ocamlnet&amp;module=Unixqueue&amp;class=event_system">event_system</a></pre><div class="info"><div class="info">An alternate name for <code class="code">standard_event_system</code>, provided for
+      backward compatibility.</div></div></div>
+<pre><span class="VALcreate_unix_event_system"><span class="keyword">val</span> create_unix_event_system</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">event_system</a></code></pre><div class="info"><div class="info">An alternate name for <code class="code">standard_event_system</code>, provided for
+      backward compatibility.</div></div>
+<div class="ocaml_class ident" name="performance_event_system" path="?package=ocamlnet&amp;module=Unixqueue&amp;class=event_system"><pre><span class="TYPEperformance_event_system"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Unixqueue&amp;class=performance_event_system">performance_event_system</a></span> : <code class="type">unit -&gt; </code><a href="?package=ocamlnet&amp;module=Unixqueue&amp;class=event_system">event_system</a></pre><div class="info"><div class="info">The implementation using  <a href="#Netsys_pollset_generic.performance_pollset">Netsys_pollset_generic.performance_pollset</a>.</div></div></div>
+<pre><span class="VALperformance_event_system"><span class="keyword">val</span> performance_event_system</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">event_system</a></code></pre><div class="info"><div class="info">Same as function</div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Using event systems</h1></div></div>
+<div class="info"><div class="info">The following functions work for all kinds of event systems, not
+    only for the ones returned by <code class="code">standard_event_system</code>.</div></div>
+<pre><span class="VALnew_group"><span class="keyword">val</span> new_group</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a></code></pre><div class="info"><div class="info">Create a new, empty group for the event system</div></div>
+<pre><span class="VALnew_wait_id"><span class="keyword">val</span> new_wait_id</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=wait_id">wait_id</a></code></pre><div class="info"><div class="info">Create a new unique wait identifier</div></div>
+<pre><span class="VALexists_resource"><span class="keyword">val</span> exists_resource</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=operation">operation</a> -&gt; bool</code></pre><div class="info"><div class="info">Find out if a specific resource already exists (or better: is
+ already watched by an operation).</div></div>
+<pre><span class="VALadd_resource"><span class="keyword">val</span> add_resource</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=operation">operation</a> * float -&gt; unit</code></pre><div class="info"><div class="info">Add a resource such that it is watched for conditions described
+ by the <code class="code">operation</code> for the period given by the <code class="code">float</code> number.
+ A negative number means that the resource is watched for an infinite
+ period. The resource becomes a member of the <code class="code">group</code>.<br/> You cannot add the same operation several times;
+ if you try it the second operation is silently dropped.<br/> The resource remains even if it has generated an event. The timeout
+ period starts again in this case.</div></div>
+<pre><span class="VALadd_weak_resource"><span class="keyword">val</span> add_weak_resource</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=operation">operation</a> * float -&gt; unit</code></pre><div class="info"><div class="info">Similar to <code class="code">add_resource</code>, but the resource is weak. Such resources
+ do not keep the event system running when only weak resources remain.
+ Normally, <code class="code">Unixqueue.run</code> returns to the caller not before
+ all resources are removed and all events are processed. Weak
+ resources do not count for this condition, i.e. <code class="code">Unixqueue.run</code>
+ also returns when there are only weak resources left.
+ As an example, weak resources can be used to time out unused
+ file descriptors.<br/> Weak resources can be removed with <code class="code">remove_resource</code>.<br/> <b>New in Ocamlnet 3.</b></div></div>
+<pre><span class="VALadd_close_action"><span class="keyword">val</span> add_close_action</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> * (<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info">A close action is added for the file descriptor. The action callback
+ (which gets the descriptor as argument) is called when there is not
+ any watched resource remaining for this descriptor.<br/> This may be useful if the descriptor can be closed in this case.<br/> The close action becomes member of the passed <code class="code">group</code>. The only
+ effect of this is that the action is removed when the <code class="code">clear</code> function
+ is called.<br/> You can only add (set) one close action for every descriptor.<br/> Of course, the idea is to do <code class="code">add_close_action ... Unix.close</code>. Note
+ that there is a problem with multi-threaded programs, and this construct
+ must not be used there. In particular, the close action is called from
+ <code class="code">remove_resource</code> or <code class="code">clear</code>, but it is possible that the event system
+ is running, so a watched descriptor might be closed. This has undesired
+ effects. What you should better do is to delay the closure of the
+ descriptor to a sane moment, e.g. by calling
+   <pre class="codepre"><code class="code"> Unixqueue.once esys g 0.0 (fun () -&gt; Unix.close fd) </code></pre>
+ from the close action.</div></div>
+<pre><span class="VALadd_abort_action"><span class="keyword">val</span> add_abort_action</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a> -&gt; (<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a> -&gt; exn -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info">An abort action is added to the group. The action callback is
+ called when an arbitrary handler raises <code class="code">Abort(g,exn)</code> where
+ <code class="code">g</code> is the group the abort action is member of. In this case,
+ the callback function is invoked with the group and <code class="code">exn</code> as
+ arguments. After that, the group is cleared.<br/> You can only add (set) one abort action for every group.</div></div>
+<pre><span class="VALremove_resource"><span class="keyword">val</span> remove_resource</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=operation">operation</a> -&gt; unit</code></pre><div class="info"><div class="info">Removes the operation from the watch list of the group.
+ It is an error if the operation is member of another group.
+ If the operation cannot be found at all, the exception <code class="code">Not_found</code>
+ will be raised.<br/> The removal of resources may trigger close actions.</div></div>
+<pre><span class="VALadd_handler"><span class="keyword">val</span> add_handler</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">event_system</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a> -&gt; (<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event">event</a> <a href="?package=ocamlnet&amp;module=Equeue&amp;type=t">Equeue.t</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event">event</a> -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info">Add an event handler that is associated to the given group. There
+ may be several handlers for a group.<br/> The handler callback function is invoked when there is an event
+ that could be processeable by the handler. As outlined above, the
+ callback function can accept or reject the event, it can terminate
+ itself, and it can abort the whole group.</div></div>
+<pre><span class="VALadd_event"><span class="keyword">val</span> add_event</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event">event</a> -&gt; unit</code></pre><div class="info"><div class="info">Add an additional event. The event will be processed after the 
+ current list of events is done.</div></div>
+<pre><span class="VALclear"><span class="keyword">val</span> clear</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a> -&gt; unit</code></pre><div class="info"><div class="info">Terminate the whole group. This means that the handlers of the
+ group are not called any longer, and that all resources and actions
+ are removed. It is possible that there are pending events after
+ termination, but these will be usually be dropped because there is
+ no handler for them.<br/> When a group is terminated, it is not allowed to refer to the
+ group any longer. Functions will raise <code class="code">Invalid_argument</code> if this
+ is tried nevertheless.</div></div>
+<pre><span class="VALrun"><span class="keyword">val</span> run</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">event_system</a> -&gt; unit</code></pre><div class="info"><div class="info">Starts the event loop. This means that the resources are watched,
+ and that events are generated, and that handlers are called.<br/> The event loop returns normally when there are not any resources
+ and not any events in the queue. The loop raises
+  <a href="#Equeue.Out_of_handlers">Equeue.Out_of_handlers</a> if there are resources but no handlers
+ to process their events. It is possible that exceptions raised
+ from handlers fall through to the <code class="code">run</code> call.<br/> After the exception is caught and processed, the event loop
+ can be restarted.</div></div>
+<pre><span class="VALis_running"><span class="keyword">val</span> is_running</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">event_system</a> -&gt; bool</code></pre><div class="info"><div class="info">Whether the event loop is running</div></div>
+<pre><span class="VALonce"><span class="keyword">val</span> once</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a> -&gt; float -&gt; (unit -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info">Arranges that the callback function is called once after the 
+ passed period of time (the <code class="code">float</code> argument) has elapsed.<br/> The arrangement is member of the passed group. By clearing the
+ group, the timer is deleted, too.</div></div>
+<pre><span class="VALweak_once"><span class="keyword">val</span> weak_once</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=group">group</a> -&gt; float -&gt; (unit -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info">Same as <code class="code">once</code>, but the timer does not keep the event system running
+      if it is the only remaining resource.</div></div>
+<pre><span class="VALepsilon"><span class="keyword">val</span> epsilon</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">event_system</a> -&gt; (unit -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info">The execution of the function is pushed onto the event queue
+      (minimal delay)</div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Debugging</h1></div></div>
+<div class="ocaml_module sig" name="Debug"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Unixqueue.Debug">Debug</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<div class="info"><div class="info">This module controls debugging of all <code class="code">Unixqueue_*</code> modules</div></div>
+<pre><span class="VALenable"><span class="keyword">val</span> enable</span> : <code class="type">bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">Enable  <a href="#Netlog">Netlog</a> debugging</div></div>
+<pre><span class="VALset_debug_mode"><span class="keyword">val</span> set_debug_mode</span> : <code class="type">bool -&gt; unit</code></pre><div class="info"><div class="info">Sets <code class="code">enable</code>.</div></div>
+<pre><span class="VALset_debug_target"><span class="keyword">val</span> set_debug_target</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Equeue.Debug&amp;type=debug_target">Equeue.Debug.debug_target</a> -&gt; unit</code></pre><div class="info"><div class="info">Restricts debugging to this target.</div></div></div></div>
+</div>

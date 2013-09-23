@@ -1,0 +1,44 @@
+<div class="ocaml_toplevel_module"><div class="info">Cursors</div>
+<div class="info"><div class="info">A cursor is a pointer in an edition buffer. When some text is
+    inserted or removed, all cursors after the modification are
+    automatically moved accordingly.</div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">Type of a cursor.</div></div>
+<pre><span class="EXCEPTIONOut_of_bounds"><span class="keyword">exception</span> Out_of_bounds</span></pre><div class="info"><div class="info">Exception raised when trying to move a cursor outside the bounds
+      of the text it points to.</div></div>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -&gt;
+(int * int * int) <a href="?package=react&amp;module=React&amp;type=event">React.event</a> -&gt; (unit -&gt; <a href="?package=zed&amp;module=Zed_lines&amp;type=t">Zed_lines.t</a>) -&gt; int -&gt; int -&gt; <a href="?package=zed&amp;module=Zed_cursor&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create length changes get_lines position wanted_column</code> creates
+      a new cursor pointing to position <code class="code">position</code>.<br/>      <code class="code">length</code> is the current length of the text the cursor points
+      to. It raises  <a href="#Out_of_bounds">Out_of_bounds</a> if <code class="code">position</code> is greater than
+      <code class="code">length</code>.<br/>      <code class="code">changes</code> is an event which occurs with values of the form
+      <code class="code">(start, added, removed)</code> when the text changes, with the same
+      semantic as  <a href="#Zed_edit.changes">Zed_edit.changes</a>.<br/>      <code class="code">get_lines</code> is used to retreive the current set of line
+      positions of the text. It is used to compute the line and column
+      of the cursor.<br/>      <code class="code">wanted_column</code> is the column on which the cursor want to be, if
+      there is enough room on the line.</div></div>
+<pre><span class="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type"><a href="?package=zed&amp;module=Zed_cursor&amp;type=t">t</a> -&gt; <a href="?package=zed&amp;module=Zed_cursor&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">copy cursor</code> creates a copy of the given cursor. The new cursor
+      initially points to the same location as <code class="code">cursor</code>.</div></div>
+<pre><span class="VALposition"><span class="keyword">val</span> position</span> : <code class="type"><a href="?package=zed&amp;module=Zed_cursor&amp;type=t">t</a> -&gt; int <a href="?package=react&amp;module=React&amp;type=signal">React.signal</a></code></pre><div class="info"><div class="info"><code class="code">position cursor</code> returns the signal holding the current
+      position of the given cursor.</div></div>
+<pre><span class="VALget_position"><span class="keyword">val</span> get_position</span> : <code class="type"><a href="?package=zed&amp;module=Zed_cursor&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info"><code class="code">get_position cursor</code> returns the current position of
+      <code class="code">cursor</code>.</div></div>
+<pre><span class="VALline"><span class="keyword">val</span> line</span> : <code class="type"><a href="?package=zed&amp;module=Zed_cursor&amp;type=t">t</a> -&gt; int <a href="?package=react&amp;module=React&amp;type=signal">React.signal</a></code></pre><div class="info"><div class="info"><code class="code">line cursor</code> returns the signal holding the current line on
+      which the cursor is.</div></div>
+<pre><span class="VALget_line"><span class="keyword">val</span> get_line</span> : <code class="type"><a href="?package=zed&amp;module=Zed_cursor&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info"><code class="code">get_line cursor</code> returns the current line of the cursor.</div></div>
+<pre><span class="VALcolumn"><span class="keyword">val</span> column</span> : <code class="type"><a href="?package=zed&amp;module=Zed_cursor&amp;type=t">t</a> -&gt; int <a href="?package=react&amp;module=React&amp;type=signal">React.signal</a></code></pre><div class="info"><div class="info"><code class="code">column cursor</code> returns the signal holding the current column of
+      the cursor.</div></div>
+<pre><span class="VALget_column"><span class="keyword">val</span> get_column</span> : <code class="type"><a href="?package=zed&amp;module=Zed_cursor&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info"><code class="code">get_column cursor</code> returns the current column of the cursor.</div></div>
+<pre><span class="VALwanted_column"><span class="keyword">val</span> wanted_column</span> : <code class="type"><a href="?package=zed&amp;module=Zed_cursor&amp;type=t">t</a> -&gt; int <a href="?package=react&amp;module=React&amp;type=signal">React.signal</a></code></pre><div class="info"><div class="info"><code class="code">wanted_column cursor</code> returns the signal holding the column on
+      which the cursor wants to be.</div></div>
+<pre><span class="VALget_wanted_column"><span class="keyword">val</span> get_wanted_column</span> : <code class="type"><a href="?package=zed&amp;module=Zed_cursor&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info"><code class="code">get_wanted_column cursor</code> returns the column on which the
+      cursor wants to be.</div></div>
+<pre><span class="VALset_wanted_column"><span class="keyword">val</span> set_wanted_column</span> : <code class="type"><a href="?package=zed&amp;module=Zed_cursor&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">set_wanted_column cursor</code> sets the column on which the cursor
+      want to be.</div></div>
+<pre><span class="VALgoto"><span class="keyword">val</span> goto</span> : <code class="type"><a href="?package=zed&amp;module=Zed_cursor&amp;type=t">t</a> -&gt; ?set_wanted_column:bool -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">goto cursor position</code> moves the given cursor to the given
+      position. It raises  <a href="#Out_of_bounds">Out_of_bounds</a> if <code class="code">position</code> is outside
+      the bounds of the text. If <code class="code">set_wanted_column</code> is <code class="code">true</code> (the
+      default), then the wanted column will be set to the column of
+      the cursor at given position.</div></div>
+<pre><span class="VALmove"><span class="keyword">val</span> move</span> : <code class="type"><a href="?package=zed&amp;module=Zed_cursor&amp;type=t">t</a> -&gt; ?set_wanted_column:bool -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">move cursor delta</code> moves the given cursor by the given number
+      of characters. It raises  <a href="#Out_of_bounds">Out_of_bounds</a> if the result is
+      outside the bounds of the text.</div></div>
+</div>

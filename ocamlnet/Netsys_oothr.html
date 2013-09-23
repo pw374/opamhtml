@@ -1,0 +1,68 @@
+<div class="ocaml_toplevel_module"><div class="info">Object-oriented thread API</div>
+<div class="info"><div class="info">Makes the most important multi-threading primitives available using
+    object types. For single-threaded apps, the operations are substituted
+    by no-ops.</div></div>
+<div class="ocaml_class sig" name="mtprovider"><pre><span class="TYPEmtprovider"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netsys_oothr&amp;class=mtprovider">mtprovider</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><pre><span class="METHODsingle_threaded"><span class="keyword">method</span> single_threaded</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">Whether this is a single-threaded program. In this case, a number
+        of methods change their meaning, as described below.</div></div>
+<pre><span class="METHODcreate_thread"><span class="keyword">method</span> create_thread</span> : <code class="code">'s 't. ('s -&gt; 't) -&gt; 's -&gt; thread</code></pre>
+<div class="info"><div class="info">In a multi-threaded program: Starts a new thread, and calls the
+        passed function with the passed argument in the new thread
+        (like <code class="code">Thread.create</code>).
+        In a single-threaded program: fails.</div></div>
+<pre><span class="METHODself"><span class="keyword">method</span> self</span> : <code class="code">thread</code></pre>
+<div class="info"><div class="info">In a multi-threaded program: Returns the currently running thread.
+        Subsequent calls of <code class="code">self</code> can return different objects for the
+        same thread, but the <code class="code">id</code> method will always return the same number.
+        In a single-threaded program: Returns a dummy object (see below).</div></div>
+<pre><span class="METHODyield"><span class="keyword">method</span> yield</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">In a multi-threaded program: gives a hint that another thread should
+        better run now.
+        In a single-threaded program: this is a no-op.</div></div>
+<pre><span class="METHODcreate_mutex"><span class="keyword">method</span> create_mutex</span> : <code class="code">unit -&gt; mutex</code></pre>
+<div class="info"><div class="info">In a multi-threaded program: Creates a mutex and returns the object.
+        In a single-threaded program: Returns a dummy mutex object (see below).</div></div>
+<pre><span class="METHODcreate_condition"><span class="keyword">method</span> create_condition</span> : <code class="code">unit -&gt; condition</code></pre>
+<div class="info"><div class="info">In a multi-threaded program: Creates a condition variable and returns 
+        the object.
+        In a single-threaded program: Returns a dummy variable (see below).</div></div></div></div>
+<div class="ocaml_class sig" name="thread"><pre><span class="TYPEthread"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netsys_oothr&amp;class=thread">thread</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><pre><span class="METHODid"><span class="keyword">method</span> id</span> : <code class="code">int</code></pre>
+<div class="info"><div class="info">In a multi-threaded program: Returns the thread ID.
+        In a single-threaded program: Returns 0.</div></div>
+<pre><span class="METHODjoin"><span class="keyword">method</span> join</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">In a multi-threaded program: Suspends the calling thread until this
+        thread terminates.
+        In a single-threaded program: fails</div></div>
+<pre><span class="METHODrepr"><span class="keyword">method</span> repr</span> : <code class="code">exn</code></pre>
+<div class="info"><div class="info">May be used internally be the implementation</div></div></div></div>
+<div class="ocaml_class sig" name="mutex"><pre><span class="TYPEmutex"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netsys_oothr&amp;class=mutex">mutex</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><pre><span class="METHODlock"><span class="keyword">method</span> lock</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">In a multi-threaded program: Suspends the calling thread until the
+        mutex is locked.
+        In a single-threaded program: This is a no-op</div></div>
+<pre><span class="METHODunlock"><span class="keyword">method</span> unlock</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">In a multi-threaded program: Unlocks a mutex.
+        In a single-threaded program: This is a no-op</div></div>
+<pre><span class="METHODtry_lock"><span class="keyword">method</span> try_lock</span> : <code class="code">unit -&gt; bool</code></pre>
+<div class="info"><div class="info">In a multi-threaded program: Tries to immediately lock the mutex,
+        and returns whether the lock could be obtained.
+        In a single-threaded program: returns <code class="code">true</code></div></div>
+<pre><span class="METHODrepr"><span class="keyword">method</span> repr</span> : <code class="code">exn</code></pre>
+<div class="info"><div class="info">May be used internally be the implementation</div></div></div></div>
+<div class="ocaml_class sig" name="condition"><pre><span class="TYPEcondition"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netsys_oothr&amp;class=condition">condition</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><pre><span class="METHODwait"><span class="keyword">method</span> wait</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netsys_oothr&amp;type=mutex">mutex</a> -&gt; unit</code></pre>
+<div class="info"><div class="info">In a multi-threaded program: Wait for the condition to be true
+        and use the mutex to protect this situation.
+        In a single-threaded program: this is a no-op.</div></div>
+<pre><span class="METHODsignal"><span class="keyword">method</span> signal</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">In a multi-threaded program: Signal one process that the condition
+        holds.
+        In a single-threaded program: this is a no-op.</div></div>
+<pre><span class="METHODbroadcast"><span class="keyword">method</span> broadcast</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">In a multi-threaded program: Signal all waiting processes that the
+        condition holds.
+        In a single-threaded program: this is a no-op.</div></div>
+<pre><span class="METHODrepr"><span class="keyword">method</span> repr</span> : <code class="code">exn</code></pre>
+<div class="info"><div class="info">May be used internally be the implementation</div></div></div></div>
+<pre><span class="VALprovider"><span class="keyword">val</span> provider</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_oothr&amp;type=mtprovider">mtprovider</a> <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">Return the multi-threading provider</div></div>
+<pre><span class="VALserialize"><span class="keyword">val</span> serialize</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_oothr&amp;type=mutex">mutex</a> -&gt; ('a -&gt; 'b) -&gt; 'a -&gt; 'b</code></pre><div class="info"><div class="info"><code class="code">serialize m f arg</code>: Locks <code class="code">m</code>, runs <code class="code">f arg</code>, unlocks <code class="code">m</code>, and returns
+      the result.</div></div>
+</div>

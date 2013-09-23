@@ -1,0 +1,33 @@
+<div class="ocaml_toplevel_module"><pre><span class="VALdebug"><span class="keyword">val</span> debug</span> : <code class="type">bool</code></pre>
+<pre><span class="VALtrackfix"><span class="keyword">val</span> trackfix</span> : <code class="type">bool</code></pre>
+<pre><span class="VALraise"><span class="keyword">val</span> raise</span> : <code class="type">exn -&gt; 'a</code></pre>
+<div class="ocaml_module sig" name="StringSet"><pre><span class="keyword">module</span> <a href="?package=omd&amp;module=Omd_utils.StringSet">StringSet</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEelt"><span class="keyword">type</span> elt</span> = <code class="type">string</code></pre>
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre>
+<pre><span class="VALempty"><span class="keyword">val</span> empty</span> : <code class="type"><a href="?package=omd&amp;module=Omd_utils.StringSet&amp;type=t">t</a></code></pre>
+<pre><span class="VALadd"><span class="keyword">val</span> add</span> : <code class="type"><a href="?package=omd&amp;module=Omd_utils.StringSet&amp;type=elt">elt</a> -&gt; <a href="?package=omd&amp;module=Omd_utils.StringSet&amp;type=t">t</a> -&gt; <a href="?package=omd&amp;module=Omd_utils.StringSet&amp;type=t">t</a></code></pre>
+<pre><span class="VALmem"><span class="keyword">val</span> mem</span> : <code class="type"><a href="?package=omd&amp;module=Omd_utils.StringSet&amp;type=elt">elt</a> -&gt; <a href="?package=omd&amp;module=Omd_utils.StringSet&amp;type=t">t</a> -&gt; bool</code></pre>
+<pre><span class="VALunion"><span class="keyword">val</span> union</span> : <code class="type"><a href="?package=omd&amp;module=Omd_utils.StringSet&amp;type=t">t</a> -&gt; <a href="?package=omd&amp;module=Omd_utils.StringSet&amp;type=t">t</a> -&gt; <a href="?package=omd&amp;module=Omd_utils.StringSet&amp;type=t">t</a></code></pre>
+<pre><span class="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type"><a href="?package=omd&amp;module=Omd_utils.StringSet&amp;type=elt">elt</a> list -&gt; <a href="?package=omd&amp;module=Omd_utils.StringSet&amp;type=t">t</a></code></pre></div></div>
+<pre><span class="TYPEsplit"><span class="keyword">type</span> <code class="type">'a </code>split</span> = <code class="type">'a list -&gt; 'a split_action</code></pre>
+<pre><code><span class="TYPEsplit_action"><span class="keyword">type</span> <code class="type">'a </code>split_action</span> = </code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsplit_action.Continue"><span class="constructor">Continue</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsplit_action.Continue_with"><span class="constructor">Continue_with</span></span> <span class="keyword">of</span> <code class="type">'a list * 'a list</code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsplit_action.Split"><span class="constructor">Split</span></span> <span class="keyword">of</span> <code class="type">'a list * 'a list</code></code></td></tr></table>
+<pre><span class="VALfsplit_rev"><span class="keyword">val</span> fsplit_rev</span> : <code class="type">?excl:('a list -&gt; bool) -&gt;
+f:'a <a href="?package=omd&amp;module=Omd_utils&amp;type=split">split</a> -&gt; 'a list -&gt; ('a list * 'a list) option</code></pre>
+<pre><span class="VALfsplit"><span class="keyword">val</span> fsplit</span> : <code class="type">?excl:('a list -&gt; bool) -&gt;
+f:'a <a href="?package=omd&amp;module=Omd_utils&amp;type=split">split</a> -&gt; 'a list -&gt; ('a list * 'a list) option</code></pre>
+<pre><span class="VALid_of_string"><span class="keyword">val</span> id_of_string</span> : <code class="type">&lt; mangle : string -&gt; string; .. &gt; -&gt; string -&gt; string</code></pre><div class="info"><div class="info"><code class="code">id_of_string ids id</code> returns a mangled version of <code class="code">id</code>, using the
+    method <code class="code">ids#mangle</code>. If you don't need mangling, you may use
+    <code class="code">object method mangle x = x end</code> for <code class="code">ids</code>.  However, the name
+    <code class="code">ids</code> also means that your object should have knowledge of all IDs
+    it has issued, in order to avoid collision. This is why
+    <code class="code">id_of_string</code> asks for an object rather than &quot;just a
+    function&quot;.</div></div>
+<pre><span class="VALhtmlentities"><span class="keyword">val</span> htmlentities</span> : <code class="type">?md:bool -&gt; string -&gt; string</code></pre><div class="info"><div class="info"><code class="code">htmlentities s</code> returns a new string in which html-significant
+    characters have been converted to html entities. For instance,
+    &quot;&lt;Foo&amp;Bar&gt;&quot; is converted to &quot;&amp;lt;Foo&amp;amp;Bar&amp;gt;&quot;.</div></div>
+<pre><span class="VALminimalize_blanks"><span class="keyword">val</span> minimalize_blanks</span> : <code class="type">string -&gt; string</code></pre><div class="info"><div class="info"><code class="code">minimalize_blanks s</code> returns a copy of <code class="code">s</code> in which the first and last
+   characters are never blank, and two consecutive blanks never happen.</div></div>
+<pre><span class="VALeat"><span class="keyword">val</span> eat</span> : <code class="type">('a -&gt; bool) -&gt; 'a list -&gt; 'a list</code></pre><div class="info"><div class="info"><code class="code">eat f l</code> returns <code class="code">l</code> where elements satisfying <code class="code">f</code> have been removed,
+    but it stops removing as soon as one element doesn't satisfy <code class="code">f</code>.</div></div>
+</div>

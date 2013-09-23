@@ -1,0 +1,39 @@
+<div class="ocaml_toplevel_module"><div class="info">Sets of file descriptors for polling</div>
+<div class="ocaml_class sig" name="pollset"><pre><span class="TYPEpollset"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netsys_pollset&amp;class=pollset">pollset</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><pre><span class="METHODfind"><span class="keyword">method</span> find</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=poll_req_events">Netsys_posix.poll_req_events</a></code></pre>
+<div class="info"><div class="info">Checks whether a descriptor is member of the set, and returns
+        its event mask. Raises <code class="code">Not_found</code> if the descriptor is not in the set.</div></div>
+<pre><span class="METHODadd"><span class="keyword">method</span> add</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=poll_req_events">Netsys_posix.poll_req_events</a> -&gt; unit</code></pre>
+<div class="info"><div class="info">Add a descriptor or modify an existing descriptor</div></div>
+<pre><span class="METHODremove"><span class="keyword">method</span> remove</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; unit</code></pre>
+<div class="info"><div class="info">Remove a descriptor from the set (if it is member)</div></div>
+<pre><span class="METHODwait"><span class="keyword">method</span> wait</span> : <code class="code">float -&gt;
+(<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> * <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=poll_req_events">Netsys_posix.poll_req_events</a> *
+ <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=poll_act_events">Netsys_posix.poll_act_events</a>)
+list</code></pre>
+<div class="info"><div class="info">Wait for events, and return the output events matching the event
+        mask. This is level-triggered polling, i.e. if a descriptor continues
+        to match an event mask, it is again reported the next time <code class="code">wait</code>
+        is invoked.<br/>        There is no guarantee that the list is complete.<br/>        It is unspecified how the set reacts on descriptors that became
+        invalid (i.e. are closed) while being member of the set. The set
+        implementation is free to silently disregard such descriptors,
+        or to report them as invalid. It is strongly recommended to
+        remove descriptors before closing them.</div></div>
+<pre><span class="METHODdispose"><span class="keyword">method</span> dispose</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Release any OS resources associated with the pollset. The pollset
+        remains usable, however, and by invoking any method except
+        <code class="code">cancel_wait</code> the required OS resources are automatically allocated
+        again. Only for <code class="code">cancel_wait</code> it is ensured that the disposal
+        remains in effect.</div></div>
+<pre><span class="METHODcancel_wait"><span class="keyword">method</span> cancel_wait</span> : <code class="code">bool -&gt; unit</code></pre>
+<div class="info"><div class="info">There is a cancel bit in the pollset, and this method sets it
+        to the argument value.<br/>        When the bit is <code class="code">true</code>, any <code class="code">wait</code> invocation will immediately
+        time out. It is allowed to set the cancel bit from another thread,
+        and when it becomes <code class="code">true</code>, a parallel running <code class="code">wait</code> will
+        see that and timeout. Note that there is no
+        protection against race conditions: It is possible that <code class="code">wait</code>
+        returns events that are found at the same time the cancellation
+        is carried out, i.e. you cannot rely on that the list returned
+        by <code class="code">wait</code> is empty.<br/>        This is the only method of a pollset that is allowed to be called
+        from a different thread. If not supported on a platform this method
+        will fail.</div></div></div></div>
+</div>

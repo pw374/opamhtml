@@ -1,0 +1,50 @@
+<div class="ocaml_toplevel_module"><div class="info">Object Oriented Channel</div>
+<div class="ocaml_class sig" name="obj_input_channel"><pre><span class="TYPEobj_input_channel"><span class="keyword">class type</span> <code class="type">['a] </code><a href="?package=camomile&amp;module=OOChannel&amp;class=obj_input_channel">obj_input_channel</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Generic input channel
+  Have the same interface of Polymorphic input channel of
+  http://www.ocaml-programming.de/rec/IO-Classes.html
+  All channels of Camomile having this interface must confirm 
+  the behaviour defined in the recommendation above.</div></div><div class="ocaml_class_content"><pre><span class="METHODclose_in"><span class="keyword">method</span> close_in</span> : <code class="code">unit -&gt; unit</code></pre>
+
+<pre><span class="METHODget"><span class="keyword">method</span> get</span> : <code class="code">unit -&gt; 'a</code></pre>
+</div></div>
+<div class="ocaml_class sig" name="obj_output_channel"><pre><span class="TYPEobj_output_channel"><span class="keyword">class type</span> <code class="type">['a] </code><a href="?package=camomile&amp;module=OOChannel&amp;class=obj_output_channel">obj_output_channel</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Generic output channel
+  Have the same interface of Polymorphic output channel of
+  http://www.ocaml-programming.de/rec/IO-Classes.html
+  All channels of Camomile having this interface must confirm 
+  the behaviour defined in the recommendation above.</div></div><div class="ocaml_class_content"><pre><span class="METHODclose_out"><span class="keyword">method</span> close_out</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">If close_oout cannot output all buffered objects, flush raises
+      Failure</div><div class="info">If flush cannot output all buffered objects, flush raises
+      Failure</div></div>
+<pre><span class="METHODflush"><span class="keyword">method</span> flush</span> : <code class="code">unit -&gt; unit</code></pre>
+
+<pre><span class="METHODput"><span class="keyword">method</span> put</span> : <code class="code">'a -&gt; unit</code></pre>
+</div></div>
+<div class="ocaml_class ident" name="channel_of_stream" path="?package=camomile&amp;module=OOChannel&amp;class=obj_input_channel"><pre><span class="TYPEchannel_of_stream"><span class="keyword">class</span> <code class="type">['a] </code><a href="?package=camomile&amp;module=OOChannel&amp;class=channel_of_stream">channel_of_stream</a></span> : <code class="type">'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a> -&gt; </code><code class="type">['a] </code><a href="?package=camomile&amp;module=OOChannel&amp;class=obj_input_channel">obj_input_channel</a></pre><div class="info"><div class="info">Convert stream to obj_input_channel</div></div></div>
+<pre><span class="VALstream_of_channel"><span class="keyword">val</span> stream_of_channel</span> : <code class="type">'a #<a href="?package=camomile&amp;module=OOChannel&amp;class=obj_input_channel">obj_input_channel</a> -&gt; 'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a></code></pre><div class="info"><div class="info">Convert obj_input_channel to stream</div></div>
+<div class="ocaml_class sig" name="char_input_channel"><pre><span class="TYPEchar_input_channel"><span class="keyword">class type</span> <a href="?package=camomile&amp;module=OOChannel&amp;class=char_input_channel">char_input_channel</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Character(byte) input channel.  Have the same interface of octet
+  input channel of http://www.ocaml-programming.de/rec/IO-Classes.html
+  All channels of Camomile having this interface must confirm the
+  behaviour defined in the recommendation above.  In addition, all
+  channels are assumed to be blocking.  If you supply a non-blocking
+  channel to Camomile API, the outcome is undefined.</div></div><div class="ocaml_class_content"><pre><span class="METHODinput"><span class="keyword">method</span> input</span> : <code class="code">string -&gt; int -&gt; int -&gt; int</code></pre>
+
+<pre><span class="METHODclose_in"><span class="keyword">method</span> close_in</span> : <code class="code">unit -&gt; unit</code></pre>
+</div></div>
+<div class="ocaml_class sig" name="char_output_channel"><pre><span class="TYPEchar_output_channel"><span class="keyword">class type</span> <a href="?package=camomile&amp;module=OOChannel&amp;class=char_output_channel">char_output_channel</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Character(byte) output channel.  Have the same interface of octet
+  input channel of http://www.ocaml-programming.de/rec/IO-Classes.html
+  All channels of Camomile having this interface must confirm the
+  behaviour defined in the recommendation above.  In addition, all
+  channels are assumed to be blocking.  If you supply a non-blocking
+  channel to Camomile API, the outcome is undefined.</div></div><div class="ocaml_class_content"><pre><span class="METHODoutput"><span class="keyword">method</span> output</span> : <code class="code">string -&gt; int -&gt; int -&gt; int</code></pre>
+
+<pre><span class="METHODflush"><span class="keyword">method</span> flush</span> : <code class="code">unit -&gt; unit</code></pre>
+
+<pre><span class="METHODclose_out"><span class="keyword">method</span> close_out</span> : <code class="code">unit -&gt; unit</code></pre>
+</div></div>
+<div class="ocaml_class ident" name="char_input_channel_of" path="?package=camomile&amp;module=OOChannel&amp;class=char_input_channel"><pre><span class="TYPEchar_input_channel_of"><span class="keyword">class</span> <a href="?package=camomile&amp;module=OOChannel&amp;class=char_input_channel_of">char_input_channel_of</a></span> : <code class="type">char #<a href="?package=camomile&amp;module=OOChannel&amp;class=obj_input_channel">obj_input_channel</a> -&gt; </code><a href="?package=camomile&amp;module=OOChannel&amp;class=char_input_channel">char_input_channel</a></pre><div class="info"><div class="info">Convert a polymorphic input channel to a character input channel</div></div></div>
+<div class="ocaml_class ident" name="char_obj_input_channel_of" path="?package=camomile&amp;module=OOChannel&amp;class=obj_input_channel"><pre><span class="TYPEchar_obj_input_channel_of"><span class="keyword">class</span> <a href="?package=camomile&amp;module=OOChannel&amp;class=char_obj_input_channel_of">char_obj_input_channel_of</a></span> : <code class="type"><a href="?package=camomile&amp;module=OOChannel&amp;type=char_input_channel">char_input_channel</a> -&gt; </code><code class="type">[char] </code><a href="?package=camomile&amp;module=OOChannel&amp;class=obj_input_channel">obj_input_channel</a></pre><div class="info"><div class="info">Convert a character input channel to a polymorphic input channel</div></div></div>
+<div class="ocaml_class ident" name="char_output_channel_of" path="?package=camomile&amp;module=OOChannel&amp;class=char_output_channel"><pre><span class="TYPEchar_output_channel_of"><span class="keyword">class</span> <a href="?package=camomile&amp;module=OOChannel&amp;class=char_output_channel_of">char_output_channel_of</a></span> : <code class="type">char #<a href="?package=camomile&amp;module=OOChannel&amp;class=obj_output_channel">obj_output_channel</a> -&gt; </code><a href="?package=camomile&amp;module=OOChannel&amp;class=char_output_channel">char_output_channel</a></pre><div class="info"><div class="info">Convert a polymorphic output channel to a character output channel</div></div></div>
+<div class="ocaml_class ident" name="char_obj_output_channel_of" path="?package=camomile&amp;module=OOChannel&amp;class=obj_output_channel"><pre><span class="TYPEchar_obj_output_channel_of"><span class="keyword">class</span> <a href="?package=camomile&amp;module=OOChannel&amp;class=char_obj_output_channel_of">char_obj_output_channel_of</a></span> : <code class="type"><a href="?package=camomile&amp;module=OOChannel&amp;type=char_output_channel">char_output_channel</a> -&gt; </code><code class="type">[char] </code><a href="?package=camomile&amp;module=OOChannel&amp;class=obj_output_channel">obj_output_channel</a></pre><div class="info"><div class="info">Convert a character output channel to a polymorphic output channel</div></div></div>
+<div class="ocaml_class ident" name="of_in_channel" path="?package=camomile&amp;module=OOChannel&amp;class=char_input_channel"><pre><span class="TYPEof_in_channel"><span class="keyword">class</span> <a href="?package=camomile&amp;module=OOChannel&amp;class=of_in_channel">of_in_channel</a></span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a> -&gt; </code><a href="?package=camomile&amp;module=OOChannel&amp;class=char_input_channel">char_input_channel</a></pre><div class="info"><div class="info">Convert an OCaml input channel to an OO-based character input channel</div></div></div>
+<div class="ocaml_class ident" name="of_out_channel" path="?package=camomile&amp;module=OOChannel&amp;class=char_output_channel"><pre><span class="TYPEof_out_channel"><span class="keyword">class</span> <a href="?package=camomile&amp;module=OOChannel&amp;class=of_out_channel">of_out_channel</a></span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a> -&gt; </code><a href="?package=camomile&amp;module=OOChannel&amp;class=char_output_channel">char_output_channel</a></pre><div class="info"><div class="info">Convert an OCaml output channel to an OO-based character output channel</div></div></div>
+</div>

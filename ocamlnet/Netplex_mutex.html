@@ -1,0 +1,23 @@
+<div class="ocaml_toplevel_module"><div class="info">Netplex-wide mutexes</div>
+<div class="info"><div class="info">These are mutexes that work in both multi-processing and
+    multi-threading netplex environments. They are implemented on top of
+     <a href="#Netplex_semaphore">Netplex_semaphore</a>, and use the same name space for named objects.<br/>    For implementation issues, see  <a href="#Netplex_semaphore">Netplex_semaphore</a>.<br/>    It is not required to create mutexes: A mutex is automatically created
+    when the name is used for the first time. Mutexes are initially always
+    in unlocked state.<br/>    Mutexes do not stack: A container cannot lock a mutex several times.
+    (The second lock attempt would result in a deadlock.)<br/>    There is no deadlock detection.<br/>    If a container holding mutexes terminates the mutexes are automatically
+    unlocked.<br/>    Mutex are not owned by their container. It is allowed that a different
+    container unlocks the mutex.<br/>    Technically, a mutex named <code class="code">n</code> is implemented by a semaphore <code class="code">n</code>.
+    If the mutex is locked, the semaphore has the value 0, and if it is
+    unlocked, it has value 1.<br/>    <b>Thread safety:</b> Full. The functions can be called from any thread.</div></div>
+<pre><span class="VALplugin"><span class="keyword">val</span> plugin</span> : <code class="type">Netplex_types.plugin</code></pre><div class="info"><div class="info">To enable mutexes, call the controller's <code class="code">add_plugin</code> method 
+      with this object as argument. This can e.g. be done in the
+      <code class="code">post_add_hook</code> of the processor.</div></div>
+<div class="info"><div class="info">The following functions can <b>only</b> be invoked in container
+    contexts. Outside of such a context the exception
+     <a href="#Netplex_cenv.Not_in_container_thread">Netplex_cenv.Not_in_container_thread</a> is raised.</div></div>
+<pre><span class="TYPEmutex"><span class="keyword">type</span> mutex</span> </pre>
+<pre><span class="VALaccess"><span class="keyword">val</span> access</span> : <code class="type">string -&gt; <a href="?package=ocamlnet&amp;module=Netplex_mutex&amp;type=mutex">mutex</a></code></pre><div class="info"><div class="info">Access the named mutex. If the mutex does not exist, it is created in
+      unlocked state</div></div>
+<pre><span class="VALlock"><span class="keyword">val</span> lock</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netplex_mutex&amp;type=mutex">mutex</a> -&gt; unit</code></pre><div class="info"><div class="info">Wait until the mutex is free, and locks it</div></div>
+<pre><span class="VALunlock"><span class="keyword">val</span> unlock</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netplex_mutex&amp;type=mutex">mutex</a> -&gt; unit</code></pre><div class="info"><div class="info">Unlocks the mutex. This is a no-op if the mutex is not locked</div></div>
+</div>

@@ -1,0 +1,23 @@
+<div class="ocaml_toplevel_module"><div class="info">[not for general use]</div>
+<pre><span class="TYPEtype_id"><span class="keyword">type</span> type_id</span> </pre>
+<pre><span class="VALdummy_type_id"><span class="keyword">val</span> dummy_type_id</span> : <code class="type"><a href="?package=biniou&amp;module=Bi_share&amp;type=type_id">type_id</a></code></pre>
+<pre><span class="VALcreate_type_id"><span class="keyword">val</span> create_type_id</span> : <code class="type">unit -&gt; <a href="?package=biniou&amp;module=Bi_share&amp;type=type_id">type_id</a></code></pre>
+<div class="ocaml_module sig" name="Wr"><pre><span class="keyword">module</span> <a href="?package=biniou&amp;module=Bi_share.Wr">Wr</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEtbl"><span class="keyword">type</span> tbl</span> </pre>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -&gt; <a href="?package=biniou&amp;module=Bi_share.Wr&amp;type=tbl">tbl</a></code></pre>
+<pre><span class="VALclear"><span class="keyword">val</span> clear</span> : <code class="type"><a href="?package=biniou&amp;module=Bi_share.Wr&amp;type=tbl">tbl</a> -&gt; unit</code></pre>
+<pre><span class="VALput"><span class="keyword">val</span> put</span> : <code class="type"><a href="?package=biniou&amp;module=Bi_share.Wr&amp;type=tbl">tbl</a> -&gt; 'a * <a href="?package=biniou&amp;module=Bi_share&amp;type=type_id">type_id</a> -&gt; int -&gt; int</code></pre><div class="info"><div class="info"><code class="code">put tbl x pos</code> returns 0 if <code class="code">x</code> is not already in the table
+	and adds <code class="code">x</code> to the table.  <code class="code">pos</code> is the absolute position
+	of the first byte of the ref value excluding its tag.
+	If <code class="code">x</code> is found in the table, then the difference between
+	<code class="code">pos</code> and the original position is returned.</div></div></div></div>
+<div class="ocaml_module sig" name="Rd"><pre><span class="keyword">module</span> <a href="?package=biniou&amp;module=Bi_share.Rd">Rd</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEtbl"><span class="keyword">type</span> tbl</span> </pre>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -&gt; <a href="?package=biniou&amp;module=Bi_share.Rd&amp;type=tbl">tbl</a></code></pre>
+<pre><span class="VALclear"><span class="keyword">val</span> clear</span> : <code class="type"><a href="?package=biniou&amp;module=Bi_share.Rd&amp;type=tbl">tbl</a> -&gt; unit</code></pre>
+<pre><span class="VALput"><span class="keyword">val</span> put</span> : <code class="type"><a href="?package=biniou&amp;module=Bi_share.Rd&amp;type=tbl">tbl</a> -&gt; int * <a href="?package=biniou&amp;module=Bi_share&amp;type=type_id">type_id</a> -&gt; <a href="?package=ocaml&amp;module=Obj&amp;type=t">Obj.t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">put tbl pos x</code> puts the position of a new shared value into the
+	table.  <code class="code">pos</code> is the absolute position of the first byte
+	of the ref value excluding its tag.</div></div>
+<pre><span class="VALget"><span class="keyword">val</span> get</span> : <code class="type"><a href="?package=biniou&amp;module=Bi_share.Rd&amp;type=tbl">tbl</a> -&gt; int * <a href="?package=biniou&amp;module=Bi_share&amp;type=type_id">type_id</a> -&gt; <a href="?package=ocaml&amp;module=Obj&amp;type=t">Obj.t</a></code></pre><div class="info"><div class="info"><code class="code">get tbl pos</code> returns the value stored at this position
+	or raises a  <a href="#Bi_util.Error">Bi_util.Error</a> exception.</div></div></div></div>
+</div>

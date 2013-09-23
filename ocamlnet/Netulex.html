@@ -1,0 +1,124 @@
+<div class="ocaml_toplevel_module"><div class="info">Support module for Alain Frisch's <code class="code">ulex</code> lexer generator<br/> The sub module <code class="code">ULB</code> is a Unicode-based lexing buffer that
+ reads encoded strings and makes them available to the lexer
+ as both Unicode arrays and UTF-8 strings.<br/> The sub module <code class="code">Ulexing</code> is a replacement for the module
+ in <code class="code">ulex</code> with the same name. It uses <code class="code">ULB</code> to represent
+ the main lexing buffer. It is much faster than the original
+ <code class="code">Ulexing</code> implementation when the scanned text is UTF-8
+ encoded and <code class="code">Ulexing.utf8_lexeme</code> is frequently called to
+ get the lexeme strings. Furthermore, it can process input
+ data of all encodings available to <code class="code">Netconversion</code>. It is,
+ however, no drop-in replacement as it has a different
+ signature.<br/> To enable this version of <code class="code">Ulexing</code>, simply put an
+ <code class="code">open Netulex</code> before using the <code class="code">ulex</code> lexers.<br/> Note that the tutorial has been moved to  <a href="#Netulex_tut">Netulex_tut</a>.</div>
+<div class="info"><div class="info"><h1 id="modules">Modules</h1></div></div>
+<div class="ocaml_module sig" name="ULB"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netulex.ULB">ULB</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<div class="info"><div class="info">This module provides the <code class="code">unicode_lexbuf</code> record with
+ access functions. In this record, the data is available
+ in two forms: As an array of Unicode code points
+ <code class="code">ulb_chars</code>, and as string of encoded chars <code class="code">ulb_rawbuf</code>.
+ Both buffers are synchronised by <code class="code">ulb_chars_pos</code>. This
+ array stores where every character of <code class="code">ulb_chars</code> can be
+ found in <code class="code">ulb_rawbuf</code>.</div></div>
+<pre><code><span class="TYPEunicode_lexbuf"><span class="keyword">type</span> unicode_lexbuf</span> = {<span class="keyword">private</span></code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTunicode_lexbuf.ulb_encoding">ulb_encoding</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a></code>;</code></td><td class="typefieldcomment" align="left"><div class="info">The character encoding of <code class="code">ulb_rawbuf</code></div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTunicode_lexbuf.ulb_encoding_start">ulb_encoding_start</span> : <code class="type">int</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">The first character position to which <code class="code">ulb_encoding</code>
+ applies (the encoding of earlier positions is
+ lost)</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTunicode_lexbuf.ulb_rawbuf">ulb_rawbuf</span> : <code class="type">string</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">The encoded string to analyse</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTunicode_lexbuf.ulb_rawbuf_len">ulb_rawbuf_len</span> : <code class="type">int</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">The filled part of <code class="code">ulb_rawbuf</code></div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTunicode_lexbuf.ulb_rawbuf_end">ulb_rawbuf_end</span> : <code class="type">int</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">The analysed part of <code class="code">ulb_rawbuf</code>. We have always
+ <code class="code">ulb_rawbuf_end &lt;= ulb_rawbuf_len</code>. The analysed part
+ may be shorter than the filled part because there is
+ not enough space in <code class="code">ulb_chars</code>, or because the filled
+ part ends with an incomplete multi-byte character</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTunicode_lexbuf.ulb_rawbuf_const">ulb_rawbuf_const</span> : <code class="type">bool</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">Whether <code class="code">ulb_rawbuf</code> is considered as a constant. If
+ <code class="code">true</code>, it is never blitted.</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTunicode_lexbuf.ulb_chars">ulb_chars</span> : <code class="type">int array</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">The analysed part of <code class="code">ulb_rawbuf</code> as array of Unicode
+ code points. Only the positions 0 to <code class="code">ulb_chars_len-1</code>
+ of the array are filled.</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTunicode_lexbuf.ulb_chars_pos">ulb_chars_pos</span> : <code class="type">int array</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">For every analysed character this array stores the
+ byte position where the character begins in <code class="code">ulb_rawbuf</code>.
+ In addition, the array contains at <code class="code">ulb_chars_len</code> the
+ value of <code class="code">ulb_rawbuf_end</code>.<br/> This array is one element longer than <code class="code">ulb_chars</code>.</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTunicode_lexbuf.ulb_chars_len">ulb_chars_len</span> : <code class="type">int</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">The filled part of <code class="code">ulb_chars</code></div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTunicode_lexbuf.ulb_eof">ulb_eof</span> : <code class="type">bool</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">Whether EOF has been seen</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTunicode_lexbuf.ulb_refill">ulb_refill</span> : <code class="type">string -&gt; int -&gt; int -&gt; int</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">The refill function</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTunicode_lexbuf.ulb_enc_change_hook">ulb_enc_change_hook</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netulex.ULB&amp;type=unicode_lexbuf">unicode_lexbuf</a> -&gt; unit</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">This function is called when the encoding changes</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTunicode_lexbuf.ulb_cursor">ulb_cursor</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netconversion&amp;type=cursor">Netconversion.cursor</a></code>;</code></td><td class="typefieldcomment" align="left"><div class="info">Internally used by the implementation</div></td></tr><tr><td>}</td></tr></table>
+<pre><span class="VALfrom_function"><span class="keyword">val</span> from_function</span> : <code class="type">?raw_size:int -&gt;
+?char_size:int -&gt;
+?enc_change_hook:(<a href="?package=ocamlnet&amp;module=Netulex.ULB&amp;type=unicode_lexbuf">unicode_lexbuf</a> -&gt; unit) -&gt;
+refill:(string -&gt; int -&gt; int -&gt; int) -&gt;
+<a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> -&gt; <a href="?package=ocamlnet&amp;module=Netulex.ULB&amp;type=unicode_lexbuf">unicode_lexbuf</a></code></pre><div class="info"><div class="info">Creates a <code class="code">unicode_lexbuf</code> to analyse strings of the 
+ passed <code class="code">encoding</code> coming from the <code class="code">refill</code> function.<div class="parameters"><div class="param_info"><code class="code">raw_size</code> : The initial size for <code class="code">ulb_rawbuf</code>. Defaults to 512</div><div class="param_info"><code class="code">char_size</code> : The initial size for <code class="code">ulb_chars</code>. Defaults to 256</div><div class="param_info"><code class="code">enc_change_hook</code> : This function is called when the encoding
+   is changed, either by this module, or by the user calling
+   <code class="code">set_encoding</code>.</div><div class="param_info"><code class="code">refill</code> : This function is called with arguments <code class="code">ulb_rawbuf</code>,
+   <code class="code">ulb_rawbuf_len</code>, and <code class="code">l</code>, where 
+   <code class="code">l = String.length ulb_rawbuf - ulb_rawbuf_len</code> is the free
+   space in the buffer. The function should fill new bytes into
+   this substring, and return the number of added bytes. The
+   return value 0 signals EOF.</div></div></div></div>
+<pre><span class="VALfrom_in_obj_channel"><span class="keyword">val</span> from_in_obj_channel</span> : <code class="type">?raw_size:int -&gt;
+?char_size:int -&gt;
+?enc_change_hook:(<a href="?package=ocamlnet&amp;module=Netulex.ULB&amp;type=unicode_lexbuf">unicode_lexbuf</a> -&gt; unit) -&gt;
+<a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> -&gt; <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=in_obj_channel">Netchannels.in_obj_channel</a> -&gt; <a href="?package=ocamlnet&amp;module=Netulex.ULB&amp;type=unicode_lexbuf">unicode_lexbuf</a></code></pre><div class="info"><div class="info">Creates a <code class="code">unicode_lexbuf</code> to analyse strings of the 
+ passed <code class="code">encoding</code> coming from the object channel.<div class="parameters"><div class="param_info"><code class="code">raw_size</code> : The initial size for <code class="code">ulb_rawbuf</code>. Defaults to 512</div><div class="param_info"><code class="code">char_size</code> : The initial size for <code class="code">ulb_chars</code>. Defaults to 256</div><div class="param_info"><code class="code">enc_change_hook</code> : This function is called when the encoding
+   is changed, either by this module, or by the user calling
+   <code class="code">set_encoding</code>.</div></div></div></div>
+<pre><span class="VALfrom_string"><span class="keyword">val</span> from_string</span> : <code class="type">?enc_change_hook:(<a href="?package=ocamlnet&amp;module=Netulex.ULB&amp;type=unicode_lexbuf">unicode_lexbuf</a> -&gt; unit) -&gt;
+<a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Netulex.ULB&amp;type=unicode_lexbuf">unicode_lexbuf</a></code></pre><div class="info"><div class="info">Creates a <code class="code">unicode_lexbuf</code> analysing the passed string encoded in
+ the passed encoding. This function copies the input string.<div class="parameters"><div class="param_info"><code class="code">enc_change_hook</code> : This function is called when the encoding
+   is changed, either by this module, or by the user calling
+   <code class="code">set_encoding</code></div></div></div></div>
+<pre><span class="VALfrom_string_inplace"><span class="keyword">val</span> from_string_inplace</span> : <code class="type">?enc_change_hook:(<a href="?package=ocamlnet&amp;module=Netulex.ULB&amp;type=unicode_lexbuf">unicode_lexbuf</a> -&gt; unit) -&gt;
+<a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Netulex.ULB&amp;type=unicode_lexbuf">unicode_lexbuf</a></code></pre><div class="info"><div class="info">Creates a <code class="code">unicode_lexbuf</code> analysing the passed string encoded in
+ the passed encoding. This function does not copy the input string,
+ but uses it directly as <code class="code">ulb_rawbuf</code>. The string is not modified by <code class="code">ULB</code>,
+ but the caller must ensure that other program parts do not
+ modify it either.<div class="parameters"><div class="param_info"><code class="code">enc_change_hook</code> : This function is called when the encoding
+   is changed, either by this module, or by the user calling
+   <code class="code">set_encoding</code></div></div></div></div>
+<pre><span class="VALdelete"><span class="keyword">val</span> delete</span> : <code class="type">int -&gt; <a href="?package=ocamlnet&amp;module=Netulex.ULB&amp;type=unicode_lexbuf">unicode_lexbuf</a> -&gt; unit</code></pre><div class="info"><div class="info">Deletes the number of characters from <code class="code">unicode_lexbuf</code>.
+  These characters
+  are removed from the beginning of the buffer, i.e.
+  <code class="code">ulb_chars.(n)</code> becomes the new first character of the
+  buffer. All three buffers <code class="code">ulb_rawbuf</code>, <code class="code">ulb_chars</code>, and
+  <code class="code">ulb_chars_pos</code> are blitted as necessary.       <br/>  When the buffer is already at EOF, the function fails.<br/>  For efficiency, it should be tried to call <code class="code">delete</code> as seldom as
+  possible. Its speed is linear to the number of characters to move.</div></div>
+<pre><span class="VALrefill"><span class="keyword">val</span> refill</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netulex.ULB&amp;type=unicode_lexbuf">unicode_lexbuf</a> -&gt; unit</code></pre><div class="info"><div class="info">Tries to add characters to the <code class="code">unicode_lexbuf</code> by calling the 
+ <code class="code">ulb_refill</code> function. When the buffer is already at EOF, the 
+ exception <code class="code">End_of_file</code> is raised, and the buffer is not modified.
+ Otherwise, the <code class="code">ulb_refill</code> function is called to
+ add new characters. If necessary, <code class="code">ulb_rawbuf</code>, <code class="code">ulb_chars</code>, and
+ <code class="code">ulb_chars_pos</code> are enlarged such that it is ensured that either
+ at least one new character is added, or that EOF is found for
+ the first time
+ In the latter case, <code class="code">ulb_eof</code> is set to <code class="code">true</code> (and the next call
+ of <code class="code">refill_unicode_lexbuf</code> will raise <code class="code">End_of_file</code>).</div></div>
+<pre><span class="VALset_encoding"><span class="keyword">val</span> set_encoding</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> -&gt; <a href="?package=ocamlnet&amp;module=Netulex.ULB&amp;type=unicode_lexbuf">unicode_lexbuf</a> -&gt; unit</code></pre><div class="info"><div class="info">Sets the <code class="code">encoding</code> to the passed value. This only affects future
+ <code class="code">refill</code> calls. The hook <code class="code">enc_change_hook</code> is invoked when defined.</div></div>
+<pre><span class="VALclose"><span class="keyword">val</span> close</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netulex.ULB&amp;type=unicode_lexbuf">unicode_lexbuf</a> -&gt; unit</code></pre><div class="info"><div class="info">Sets <code class="code">ulb_eof</code> of the <code class="code">unicode_lexbuf</code>. The rest of the buffer
+ is not modified</div></div>
+<pre><span class="VALutf8_sub_string"><span class="keyword">val</span> utf8_sub_string</span> : <code class="type">int -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netulex.ULB&amp;type=unicode_lexbuf">unicode_lexbuf</a> -&gt; string</code></pre><div class="info"><div class="info">The two <code class="code">int</code> arguments are the position and length of a sub
+ string of the lexbuf that is returned as UTF8 string. Position
+ and length are given as character multiples, not byte multiples.</div></div>
+<pre><span class="VALutf8_sub_string_length"><span class="keyword">val</span> utf8_sub_string_length</span> : <code class="type">int -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netulex.ULB&amp;type=unicode_lexbuf">unicode_lexbuf</a> -&gt; int</code></pre><div class="info"><div class="info">Returns <code class="code">String.length(utf8_sub_string args)</code>. Tries not to
+ allocate the UTF-8 string.</div></div></div></div>
+<div class="ocaml_module sig" name="Ulexing"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netulex.Ulexing">Ulexing</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<div class="info"><div class="info">This is a lexing buffer for <code class="code">ulex</code>.</div></div>
+<pre><span class="TYPElexbuf"><span class="keyword">type</span> lexbuf</span> </pre>
+<pre><span class="EXCEPTIONError"><span class="keyword">exception</span> Error</span></pre><div class="info"><div class="info">Lexical error</div></div>
+<pre><span class="VALfrom_ulb_lexbuf"><span class="keyword">val</span> from_ulb_lexbuf</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netulex.ULB&amp;type=unicode_lexbuf">ULB.unicode_lexbuf</a> -&gt; <a href="?package=ocamlnet&amp;module=Netulex.Ulexing&amp;type=lexbuf">lexbuf</a></code></pre><div class="info"><div class="info">Creates a new <code class="code">lexbuf</code> from the <code class="code">unicode_lexbuf</code>. After that,
+ the <code class="code">unicode_lexbuf</code> must no longer be modified.</div></div>
+<pre><span class="VALlexeme_start"><span class="keyword">val</span> lexeme_start</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netulex.Ulexing&amp;type=lexbuf">lexbuf</a> -&gt; int</code></pre><div class="info"><div class="info">The character position of the start of the lexeme</div></div>
+<pre><span class="VALlexeme_end"><span class="keyword">val</span> lexeme_end</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netulex.Ulexing&amp;type=lexbuf">lexbuf</a> -&gt; int</code></pre><div class="info"><div class="info">The character position of the end of the lexeme</div></div>
+<pre><span class="VALlexeme_length"><span class="keyword">val</span> lexeme_length</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netulex.Ulexing&amp;type=lexbuf">lexbuf</a> -&gt; int</code></pre><div class="info"><div class="info">The length of the lexeme in characters</div></div>
+<pre><span class="VALlexeme"><span class="keyword">val</span> lexeme</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netulex.Ulexing&amp;type=lexbuf">lexbuf</a> -&gt; int array</code></pre><div class="info"><div class="info">Returns the lexeme as array of Unicode code points</div></div>
+<pre><span class="VALlexeme_char"><span class="keyword">val</span> lexeme_char</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netulex.Ulexing&amp;type=lexbuf">lexbuf</a> -&gt; int -&gt; int</code></pre><div class="info"><div class="info">Returns the code point of a certain character of the
+ lexeme</div></div>
+<pre><span class="VALsub_lexeme"><span class="keyword">val</span> sub_lexeme</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netulex.Ulexing&amp;type=lexbuf">lexbuf</a> -&gt; int -&gt; int -&gt; int array</code></pre><div class="info"><div class="info">Returns a substring of the lexeme as array of Unicode
+ code points. The first <code class="code">int</code> is the characater position
+ where to start, the second <code class="code">int</code> is the number of 
+ characters.</div></div>
+<pre><span class="VALutf8_lexeme"><span class="keyword">val</span> utf8_lexeme</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netulex.Ulexing&amp;type=lexbuf">lexbuf</a> -&gt; string</code></pre><div class="info"><div class="info">Returns the lexeme as UTF-8 encoded string</div></div>
+<pre><span class="VALutf8_sub_lexeme"><span class="keyword">val</span> utf8_sub_lexeme</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netulex.Ulexing&amp;type=lexbuf">lexbuf</a> -&gt; int -&gt; int -&gt; string</code></pre><div class="info"><div class="info">Returns a substring of the lexeme as UTF-8 encoded
+ string. The first <code class="code">int</code> is the characater position
+ where to start, the second <code class="code">int</code> is the number of
+ characters.</div></div>
+<pre><span class="VALutf8_sub_lexeme_length"><span class="keyword">val</span> utf8_sub_lexeme_length</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netulex.Ulexing&amp;type=lexbuf">lexbuf</a> -&gt; int -&gt; int -&gt; int</code></pre><div class="info"><div class="info">Same as
+ String.length(utf8_sub_lexeme args), i.e. returns
+ the number of bytes a certain sub lexeme will have
+ when encoded as UTF-8 string.</div></div>
+<pre><span class="VALstart"><span class="keyword">val</span> start</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netulex.Ulexing&amp;type=lexbuf">lexbuf</a> -&gt; unit</code></pre>
+<pre><span class="VALnext"><span class="keyword">val</span> next</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netulex.Ulexing&amp;type=lexbuf">lexbuf</a> -&gt; int</code></pre>
+<pre><span class="VALmark"><span class="keyword">val</span> mark</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netulex.Ulexing&amp;type=lexbuf">lexbuf</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALbacktrack"><span class="keyword">val</span> backtrack</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netulex.Ulexing&amp;type=lexbuf">lexbuf</a> -&gt; int</code></pre></div></div>
+</div>

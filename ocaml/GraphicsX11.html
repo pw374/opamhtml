@@ -1,0 +1,9 @@
+<div class="ocaml_toplevel_module"><div class="info">Additional graphics primitives for the X Windows system.</div>
+<pre><span class="TYPEwindow_id"><span class="keyword">type</span> window_id</span> = <code class="type">string</code></pre>
+<pre><span class="VALwindow_id"><span class="keyword">val</span> window_id</span> : <code class="type">unit -&gt; <a href="?package=ocaml&amp;module=GraphicsX11&amp;type=window_id">window_id</a></code></pre><div class="info"><div class="info">Return the unique identifier of the OCaml graphics window.
+   The returned string is an unsigned 32 bits integer
+   in decimal form.</div></div>
+<pre><span class="VALopen_subwindow"><span class="keyword">val</span> open_subwindow</span> : <code class="type">x:int -&gt; y:int -&gt; width:int -&gt; height:int -&gt; <a href="?package=ocaml&amp;module=GraphicsX11&amp;type=window_id">window_id</a></code></pre><div class="info"><div class="info">Create a sub-window of the current OCaml graphics window
+   and return its identifier.</div></div>
+<pre><span class="VALclose_subwindow"><span class="keyword">val</span> close_subwindow</span> : <code class="type"><a href="?package=ocaml&amp;module=GraphicsX11&amp;type=window_id">window_id</a> -&gt; unit</code></pre><div class="info"><div class="info">Close the sub-window having the given identifier.</div></div>
+</div>

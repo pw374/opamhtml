@@ -1,0 +1,6 @@
+<div class="ocaml_toplevel_module"><div class="info">Types for all Netsys modules</div>
+<pre><span class="TYPEmemory"><span class="keyword">type</span> memory</span> = <code class="type">(char, <a href="?package=ocaml&amp;module=Bigarray&amp;type=int8_unsigned_elt">Bigarray.int8_unsigned_elt</a>, <a href="?package=ocaml&amp;module=Bigarray&amp;type=c_layout">Bigarray.c_layout</a>) <a href="?package=ocaml&amp;module=Bigarray.Array1&amp;type=t">Bigarray.Array1.t</a></code></pre><div class="info"><div class="info">We consider 1-dimensional bigarrays of chars as memory buffers.
+      They have the useful property that the garbage collector cannot
+      relocate them, i.e. the address is fixed. Also, one can mmap
+      a file, and connect the bigarray with shared memory.</div></div>
+</div>

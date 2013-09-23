@@ -1,0 +1,574 @@
+<div class="ocaml_toplevel_module">
+<pre><code><span class="TYPEt"><span class="keyword">type</span> t</span> = {</code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.runs">runs</span> : <code class="type">int</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.cycles">cycles</span> : <code class="type">int</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.nanos">nanos</span> : <code class="type">int</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.compactions">compactions</span> : <code class="type">int</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.minor_allocated">minor_allocated</span> : <code class="type">int</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.major_allocated">major_allocated</span> : <code class="type">int</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.promoted">promoted</span> : <code class="type">int</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.major_collections">major_collections</span> : <code class="type">int</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.minor_collections">minor_collections</span> : <code class="type">int</code>;</code></td></tr><tr><td>}</td></tr></table>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VALminor_collections"><span class="keyword">val</span> minor_collections</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALset_minor_collections"><span class="keyword">val</span> set_minor_collections</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALmajor_collections"><span class="keyword">val</span> major_collections</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALset_major_collections"><span class="keyword">val</span> set_major_collections</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALpromoted"><span class="keyword">val</span> promoted</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALset_promoted"><span class="keyword">val</span> set_promoted</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALmajor_allocated"><span class="keyword">val</span> major_allocated</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALset_major_allocated"><span class="keyword">val</span> set_major_allocated</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALminor_allocated"><span class="keyword">val</span> minor_allocated</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALset_minor_allocated"><span class="keyword">val</span> set_minor_allocated</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALcompactions"><span class="keyword">val</span> compactions</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALset_compactions"><span class="keyword">val</span> set_compactions</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALnanos"><span class="keyword">val</span> nanos</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALset_nanos"><span class="keyword">val</span> set_nanos</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALcycles"><span class="keyword">val</span> cycles</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALset_cycles"><span class="keyword">val</span> set_cycles</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALruns"><span class="keyword">val</span> runs</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALset_runs"><span class="keyword">val</span> set_runs</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<div class="ocaml_module sig" name="Fields"><pre><span class="keyword">module</span> <a href="?package=core_bench&amp;module=Test_metrics.Fields">Fields</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALnames"><span class="keyword">val</span> names</span> : <code class="type">string list</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">string list</code></pre>
+<pre><span class="VALminor_collections"><span class="keyword">val</span> minor_collections</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALmajor_collections"><span class="keyword">val</span> major_collections</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALpromoted"><span class="keyword">val</span> promoted</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALmajor_allocated"><span class="keyword">val</span> major_allocated</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALminor_allocated"><span class="keyword">val</span> minor_allocated</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALcompactions"><span class="keyword">val</span> compactions</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALnanos"><span class="keyword">val</span> nanos</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALcycles"><span class="keyword">val</span> cycles</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALruns"><span class="keyword">val</span> runs</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALmake_creator"><span class="keyword">val</span> make_creator</span> : <code class="type">runs:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      'a -&gt; ('b -&gt; int) * 'c) -&gt;
+cycles:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+        'c -&gt; ('b -&gt; int) * 'd) -&gt;
+nanos:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       'd -&gt; ('b -&gt; int) * 'e) -&gt;
+compactions:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'e -&gt; ('b -&gt; int) * 'f) -&gt;
+minor_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'f -&gt; ('b -&gt; int) * 'g) -&gt;
+major_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'g -&gt; ('b -&gt; int) * 'h) -&gt;
+promoted:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+          'h -&gt; ('b -&gt; int) * 'i) -&gt;
+major_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'i -&gt; ('b -&gt; int) * 'j) -&gt;
+minor_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'j -&gt; ('b -&gt; int) * 'k) -&gt;
+'a -&gt; ('b -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>) * 'k</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">runs:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      'a -&gt; ('b -&gt; int) * 'c) -&gt;
+cycles:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+        'c -&gt; ('b -&gt; int) * 'd) -&gt;
+nanos:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       'd -&gt; ('b -&gt; int) * 'e) -&gt;
+compactions:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'e -&gt; ('b -&gt; int) * 'f) -&gt;
+minor_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'f -&gt; ('b -&gt; int) * 'g) -&gt;
+major_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'g -&gt; ('b -&gt; int) * 'h) -&gt;
+promoted:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+          'h -&gt; ('b -&gt; int) * 'i) -&gt;
+major_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'i -&gt; ('b -&gt; int) * 'j) -&gt;
+minor_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'j -&gt; ('b -&gt; int) * 'k) -&gt;
+'a -&gt; ('b -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>) * 'k</code></pre>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">runs:int -&gt;
+cycles:int -&gt;
+nanos:int -&gt;
+compactions:int -&gt;
+minor_allocated:int -&gt;
+major_allocated:int -&gt;
+promoted:int -&gt; major_collections:int -&gt; minor_collections:int -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">runs:int -&gt;
+cycles:int -&gt;
+nanos:int -&gt;
+compactions:int -&gt;
+minor_allocated:int -&gt;
+major_allocated:int -&gt;
+promoted:int -&gt; major_collections:int -&gt; minor_collections:int -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a></code></pre>
+<pre><span class="VALmap"><span class="keyword">val</span> map</span> : <code class="type">runs:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      int) -&gt;
+cycles:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+        int) -&gt;
+nanos:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       int) -&gt;
+compactions:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; int) -&gt;
+minor_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; int) -&gt;
+major_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; int) -&gt;
+promoted:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+          int) -&gt;
+major_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; int) -&gt;
+minor_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; int) -&gt;
+<a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">runs:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      int) -&gt;
+cycles:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+        int) -&gt;
+nanos:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       int) -&gt;
+compactions:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; int) -&gt;
+minor_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; int) -&gt;
+major_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; int) -&gt;
+promoted:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+          int) -&gt;
+major_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; int) -&gt;
+minor_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; int) -&gt;
+<a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a></code></pre>
+<pre><span class="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">runs:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      'a) -&gt;
+cycles:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+        'b) -&gt;
+nanos:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       'c) -&gt;
+compactions:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'd) -&gt;
+minor_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'e) -&gt;
+major_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'f) -&gt;
+promoted:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+          'g) -&gt;
+major_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'h) -&gt;
+minor_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'i) -&gt;
+'i</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">runs:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      'a) -&gt;
+cycles:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+        'b) -&gt;
+nanos:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       'c) -&gt;
+compactions:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'd) -&gt;
+minor_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'e) -&gt;
+major_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'f) -&gt;
+promoted:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+          'g) -&gt;
+major_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'h) -&gt;
+minor_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'i) -&gt;
+'i</code></pre>
+<pre><span class="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">init:'a -&gt;
+runs:('a -&gt;
+      ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      'b) -&gt;
+cycles:('b -&gt;
+        ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+        'c) -&gt;
+nanos:('c -&gt;
+       ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       'd) -&gt;
+compactions:('d -&gt;
+             ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'e) -&gt;
+minor_allocated:('e -&gt;
+                 ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'f) -&gt;
+major_allocated:('f -&gt;
+                 ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'g) -&gt;
+promoted:('g -&gt;
+          ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+          'h) -&gt;
+major_collections:('h -&gt;
+                   ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'i) -&gt;
+minor_collections:('i -&gt;
+                   ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'j) -&gt;
+'j</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">init:'a -&gt;
+runs:('a -&gt;
+      ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      'b) -&gt;
+cycles:('b -&gt;
+        ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+        'c) -&gt;
+nanos:('c -&gt;
+       ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       'd) -&gt;
+compactions:('d -&gt;
+             ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'e) -&gt;
+minor_allocated:('e -&gt;
+                 ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'f) -&gt;
+major_allocated:('f -&gt;
+                 ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'g) -&gt;
+promoted:('g -&gt;
+          ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+          'h) -&gt;
+major_collections:('h -&gt;
+                   ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'i) -&gt;
+minor_collections:('i -&gt;
+                   ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'j) -&gt;
+'j</code></pre>
+<pre><span class="VALmap_poly"><span class="keyword">val</span> map_poly</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, 'a) <a href="?package=fieldslib&amp;module=Field&amp;type=user">Fieldslib.Field.user</a> -&gt; 'a list</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, 'a) <a href="?package=fieldslib&amp;module=Field&amp;type=user">Fieldslib.Field.user</a> -&gt; 'a list</code></pre>
+<pre><span class="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">runs:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      bool) -&gt;
+cycles:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+        bool) -&gt;
+nanos:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       bool) -&gt;
+compactions:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+minor_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+major_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+promoted:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+          bool) -&gt;
+major_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+minor_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+bool</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">runs:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      bool) -&gt;
+cycles:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+        bool) -&gt;
+nanos:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       bool) -&gt;
+compactions:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+minor_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+major_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+promoted:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+          bool) -&gt;
+major_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+minor_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+bool</code></pre>
+<pre><span class="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">runs:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      bool) -&gt;
+cycles:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+        bool) -&gt;
+nanos:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       bool) -&gt;
+compactions:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+minor_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+major_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+promoted:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+          bool) -&gt;
+major_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+minor_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+bool</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">runs:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      bool) -&gt;
+cycles:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+        bool) -&gt;
+nanos:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       bool) -&gt;
+compactions:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+minor_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+major_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+promoted:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+          bool) -&gt;
+major_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+minor_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+bool</code></pre>
+<pre><span class="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type">runs:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      'a) -&gt;
+cycles:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+        'a) -&gt;
+nanos:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       'a) -&gt;
+compactions:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+minor_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+major_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+promoted:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+          'a) -&gt;
+major_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+minor_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+'a list</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">runs:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      'a) -&gt;
+cycles:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+        'a) -&gt;
+nanos:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       'a) -&gt;
+compactions:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+minor_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+major_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+promoted:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+          'a) -&gt;
+major_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+minor_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+'a list</code></pre>
+<div class="ocaml_module sig" name="Direct"><pre><span class="keyword">module</span> <a href="?package=core_bench&amp;module=Test_metrics.Fields.Direct">Direct</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALiter"><span class="keyword">val</span> iter</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt;
+runs:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'a) -&gt;
+cycles:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+        <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'b) -&gt;
+nanos:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'c) -&gt;
+compactions:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'd) -&gt;
+minor_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'e) -&gt;
+major_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'f) -&gt;
+promoted:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+          <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'g) -&gt;
+major_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'h) -&gt;
+minor_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'i) -&gt;
+'i</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt;
+runs:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'a) -&gt;
+cycles:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+        <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'b) -&gt;
+nanos:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'c) -&gt;
+compactions:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'd) -&gt;
+minor_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'e) -&gt;
+major_allocated:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'f) -&gt;
+promoted:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+          <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'g) -&gt;
+major_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'h) -&gt;
+minor_collections:(([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'i) -&gt;
+'i</code></pre>
+<pre><span class="VALfold"><span class="keyword">val</span> fold</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt;
+init:'a -&gt;
+runs:('a -&gt;
+      ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'b) -&gt;
+cycles:('b -&gt;
+        ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+        <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'c) -&gt;
+nanos:('c -&gt;
+       ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'd) -&gt;
+compactions:('d -&gt;
+             ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'e) -&gt;
+minor_allocated:('e -&gt;
+                 ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'f) -&gt;
+major_allocated:('f -&gt;
+                 ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'g) -&gt;
+promoted:('g -&gt;
+          ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+          <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'h) -&gt;
+major_collections:('h -&gt;
+                   ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'i) -&gt;
+minor_collections:('i -&gt;
+                   ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'j) -&gt;
+'j</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt;
+init:'a -&gt;
+runs:('a -&gt;
+      ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'b) -&gt;
+cycles:('b -&gt;
+        ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+        <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'c) -&gt;
+nanos:('c -&gt;
+       ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'd) -&gt;
+compactions:('d -&gt;
+             ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'e) -&gt;
+minor_allocated:('e -&gt;
+                 ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'f) -&gt;
+major_allocated:('f -&gt;
+                 ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'g) -&gt;
+promoted:('g -&gt;
+          ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+          <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'h) -&gt;
+major_collections:('h -&gt;
+                   ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'i) -&gt;
+minor_collections:('i -&gt;
+                   ([&lt; `Read | `Set_and_create ], <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a>, int)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int -&gt; 'j) -&gt;
+'j</code></pre></div></div></div></div>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">unit -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a></code></pre>
+<pre><span class="VALmax"><span class="keyword">val</span> max</span> : <code class="type">'a <a href="?package=core&amp;module=Std.Array&amp;type=t">Core.Std.Array.t</a> -&gt;
+len:int -&gt; field:('a -&gt; <a href="?package=core&amp;module=Std.Int&amp;type=t">Core.Std.Int.t</a>) -&gt; <a href="?package=core&amp;module=Std.Int&amp;type=t">Core.Std.Int.t</a></code></pre>
+<div class="ocaml_module sig" name="Variable"><pre><span class="keyword">module</span> <a href="?package=core_bench&amp;module=Test_metrics.Variable">Variable</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type">[ `Compactions
+| `Cycles
+| `Major_allocated
+| `Major_collections
+| `Minor_allocated
+| `Minor_collections
+| `Nanos
+| `One
+| `Promoted
+| `Runs ]</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Test_metrics.Variable&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VAL__t_of_sexp__"><span class="keyword">val</span> __t_of_sexp__</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt;
+[&gt; `Compactions
+ | `Cycles
+ | `Major_allocated
+ | `Major_collections
+ | `Minor_allocated
+ | `Minor_collections
+ | `Nanos
+ | `One
+ | `Promoted
+ | `Runs ]</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt;
+[&gt; `Compactions
+ | `Cycles
+ | `Major_allocated
+ | `Major_collections
+ | `Minor_allocated
+ | `Minor_collections
+ | `Nanos
+ | `One
+ | `Promoted
+ | `Runs ]</code></pre>
+<pre><span class="VALt_of_sexp"><span class="keyword">val</span> t_of_sexp</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt;
+[&gt; `Compactions
+ | `Cycles
+ | `Major_allocated
+ | `Major_collections
+ | `Minor_allocated
+ | `Minor_collections
+ | `Nanos
+ | `One
+ | `Promoted
+ | `Runs ]</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt;
+[&gt; `Compactions
+ | `Cycles
+ | `Major_allocated
+ | `Major_collections
+ | `Minor_allocated
+ | `Minor_collections
+ | `Nanos
+ | `One
+ | `Promoted
+ | `Runs ]</code></pre>
+<pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type">[&lt; `Compactions
+ | `Cycles
+ | `Major_allocated
+ | `Major_collections
+ | `Minor_allocated
+ | `Minor_collections
+ | `Nanos
+ | `One
+ | `Promoted
+ | `Runs ] -&gt;
+<a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">[&lt; `Compactions
+ | `Cycles
+ | `Major_allocated
+ | `Major_collections
+ | `Minor_allocated
+ | `Minor_collections
+ | `Nanos
+ | `One
+ | `Promoted
+ | `Runs ] -&gt;
+<a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<pre><span class="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -&gt; [&gt; `Compactions | `Minor_collections | `Nanos | `Runs ]</code></pre>
+<pre><span class="VALto_short_singular_string"><span class="keyword">val</span> to_short_singular_string</span> : <code class="type">[&gt; `Compactions
+ | `Cycles
+ | `Major_collections
+ | `Minor_collections
+ | `Nanos
+ | `Runs ] -&gt;
+string</code></pre>
+<pre><span class="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">[&gt; `Compactions
+ | `Cycles
+ | `Major_collections
+ | `Minor_collections
+ | `Nanos
+ | `Runs ] -&gt;
+string</code></pre>
+<pre><span class="VALfloatify"><span class="keyword">val</span> floatify</span> : <code class="type">(<a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; int) -&gt; <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Float&amp;type=t">Core.Std.Float.t</a></code></pre>
+<pre><span class="VALaccessor"><span class="keyword">val</span> accessor</span> : <code class="type">[&lt; `Compactions
+ | `Cycles
+ | `Major_allocated
+ | `Major_collections
+ | `Minor_allocated
+ | `Minor_collections
+ | `Nanos
+ | `One
+ | `Promoted
+ | `Runs ] -&gt;
+<a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Float&amp;type=t">Core.Std.Float.t</a></code></pre></div></div>
+
+</div>

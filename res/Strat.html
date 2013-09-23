@@ -1,0 +1,17 @@
+<div class="ocaml_toplevel_module"><div class="info">Interface to strategies</div>
+<div class="ocaml_module sig" name="T"><pre><span class="keyword">module type</span> <a href="?package=res&amp;module=Strat.T">T</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">The abstract type of strategies.</div></div>
+<pre><span class="VALdefault"><span class="keyword">val</span> default</span> : <code class="type"><a href="?package=res&amp;module=Strat.T&amp;type=t">t</a></code></pre><div class="info"><div class="info">Default strategy of this strategy implementation.</div></div>
+<pre><span class="VALgrow"><span class="keyword">val</span> grow</span> : <code class="type"><a href="?package=res&amp;module=Strat.T&amp;type=t">t</a> -&gt; int -&gt; int</code></pre><div class="info"><div class="info"><code class="code">grow strat new_len</code> <b>Returns</b> the new real length of some contiguous
+      datastructure using strategy <code class="code">strat</code> given new virtual length
+      <code class="code">new_len</code>.  The user should then use this new real length to resize
+      the datastructure.<br/>      Be careful, the new (real) length <b>must</b> be larger than the new
+      virtual length, otherwise your program will crash!</div></div>
+<pre><span class="VALshrink"><span class="keyword">val</span> shrink</span> : <code class="type"><a href="?package=res&amp;module=Strat.T&amp;type=t">t</a> -&gt; real_len:int -&gt; new_len:int -&gt; int</code></pre><div class="info"><div class="info"><code class="code">shrink strat ~real_len ~new_len</code> <b>Returns</b> the new real length
+      of a resizable datastructure given its current real length
+      <code class="code">real_len</code> and its required new virtual length <code class="code">new_len</code>
+      wrt. strategy <code class="code">strat</code>.  The user should then use this new real
+      length to resize the datastructure.  If <code class="code">-1</code> is returned, it is
+      not necessary to resize.<br/>      Be careful, the new (real) length <b>must</b> be larger than the new
+      (virtual) length, otherwise your program may crash!</div></div></div></div>
+</div>

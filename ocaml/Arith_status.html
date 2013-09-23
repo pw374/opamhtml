@@ -1,0 +1,28 @@
+<div class="ocaml_toplevel_module"><div class="info">Flags that control rational arithmetic.</div>
+<pre><span class="VALarith_status"><span class="keyword">val</span> arith_status</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info">Print the current status of the arithmetic flags.</div></div>
+<pre><span class="VALget_error_when_null_denominator"><span class="keyword">val</span> get_error_when_null_denominator</span> : <code class="type">unit -&gt; bool</code></pre><div class="info"><div class="info">See  <a href="#Arith_status.set_error_when_null_denominator">Arith_status.set_error_when_null_denominator</a>.</div></div>
+<pre><span class="VALset_error_when_null_denominator"><span class="keyword">val</span> set_error_when_null_denominator</span> : <code class="type">bool -&gt; unit</code></pre><div class="info"><div class="info">Get or set the flag <code class="code">null_denominator</code>. When on, attempting to
+           create a rational with a null denominator raises an exception.
+           When off, rationals with null denominators are accepted.
+           Initially: on.</div></div>
+<pre><span class="VALget_normalize_ratio"><span class="keyword">val</span> get_normalize_ratio</span> : <code class="type">unit -&gt; bool</code></pre><div class="info"><div class="info">See  <a href="#Arith_status.set_normalize_ratio">Arith_status.set_normalize_ratio</a>.</div></div>
+<pre><span class="VALset_normalize_ratio"><span class="keyword">val</span> set_normalize_ratio</span> : <code class="type">bool -&gt; unit</code></pre><div class="info"><div class="info">Get or set the flag <code class="code">normalize_ratio</code>. When on, rational
+           numbers are normalized after each operation. When off,
+           rational numbers are not normalized until printed.
+           Initially: off.</div></div>
+<pre><span class="VALget_normalize_ratio_when_printing"><span class="keyword">val</span> get_normalize_ratio_when_printing</span> : <code class="type">unit -&gt; bool</code></pre><div class="info"><div class="info">See  <a href="#Arith_status.set_normalize_ratio_when_printing">Arith_status.set_normalize_ratio_when_printing</a>.</div></div>
+<pre><span class="VALset_normalize_ratio_when_printing"><span class="keyword">val</span> set_normalize_ratio_when_printing</span> : <code class="type">bool -&gt; unit</code></pre><div class="info"><div class="info">Get or set the flag <code class="code">normalize_ratio_when_printing</code>.
+           When on, rational numbers are normalized before being printed.
+           When off, rational numbers are printed as is, without normalization.
+           Initially: on.</div></div>
+<pre><span class="VALget_approx_printing"><span class="keyword">val</span> get_approx_printing</span> : <code class="type">unit -&gt; bool</code></pre><div class="info"><div class="info">See  <a href="#Arith_status.set_approx_printing">Arith_status.set_approx_printing</a>.</div></div>
+<pre><span class="VALset_approx_printing"><span class="keyword">val</span> set_approx_printing</span> : <code class="type">bool -&gt; unit</code></pre><div class="info"><div class="info">Get or set the flag <code class="code">approx_printing</code>.
+           When on, rational numbers are printed as a decimal approximation.
+           When off, rational numbers are printed as a fraction.
+           Initially: off.</div></div>
+<pre><span class="VALget_floating_precision"><span class="keyword">val</span> get_floating_precision</span> : <code class="type">unit -&gt; int</code></pre><div class="info"><div class="info">See  <a href="#Arith_status.set_floating_precision">Arith_status.set_floating_precision</a>.</div></div>
+<pre><span class="VALset_floating_precision"><span class="keyword">val</span> set_floating_precision</span> : <code class="type">int -&gt; unit</code></pre><div class="info"><div class="info">Get or set the parameter <code class="code">floating_precision</code>.
+           This parameter is the number of digits displayed when
+           <code class="code">approx_printing</code> is on.
+           Initially: 12.</div></div>
+</div>

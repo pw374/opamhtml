@@ -1,0 +1,24 @@
+<div class="ocaml_toplevel_module"><div class="info">Conditions</div>
+<div class="info"><div class="info">Condition variables to synchronize between threads.</div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> </pre><div class="info"><div class="info">Condition variable type. The type parameter denotes the type of
+        value propagated from notifier to waiter.</div></div>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">unit -&gt; 'a <a href="?package=lwt&amp;module=Lwt_condition&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create ()</code> creates a new condition variable.</div></div>
+<pre><span class="VALwait"><span class="keyword">val</span> wait</span> : <code class="type">?mutex:<a href="?package=lwt&amp;module=Lwt_mutex&amp;type=t">Lwt_mutex.t</a> -&gt; 'a <a href="?package=lwt&amp;module=Lwt_condition&amp;type=t">t</a> -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">wait mutex condvar</code> will cause the current thread to block,
+        awaiting notification for a condition variable, <code class="code">condvar</code>. If
+        provided, the <code class="code">mutex</code> must have been previously locked (within
+        the scope of <code class="code">Lwt_mutex.with_lock</code>, for example) and is
+        temporarily unlocked until the condition is notified. Upon
+        notification, <code class="code">mutex</code> is re-locked before <code class="code">wait</code> returns and
+        the thread's activity is resumed. When the awaited condition
+        is notified, the value parameter passed to <code class="code">notify</code> is
+        returned.</div></div>
+<pre><span class="VALsignal"><span class="keyword">val</span> signal</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt_condition&amp;type=t">t</a> -&gt; 'a -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">signal condvar value</code> notifies that a condition is ready. A
+        single waiting thread will be awoken and will receive the
+        notification value which will be returned from <code class="code">wait</code>. Note
+        that condition notification is not &quot;sticky&quot;, i.e. if there is
+        no waiter when <code class="code">notify</code> is called, the notification will be
+        missed and the value discarded.</div></div>
+<pre><span class="VALbroadcast"><span class="keyword">val</span> broadcast</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt_condition&amp;type=t">t</a> -&gt; 'a -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">broadcast condvar value</code> notifies all waiting threads. Each
+        will be awoken in turn and will receive the same notification
+        value.</div></div>
+</div>

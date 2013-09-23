@@ -1,0 +1,522 @@
+<div class="ocaml_toplevel_module"><div class="info">The initially opened module.<br/>   This module provides the basic operations over the built-in types
+   (numbers, booleans, strings, exceptions, references, lists, arrays,
+   input-output channels, ...).<br/>   This module is automatically opened at the beginning of each compilation.
+   All components of this module can therefore be referred by their short
+   name, without prefixing them by <code class="code">Pervasives</code>.</div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Exceptions</h6></div></div>
+<pre><span class="VALraise"><span class="keyword">val</span> raise</span> : <code class="type">exn -&gt; 'a</code></pre><div class="info"><div class="info">Raise the given exception value</div></div>
+<pre><span class="VALinvalid_arg"><span class="keyword">val</span> invalid_arg</span> : <code class="type">string -&gt; 'a</code></pre><div class="info"><div class="info">Raise exception <code class="code">Invalid_argument</code> with the given string.</div></div>
+<pre><span class="VALfailwith"><span class="keyword">val</span> failwith</span> : <code class="type">string -&gt; 'a</code></pre><div class="info"><div class="info">Raise exception <code class="code">Failure</code> with the given string.</div></div>
+<pre><span class="EXCEPTIONExit"><span class="keyword">exception</span> Exit</span></pre><div class="info"><div class="info">The <code class="code">Exit</code> exception is not raised by any library function.  It is
+    provided for use in your programs.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Comparisons</h6></div></div>
+<pre><span class="VAL(=)"><span class="keyword">val</span> (=)</span> : <code class="type">'a -&gt; 'a -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">e1 = e2</code> tests for structural equality of <code class="code">e1</code> and <code class="code">e2</code>.
+   Mutable structures (e.g. references and arrays) are equal
+   if and only if their current contents are structurally equal,
+   even if the two mutable objects are not the same physical object.
+   Equality between functional values raises <code class="code">Invalid_argument</code>.
+   Equality between cyclic data structures may not terminate.</div></div>
+<pre><span class="VAL(&lt;&gt;)"><span class="keyword">val</span> (&lt;&gt;)</span> : <code class="type">'a -&gt; 'a -&gt; bool</code></pre><div class="info"><div class="info">Negation of  <a href="#Pervasives.( = )">Pervasives.( = )</a>.</div></div>
+<pre><span class="VAL(&lt;)"><span class="keyword">val</span> (&lt;)</span> : <code class="type">'a -&gt; 'a -&gt; bool</code></pre><div class="info"><div class="info">See  <a href="#Pervasives.( &gt;= )">Pervasives.( &gt;= )</a>.</div></div>
+<pre><span class="VAL(&gt;)"><span class="keyword">val</span> (&gt;)</span> : <code class="type">'a -&gt; 'a -&gt; bool</code></pre><div class="info"><div class="info">See  <a href="#Pervasives.( &gt;= )">Pervasives.( &gt;= )</a>.</div></div>
+<pre><span class="VAL(&lt;=)"><span class="keyword">val</span> (&lt;=)</span> : <code class="type">'a -&gt; 'a -&gt; bool</code></pre><div class="info"><div class="info">See  <a href="#Pervasives.( &gt;= )">Pervasives.( &gt;= )</a>.</div></div>
+<pre><span class="VAL(&gt;=)"><span class="keyword">val</span> (&gt;=)</span> : <code class="type">'a -&gt; 'a -&gt; bool</code></pre><div class="info"><div class="info">Structural ordering functions. These functions coincide with
+   the usual orderings over integers, characters, strings
+   and floating-point numbers, and extend them to a
+   total ordering over all types.
+   The ordering is compatible with <code class="code">( = )</code>. As in the case
+   of <code class="code">( = )</code>, mutable structures are compared by contents.
+   Comparison between functional values raises <code class="code">Invalid_argument</code>.
+   Comparison between cyclic structures may not terminate.</div></div>
+<pre><span class="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">'a -&gt; 'a -&gt; int</code></pre><div class="info"><div class="info"><code class="code">compare x y</code> returns <code class="code">0</code> if <code class="code">x</code> is equal to <code class="code">y</code>,
+   a negative integer if <code class="code">x</code> is less than <code class="code">y</code>, and a positive integer
+   if <code class="code">x</code> is greater than <code class="code">y</code>.  The ordering implemented by <code class="code">compare</code>
+   is compatible with the comparison predicates <code class="code">=</code>, <code class="code">&lt;</code> and <code class="code">&gt;</code>
+   defined above,  with one difference on the treatment of the float value
+    <a href="#Pervasives.nan">Pervasives.nan</a>.  Namely, the comparison predicates treat <code class="code">nan</code>
+   as different from any other float value, including itself;
+   while <code class="code">compare</code> treats <code class="code">nan</code> as equal to itself and less than any
+   other float value.  This treatment of <code class="code">nan</code> ensures that <code class="code">compare</code>
+   defines a total ordering relation.<br/>   <code class="code">compare</code> applied to functional values may raise <code class="code">Invalid_argument</code>.
+   <code class="code">compare</code> applied to cyclic structures may not terminate.<br/>   The <code class="code">compare</code> function can be used as the comparison function
+   required by the  <a href="#Set.Make">Set.Make</a> and  <a href="#Map.Make">Map.Make</a> functors, as well as
+   the  <a href="#List.sort">List.sort</a> and  <a href="#Array.sort">Array.sort</a> functions.</div></div>
+<pre><span class="VALmin"><span class="keyword">val</span> min</span> : <code class="type">'a -&gt; 'a -&gt; 'a</code></pre><div class="info"><div class="info">Return the smaller of the two arguments.
+    The result is unspecified if one of the arguments contains
+    the float value <code class="code">nan</code>.</div></div>
+<pre><span class="VALmax"><span class="keyword">val</span> max</span> : <code class="type">'a -&gt; 'a -&gt; 'a</code></pre><div class="info"><div class="info">Return the greater of the two arguments.
+    The result is unspecified if one of the arguments contains
+    the float value <code class="code">nan</code>.</div></div>
+<pre><span class="VAL(==)"><span class="keyword">val</span> (==)</span> : <code class="type">'a -&gt; 'a -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">e1 == e2</code> tests for physical equality of <code class="code">e1</code> and <code class="code">e2</code>.
+   On mutable types such as references, arrays, strings, records with
+   mutable fields and objects with mutable instance variables,
+   <code class="code">e1 == e2</code> is true if and only if physical modification of <code class="code">e1</code>
+   also affects <code class="code">e2</code>.
+   On non-mutable types, the behavior of <code class="code">( == )</code> is
+   implementation-dependent; however, it is guaranteed that
+   <code class="code">e1 == e2</code> implies <code class="code">compare e1 e2 = 0</code>.</div></div>
+<pre><span class="VAL(!=)"><span class="keyword">val</span> (!=)</span> : <code class="type">'a -&gt; 'a -&gt; bool</code></pre><div class="info"><div class="info">Negation of  <a href="#Pervasives.( == )">Pervasives.( == )</a>.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Boolean operations</h6></div></div>
+<pre><span class="VALnot"><span class="keyword">val</span> not</span> : <code class="type">bool -&gt; bool</code></pre><div class="info"><div class="info">The boolean negation.</div></div>
+<pre><span class="VAL(&amp;&amp;)"><span class="keyword">val</span> (&amp;&amp;)</span> : <code class="type">bool -&gt; bool -&gt; bool</code></pre><div class="info"><div class="info">The boolean 'and'. Evaluation is sequential, left-to-right:
+   in <code class="code">e1 &amp;&amp; e2</code>, <code class="code">e1</code> is evaluated first, and if it returns <code class="code">false</code>,
+   <code class="code">e2</code> is not evaluated at all.</div></div>
+<pre><span class="VAL(&amp;)"><span class="keyword">val</span> (&amp;)</span> : <code class="type">bool -&gt; bool -&gt; bool</code></pre><div class="info"><div class="info"><span class="warning">Deprecated.</span>  <a href="#Pervasives.( &amp;&amp; )">Pervasives.( &amp;&amp; )</a> should be used instead.<br/></div></div>
+<pre><span class="VAL(||)"><span class="keyword">val</span> (||)</span> : <code class="type">bool -&gt; bool -&gt; bool</code></pre><div class="info"><div class="info">The boolean 'or'. Evaluation is sequential, left-to-right:
+   in <code class="code">e1 || e2</code>, <code class="code">e1</code> is evaluated first, and if it returns <code class="code">true</code>,
+   <code class="code">e2</code> is not evaluated at all.</div></div>
+<pre><span class="VAL(or)"><span class="keyword">val</span> (or)</span> : <code class="type">bool -&gt; bool -&gt; bool</code></pre><div class="info"><div class="info"><span class="warning">Deprecated.</span>  <a href="#Pervasives.( || )">Pervasives.( || )</a> should be used instead.<br/></div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Composition operators</h6></div></div>
+<pre><span class="VAL(|&gt;)"><span class="keyword">val</span> (|&gt;)</span> : <code class="type">'a -&gt; ('a -&gt; 'b) -&gt; 'b</code></pre><div class="info"><div class="info">Reverse-application operator: <code class="code">x |&gt; f |&gt; g</code> is exactly equivalent
+ to <code class="code">g (f (x))</code>. <b>Since</b> 4.01</div></div>
+<pre><span class="VAL(@@)"><span class="keyword">val</span> (@@)</span> : <code class="type">('a -&gt; 'b) -&gt; 'a -&gt; 'b</code></pre><div class="info"><div class="info">Application operator: <code class="code">g @@ f @@ x</code> is exactly equivalent to
+ <code class="code">g (f (x))</code>. <b>Since</b> 4.01</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Integer arithmetic</h6></div></div>
+<div class="info"><div class="info">Integers are 31 bits wide (or 63 bits on 64-bit processors).
+   All operations are taken modulo 2<sup class="superscript">31</sup> (or 2<sup class="superscript">63</sup>).
+   They do not fail on overflow.</div></div>
+<pre><span class="VAL(~-)"><span class="keyword">val</span> (~-)</span> : <code class="type">int -&gt; int</code></pre><div class="info"><div class="info">Unary negation. You can also write <code class="code">- e</code> instead of <code class="code">~- e</code>.</div></div>
+<pre><span class="VAL(~+)"><span class="keyword">val</span> (~+)</span> : <code class="type">int -&gt; int</code></pre><div class="info"><div class="info">Unary addition. You can also write <code class="code">+ e</code> instead of <code class="code">~+ e</code>. <b>Since</b> 3.12.0</div></div>
+<pre><span class="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type">int -&gt; int</code></pre><div class="info"><div class="info"><code class="code">succ x</code> is <code class="code">x + 1</code>.</div></div>
+<pre><span class="VALpred"><span class="keyword">val</span> pred</span> : <code class="type">int -&gt; int</code></pre><div class="info"><div class="info"><code class="code">pred x</code> is <code class="code">x - 1</code>.</div></div>
+<pre><span class="VAL(+)"><span class="keyword">val</span> (+)</span> : <code class="type">int -&gt; int -&gt; int</code></pre><div class="info"><div class="info">Integer addition.</div></div>
+<pre><span class="VAL(-)"><span class="keyword">val</span> (-)</span> : <code class="type">int -&gt; int -&gt; int</code></pre><div class="info"><div class="info">Integer subtraction.</div></div>
+<pre><span class="VAL( * )"><span class="keyword">val</span> ( * )</span> : <code class="type">int -&gt; int -&gt; int</code></pre><div class="info"><div class="info">Integer multiplication.</div></div>
+<pre><span class="VAL(/)"><span class="keyword">val</span> (/)</span> : <code class="type">int -&gt; int -&gt; int</code></pre><div class="info"><div class="info">Integer division.
+   Raise <code class="code">Division_by_zero</code> if the second argument is 0.
+   Integer division rounds the real quotient of its arguments towards zero.
+   More precisely, if <code class="code">x &gt;= 0</code> and <code class="code">y &gt; 0</code>, <code class="code">x / y</code> is the greatest integer
+   less than or equal to the real quotient of <code class="code">x</code> by <code class="code">y</code>.  Moreover,
+   <code class="code">(- x) / y = x / (- y) = - (x / y)</code>.</div></div>
+<pre><span class="VAL(mod)"><span class="keyword">val</span> (mod)</span> : <code class="type">int -&gt; int -&gt; int</code></pre><div class="info"><div class="info">Integer remainder.  If <code class="code">y</code> is not zero, the result
+   of <code class="code">x mod y</code> satisfies the following properties:
+   <code class="code">x = (x / y) * y + x mod y</code> and
+   <code class="code">abs(x mod y) &lt;= abs(y) - 1</code>.
+   If <code class="code">y = 0</code>, <code class="code">x mod y</code> raises <code class="code">Division_by_zero</code>.
+   Note that <code class="code">x mod y</code> is negative only if <code class="code">x &lt; 0</code>.
+   Raise <code class="code">Division_by_zero</code> if <code class="code">y</code> is zero.</div></div>
+<pre><span class="VALabs"><span class="keyword">val</span> abs</span> : <code class="type">int -&gt; int</code></pre><div class="info"><div class="info">Return the absolute value of the argument.  Note that this may be
+  negative if the argument is <code class="code">min_int</code>.</div></div>
+<pre><span class="VALmax_int"><span class="keyword">val</span> max_int</span> : <code class="type">int</code></pre><div class="info"><div class="info">The greatest representable integer.</div></div>
+<pre><span class="VALmin_int"><span class="keyword">val</span> min_int</span> : <code class="type">int</code></pre><div class="info"><div class="info">The smallest representable integer.</div></div>
+<div class="info"><div class="info"><div class="h7">Bitwise operations</div></div></div>
+<pre><span class="VAL(land)"><span class="keyword">val</span> (land)</span> : <code class="type">int -&gt; int -&gt; int</code></pre><div class="info"><div class="info">Bitwise logical and.</div></div>
+<pre><span class="VAL(lor)"><span class="keyword">val</span> (lor)</span> : <code class="type">int -&gt; int -&gt; int</code></pre><div class="info"><div class="info">Bitwise logical or.</div></div>
+<pre><span class="VAL(lxor)"><span class="keyword">val</span> (lxor)</span> : <code class="type">int -&gt; int -&gt; int</code></pre><div class="info"><div class="info">Bitwise logical exclusive or.</div></div>
+<pre><span class="VALlnot"><span class="keyword">val</span> lnot</span> : <code class="type">int -&gt; int</code></pre><div class="info"><div class="info">Bitwise logical negation.</div></div>
+<pre><span class="VAL(lsl)"><span class="keyword">val</span> (lsl)</span> : <code class="type">int -&gt; int -&gt; int</code></pre><div class="info"><div class="info"><code class="code">n lsl m</code> shifts <code class="code">n</code> to the left by <code class="code">m</code> bits.
+   The result is unspecified if <code class="code">m &lt; 0</code> or <code class="code">m &gt;= bitsize</code>,
+   where <code class="code">bitsize</code> is <code class="code">32</code> on a 32-bit platform and
+   <code class="code">64</code> on a 64-bit platform.</div></div>
+<pre><span class="VAL(lsr)"><span class="keyword">val</span> (lsr)</span> : <code class="type">int -&gt; int -&gt; int</code></pre><div class="info"><div class="info"><code class="code">n lsr m</code> shifts <code class="code">n</code> to the right by <code class="code">m</code> bits.
+   This is a logical shift: zeroes are inserted regardless of
+   the sign of <code class="code">n</code>.
+   The result is unspecified if <code class="code">m &lt; 0</code> or <code class="code">m &gt;= bitsize</code>.</div></div>
+<pre><span class="VAL(asr)"><span class="keyword">val</span> (asr)</span> : <code class="type">int -&gt; int -&gt; int</code></pre><div class="info"><div class="info"><code class="code">n asr m</code> shifts <code class="code">n</code> to the right by <code class="code">m</code> bits.
+   This is an arithmetic shift: the sign bit of <code class="code">n</code> is replicated.
+   The result is unspecified if <code class="code">m &lt; 0</code> or <code class="code">m &gt;= bitsize</code>.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Floating-point arithmetic</h6><br/>   OCaml's floating-point numbers follow the
+   IEEE 754 standard, using double precision (64 bits) numbers.
+   Floating-point operations never raise an exception on overflow,
+   underflow, division by zero, etc.  Instead, special IEEE numbers
+   are returned as appropriate, such as <code class="code">infinity</code> for <code class="code">1.0 /. 0.0</code>,
+   <code class="code">neg_infinity</code> for <code class="code">-1.0 /. 0.0</code>, and <code class="code">nan</code> ('not a number')
+   for <code class="code">0.0 /. 0.0</code>.  These special numbers then propagate through
+   floating-point computations as expected: for instance,
+   <code class="code">1.0 /. infinity</code> is <code class="code">0.0</code>, and any arithmetic operation with <code class="code">nan</code>
+   as argument returns <code class="code">nan</code> as result.</div></div>
+<pre><span class="VAL(~-.)"><span class="keyword">val</span> (~-.)</span> : <code class="type">float -&gt; float</code></pre><div class="info"><div class="info">Unary negation. You can also write <code class="code">-. e</code> instead of <code class="code">~-. e</code>.</div></div>
+<pre><span class="VAL(~+.)"><span class="keyword">val</span> (~+.)</span> : <code class="type">float -&gt; float</code></pre><div class="info"><div class="info">Unary addition. You can also write <code class="code">+. e</code> instead of <code class="code">~+. e</code>. <b>Since</b> 3.12.0</div></div>
+<pre><span class="VAL(+.)"><span class="keyword">val</span> (+.)</span> : <code class="type">float -&gt; float -&gt; float</code></pre><div class="info"><div class="info">Floating-point addition</div></div>
+<pre><span class="VAL(-.)"><span class="keyword">val</span> (-.)</span> : <code class="type">float -&gt; float -&gt; float</code></pre><div class="info"><div class="info">Floating-point subtraction</div></div>
+<pre><span class="VAL( *. )"><span class="keyword">val</span> ( *. )</span> : <code class="type">float -&gt; float -&gt; float</code></pre><div class="info"><div class="info">Floating-point multiplication</div></div>
+<pre><span class="VAL(/.)"><span class="keyword">val</span> (/.)</span> : <code class="type">float -&gt; float -&gt; float</code></pre><div class="info"><div class="info">Floating-point division.</div></div>
+<pre><span class="VAL( ** )"><span class="keyword">val</span> ( ** )</span> : <code class="type">float -&gt; float -&gt; float</code></pre><div class="info"><div class="info">Exponentiation.</div></div>
+<pre><span class="VALsqrt"><span class="keyword">val</span> sqrt</span> : <code class="type">float -&gt; float</code></pre><div class="info"><div class="info">Square root.</div></div>
+<pre><span class="VALexp"><span class="keyword">val</span> exp</span> : <code class="type">float -&gt; float</code></pre><div class="info"><div class="info">Exponential.</div></div>
+<pre><span class="VALlog"><span class="keyword">val</span> log</span> : <code class="type">float -&gt; float</code></pre><div class="info"><div class="info">Natural logarithm.</div></div>
+<pre><span class="VALlog10"><span class="keyword">val</span> log10</span> : <code class="type">float -&gt; float</code></pre><div class="info"><div class="info">Base 10 logarithm.</div></div>
+<pre><span class="VALexpm1"><span class="keyword">val</span> expm1</span> : <code class="type">float -&gt; float</code></pre><div class="info"><div class="info"><code class="code">expm1 x</code> computes <code class="code">exp x -. 1.0</code>, giving numerically-accurate results
+    even if <code class="code">x</code> is close to <code class="code">0.0</code>. <b>Since</b> 3.12.0</div></div>
+<pre><span class="VALlog1p"><span class="keyword">val</span> log1p</span> : <code class="type">float -&gt; float</code></pre><div class="info"><div class="info"><code class="code">log1p x</code> computes <code class="code">log(1.0 +. x)</code> (natural logarithm),
+    giving numerically-accurate results even if <code class="code">x</code> is close to <code class="code">0.0</code>. <b>Since</b> 3.12.0</div></div>
+<pre><span class="VALcos"><span class="keyword">val</span> cos</span> : <code class="type">float -&gt; float</code></pre><div class="info"><div class="info">Cosine.  Argument is in radians.</div></div>
+<pre><span class="VALsin"><span class="keyword">val</span> sin</span> : <code class="type">float -&gt; float</code></pre><div class="info"><div class="info">Sine.  Argument is in radians.</div></div>
+<pre><span class="VALtan"><span class="keyword">val</span> tan</span> : <code class="type">float -&gt; float</code></pre><div class="info"><div class="info">Tangent.  Argument is in radians.</div></div>
+<pre><span class="VALacos"><span class="keyword">val</span> acos</span> : <code class="type">float -&gt; float</code></pre><div class="info"><div class="info">Arc cosine.  The argument must fall within the range <code class="code">[-1.0, 1.0]</code>.
+    Result is in radians and is between <code class="code">0.0</code> and <code class="code">pi</code>.</div></div>
+<pre><span class="VALasin"><span class="keyword">val</span> asin</span> : <code class="type">float -&gt; float</code></pre><div class="info"><div class="info">Arc sine.  The argument must fall within the range <code class="code">[-1.0, 1.0]</code>.
+    Result is in radians and is between <code class="code">-pi/2</code> and <code class="code">pi/2</code>.</div></div>
+<pre><span class="VALatan"><span class="keyword">val</span> atan</span> : <code class="type">float -&gt; float</code></pre><div class="info"><div class="info">Arc tangent.
+    Result is in radians and is between <code class="code">-pi/2</code> and <code class="code">pi/2</code>.</div></div>
+<pre><span class="VALatan2"><span class="keyword">val</span> atan2</span> : <code class="type">float -&gt; float -&gt; float</code></pre><div class="info"><div class="info"><code class="code">atan2 y x</code> returns the arc tangent of <code class="code">y /. x</code>.  The signs of <code class="code">x</code>
+    and <code class="code">y</code> are used to determine the quadrant of the result.
+    Result is in radians and is between <code class="code">-pi</code> and <code class="code">pi</code>.</div></div>
+<pre><span class="VALhypot"><span class="keyword">val</span> hypot</span> : <code class="type">float -&gt; float -&gt; float</code></pre><div class="info"><div class="info"><code class="code">hypot x y</code> returns <code class="code">sqrt(x *. x + y *. y)</code>, that is, the length
+  of the hypotenuse of a right-angled triangle with sides of length
+  <code class="code">x</code> and <code class="code">y</code>, or, equivalently, the distance of the point <code class="code">(x,y)</code>
+  to origin. <b>Since</b> 4.00.0</div></div>
+<pre><span class="VALcosh"><span class="keyword">val</span> cosh</span> : <code class="type">float -&gt; float</code></pre><div class="info"><div class="info">Hyperbolic cosine.  Argument is in radians.</div></div>
+<pre><span class="VALsinh"><span class="keyword">val</span> sinh</span> : <code class="type">float -&gt; float</code></pre><div class="info"><div class="info">Hyperbolic sine.  Argument is in radians.</div></div>
+<pre><span class="VALtanh"><span class="keyword">val</span> tanh</span> : <code class="type">float -&gt; float</code></pre><div class="info"><div class="info">Hyperbolic tangent.  Argument is in radians.</div></div>
+<pre><span class="VALceil"><span class="keyword">val</span> ceil</span> : <code class="type">float -&gt; float</code></pre><div class="info"><div class="info">Round above to an integer value.
+    <code class="code">ceil f</code> returns the least integer value greater than or equal to <code class="code">f</code>.
+    The result is returned as a float.</div></div>
+<pre><span class="VALfloor"><span class="keyword">val</span> floor</span> : <code class="type">float -&gt; float</code></pre><div class="info"><div class="info">Round below to an integer value.
+    <code class="code">floor f</code> returns the greatest integer value less than or
+    equal to <code class="code">f</code>.
+    The result is returned as a float.</div></div>
+<pre><span class="VALabs_float"><span class="keyword">val</span> abs_float</span> : <code class="type">float -&gt; float</code></pre><div class="info"><div class="info"><code class="code">abs_float f</code> returns the absolute value of <code class="code">f</code>.</div></div>
+<pre><span class="VALcopysign"><span class="keyword">val</span> copysign</span> : <code class="type">float -&gt; float -&gt; float</code></pre><div class="info"><div class="info"><code class="code">copysign x y</code> returns a float whose absolute value is that of <code class="code">x</code>
+  and whose sign is that of <code class="code">y</code>.  If <code class="code">x</code> is <code class="code">nan</code>, returns <code class="code">nan</code>.
+  If <code class="code">y</code> is <code class="code">nan</code>, returns either <code class="code">x</code> or <code class="code">-. x</code>, but it is not
+  specified which. <b>Since</b> 4.00.0</div></div>
+<pre><span class="VALmod_float"><span class="keyword">val</span> mod_float</span> : <code class="type">float -&gt; float -&gt; float</code></pre><div class="info"><div class="info"><code class="code">mod_float a b</code> returns the remainder of <code class="code">a</code> with respect to
+   <code class="code">b</code>.  The returned value is <code class="code">a -. n *. b</code>, where <code class="code">n</code>
+   is the quotient <code class="code">a /. b</code> rounded towards zero to an integer.</div></div>
+<pre><span class="VALfrexp"><span class="keyword">val</span> frexp</span> : <code class="type">float -&gt; float * int</code></pre><div class="info"><div class="info"><code class="code">frexp f</code> returns the pair of the significant
+   and the exponent of <code class="code">f</code>.  When <code class="code">f</code> is zero, the
+   significant <code class="code">x</code> and the exponent <code class="code">n</code> of <code class="code">f</code> are equal to
+   zero.  When <code class="code">f</code> is non-zero, they are defined by
+   <code class="code">f = x *. 2 ** n</code> and <code class="code">0.5 &lt;= x &lt; 1.0</code>.</div></div>
+<pre><span class="VALldexp"><span class="keyword">val</span> ldexp</span> : <code class="type">float -&gt; int -&gt; float</code></pre><div class="info"><div class="info"><code class="code">ldexp x n</code> returns <code class="code">x *. 2 ** n</code>.</div></div>
+<pre><span class="VALmodf"><span class="keyword">val</span> modf</span> : <code class="type">float -&gt; float * float</code></pre><div class="info"><div class="info"><code class="code">modf f</code> returns the pair of the fractional and integral
+   part of <code class="code">f</code>.</div></div>
+<pre><span class="VALfloat"><span class="keyword">val</span> float</span> : <code class="type">int -&gt; float</code></pre><div class="info"><div class="info">Same as  <a href="#Pervasives.float_of_int">Pervasives.float_of_int</a>.</div></div>
+<pre><span class="VALfloat_of_int"><span class="keyword">val</span> float_of_int</span> : <code class="type">int -&gt; float</code></pre><div class="info"><div class="info">Convert an integer to floating-point.</div></div>
+<pre><span class="VALtruncate"><span class="keyword">val</span> truncate</span> : <code class="type">float -&gt; int</code></pre><div class="info"><div class="info">Same as  <a href="#Pervasives.int_of_float">Pervasives.int_of_float</a>.</div></div>
+<pre><span class="VALint_of_float"><span class="keyword">val</span> int_of_float</span> : <code class="type">float -&gt; int</code></pre><div class="info"><div class="info">Truncate the given floating-point number to an integer.
+   The result is unspecified if the argument is <code class="code">nan</code> or falls outside the
+   range of representable integers.</div></div>
+<pre><span class="VALinfinity"><span class="keyword">val</span> infinity</span> : <code class="type">float</code></pre><div class="info"><div class="info">Positive infinity.</div></div>
+<pre><span class="VALneg_infinity"><span class="keyword">val</span> neg_infinity</span> : <code class="type">float</code></pre><div class="info"><div class="info">Negative infinity.</div></div>
+<pre><span class="VALnan"><span class="keyword">val</span> nan</span> : <code class="type">float</code></pre><div class="info"><div class="info">A special floating-point value denoting the result of an
+   undefined operation such as <code class="code">0.0 /. 0.0</code>.  Stands for
+   'not a number'.  Any floating-point operation with <code class="code">nan</code> as
+   argument returns <code class="code">nan</code> as result.  As for floating-point comparisons,
+   <code class="code">=</code>, <code class="code">&lt;</code>, <code class="code">&lt;=</code>, <code class="code">&gt;</code> and <code class="code">&gt;=</code> return <code class="code">false</code> and <code class="code">&lt;&gt;</code> returns <code class="code">true</code>
+   if one or both of their arguments is <code class="code">nan</code>.</div></div>
+<pre><span class="VALmax_float"><span class="keyword">val</span> max_float</span> : <code class="type">float</code></pre><div class="info"><div class="info">The largest positive finite value of type <code class="code">float</code>.</div></div>
+<pre><span class="VALmin_float"><span class="keyword">val</span> min_float</span> : <code class="type">float</code></pre><div class="info"><div class="info">The smallest positive, non-zero, non-denormalized value of type <code class="code">float</code>.</div></div>
+<pre><span class="VALepsilon_float"><span class="keyword">val</span> epsilon_float</span> : <code class="type">float</code></pre><div class="info"><div class="info">The difference between <code class="code">1.0</code> and the smallest exactly representable
+    floating-point number greater than <code class="code">1.0</code>.</div></div>
+<pre><code><span class="TYPEfpclass"><span class="keyword">type</span> fpclass</span> = </code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTfpclass.FP_normal"><span class="constructor">FP_normal</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Normal number, none of the below</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTfpclass.FP_subnormal"><span class="constructor">FP_subnormal</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Number very close to 0.0, has reduced precision</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTfpclass.FP_zero"><span class="constructor">FP_zero</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Number is 0.0 or -0.0</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTfpclass.FP_infinite"><span class="constructor">FP_infinite</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Number is positive or negative infinity</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTfpclass.FP_nan"><span class="constructor">FP_nan</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Not a number: result of an undefined operation</div></td></tr></table><div class="info"><div class="info">The five classes of floating-point numbers, as determined by
+   the  <a href="#Pervasives.classify_float">Pervasives.classify_float</a> function.</div></div>
+<pre><span class="VALclassify_float"><span class="keyword">val</span> classify_float</span> : <code class="type">float -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=fpclass">fpclass</a></code></pre><div class="info"><div class="info">Return the class of the given floating-point number:
+   normal, subnormal, zero, infinite, or not a number.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">String operations</h6><br/>   More string operations are provided in module  <a href="#String">String</a>.</div></div>
+<pre><span class="VAL(^)"><span class="keyword">val</span> (^)</span> : <code class="type">string -&gt; string -&gt; string</code></pre><div class="info"><div class="info">String concatenation.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Character operations</h6><br/>   More character operations are provided in module  <a href="#Char">Char</a>.</div></div>
+<pre><span class="VALint_of_char"><span class="keyword">val</span> int_of_char</span> : <code class="type">char -&gt; int</code></pre><div class="info"><div class="info">Return the ASCII code of the argument.</div></div>
+<pre><span class="VALchar_of_int"><span class="keyword">val</span> char_of_int</span> : <code class="type">int -&gt; char</code></pre><div class="info"><div class="info">Return the character with the given ASCII code.
+   Raise <code class="code">Invalid_argument &quot;char_of_int&quot;</code> if the argument is
+   outside the range 0--255.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Unit operations</h6></div></div>
+<pre><span class="VALignore"><span class="keyword">val</span> ignore</span> : <code class="type">'a -&gt; unit</code></pre><div class="info"><div class="info">Discard the value of its argument and return <code class="code">()</code>.
+   For instance, <code class="code">ignore(f x)</code> discards the result of
+   the side-effecting function <code class="code">f</code>.  It is equivalent to
+   <code class="code">f x; ()</code>, except that the latter may generate a
+   compiler warning; writing <code class="code">ignore(f x)</code> instead
+   avoids the warning.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">String conversion functions</h6></div></div>
+<pre><span class="VALstring_of_bool"><span class="keyword">val</span> string_of_bool</span> : <code class="type">bool -&gt; string</code></pre><div class="info"><div class="info">Return the string representation of a boolean. As the returned values
+   may be shared, the user should not modify them directly.</div></div>
+<pre><span class="VALbool_of_string"><span class="keyword">val</span> bool_of_string</span> : <code class="type">string -&gt; bool</code></pre><div class="info"><div class="info">Convert the given string to a boolean.
+   Raise <code class="code">Invalid_argument &quot;bool_of_string&quot;</code> if the string is not
+   <code class="code">&quot;true&quot;</code> or <code class="code">&quot;false&quot;</code>.</div></div>
+<pre><span class="VALstring_of_int"><span class="keyword">val</span> string_of_int</span> : <code class="type">int -&gt; string</code></pre><div class="info"><div class="info">Return the string representation of an integer, in decimal.</div></div>
+<pre><span class="VALint_of_string"><span class="keyword">val</span> int_of_string</span> : <code class="type">string -&gt; int</code></pre><div class="info"><div class="info">Convert the given string to an integer.
+   The string is read in decimal (by default) or in hexadecimal (if it
+   begins with <code class="code">0x</code> or <code class="code">0X</code>), octal (if it begins with <code class="code">0o</code> or <code class="code">0O</code>),
+   or binary (if it begins with <code class="code">0b</code> or <code class="code">0B</code>).
+   Raise <code class="code">Failure &quot;int_of_string&quot;</code> if the given string is not
+   a valid representation of an integer, or if the integer represented
+   exceeds the range of integers representable in type <code class="code">int</code>.</div></div>
+<pre><span class="VALstring_of_float"><span class="keyword">val</span> string_of_float</span> : <code class="type">float -&gt; string</code></pre><div class="info"><div class="info">Return the string representation of a floating-point number.</div></div>
+<pre><span class="VALfloat_of_string"><span class="keyword">val</span> float_of_string</span> : <code class="type">string -&gt; float</code></pre><div class="info"><div class="info">Convert the given string to a float.  Raise <code class="code">Failure &quot;float_of_string&quot;</code>
+   if the given string is not a valid representation of a float.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Pair operations</h6></div></div>
+<pre><span class="VALfst"><span class="keyword">val</span> fst</span> : <code class="type">'a * 'b -&gt; 'a</code></pre><div class="info"><div class="info">Return the first component of a pair.</div></div>
+<pre><span class="VALsnd"><span class="keyword">val</span> snd</span> : <code class="type">'a * 'b -&gt; 'b</code></pre><div class="info"><div class="info">Return the second component of a pair.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">List operations</h6><br/>   More list operations are provided in module  <a href="#List">List</a>.</div></div>
+<pre><span class="VAL(@)"><span class="keyword">val</span> (@)</span> : <code class="type">'a list -&gt; 'a list -&gt; 'a list</code></pre><div class="info"><div class="info">List concatenation.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Input/output</h6>
+    Note: all input/output functions can raise <code class="code">Sys_error</code> when the system
+    calls they invoke fail.</div></div>
+<pre><span class="TYPEin_channel"><span class="keyword">type</span> in_channel</span> </pre><div class="info"><div class="info">The type of input channel.</div></div>
+<pre><span class="TYPEout_channel"><span class="keyword">type</span> out_channel</span> </pre><div class="info"><div class="info">The type of output channel.</div></div>
+<pre><span class="VALstdin"><span class="keyword">val</span> stdin</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">in_channel</a></code></pre><div class="info"><div class="info">The standard input for the process.</div></div>
+<pre><span class="VALstdout"><span class="keyword">val</span> stdout</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">out_channel</a></code></pre><div class="info"><div class="info">The standard output for the process.</div></div>
+<pre><span class="VALstderr"><span class="keyword">val</span> stderr</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">out_channel</a></code></pre><div class="info"><div class="info">The standard error output for the process.</div></div>
+<div class="info"><div class="info"><div class="h7">Output functions on standard output</div></div></div>
+<pre><span class="VALprint_char"><span class="keyword">val</span> print_char</span> : <code class="type">char -&gt; unit</code></pre><div class="info"><div class="info">Print a character on standard output.</div></div>
+<pre><span class="VALprint_string"><span class="keyword">val</span> print_string</span> : <code class="type">string -&gt; unit</code></pre><div class="info"><div class="info">Print a string on standard output.</div></div>
+<pre><span class="VALprint_int"><span class="keyword">val</span> print_int</span> : <code class="type">int -&gt; unit</code></pre><div class="info"><div class="info">Print an integer, in decimal, on standard output.</div></div>
+<pre><span class="VALprint_float"><span class="keyword">val</span> print_float</span> : <code class="type">float -&gt; unit</code></pre><div class="info"><div class="info">Print a floating-point number, in decimal, on standard output.</div></div>
+<pre><span class="VALprint_endline"><span class="keyword">val</span> print_endline</span> : <code class="type">string -&gt; unit</code></pre><div class="info"><div class="info">Print a string, followed by a newline character, on
+   standard output and flush standard output.</div></div>
+<pre><span class="VALprint_newline"><span class="keyword">val</span> print_newline</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info">Print a newline character on standard output, and flush
+   standard output. This can be used to simulate line
+   buffering of standard output.</div></div>
+<div class="info"><div class="info"><div class="h7">Output functions on standard error</div></div></div>
+<pre><span class="VALprerr_char"><span class="keyword">val</span> prerr_char</span> : <code class="type">char -&gt; unit</code></pre><div class="info"><div class="info">Print a character on standard error.</div></div>
+<pre><span class="VALprerr_string"><span class="keyword">val</span> prerr_string</span> : <code class="type">string -&gt; unit</code></pre><div class="info"><div class="info">Print a string on standard error.</div></div>
+<pre><span class="VALprerr_int"><span class="keyword">val</span> prerr_int</span> : <code class="type">int -&gt; unit</code></pre><div class="info"><div class="info">Print an integer, in decimal, on standard error.</div></div>
+<pre><span class="VALprerr_float"><span class="keyword">val</span> prerr_float</span> : <code class="type">float -&gt; unit</code></pre><div class="info"><div class="info">Print a floating-point number, in decimal, on standard error.</div></div>
+<pre><span class="VALprerr_endline"><span class="keyword">val</span> prerr_endline</span> : <code class="type">string -&gt; unit</code></pre><div class="info"><div class="info">Print a string, followed by a newline character on standard error
+   and flush standard error.</div></div>
+<pre><span class="VALprerr_newline"><span class="keyword">val</span> prerr_newline</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info">Print a newline character on standard error, and flush
+   standard error.</div></div>
+<div class="info"><div class="info"><div class="h7">Input functions on standard input</div></div></div>
+<pre><span class="VALread_line"><span class="keyword">val</span> read_line</span> : <code class="type">unit -&gt; string</code></pre><div class="info"><div class="info">Flush standard output, then read characters from standard input
+   until a newline character is encountered. Return the string of
+   all characters read, without the newline character at the end.</div></div>
+<pre><span class="VALread_int"><span class="keyword">val</span> read_int</span> : <code class="type">unit -&gt; int</code></pre><div class="info"><div class="info">Flush standard output, then read one line from standard input
+   and convert it to an integer. Raise <code class="code">Failure &quot;int_of_string&quot;</code>
+   if the line read is not a valid representation of an integer.</div></div>
+<pre><span class="VALread_float"><span class="keyword">val</span> read_float</span> : <code class="type">unit -&gt; float</code></pre><div class="info"><div class="info">Flush standard output, then read one line from standard input
+   and convert it to a floating-point number.
+   The result is unspecified if the line read is not a valid
+   representation of a floating-point number.</div></div>
+<div class="info"><div class="info"><div class="h7">General output functions</div></div></div>
+<pre><code><span class="TYPEopen_flag"><span class="keyword">type</span> open_flag</span> = </code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTopen_flag.Open_rdonly"><span class="constructor">Open_rdonly</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">open for reading.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTopen_flag.Open_wronly"><span class="constructor">Open_wronly</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">open for writing.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTopen_flag.Open_append"><span class="constructor">Open_append</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">open for appending: always write at end of file.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTopen_flag.Open_creat"><span class="constructor">Open_creat</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">create the file if it does not exist.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTopen_flag.Open_trunc"><span class="constructor">Open_trunc</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">empty the file if it already exists.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTopen_flag.Open_excl"><span class="constructor">Open_excl</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">fail if Open_creat and the file already exists.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTopen_flag.Open_binary"><span class="constructor">Open_binary</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">open in binary mode (no conversion).</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTopen_flag.Open_text"><span class="constructor">Open_text</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">open in text mode (may perform conversions).</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTopen_flag.Open_nonblock"><span class="constructor">Open_nonblock</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">open in non-blocking mode.</div></td></tr></table><div class="info"><div class="info">Opening modes for  <a href="#Pervasives.open_out_gen">Pervasives.open_out_gen</a> and
+   <a href="#Pervasives.open_in_gen">Pervasives.open_in_gen</a>.</div></div>
+<pre><span class="VALopen_out"><span class="keyword">val</span> open_out</span> : <code class="type">string -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">out_channel</a></code></pre><div class="info"><div class="info">Open the named file for writing, and return a new output channel
+   on that file, positionned at the beginning of the file. The
+   file is truncated to zero length if it already exists. It
+   is created if it does not already exists.</div></div>
+<pre><span class="VALopen_out_bin"><span class="keyword">val</span> open_out_bin</span> : <code class="type">string -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">out_channel</a></code></pre><div class="info"><div class="info">Same as  <a href="#Pervasives.open_out">Pervasives.open_out</a>, but the file is opened in binary mode,
+   so that no translation takes place during writes. On operating
+   systems that do not distinguish between text mode and binary
+   mode, this function behaves like  <a href="#Pervasives.open_out">Pervasives.open_out</a>.</div></div>
+<pre><span class="VALopen_out_gen"><span class="keyword">val</span> open_out_gen</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=open_flag">open_flag</a> list -&gt; int -&gt; string -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">out_channel</a></code></pre><div class="info"><div class="info"><code class="code">open_out_gen mode perm filename</code> opens the named file for writing,
+   as described above. The extra argument <code class="code">mode</code>
+   specify the opening mode. The extra argument <code class="code">perm</code> specifies
+   the file permissions, in case the file must be created.
+    <a href="#Pervasives.open_out">Pervasives.open_out</a> and  <a href="#Pervasives.open_out_bin">Pervasives.open_out_bin</a> are special
+   cases of this function.</div></div>
+<pre><span class="VALflush"><span class="keyword">val</span> flush</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">out_channel</a> -&gt; unit</code></pre><div class="info"><div class="info">Flush the buffer associated with the given output channel,
+   performing all pending writes on that channel.
+   Interactive programs must be careful about flushing standard
+   output and standard error at the right time.</div></div>
+<pre><span class="VALflush_all"><span class="keyword">val</span> flush_all</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info">Flush all open output channels; ignore errors.</div></div>
+<pre><span class="VALoutput_char"><span class="keyword">val</span> output_char</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">out_channel</a> -&gt; char -&gt; unit</code></pre><div class="info"><div class="info">Write the character on the given output channel.</div></div>
+<pre><span class="VALoutput_string"><span class="keyword">val</span> output_string</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">out_channel</a> -&gt; string -&gt; unit</code></pre><div class="info"><div class="info">Write the string on the given output channel.</div></div>
+<pre><span class="VALoutput"><span class="keyword">val</span> output</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">out_channel</a> -&gt; string -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">output oc buf pos len</code> writes <code class="code">len</code> characters from string <code class="code">buf</code>,
+   starting at offset <code class="code">pos</code>, to the given output channel <code class="code">oc</code>.
+   Raise <code class="code">Invalid_argument &quot;output&quot;</code> if <code class="code">pos</code> and <code class="code">len</code> do not
+   designate a valid substring of <code class="code">buf</code>.</div></div>
+<pre><span class="VALoutput_byte"><span class="keyword">val</span> output_byte</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">out_channel</a> -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">Write one 8-bit integer (as the single character with that code)
+   on the given output channel. The given integer is taken modulo
+   256.</div></div>
+<pre><span class="VALoutput_binary_int"><span class="keyword">val</span> output_binary_int</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">out_channel</a> -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">Write one integer in binary format (4 bytes, big-endian)
+   on the given output channel.
+   The given integer is taken modulo 2<sup class="superscript">32</sup>.
+   The only reliable way to read it back is through the
+    <a href="#Pervasives.input_binary_int">Pervasives.input_binary_int</a> function. The format is compatible across
+   all machines for a given version of OCaml.</div></div>
+<pre><span class="VALoutput_value"><span class="keyword">val</span> output_value</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">out_channel</a> -&gt; 'a -&gt; unit</code></pre><div class="info"><div class="info">Write the representation of a structured value of any type
+   to a channel. Circularities and sharing inside the value
+   are detected and preserved. The object can be read back,
+   by the function  <a href="#Pervasives.input_value">Pervasives.input_value</a>. See the description of module
+    <a href="#Marshal">Marshal</a> for more information.  <a href="#Pervasives.output_value">Pervasives.output_value</a> is equivalent
+   to  <a href="#Marshal.to_channel">Marshal.to_channel</a> with an empty list of flags.</div></div>
+<pre><span class="VALseek_out"><span class="keyword">val</span> seek_out</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">out_channel</a> -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">seek_out chan pos</code> sets the current writing position to <code class="code">pos</code>
+   for channel <code class="code">chan</code>. This works only for regular files. On
+   files of other kinds (such as terminals, pipes and sockets),
+   the behavior is unspecified.</div></div>
+<pre><span class="VALpos_out"><span class="keyword">val</span> pos_out</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">out_channel</a> -&gt; int</code></pre><div class="info"><div class="info">Return the current writing position for the given channel.  Does
+    not work on channels opened with the <code class="code">Open_append</code> flag (returns
+    unspecified results).</div></div>
+<pre><span class="VALout_channel_length"><span class="keyword">val</span> out_channel_length</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">out_channel</a> -&gt; int</code></pre><div class="info"><div class="info">Return the size (number of characters) of the regular file
+   on which the given channel is opened.  If the channel is opened
+    on a file that is not a regular file, the result is meaningless.</div></div>
+<pre><span class="VALclose_out"><span class="keyword">val</span> close_out</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">out_channel</a> -&gt; unit</code></pre><div class="info"><div class="info">Close the given channel, flushing all buffered write operations.
+   Output functions raise a <code class="code">Sys_error</code> exception when they are
+   applied to a closed output channel, except <code class="code">close_out</code> and <code class="code">flush</code>,
+   which do nothing when applied to an already closed channel.
+   Note that <code class="code">close_out</code> may raise <code class="code">Sys_error</code> if the operating
+   system signals an error when flushing or closing.</div></div>
+<pre><span class="VALclose_out_noerr"><span class="keyword">val</span> close_out_noerr</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">out_channel</a> -&gt; unit</code></pre><div class="info"><div class="info">Same as <code class="code">close_out</code>, but ignore all errors.</div></div>
+<pre><span class="VALset_binary_mode_out"><span class="keyword">val</span> set_binary_mode_out</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">out_channel</a> -&gt; bool -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">set_binary_mode_out oc true</code> sets the channel <code class="code">oc</code> to binary
+   mode: no translations take place during output.
+   <code class="code">set_binary_mode_out oc false</code> sets the channel <code class="code">oc</code> to text
+   mode: depending on the operating system, some translations
+   may take place during output.  For instance, under Windows,
+   end-of-lines will be translated from <code class="code">\n</code> to <code class="code">\r\n</code>.
+   This function has no effect under operating systems that
+   do not distinguish between text mode and binary mode.</div></div>
+<div class="info"><div class="info"><div class="h7">General input functions</div></div></div>
+<pre><span class="VALopen_in"><span class="keyword">val</span> open_in</span> : <code class="type">string -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">in_channel</a></code></pre><div class="info"><div class="info">Open the named file for reading, and return a new input channel
+   on that file, positionned at the beginning of the file.</div></div>
+<pre><span class="VALopen_in_bin"><span class="keyword">val</span> open_in_bin</span> : <code class="type">string -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">in_channel</a></code></pre><div class="info"><div class="info">Same as  <a href="#Pervasives.open_in">Pervasives.open_in</a>, but the file is opened in binary mode,
+   so that no translation takes place during reads. On operating
+   systems that do not distinguish between text mode and binary
+   mode, this function behaves like  <a href="#Pervasives.open_in">Pervasives.open_in</a>.</div></div>
+<pre><span class="VALopen_in_gen"><span class="keyword">val</span> open_in_gen</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=open_flag">open_flag</a> list -&gt; int -&gt; string -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">in_channel</a></code></pre><div class="info"><div class="info"><code class="code">open_in_gen mode perm filename</code> opens the named file for reading,
+   as described above. The extra arguments
+   <code class="code">mode</code> and <code class="code">perm</code> specify the opening mode and file permissions.
+    <a href="#Pervasives.open_in">Pervasives.open_in</a> and  <a href="#Pervasives.open_in_bin">Pervasives.open_in_bin</a> are special
+   cases of this function.</div></div>
+<pre><span class="VALinput_char"><span class="keyword">val</span> input_char</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">in_channel</a> -&gt; char</code></pre><div class="info"><div class="info">Read one character from the given input channel.
+   Raise <code class="code">End_of_file</code> if there are no more characters to read.</div></div>
+<pre><span class="VALinput_line"><span class="keyword">val</span> input_line</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">in_channel</a> -&gt; string</code></pre><div class="info"><div class="info">Read characters from the given input channel, until a
+   newline character is encountered. Return the string of
+   all characters read, without the newline character at the end.
+   Raise <code class="code">End_of_file</code> if the end of the file is reached
+   at the beginning of line.</div></div>
+<pre><span class="VALinput"><span class="keyword">val</span> input</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">in_channel</a> -&gt; string -&gt; int -&gt; int -&gt; int</code></pre><div class="info"><div class="info"><code class="code">input ic buf pos len</code> reads up to <code class="code">len</code> characters from
+   the given channel <code class="code">ic</code>, storing them in string <code class="code">buf</code>, starting at
+   character number <code class="code">pos</code>.
+   It returns the actual number of characters read, between 0 and
+   <code class="code">len</code> (inclusive).
+   A return value of 0 means that the end of file was reached.
+   A return value between 0 and <code class="code">len</code> exclusive means that
+   not all requested <code class="code">len</code> characters were read, either because
+   no more characters were available at that time, or because
+   the implementation found it convenient to do a partial read;
+   <code class="code">input</code> must be called again to read the remaining characters,
+   if desired.  (See also  <a href="#Pervasives.really_input">Pervasives.really_input</a> for reading
+   exactly <code class="code">len</code> characters.)
+   Exception <code class="code">Invalid_argument &quot;input&quot;</code> is raised if <code class="code">pos</code> and <code class="code">len</code>
+   do not designate a valid substring of <code class="code">buf</code>.</div></div>
+<pre><span class="VALreally_input"><span class="keyword">val</span> really_input</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">in_channel</a> -&gt; string -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">really_input ic buf pos len</code> reads <code class="code">len</code> characters from channel <code class="code">ic</code>,
+   storing them in string <code class="code">buf</code>, starting at character number <code class="code">pos</code>.
+   Raise <code class="code">End_of_file</code> if the end of file is reached before <code class="code">len</code>
+   characters have been read.
+   Raise <code class="code">Invalid_argument &quot;really_input&quot;</code> if
+   <code class="code">pos</code> and <code class="code">len</code> do not designate a valid substring of <code class="code">buf</code>.</div></div>
+<pre><span class="VALinput_byte"><span class="keyword">val</span> input_byte</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">in_channel</a> -&gt; int</code></pre><div class="info"><div class="info">Same as  <a href="#Pervasives.input_char">Pervasives.input_char</a>, but return the 8-bit integer representing
+   the character.
+   Raise <code class="code">End_of_file</code> if an end of file was reached.</div></div>
+<pre><span class="VALinput_binary_int"><span class="keyword">val</span> input_binary_int</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">in_channel</a> -&gt; int</code></pre><div class="info"><div class="info">Read an integer encoded in binary format (4 bytes, big-endian)
+   from the given input channel. See  <a href="#Pervasives.output_binary_int">Pervasives.output_binary_int</a>.
+   Raise <code class="code">End_of_file</code> if an end of file was reached while reading the
+   integer.</div></div>
+<pre><span class="VALinput_value"><span class="keyword">val</span> input_value</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">in_channel</a> -&gt; 'a</code></pre><div class="info"><div class="info">Read the representation of a structured value, as produced
+   by  <a href="#Pervasives.output_value">Pervasives.output_value</a>, and return the corresponding value.
+   This function is identical to  <a href="#Marshal.from_channel">Marshal.from_channel</a>;
+   see the description of module  <a href="#Marshal">Marshal</a> for more information,
+   in particular concerning the lack of type safety.</div></div>
+<pre><span class="VALseek_in"><span class="keyword">val</span> seek_in</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">in_channel</a> -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">seek_in chan pos</code> sets the current reading position to <code class="code">pos</code>
+   for channel <code class="code">chan</code>. This works only for regular files. On
+   files of other kinds, the behavior is unspecified.</div></div>
+<pre><span class="VALpos_in"><span class="keyword">val</span> pos_in</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">in_channel</a> -&gt; int</code></pre><div class="info"><div class="info">Return the current reading position for the given channel.</div></div>
+<pre><span class="VALin_channel_length"><span class="keyword">val</span> in_channel_length</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">in_channel</a> -&gt; int</code></pre><div class="info"><div class="info">Return the size (number of characters) of the regular file
+    on which the given channel is opened.  If the channel is opened
+    on a file that is not a regular file, the result is meaningless.
+    The returned size does not take into account the end-of-line
+    translations that can be performed when reading from a channel
+    opened in text mode.</div></div>
+<pre><span class="VALclose_in"><span class="keyword">val</span> close_in</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">in_channel</a> -&gt; unit</code></pre><div class="info"><div class="info">Close the given channel.  Input functions raise a <code class="code">Sys_error</code>
+  exception when they are applied to a closed input channel,
+  except <code class="code">close_in</code>, which does nothing when applied to an already
+  closed channel.</div></div>
+<pre><span class="VALclose_in_noerr"><span class="keyword">val</span> close_in_noerr</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">in_channel</a> -&gt; unit</code></pre><div class="info"><div class="info">Same as <code class="code">close_in</code>, but ignore all errors.</div></div>
+<pre><span class="VALset_binary_mode_in"><span class="keyword">val</span> set_binary_mode_in</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">in_channel</a> -&gt; bool -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">set_binary_mode_in ic true</code> sets the channel <code class="code">ic</code> to binary
+   mode: no translations take place during input.
+   <code class="code">set_binary_mode_out ic false</code> sets the channel <code class="code">ic</code> to text
+   mode: depending on the operating system, some translations
+   may take place during input.  For instance, under Windows,
+   end-of-lines will be translated from <code class="code">\r\n</code> to <code class="code">\n</code>.
+   This function has no effect under operating systems that
+   do not distinguish between text mode and binary mode.</div></div>
+<div class="info"><div class="info"><div class="h7">Operations on large files</div></div></div>
+<div class="ocaml_module sig" name="LargeFile"><pre><span class="keyword">module</span> <a href="?package=ocaml&amp;module=Pervasives.LargeFile">LargeFile</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Operations on large files.
+  This sub-module provides 64-bit variants of the channel functions
+  that manipulate file positions and file sizes.  By representing
+  positions and sizes by 64-bit integers (type <code class="code">int64</code>) instead of
+  regular integers (type <code class="code">int</code>), these alternate functions allow
+  operating on files whose sizes are greater than <code class="code">max_int</code>.</div></div><div class="ocaml_module_content">
+<pre><span class="VALseek_out"><span class="keyword">val</span> seek_out</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">out_channel</a> -&gt; int64 -&gt; unit</code></pre>
+<pre><span class="VALpos_out"><span class="keyword">val</span> pos_out</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">out_channel</a> -&gt; int64</code></pre>
+<pre><span class="VALout_channel_length"><span class="keyword">val</span> out_channel_length</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">out_channel</a> -&gt; int64</code></pre>
+<pre><span class="VALseek_in"><span class="keyword">val</span> seek_in</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">in_channel</a> -&gt; int64 -&gt; unit</code></pre>
+<pre><span class="VALpos_in"><span class="keyword">val</span> pos_in</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">in_channel</a> -&gt; int64</code></pre>
+<pre><span class="VALin_channel_length"><span class="keyword">val</span> in_channel_length</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">in_channel</a> -&gt; int64</code></pre></div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">References</h6></div></div>
+<pre><code><span class="TYPEref"><span class="keyword">type</span> <code class="type">'a </code>ref</span> = {</code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTref.contents">contents</span> : <code class="type">'a</code>;</code></td></tr><tr><td>}</td></tr></table><div class="info"><div class="info">The type of references (mutable indirection cells) containing
+   a value of type <code class="code">'a</code>.</div></div>
+<pre><span class="VALref"><span class="keyword">val</span> ref</span> : <code class="type">'a -&gt; 'a <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">ref</a></code></pre><div class="info"><div class="info">Return a fresh reference containing the given value.</div></div>
+<pre><span class="VAL(!)"><span class="keyword">val</span> (!)</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">ref</a> -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">!r</code> returns the current contents of reference <code class="code">r</code>.
+   Equivalent to <code class="code">fun r -&gt; r.contents</code>.</div></div>
+<pre><span class="VAL(:=)"><span class="keyword">val</span> (:=)</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">ref</a> -&gt; 'a -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">r := a</code> stores the value of <code class="code">a</code> in reference <code class="code">r</code>.
+   Equivalent to <code class="code">fun r v -&gt; r.contents &lt;- v</code>.</div></div>
+<pre><span class="VALincr"><span class="keyword">val</span> incr</span> : <code class="type">int <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">ref</a> -&gt; unit</code></pre><div class="info"><div class="info">Increment the integer contained in the given reference.
+   Equivalent to <code class="code">fun r -&gt; r := succ !r</code>.</div></div>
+<pre><span class="VALdecr"><span class="keyword">val</span> decr</span> : <code class="type">int <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">ref</a> -&gt; unit</code></pre><div class="info"><div class="info">Decrement the integer contained in the given reference.
+   Equivalent to <code class="code">fun r -&gt; r := pred !r</code>.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Operations on format strings</h6></div></div>
+<div class="info"><div class="info">Format strings are character strings with special lexical conventions
+  that defines the functionality of formatted input/output functions. Format
+  strings are used to read data with formatted input functions from module
+   <a href="#Scanf">Scanf</a> and to print data with formatted output functions from modules
+   <a href="#Printf">Printf</a> and  <a href="#Format">Format</a>.<br/>  Format strings are made of three kinds of entities:<ul><li><em>conversions specifications</em>, introduced by the special character <code class="code">'%'</code>
+    followed by one or more characters specifying what kind of argument to
+    read or print,</li><li><em>formatting indications</em>, introduced by the special character <code class="code">'@'</code>
+    followed by one or more characters specifying how to read or print the
+    argument,</li><li><em>plain characters</em> that are regular characters with usual lexical
+    conventions. Plain characters specify string literals to be read in the
+    input or printed in the output.</li></ul>  There is an additional lexical rule to escape the special characters <code class="code">'%'</code>
+  and <code class="code">'@'</code> in format strings: if a special character follows a <code class="code">'%'</code>
+  character, it is treated as a plain character. In other words, <code class="code">&quot;%%&quot;</code> is
+  considered as a plain <code class="code">'%'</code> and <code class="code">&quot;%@&quot;</code> as a plain <code class="code">'@'</code>.<br/>  For more information about conversion specifications and formatting
+  indications available, read the documentation of modules  <a href="#Scanf">Scanf</a>,
+   <a href="#Printf">Printf</a> and  <a href="#Format">Format</a>.</div></div>
+<pre><span class="TYPEformat4"><span class="keyword">type</span> <code class="type">('a, 'b, 'c, 'd) </code>format4</span> = <code class="type">('a, 'b, 'c, 'c, 'c, 'd) format6</code></pre><div class="info"><div class="info">Format strings have a general and highly polymorphic type
+    <code class="code">('a, 'b, 'c, 'd, 'e, 'f) format6</code>. Type <code class="code">format6</code> is built in.
+    The two simplified types, <code class="code">format</code> and <code class="code">format4</code> below are
+    included for backward compatibility with earlier releases of
+    OCaml.<br/>    The meaning of format string type parameters is as follows:<br/>    - <code class="code">'a</code> is the type of the parameters of the format for formatted output
+      functions (<code class="code">printf</code>-style functions);
+      <code class="code">'a</code> is the type of the values read by the format for formatted input
+      functions (<code class="code">scanf</code>-style functions).<br/>    - <code class="code">'b</code> is the type of input source for formatted input functions and the
+      type of output target for formatted output functions.
+      For <code class="code">printf</code>-style functions from module <code class="code">Printf</code>, <code class="code">'b</code> is typically
+      <code class="code">out_channel</code>;
+      for <code class="code">printf</code>-style functions from module <code class="code">Format</code>, <code class="code">'b</code> is typically
+      <code class="code">Format.formatter</code>;
+      for <code class="code">scanf</code>-style functions from module <code class="code">Scanf</code>, <code class="code">'b</code> is typically
+      <code class="code">Scanf.Scanning.in_channel</code>.<br/>      Type argument <code class="code">'b</code> is also the type of the first argument given to
+      user's defined printing functions for <code class="code">%a</code> and <code class="code">%t</code> conversions,
+      and user's defined reading functions for <code class="code">%r</code> conversion.<br/>    - <code class="code">'c</code> is the type of the result of the <code class="code">%a</code> and <code class="code">%t</code> printing
+      functions, and also the type of the argument transmitted to the
+      first argument of <code class="code">kprintf</code>-style functions or to the
+      <code class="code">kscanf</code>-style functions.<br/>    - <code class="code">'d</code> is the type of parameters for the <code class="code">scanf</code>-style functions.<br/>    - <code class="code">'e</code> is the type of the receiver function for the <code class="code">scanf</code>-style functions.<br/>    - <code class="code">'f</code> is the final result type of a formatted input/output function
+      invocation: for the <code class="code">printf</code>-style functions, it is typically <code class="code">unit</code>;
+      for the <code class="code">scanf</code>-style functions, it is typically the result type of the
+      receiver function.</div></div>
+<pre><span class="TYPEformat"><span class="keyword">type</span> <code class="type">('a, 'b, 'c) </code>format</span> = <code class="type">('a, 'b, 'c, 'c) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format4">format4</a></code></pre>
+<pre><span class="VALstring_of_format"><span class="keyword">val</span> string_of_format</span> : <code class="type">('a, 'b, 'c, 'd, 'e, 'f) format6 -&gt; string</code></pre><div class="info"><div class="info">Converts a format string into a string.</div></div>
+<pre><span class="VALformat_of_string"><span class="keyword">val</span> format_of_string</span> : <code class="type">('a, 'b, 'c, 'd, 'e, 'f) format6 -&gt; ('a, 'b, 'c, 'd, 'e, 'f) format6</code></pre><div class="info"><div class="info"><code class="code">format_of_string s</code> returns a format string read from the string
+    literal <code class="code">s</code>.
+    Note: <code class="code">format_of_string</code> can not convert a string argument that is not a
+    literal. If you need this functionality, use the more general
+     <a href="#Scanf.format_from_string">Scanf.format_from_string</a> function.</div></div>
+<pre><span class="VAL(^^)"><span class="keyword">val</span> (^^)</span> : <code class="type">('a, 'b, 'c, 'd, 'e, 'f) format6 -&gt;
+('f, 'b, 'c, 'e, 'g, 'h) format6 -&gt; ('a, 'b, 'c, 'd, 'g, 'h) format6</code></pre><div class="info"><div class="info"><code class="code">f1 ^^ f2</code> catenates format strings <code class="code">f1</code> and <code class="code">f2</code>. The result is a
+  format string that behaves as the concatenation of format strings <code class="code">f1</code> and
+  <code class="code">f2</code>: in case of formatted output, it accepts arguments from <code class="code">f1</code>, then
+  arguments from <code class="code">f2</code>; in case of formatted input, it returns results from
+  <code class="code">f1</code>, then results from <code class="code">f2</code>.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Program termination</h6></div></div>
+<pre><span class="VALexit"><span class="keyword">val</span> exit</span> : <code class="type">int -&gt; 'a</code></pre><div class="info"><div class="info">Terminate the process, returning the given status code
+   to the operating system: usually 0 to indicate no errors,
+   and a small positive integer to indicate failure.
+   All open output channels are flushed with <code class="code">flush_all</code>.
+   An implicit <code class="code">exit 0</code> is performed each time a program
+   terminates normally.  An implicit <code class="code">exit 2</code> is performed if the program
+   terminates early because of an uncaught exception.</div></div>
+<pre><span class="VALat_exit"><span class="keyword">val</span> at_exit</span> : <code class="type">(unit -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info">Register the given function to be called at program
+   termination time. The functions registered with <code class="code">at_exit</code>
+   will be called when the program executes  <a href="#Pervasives.exit">Pervasives.exit</a>,
+   or terminates, either normally or because of an uncaught exception.
+   The functions are called in 'last in, first out' order:
+   the function most recently added with <code class="code">at_exit</code> is called first.</div></div>
+<pre><span class="VALvalid_float_lexem"><span class="keyword">val</span> valid_float_lexem</span> : <code class="type">string -&gt; string</code></pre>
+<pre><span class="VALunsafe_really_input"><span class="keyword">val</span> unsafe_really_input</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">in_channel</a> -&gt; string -&gt; int -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALdo_at_exit"><span class="keyword">val</span> do_at_exit</span> : <code class="type">unit -&gt; unit</code></pre>
+</div>

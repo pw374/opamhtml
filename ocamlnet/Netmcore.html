@@ -1,0 +1,216 @@
+<div class="ocaml_toplevel_module"><div class="info">Multi-processing for compute jobs<br/>    This library allows it to develop parallel algorithms that can take
+    advantage of multiple CPU cores. It does not use Ocaml's multi-threading
+    feature because this would implicitly serialize all computations.
+    Instead, independent processes are created, and the communication
+    between processes is made as cheap and unproblematic as possible.<br/>    Please read  <a href="#Netmcore_basics">Netmcore_basics</a> for an introduction into using
+    this module. There is also  <a href="#Netmcore_tut">Netmcore_tut</a> with more advanced
+    techniques.<br/>    Before using this library, it is required to call  <a href="#Netmcore.startup">Netmcore.startup</a>.
+    This turns the current process into the master process. The master
+    process has only a supervising function, and is responsible for
+    managing global resources, and for starting further worker processes.<br/>    The worker processes can start more workers. This is different from
+    creating a new thread, though: The new worker does not share memory
+    with its creator. It is also different from calling <code class="code">Unix.fork</code>,
+    because new workers are always subprocesses of the master process.
+    This means it is not initialized with a copy of the state of the
+    logical creator, but with its real parent process which is always
+    the master.<br/>    Compatibility with multi-threading: You may run into big trouble
+    when the master process starts further threads (after forking 
+    thread-related resources are in an uncontrolled state). There is
+    no such problem in the worker processes. In this library,
+    however, nothing is done to ease the multi-threaded life, so you
+    should carefully check the compatibility first.<br/>     <a href="#Netmcore">Netmcore</a> controls the lifetime of certain system resources in
+    addition to worker processes:<ul><li>Temporary files</li><li>Shared memory objects</li><li>Named semaphores</li></ul>    These objects have kernel persistence, and continue to exist when
+    the program ends. Because of this, there are two mechanisms to
+    control the lifetime, and to delete these objects finally: First,
+    if all using processes terminate normally, an object is deleted.
+    Second, in order to also catch abnormal terminations, these objects
+    are also managed by storing their names into an external file
+    &quot;netplex.pmanage&quot; (in the socket directory). When the program is
+    started the next time with the same socket directory, the objects
+    from the previous run are automatically deleted. The second mechanism
+    can be disabled by setting the<ul><li><code class="code">disable_pmanage</code> parameter for the  <a href="#Netmcore.startup">Netmcore.startup</a> call, or by
+      setting the</li><li><code class="code">unlink</code> parameter in the same call. This second option only disables
+      the deletion, but the management file is updated.</li></ul></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Types and exceptions</h2></div></div>
+<pre><span class="TYPEres_id"><span class="keyword">type</span> res_id</span> = <code class="type">[ `Resource of int ]</code></pre><div class="info"><div class="info">This tagged integer identifies resources. This variant type will never
+      be extended.</div></div>
+<pre><span class="TYPEprocess_id"><span class="keyword">type</span> process_id</span> = <code class="type">[ `Process of int ]</code></pre><div class="info"><div class="info">This tagged integer identifies processes. This variant type will never
+      be extended.<br/>      Note that the int argument is not the Unix PID, but just a self-generated
+      identifier that is unique for the lifetime of the program.</div></div>
+<pre><span class="TYPEcompute_resource_type"><span class="keyword">type</span> compute_resource_type</span> = <code class="type">[ `File
+| `Fork_point
+| `Join_point
+| `Posix_sem
+| `Posix_shm
+| `Posix_shm_preallocated
+| `Posix_shm_preallocated_sc
+| `Posix_shm_sc ]</code></pre>
+<pre><span class="TYPEinherit_request"><span class="keyword">type</span> inherit_request</span> = <code class="type">[ `All | `Resources of <a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">res_id</a> list ]</code></pre>
+<pre><span class="TYPEcompute_resource_repr"><span class="keyword">type</span> compute_resource_repr</span> = <code class="type">[ `File of string
+| `Fork_point of <a href="?package=ocamlnet&amp;module=Netmcore&amp;type=inherit_request">inherit_request</a> * <a href="?package=ocamlnet&amp;module=Netplex_encap&amp;type=encap">Netplex_encap.encap</a> -&gt; <a href="?package=ocamlnet&amp;module=Netmcore&amp;type=process_id">process_id</a>
+| `Join_point of <a href="?package=ocamlnet&amp;module=Netmcore&amp;type=process_id">process_id</a> -&gt; <a href="?package=ocamlnet&amp;module=Netplex_encap&amp;type=encap">Netplex_encap.encap</a> option
+| `Posix_sem of string
+| `Posix_shm of string
+| `Posix_shm_preallocated of string * <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">Netsys_mem.memory</a>
+| `Posix_shm_preallocated_sc of
+    string * <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">Netsys_mem.memory</a> * <a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=container">Netsys_sem.container</a>
+| `Posix_shm_sc of string * <a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=prefix">Netsys_sem.prefix</a> ]</code></pre><div class="info"><div class="info">Centrally managed resources include:<ul><li><code class="code">`File name</code>: (Temporary) file <code class="code">name</code> (absolute name)</li><li><code class="code">`Posix_shm name</code>: Shared memory objects with <code class="code">name</code></li><li><code class="code">`Posix_shm_sc(name,p)</code>: Shared memory objects with <code class="code">name</code>, and
+        attached container for semaphores with prefix <code class="code">p</code></li><li><code class="code">`Posix_shm_preallocated(name,m)</code>: Shared memory objects already
+        allocated by the master process. These objects are passed over
+        to the worker processes by inheritance, and are always mapped at
+        the same address. <code class="code">m</code> is the bigarray mapping the object.</li><li><code class="code">`Posix_shm_preallocated_sc(name,m.p)</code>: Same, plus attached
+        container for semaphores with prefix <code class="code">p</code></li><li><code class="code">`Posix_sem name</code>: Semaphores with <code class="code">name</code></li><li><code class="code">`Fork_point(inh,f)</code>: Fork points where <code class="code">let pid=f arg</code> fork a new process
+        with argument <code class="code">arg</code>. <code class="code">pid</code> is the process identifier. The list <code class="code">inh</code>
+        are resources inherited from the master.</li><li><code class="code">`Joint_point f</code>: Joint points where <code class="code">let res=f pid</code> wait until
+        the process <code class="code">pid</code> terminates. If <code class="code">res</code> is non-<code class="code">None</code> it is the
+        result value. If it is <code class="code">None</code>, no result was passed back
+        (including all pathological cases like crashes)</li></ul>      Except fork and join points, these resources are also added to
+      the pmanage object of Netplex (see  <a href="#Netplex_cenv.pmanage">Netplex_cenv.pmanage</a> and
+       <a href="#Netsys_pmanage">Netsys_pmanage</a>).</div></div>
+<pre><span class="EXCEPTIONNo_resource"><span class="keyword">exception</span> No_resource</span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">res_id</a></code></pre><div class="info"><div class="info">No such resource, or no resource of the expected type</div></div>
+<div class="ocaml_class sig" name="compute_resource"><pre><span class="TYPEcompute_resource"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netmcore&amp;class=compute_resource">compute_resource</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><pre><span class="METHODid"><span class="keyword">method</span> id</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">res_id</a></code></pre>
+<div class="info"><div class="info">an ID of the resource that is valid in the whole Netplex system</div></div>
+<pre><span class="METHODtyp"><span class="keyword">method</span> typ</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=compute_resource_type">compute_resource_type</a></code></pre>
+<div class="info"><div class="info">which type of resource</div></div>
+<pre><span class="METHODrepr"><span class="keyword">method</span> repr</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=compute_resource_repr">compute_resource_repr</a></code></pre>
+<div class="info"><div class="info">the resource detail</div></div>
+<pre><span class="METHODrelease"><span class="keyword">method</span> release</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Notify the manager that the resource is not used any longer by this
+	process. If all processes release the resource it will be finally
+	destroyed.</div></div></div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Defining processes</h2></div></div>
+<div class="info"><div class="info">This is the lower-level version of the process API where arguments
+    and results of processes are dynamically typed. It may have some
+    uses when writing generic process managers, but for the
+    normal application the statically typed API in  <a href="#Netmcore_process">Netmcore_process</a>
+    is easier to use (and less verbose).</div></div>
+<pre><span class="VALdef_process"><span class="keyword">val</span> def_process</span> : <code class="type">(<a href="?package=ocamlnet&amp;module=Netplex_encap&amp;type=encap">Netplex_encap.encap</a> -&gt; <a href="?package=ocamlnet&amp;module=Netplex_encap&amp;type=encap">Netplex_encap.encap</a>) -&gt; <a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">res_id</a> * <a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">res_id</a></code></pre><div class="info"><div class="info"><code class="code">let fork_point, join_point = def_process f</code>:
+      Defines process types, i.e. ways of starting and finishing processes. 
+      The definition must be done in the master process, e.g. before the first
+      worker is started. <br/>      Once the process type is defined, new processes can be started,
+      and these processes will run the function <code class="code">f</code>. When <code class="code">f</code> is 
+      finished, the process will terminate. Starting processes is possible
+      from other worker processes.<br/>      <code class="code">f</code> is supplied with its argument by the process starter <code class="code">start</code>.
+      The result value of <code class="code">f</code> can be retrieved with <code class="code">join</code> (by any
+      process, but only the first <code class="code">join</code> for this process will be successful).<br/>      If <code class="code">f</code> throws exceptions, these will be caught and logged, but not
+      be passed back to the caller (which just gets <code class="code">None</code> as result
+      of <code class="code">join</code>). The same happens for any unplanned termination of the
+      process.<br/>      It is allowed to immediately release the <code class="code">join_point</code> if there is
+      no interest in catching the termination of started processes.<br/>      Here is an example how to define a process that takes a <code class="code">string</code>
+      argument and returns an <code class="code">int</code>:<br/>      <pre class="codepre"><code class="code">
+      module String_encap = Netplex_encap.Make_encap(struct type t=string end)
+      module Int_encap = Netplex_encap.Make_encap(struct type t=int end)
+
+      let my_process_fork, my_process_join =
+        Netmcore.def_process
+          (fun s_encap -&gt;
+            let (s:string) = String_encap.unwrap s_encap in
+            let (r:int) = ... in
+            Int_encap.wrap r
+          )
+      </code></pre><br/>      The wrapping and unwrapping is required for ensuring type-safety
+      (see  <a href="#Netplex_encap">Netplex_encap</a> for the details of the idea).<br/>      Calling this process is done with (also see below):<br/>      <pre class="codepre"><code class="code">
+      let pid = Netmcore.start my_process_fork (String_encap.wrap s) in
+      let r_encap_opt = Netmcore.join my_process_join pid in
+      match r_encap_opt with
+        | None -&gt; failwith &quot;Something went wrong&quot;
+        | Some r_encap -&gt; Int_encap.unwrap r_encap
+      </code></pre></div></div>
+<div class="info"><div class="info">The following functions can also be called from worker processes
+    (i.e. Netplex containers)</div></div>
+<pre><span class="VALstart"><span class="keyword">val</span> start</span> : <code class="type">?inherit_resources:<a href="?package=ocamlnet&amp;module=Netmcore&amp;type=inherit_request">inherit_request</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">res_id</a> -&gt; <a href="?package=ocamlnet&amp;module=Netplex_encap&amp;type=encap">Netplex_encap.encap</a> -&gt; <a href="?package=ocamlnet&amp;module=Netmcore&amp;type=process_id">process_id</a></code></pre><div class="info"><div class="info"><code class="code">let pid = start fork_point arg</code>: Starts the process with the
+      given <code class="code">fork_point</code> and the argument <code class="code">arg</code>.<br/>      Raises <code class="code">No_resource</code> if there is no such resource.<br/>      The function returns a process identifier. This is not the Unix
+      PID, but a sequentially generated number that is unique for a
+      running program.<br/>      Option <code class="code">inherit_resources</code>: Certain resources are only accessible by
+      the process when they are inherited to it. This is the case for
+      <code class="code">`Posix_shm_preallocated</code>. This can be set to <code class="code">`All</code> to inherit
+      all inheritable resources, or to <code class="code">`Resources l</code> to only inherit
+      the resources of <code class="code">l</code>. By default, all resources are inherited.
+      (This changed in Ocamlnet-3.5 - before, no resources were inherited,
+      which turned out to be quite dangerous as default.)</div></div>
+<pre><span class="VALjoin"><span class="keyword">val</span> join</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">res_id</a> -&gt; <a href="?package=ocamlnet&amp;module=Netmcore&amp;type=process_id">process_id</a> -&gt; <a href="?package=ocamlnet&amp;module=Netplex_encap&amp;type=encap">Netplex_encap.encap</a> option</code></pre><div class="info"><div class="info"><code class="code">let res_opt = join join_point pid</code>: Waits until the process <code class="code">pid</code>
+      is done, and returns the result value if any. You can only join
+      (or <code class="code">join_nowait</code>) once per process.<br/>      Raises <code class="code">No_resource</code> if there is no such resource.<br/>      It is not possible to call <code class="code">join</code> from the master process (as this
+      process must not block). You can, however, get the result of an
+      already terminated process with <code class="code">join_nowait</code>, e.g. after
+       <a href="#Netmcore.run">Netmcore.run</a> returned.</div></div>
+<pre><span class="VALjoin_nowait"><span class="keyword">val</span> join_nowait</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">res_id</a> -&gt; <a href="?package=ocamlnet&amp;module=Netmcore&amp;type=process_id">process_id</a> -&gt; <a href="?package=ocamlnet&amp;module=Netplex_encap&amp;type=encap">Netplex_encap.encap</a> option</code></pre><div class="info"><div class="info"><code class="code">let res_opt = join_nowait join_point pid</code>: Checks if the process <code class="code">pid</code>
+      is done, and returns the result value if so. Otherwise return <code class="code">None</code>.</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Managing resources from worker processes</h2></div></div>
+<div class="info"><div class="info">The following functions can also be called from worker processes
+    (i.e. Netplex containers)</div></div>
+<pre><span class="VALget_resource"><span class="keyword">val</span> get_resource</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">res_id</a> -&gt; <a href="?package=ocamlnet&amp;module=Netmcore&amp;type=compute_resource">compute_resource</a></code></pre><div class="info"><div class="info">Retrieves the resource by ID. This implicitly also marks this resource
+      as being used by this process. Don't forget to call <code class="code">release</code> when
+      your are done with the resource.<br/>      Raises <code class="code">No_resource</code> if there is no such resource.</div></div>
+<pre><span class="VALrelease"><span class="keyword">val</span> release</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">res_id</a> -&gt; unit</code></pre><div class="info"><div class="info">Release the resource with this ID. (Same as calling the <code class="code">release</code>
+      method on the object.)</div></div>
+<pre><span class="VALmanage_file"><span class="keyword">val</span> manage_file</span> : <code class="type">string -&gt; <a href="?package=ocamlnet&amp;module=Netmcore&amp;type=compute_resource">compute_resource</a></code></pre><div class="info"><div class="info">hands over a file to the manager</div></div>
+<pre><span class="VALget_file"><span class="keyword">val</span> get_file</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">res_id</a> -&gt; string</code></pre><div class="info"><div class="info">Gets the file with this ID (or raises <code class="code">No_resource</code>). As for
+      <code class="code">get_resource</code> the file is marked as being used by the process.</div></div>
+<pre><span class="VALmanage_shm"><span class="keyword">val</span> manage_shm</span> : <code class="type">string -&gt; <a href="?package=ocamlnet&amp;module=Netmcore&amp;type=compute_resource">compute_resource</a></code></pre><div class="info"><div class="info">hands over a named shm object to the manager</div></div>
+<pre><span class="VALmanage_shm_sc"><span class="keyword">val</span> manage_shm_sc</span> : <code class="type">string -&gt; <a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=container">Netsys_sem.container</a> -&gt; <a href="?package=ocamlnet&amp;module=Netmcore&amp;type=compute_resource">compute_resource</a></code></pre><div class="info"><div class="info">hands over a named shm object plus semaphore container to the manager</div></div>
+<pre><span class="VALget_shm"><span class="keyword">val</span> get_shm</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">res_id</a> -&gt; string</code></pre><div class="info"><div class="info">Gets the shm object with this ID (or raises <code class="code">No_resource</code>). As
+      for <code class="code">get_resource</code> the shm object is marked as being used by the process.</div></div>
+<pre><span class="VALget_sem_container"><span class="keyword">val</span> get_sem_container</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">res_id</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=container">Netsys_sem.container</a></code></pre><div class="info"><div class="info">Get the semaphore container</div></div>
+<div class="info"><div class="info">Shared memory objects can be created with  <a href="#Netsys_posix.shm_create">Netsys_posix.shm_create</a>,
+    and opened with  <a href="#Netsys_posix.shm_open">Netsys_posix.shm_open</a>.</div></div>
+<pre><span class="VALcreate_preallocated_shm"><span class="keyword">val</span> create_preallocated_shm</span> : <code class="type">?value_area:bool -&gt; string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">res_id</a> * string</code></pre><div class="info"><div class="info"><code class="code">create_preallocated_shm prefix size</code>: Creates a new preallocated
+      shm object with a unique name based on <code class="code">prefix</code>, and a length of
+      <code class="code">size</code> bytes. The object is created and mapped into the master
+      process, and will be available to any newly started process when
+      the resource ID is inherited to the process.<br/>      Returns <code class="code">(res_id,shm_name)</code> where <code class="code">res_id</code> identifies the new
+      resource, and <code class="code">shm_name</code> is the name of the POSIX shared memory
+      object.<br/>      Note that the process calling this function cannot look up this
+      resource (using <code class="code">get_shm</code> or <code class="code">get_resource</code>) because the shm
+      block cannot be mapped at the right address. Nevertheless, the calling
+      process counts as a user of the object, and needs to release
+      the object.<br/>      Option <code class="code">value_area</code>: if set, the new memory is marked as value
+      area, so the ocaml runtime allows value comparisons in this
+      memory area.</div></div>
+<pre><span class="VALcreate_preallocated_shm_sc"><span class="keyword">val</span> create_preallocated_shm_sc</span> : <code class="type">?value_area:bool -&gt; string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">res_id</a> * string * <a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=container">Netsys_sem.container</a></code></pre><div class="info"><div class="info">Same as <code class="code">create_preallocated_shm</code> with the extension that 
+      a semaphore container is also allocated and returned</div></div>
+<pre><span class="VALmanage_sem"><span class="keyword">val</span> manage_sem</span> : <code class="type">string -&gt; <a href="?package=ocamlnet&amp;module=Netmcore&amp;type=compute_resource">compute_resource</a></code></pre><div class="info"><div class="info">hands over a named semaphore to the manager</div></div>
+<pre><span class="VALget_sem"><span class="keyword">val</span> get_sem</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">res_id</a> -&gt; string</code></pre><div class="info"><div class="info">gets the semaphore with this ID (or raises <code class="code">No_resource</code>). As
+      for <code class="code">get_resource</code> the semaphore is marked as being used by the process.</div></div>
+<div class="info"><div class="info">Semaphores can be opened with  <a href="#Netsys_posix.sem_open">Netsys_posix.sem_open</a>, and
+    created with  <a href="#Netsys_posix.sem_create">Netsys_posix.sem_create</a>.</div></div>
+<pre><span class="VALself_process_id"><span class="keyword">val</span> self_process_id</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Netmcore&amp;type=process_id">process_id</a></code></pre><div class="info"><div class="info">Returns the process ID of a worker</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Initialization and system start</h2></div></div>
+<div class="info"><div class="info">This module can either be used as Netplex plugin and integrated into
+    any existing Netplex program, or it can be started in stand-alone mode</div></div>
+<pre><span class="VALadd_plugins"><span class="keyword">val</span> add_plugins</span> : <code class="type">Netplex_types.controller -&gt; unit</code></pre><div class="info"><div class="info">To enable compute processes for any Netplex program, call this
+      function with the controller object as argument. This can e.g. 
+      be done in the <code class="code">post_add_hook</code> of the processor.</div></div>
+<pre><span class="VALstartup"><span class="keyword">val</span> startup</span> : <code class="type">socket_directory:string -&gt;
+?pidfile:string -&gt;
+?init_ctrl:(Netplex_types.controller -&gt; unit) -&gt;
+?disable_pmanage:bool -&gt;
+?no_unlink:bool -&gt; first_process:('a -&gt; <a href="?package=ocamlnet&amp;module=Netmcore&amp;type=process_id">process_id</a>) -&gt; 'a -&gt; unit</code></pre><div class="info"><div class="info">This function makes the current process the master process.
+      It starts immediately a new worker process, called the 
+      first process. The <code class="code">startup</code> function returns first when this
+      process is finished, in which case the whole Netplex system is
+      shut down (which may lead to killing the remaining processes,
+      following the usual shutdown procedure).<br/>      The first process is created by calling <code class="code">first_process</code> at the
+      right moment. This function normally just invokes <code class="code">start</code>.<br/>      Passing a <code class="code">socket_directory</code> is mandatory. This directory will
+      contain helper files. The must be a separate <code class="code">socket_directory</code>
+      for each running Computeplex instance.<br/>      <code class="code">pidfile</code>: If passed, the Unix PID of the master process is written
+      to this file.<br/>      <code class="code">disable_pmanage</code>: Disable that persistent kernel objects are
+      managed via the &quot;netplex.pmanage&quot; file in the socket directory.<br/>      <code class="code">no_unlink</code>: Disable that old persistent kernel objects are deleted at
+      startup. This may be useful when <code class="code">startup</code> is called a second time
+      from the same program.</div></div>
+<pre><span class="VALrun"><span class="keyword">val</span> run</span> : <code class="type">socket_directory:string -&gt;
+?pidfile:string -&gt;
+?init_ctrl:(Netplex_types.controller -&gt; unit) -&gt;
+?disable_pmanage:bool -&gt;
+?no_unlink:bool -&gt;
+first_process:('a -&gt; <a href="?package=ocamlnet&amp;module=Netmcore&amp;type=process_id">process_id</a>) -&gt;
+extract_result:(Netplex_types.controller -&gt; <a href="?package=ocamlnet&amp;module=Netmcore&amp;type=process_id">process_id</a> -&gt; 'b) -&gt; 'a -&gt; 'b</code></pre><div class="info"><div class="info">This function fixes a design error in <code class="code">startup</code>, namely that it was
+      difficult to get the result of the process(es) back. Here, the
+      additional callback <code class="code">extract_result</code> can be used to retrieve the
+      results from processes, especially from the first process.<br/>      You need to call  <a href="#Netmcore.join_nowait">Netmcore.join_nowait</a> to get the results from
+      processes.<br/>      The result of <code class="code">extract_result</code> is the result of <code class="code">run</code>.</div></div>
+<pre><span class="VALdestroy_resources"><span class="keyword">val</span> destroy_resources</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info">Destroys all resources that may be left</div></div>
+<div class="ocaml_module sig" name="Debug"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netmcore.Debug">Debug</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALenable"><span class="keyword">val</span> enable</span> : <code class="type">bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre></div></div>
+</div>

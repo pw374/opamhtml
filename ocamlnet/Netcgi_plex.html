@@ -1,0 +1,93 @@
+<div class="ocaml_toplevel_module"><div class="info"><h1 id="1_TITLE">Netplex support for FastCGI, SCGI and AJP connectors</h1></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Factory</h2></div></div>
+<pre><span class="VALfactory"><span class="keyword">val</span> factory</span> : <code class="type">?config:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=config">Netcgi.config</a> -&gt;
+?enable:[ `AJP | `FCGI | `SCGI ] list -&gt;
+?name:string -&gt;
+?output_type:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=output_type">Netcgi.output_type</a> -&gt;
+?arg_store:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=arg_store">Netcgi.arg_store</a> -&gt;
+?exn_handler:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=exn_handler">Netcgi.exn_handler</a> -&gt;
+?configure:(Netplex_types.config_file -&gt;
+            Netplex_types.address -&gt; Netplex_types.processor_hooks) -&gt;
+(Netplex_types.container -&gt; <a href="?package=ocamlnet&amp;module=Netcgi&amp;type=cgi">Netcgi.cgi</a> -&gt; unit) -&gt;
+Netplex_types.processor_factory</code></pre><div class="info"><div class="info">Reads a Netplex configuration section like
+ <pre class="codepre"><code class="code">
+    processor {
+      type = &quot;netcgi&quot;;          (* or the overridden [name] *)
+      timeout = 15;             (* optional *)
+      mount_dir = &quot;/url/path&quot;;  (* optional *)
+      mount_at = &quot;/url/path&quot;;   (* optional alternative to mount_dir *)
+    }
+ </code></pre><br/> and creates a processor for the protocols &quot;fcgi&quot;, &quot;scgi&quot;,
+ and &quot;ajp&quot; (or a subset of these protocols if the <code class="code">enable</code> 
+ parameter restricts them). A complete service definition
+ looks thus like:<br/> <pre class="codepre"><code class="code">
+      service {
+          name = &quot;name_of_service&quot;;
+          protocol {
+              name = &quot;fcgi&quot;;        (* or &quot;scgi&quot; or &quot;ajp&quot; *)
+              address {
+                  type = &quot;internet&quot;;
+                  bind = &quot;localhost:&lt;port&gt;&quot;;
+              };
+          };
+          (* ... several protocol sections allowed! *)
+          processor {
+              type = &quot;netcgi&quot;;
+          };
+          workload_manager {
+              type = &quot;dynamic&quot;;
+              max_jobs_per_thread = 1;  (* only reasonable value *)
+              min_free_job_capacity = &lt;n&gt;;
+              max_free_job_capacity = &lt;n&gt;;
+              max_threads = &lt;n&gt;;
+          };
+      }
+ </code></pre><br/> The processor calls the argument function of type <code class="code">container -&gt; cgi -&gt; unit</code>
+ for every incoming request.<br/> The <code class="code">timeout</code> parameter specifies when inactive connections are
+ timed out (in seconds). The <code class="code">mount_dir</code> and <code class="code">mount_at</code> parameters
+ define which part of the URL is considered as <code class="code">SCRIPT_NAME</code>:<br/> - By default (if neither <code class="code">mount_dir</code> nor <code class="code">mount_at</code>) are given
+   <code class="code">SCRIPT_NAME</code> is determined in a protocol-dependent way. Usually,
+   the server transmits <code class="code">SCRIPT_NAME</code>, but see the note below.<ul><li>If <code class="code">mount_dir</code> is present, the processor accepts only URLs
+   that have this path as true prefix directory, i.e. the URL path
+   is <code class="code">&lt;mount_dir&gt;/&lt;name&gt;&lt;rest&gt;</code>. The part <code class="code">&lt;mount_dir&gt;/&lt;name&gt;</code>
+   is taken as <code class="code">SCRIPT_NAME</code>.</li><li>If <code class="code">mount_at</code> is present, the processor accepts only URLs
+   that have this path as prefix, i.e. the URL path is
+   <code class="code">&lt;mount_at&gt;&lt;rest&gt;</code>. <code class="code">&lt;mount_at&gt;</code> is taken as <code class="code">SCRIPT_NAME</code>.</li></ul> The background is that <code class="code">SCRIPT_NAME</code> is commonly used to
+ distinghuish between different web actions of the netcgi
+ application. The actions are simply names in a directory like
+ <code class="code">/bin/&lt;name&gt;</code> or <code class="code">/servlet/&lt;name&gt;</code>. Not all web servers/protocols
+ transmit good values for <code class="code">SCRIPT_NAME</code>, however. By specifying
+ <code class="code">mount_dir</code> or <code class="code">mount_at</code> one can force to interpret a certain
+ prefix of the request URL as <code class="code">SCRIPT_NAME</code>.<div class="parameters"><div class="param_info"><code class="code">config</code> : The Netcgi configuration to use, default is
+     <a href="#Netcgi.default_config">Netcgi.default_config</a></div><div class="param_info"><code class="code">enable</code> : Which protocols to support. Default is to
+    support all protocols</div><div class="param_info"><code class="code">name</code> : Defines the name of the processor. Default is &quot;netcgi&quot;.</div><div class="param_info"><code class="code">output_type</code> : Default: <code class="code">`Direct &quot;&quot;</code></div><div class="param_info"><code class="code">arg_store</code> : Default: <code class="code">`Automatic</code> for all arguments.</div><div class="param_info"><code class="code">exn_handler</code> : See  <a href="#Netcgi.exn_handler">Netcgi.exn_handler</a>.  Default: delegate
+      all exceptions to the default handler.</div><div class="param_info"><code class="code">configure</code> : Parameters are the netplex configuration file
+     and the address of the <code class="code">processor</code> section. The configure
+     function can look for additional parameters. It returns
+     service hooks that are added to the resulting processor.</div></div></div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Processors</h2></div></div>
+<div class="info"><div class="info">The following functions create the processors directly</div></div>
+<pre><span class="TYPEmountpoint"><span class="keyword">type</span> mountpoint</span> = <code class="type">[ `Mount_at of string | `Mount_dir of string ]</code></pre>
+<pre><span class="VALfcgi_processor"><span class="keyword">val</span> fcgi_processor</span> : <code class="type">?config:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=config">Netcgi.config</a> -&gt;
+?output_type:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=output_type">Netcgi.output_type</a> -&gt;
+?arg_store:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=arg_store">Netcgi.arg_store</a> -&gt;
+?exn_handler:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=exn_handler">Netcgi.exn_handler</a> -&gt;
+?timeout:float -&gt;
+?mount:<a href="?package=ocamlnet&amp;module=Netcgi_plex&amp;type=mountpoint">mountpoint</a> -&gt;
+(Netplex_types.container -&gt; <a href="?package=ocamlnet&amp;module=Netcgi_fcgi&amp;type=cgi">Netcgi_fcgi.cgi</a> -&gt; unit) -&gt;
+Netplex_types.processor</code></pre>
+<pre><span class="VALscgi_processor"><span class="keyword">val</span> scgi_processor</span> : <code class="type">?config:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=config">Netcgi.config</a> -&gt;
+?output_type:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=output_type">Netcgi.output_type</a> -&gt;
+?arg_store:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=arg_store">Netcgi.arg_store</a> -&gt;
+?exn_handler:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=exn_handler">Netcgi.exn_handler</a> -&gt;
+?timeout:float -&gt;
+?mount:<a href="?package=ocamlnet&amp;module=Netcgi_plex&amp;type=mountpoint">mountpoint</a> -&gt;
+(Netplex_types.container -&gt; <a href="?package=ocamlnet&amp;module=Netcgi&amp;type=cgi">Netcgi.cgi</a> -&gt; unit) -&gt; Netplex_types.processor</code></pre>
+<pre><span class="VALajp_processor"><span class="keyword">val</span> ajp_processor</span> : <code class="type">?config:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=config">Netcgi.config</a> -&gt;
+?output_type:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=output_type">Netcgi.output_type</a> -&gt;
+?arg_store:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=arg_store">Netcgi.arg_store</a> -&gt;
+?exn_handler:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=exn_handler">Netcgi.exn_handler</a> -&gt;
+?timeout:float -&gt;
+?mount:<a href="?package=ocamlnet&amp;module=Netcgi_plex&amp;type=mountpoint">mountpoint</a> -&gt;
+(Netplex_types.container -&gt; <a href="?package=ocamlnet&amp;module=Netcgi&amp;type=cgi">Netcgi.cgi</a> -&gt; unit) -&gt; Netplex_types.processor</code></pre>
+</div>

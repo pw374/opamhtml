@@ -1,0 +1,27 @@
+<div class="ocaml_toplevel_module"><div class="info">Heap implementation based on a pairing-heap.<br/>    This heap implementations supports an arbitrary element type, via a comparison
+    function.  If you need a heap with elements ordered by integers, then it may be more
+    efficient to use a <code class="code">Timing_wheel.Priority_queue</code>, which is a heap implementation
+    specialized to integer keys, and with some other performance differences and usage
+    restrictions.</div>
+<div class="ocaml_include ident" path="?package=core_kernel&amp;module=Heap_intf.S" items="[]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core_kernel&amp;module=Heap_intf.S">Heap_intf.S</a></code></code></pre></div>
+<div class="ocaml_module sig" name="Removable"><pre><span class="keyword">module</span> <a href="?package=core_kernel&amp;module=Heap.Removable">Removable</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Removable augments a heap with the ability to remove elements from the heap in lg(n)
+    (amortized) time at any point after they have been added.  Elements within a Removable
+    heap consume 4 words more memory and all heap operations will be somewhat slower.</div></div><div class="ocaml_module_content">
+<div class="ocaml_include ident" path="?package=core_kernel&amp;module=Heap_intf.S" items="[]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core_kernel&amp;module=Heap_intf.S">Heap_intf.S</a></code></code></pre></div>
+<div class="ocaml_module sig" name="Elt"><pre><span class="keyword">module</span> <a href="?package=core_kernel&amp;module=Heap.Removable.Elt">Elt</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> </pre>
+<pre><span class="VALvalue_exn"><span class="keyword">val</span> value_exn</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Heap.Removable.Elt&amp;type=t">t</a> -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">value_exn t</code> return the value in the heap controlled by this token if the value
+        is still in the heap.  Raise otherwise.</div></div>
+<pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type">('a -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a>) -&gt; 'a <a href="?package=core_kernel&amp;module=Heap.Removable.Elt&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<div class="info"><div class="info"><code class="code">value_exn t</code> return the value in the heap controlled by this token if the value
+        is still in the heap.  Raise otherwise.</div></div></div></div>
+<pre><span class="VALadd_removable"><span class="keyword">val</span> add_removable</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Heap.Removable&amp;type=t">t</a> -&gt; 'a -&gt; 'a <a href="?package=core_kernel&amp;module=Heap.Removable.Elt&amp;type=t">Elt.t</a></code></pre><div class="info"><div class="info"><code class="code">add_removable t v</code> adds <code class="code">v</code> to <code class="code">t</code>, returning a token that can be used to delete <code class="code">v</code>
+      from <code class="code">t</code> in lg(n) amortized time.</div></div>
+<pre><span class="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Heap.Removable&amp;type=t">t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Heap.Removable.Elt&amp;type=t">Elt.t</a> -&gt; unit</code></pre><div class="info"><div class="info">If <code class="code">t</code> and <code class="code">token</code> are mismatched then behavior is undefined.  <code class="code">remove</code> may safely
+      be called on a token more than once.  This doesn't free all the memory associated
+      with the Elt until some number of <code class="code">pop</code> operations later -- see Heap_intf for
+      details.</div></div>
+<pre><span class="VALupdate"><span class="keyword">val</span> update</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Heap.Removable&amp;type=t">t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Heap.Removable.Elt&amp;type=t">Elt.t</a> -&gt; 'a -&gt; 'a <a href="?package=core_kernel&amp;module=Heap.Removable.Elt&amp;type=t">Elt.t</a></code></pre><div class="info"><div class="info"><code class="code">update t token v</code> is shorthand for <code class="code">remove t token; add_removable t v</code></div></div>
+<pre><span class="VALfind_elt"><span class="keyword">val</span> find_elt</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Heap.Removable&amp;type=t">t</a> -&gt; f:('a -&gt; bool) -&gt; 'a <a href="?package=core_kernel&amp;module=Heap.Removable.Elt&amp;type=t">Elt.t</a> option</code></pre><div class="info"><div class="info"><code class="code">find_elt t ~f</code>.  If <code class="code">f</code> is true for some element in <code class="code">t</code>, return a <code class="code">Elt.t</code> for
+      that element.  This operation is O(n).</div></div></div></div>
+</div>

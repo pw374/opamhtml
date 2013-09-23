@@ -1,0 +1,9 @@
+<div class="ocaml_toplevel_module"><div class="info">Temporary files</div>
+<pre><span class="VALtmp_directory"><span class="keyword">val</span> tmp_directory</span> : <code class="type">unit -&gt; string</code></pre><div class="info"><div class="info">Return the directory for temporary files. This is used as global
+      default for functions that need such a directory. It is initialized
+      with a reasonable default (OS-dependent).</div></div>
+<pre><span class="VALtmp_prefix"><span class="keyword">val</span> tmp_prefix</span> : <code class="type">string -&gt; string</code></pre><div class="info"><div class="info"><code class="code">tmp_prefix p</code>: Enhance the prefix for temporary files by appending
+      some digits to <code class="code">p</code>. It is not ensures that the prefix is unique,
+      though.</div></div>
+<pre><span class="VALset_tmp_directory"><span class="keyword">val</span> set_tmp_directory</span> : <code class="type">string -&gt; unit</code></pre><div class="info"><div class="info">Set the directory for temporary files</div></div>
+</div>

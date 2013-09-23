@@ -1,0 +1,1103 @@
+<div class="ocaml_toplevel_module">
+
+<div class="ocaml_module ident" name="Monitor" path="?package=async_core&amp;module=Raw_monitor"><pre><span class="keyword">module</span> <a href="?package=async_core&amp;module=Raw_scheduler.Monitor">Monitor</a> : <code class="type"><code class="code"><a href="?package=async_core&amp;module=Raw_monitor">Raw_monitor</a></code></code></pre></div>
+<pre><span class="VALdebug"><span class="keyword">val</span> debug</span> : <code class="type">bool</code></pre>
+<div class="ocaml_module sig" name="T"><pre><span class="keyword">module</span> <a href="?package=async_core&amp;module=Raw_scheduler.T">T</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><code><span class="TYPEt"><span class="keyword">type</span> t</span> = {</code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.check_access">check_access</span> : <code class="type">(unit -&gt; unit) option</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTt.jobs">jobs</span> : <code class="type"><a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.main_execution_context">main_execution_context</span> : <code class="type"><a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.current_execution_context">current_execution_context</span> : <code class="type"><a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.uncaught_exn">uncaught_exn</span> : <code class="type"><a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.global_kill_index">global_kill_index</span> : <code class="type"><a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.num_jobs_run">num_jobs_run</span> : <code class="type">int</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.cycle_count">cycle_count</span> : <code class="type">int</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.cycle_start">cycle_start</span> : <code class="type"><a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.run_every_cycle_start">run_every_cycle_start</span> : <code class="type">(unit -&gt; unit) list</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.last_cycle_time">last_cycle_time</span> : <code class="type"><a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.last_cycle_num_jobs">last_cycle_num_jobs</span> : <code class="type">int</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTt.events">events</span> : <code class="type"><a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTt.finalizer_jobs">finalizer_jobs</span> : <code class="type"><a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.thread_safe_finalizer_hook">thread_safe_finalizer_hook</span> : <code class="type">unit -&gt; unit</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.check_invariants">check_invariants</span> : <code class="type">bool</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.max_num_jobs_per_priority_per_cycle">max_num_jobs_per_priority_per_cycle</span> : <code class="type"><a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.record_backtraces">record_backtraces</span> : <code class="type">bool</code>;</code></td></tr><tr><td>}</td></tr></table>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<pre><span class="VALrecord_backtraces"><span class="keyword">val</span> record_backtraces</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; bool</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; bool</code></pre>
+<pre><span class="VALset_record_backtraces"><span class="keyword">val</span> set_record_backtraces</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; bool -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; bool -&gt; unit</code></pre>
+<pre><span class="VALmax_num_jobs_per_priority_per_cycle"><span class="keyword">val</span> max_num_jobs_per_priority_per_cycle</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a></code></pre>
+<pre><span class="VALset_max_num_jobs_per_priority_per_cycle"><span class="keyword">val</span> set_max_num_jobs_per_priority_per_cycle</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a> -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a> -&gt; unit</code></pre>
+<pre><span class="VALcheck_invariants"><span class="keyword">val</span> check_invariants</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; bool</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; bool</code></pre>
+<pre><span class="VALset_check_invariants"><span class="keyword">val</span> set_check_invariants</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; bool -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; bool -&gt; unit</code></pre>
+<pre><span class="VALthread_safe_finalizer_hook"><span class="keyword">val</span> thread_safe_finalizer_hook</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; unit -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; unit -&gt; unit</code></pre>
+<pre><span class="VALset_thread_safe_finalizer_hook"><span class="keyword">val</span> set_thread_safe_finalizer_hook</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; (unit -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; (unit -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALfinalizer_jobs"><span class="keyword">val</span> finalizer_jobs</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a></code></pre>
+<pre><span class="VALevents"><span class="keyword">val</span> events</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a></code></pre>
+<pre><span class="VALlast_cycle_num_jobs"><span class="keyword">val</span> last_cycle_num_jobs</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALset_last_cycle_num_jobs"><span class="keyword">val</span> set_last_cycle_num_jobs</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALlast_cycle_time"><span class="keyword">val</span> last_cycle_time</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a></code></pre>
+<pre><span class="VALset_last_cycle_time"><span class="keyword">val</span> set_last_cycle_time</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a> -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a> -&gt; unit</code></pre>
+<pre><span class="VALrun_every_cycle_start"><span class="keyword">val</span> run_every_cycle_start</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; (unit -&gt; unit) list</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; (unit -&gt; unit) list</code></pre>
+<pre><span class="VALset_run_every_cycle_start"><span class="keyword">val</span> set_run_every_cycle_start</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; (unit -&gt; unit) list -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; (unit -&gt; unit) list -&gt; unit</code></pre>
+<pre><span class="VALcycle_start"><span class="keyword">val</span> cycle_start</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a></code></pre>
+<pre><span class="VALset_cycle_start"><span class="keyword">val</span> set_cycle_start</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a> -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a> -&gt; unit</code></pre>
+<pre><span class="VALcycle_count"><span class="keyword">val</span> cycle_count</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALset_cycle_count"><span class="keyword">val</span> set_cycle_count</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALnum_jobs_run"><span class="keyword">val</span> num_jobs_run</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALset_num_jobs_run"><span class="keyword">val</span> set_num_jobs_run</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALglobal_kill_index"><span class="keyword">val</span> global_kill_index</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a></code></pre>
+<pre><span class="VALset_global_kill_index"><span class="keyword">val</span> set_global_kill_index</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a> -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a> -&gt; unit</code></pre>
+<pre><span class="VALuncaught_exn"><span class="keyword">val</span> uncaught_exn</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option</code></pre>
+<pre><span class="VALset_uncaught_exn"><span class="keyword">val</span> set_uncaught_exn</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option -&gt; unit</code></pre>
+<pre><span class="VALcurrent_execution_context"><span class="keyword">val</span> current_execution_context</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a></code></pre>
+<pre><span class="VALset_current_execution_context"><span class="keyword">val</span> set_current_execution_context</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a> -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a> -&gt; unit</code></pre>
+<pre><span class="VALmain_execution_context"><span class="keyword">val</span> main_execution_context</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a></code></pre>
+<pre><span class="VALset_main_execution_context"><span class="keyword">val</span> set_main_execution_context</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a> -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a> -&gt; unit</code></pre>
+<pre><span class="VALjobs"><span class="keyword">val</span> jobs</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a></code></pre>
+<pre><span class="VALcheck_access"><span class="keyword">val</span> check_access</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; (unit -&gt; unit) option</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; (unit -&gt; unit) option</code></pre>
+<pre><span class="VALset_check_access"><span class="keyword">val</span> set_check_access</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; (unit -&gt; unit) option -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; (unit -&gt; unit) option -&gt; unit</code></pre>
+<div class="ocaml_module sig" name="Fields"><pre><span class="keyword">module</span> <a href="?package=async_core&amp;module=Raw_scheduler.T.Fields">Fields</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALnames"><span class="keyword">val</span> names</span> : <code class="type">string list</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">string list</code></pre>
+<pre><span class="VALrecord_backtraces"><span class="keyword">val</span> record_backtraces</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALmax_num_jobs_per_priority_per_cycle"><span class="keyword">val</span> max_num_jobs_per_priority_per_cycle</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+ <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+ <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALcheck_invariants"><span class="keyword">val</span> check_invariants</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALthread_safe_finalizer_hook"><span class="keyword">val</span> thread_safe_finalizer_hook</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, unit -&gt; unit) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, unit -&gt; unit) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALfinalizer_jobs"><span class="keyword">val</span> finalizer_jobs</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+ <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+ <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALevents"><span class="keyword">val</span> events</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALlast_cycle_num_jobs"><span class="keyword">val</span> last_cycle_num_jobs</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALlast_cycle_time"><span class="keyword">val</span> last_cycle_time</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALrun_every_cycle_start"><span class="keyword">val</span> run_every_cycle_start</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) list)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) list)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALcycle_start"><span class="keyword">val</span> cycle_start</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALcycle_count"><span class="keyword">val</span> cycle_count</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALnum_jobs_run"><span class="keyword">val</span> num_jobs_run</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALglobal_kill_index"><span class="keyword">val</span> global_kill_index</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALuncaught_exn"><span class="keyword">val</span> uncaught_exn</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALcurrent_execution_context"><span class="keyword">val</span> current_execution_context</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALmain_execution_context"><span class="keyword">val</span> main_execution_context</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALjobs"><span class="keyword">val</span> jobs</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALcheck_access"><span class="keyword">val</span> check_access</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) option)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) option)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALmake_creator"><span class="keyword">val</span> make_creator</span> : <code class="type">check_access:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+              'a -&gt; ('b -&gt; (unit -&gt; unit) option) * 'c) -&gt;
+jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      'c -&gt; ('b -&gt; <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a>) * 'd) -&gt;
+main_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                         <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                        'd -&gt; ('b -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>) * 'e) -&gt;
+current_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                            <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                           <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                           'e -&gt; ('b -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>) * 'f) -&gt;
+uncaught_exn:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+              'f -&gt; ('b -&gt; <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option) * 'g) -&gt;
+global_kill_index:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a>)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                   'g -&gt; ('b -&gt; <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a>) * 'h) -&gt;
+num_jobs_run:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'h -&gt; ('b -&gt; int) * 'i) -&gt;
+cycle_count:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'i -&gt; ('b -&gt; int) * 'j) -&gt;
+cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+             'j -&gt; ('b -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>) * 'k) -&gt;
+run_every_cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) list)
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                       'k -&gt; ('b -&gt; (unit -&gt; unit) list) * 'l) -&gt;
+last_cycle_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a>)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                 'l -&gt; ('b -&gt; <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a>) * 'm) -&gt;
+last_cycle_num_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'm -&gt; ('b -&gt; int) * 'n) -&gt;
+events:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a>)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+        'n -&gt; ('b -&gt; <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a>) * 'o) -&gt;
+finalizer_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                 <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                'o -&gt;
+                ('b -&gt;
+                 <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>) *
+                'p) -&gt;
+thread_safe_finalizer_hook:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, unit -&gt; unit)
+                            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                            'p -&gt; ('b -&gt; unit -&gt; unit) * 'q) -&gt;
+check_invariants:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'q -&gt; ('b -&gt; bool) * 'r) -&gt;
+max_num_jobs_per_priority_per_cycle:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                                      <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a>)
+                                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                                     'r -&gt;
+                                     ('b -&gt;
+                                      <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a>) *
+                                     's) -&gt;
+record_backtraces:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 's -&gt; ('b -&gt; bool) * 't) -&gt;
+'a -&gt; ('b -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>) * 't</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">check_access:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+              'a -&gt; ('b -&gt; (unit -&gt; unit) option) * 'c) -&gt;
+jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      'c -&gt; ('b -&gt; <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a>) * 'd) -&gt;
+main_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                         <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                        'd -&gt; ('b -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>) * 'e) -&gt;
+current_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                            <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                           <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                           'e -&gt; ('b -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>) * 'f) -&gt;
+uncaught_exn:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+              'f -&gt; ('b -&gt; <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option) * 'g) -&gt;
+global_kill_index:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a>)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                   'g -&gt; ('b -&gt; <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a>) * 'h) -&gt;
+num_jobs_run:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'h -&gt; ('b -&gt; int) * 'i) -&gt;
+cycle_count:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'i -&gt; ('b -&gt; int) * 'j) -&gt;
+cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+             'j -&gt; ('b -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>) * 'k) -&gt;
+run_every_cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) list)
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                       'k -&gt; ('b -&gt; (unit -&gt; unit) list) * 'l) -&gt;
+last_cycle_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a>)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                 'l -&gt; ('b -&gt; <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a>) * 'm) -&gt;
+last_cycle_num_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'm -&gt; ('b -&gt; int) * 'n) -&gt;
+events:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a>)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+        'n -&gt; ('b -&gt; <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a>) * 'o) -&gt;
+finalizer_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                 <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                'o -&gt;
+                ('b -&gt;
+                 <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>) *
+                'p) -&gt;
+thread_safe_finalizer_hook:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, unit -&gt; unit)
+                            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                            'p -&gt; ('b -&gt; unit -&gt; unit) * 'q) -&gt;
+check_invariants:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'q -&gt; ('b -&gt; bool) * 'r) -&gt;
+max_num_jobs_per_priority_per_cycle:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                                      <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a>)
+                                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                                     'r -&gt;
+                                     ('b -&gt;
+                                      <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a>) *
+                                     's) -&gt;
+record_backtraces:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 's -&gt; ('b -&gt; bool) * 't) -&gt;
+'a -&gt; ('b -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>) * 't</code></pre>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">check_access:(unit -&gt; unit) option -&gt;
+jobs:<a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a> -&gt;
+main_execution_context:<a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a> -&gt;
+current_execution_context:<a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a> -&gt;
+uncaught_exn:<a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option -&gt;
+global_kill_index:<a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a> -&gt;
+num_jobs_run:int -&gt;
+cycle_count:int -&gt;
+cycle_start:<a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a> -&gt;
+run_every_cycle_start:(unit -&gt; unit) list -&gt;
+last_cycle_time:<a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a> -&gt;
+last_cycle_num_jobs:int -&gt;
+events:<a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a> -&gt;
+finalizer_jobs:<a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt;
+thread_safe_finalizer_hook:(unit -&gt; unit) -&gt;
+check_invariants:bool -&gt;
+max_num_jobs_per_priority_per_cycle:<a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a> -&gt;
+record_backtraces:bool -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">check_access:(unit -&gt; unit) option -&gt;
+jobs:<a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a> -&gt;
+main_execution_context:<a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a> -&gt;
+current_execution_context:<a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a> -&gt;
+uncaught_exn:<a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option -&gt;
+global_kill_index:<a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a> -&gt;
+num_jobs_run:int -&gt;
+cycle_count:int -&gt;
+cycle_start:<a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a> -&gt;
+run_every_cycle_start:(unit -&gt; unit) list -&gt;
+last_cycle_time:<a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a> -&gt;
+last_cycle_num_jobs:int -&gt;
+events:<a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a> -&gt;
+finalizer_jobs:<a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt;
+thread_safe_finalizer_hook:(unit -&gt; unit) -&gt;
+check_invariants:bool -&gt;
+max_num_jobs_per_priority_per_cycle:<a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a> -&gt;
+record_backtraces:bool -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a></code></pre>
+<pre><span class="VALmap"><span class="keyword">val</span> map</span> : <code class="type">check_access:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; (unit -&gt; unit) option) -&gt;
+jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a>) -&gt;
+main_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                         <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>) -&gt;
+current_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                            <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                           <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>) -&gt;
+uncaught_exn:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option) -&gt;
+global_kill_index:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a>)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a>) -&gt;
+num_jobs_run:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; int) -&gt;
+cycle_count:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; int) -&gt;
+cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>) -&gt;
+run_every_cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) list)
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; (unit -&gt; unit) list) -&gt;
+last_cycle_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a>)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a>) -&gt;
+last_cycle_num_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; int) -&gt;
+events:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a>)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a>) -&gt;
+finalizer_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                 <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>) -&gt;
+thread_safe_finalizer_hook:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, unit -&gt; unit)
+                            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; unit -&gt; unit) -&gt;
+check_invariants:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+max_num_jobs_per_priority_per_cycle:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                                      <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a>)
+                                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                                     <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a>) -&gt;
+record_backtraces:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+<a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">check_access:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; (unit -&gt; unit) option) -&gt;
+jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a>) -&gt;
+main_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                         <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>) -&gt;
+current_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                            <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                           <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>) -&gt;
+uncaught_exn:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option) -&gt;
+global_kill_index:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a>)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a>) -&gt;
+num_jobs_run:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; int) -&gt;
+cycle_count:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; int) -&gt;
+cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>) -&gt;
+run_every_cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) list)
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; (unit -&gt; unit) list) -&gt;
+last_cycle_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a>)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a>) -&gt;
+last_cycle_num_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; int) -&gt;
+events:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a>)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a>) -&gt;
+finalizer_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                 <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>) -&gt;
+thread_safe_finalizer_hook:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, unit -&gt; unit)
+                            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; unit -&gt; unit) -&gt;
+check_invariants:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+max_num_jobs_per_priority_per_cycle:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                                      <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a>)
+                                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                                     <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a>) -&gt;
+record_backtraces:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+<a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a></code></pre>
+<pre><span class="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">check_access:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      'b) -&gt;
+main_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                         <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'c) -&gt;
+current_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                            <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                           <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'd) -&gt;
+uncaught_exn:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'e) -&gt;
+global_kill_index:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a>)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'f) -&gt;
+num_jobs_run:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'g) -&gt;
+cycle_count:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'h) -&gt;
+cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'i) -&gt;
+run_every_cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) list)
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'j) -&gt;
+last_cycle_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a>)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'k) -&gt;
+last_cycle_num_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'l) -&gt;
+events:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a>)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'm) -&gt;
+finalizer_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                 <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'n) -&gt;
+thread_safe_finalizer_hook:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, unit -&gt; unit)
+                            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'o) -&gt;
+check_invariants:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'p) -&gt;
+max_num_jobs_per_priority_per_cycle:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                                      <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a>)
+                                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'q) -&gt;
+record_backtraces:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'r) -&gt;
+'r</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">check_access:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      'b) -&gt;
+main_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                         <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'c) -&gt;
+current_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                            <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                           <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'd) -&gt;
+uncaught_exn:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'e) -&gt;
+global_kill_index:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a>)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'f) -&gt;
+num_jobs_run:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'g) -&gt;
+cycle_count:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'h) -&gt;
+cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'i) -&gt;
+run_every_cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) list)
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'j) -&gt;
+last_cycle_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a>)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'k) -&gt;
+last_cycle_num_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'l) -&gt;
+events:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a>)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'm) -&gt;
+finalizer_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                 <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'n) -&gt;
+thread_safe_finalizer_hook:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, unit -&gt; unit)
+                            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'o) -&gt;
+check_invariants:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'p) -&gt;
+max_num_jobs_per_priority_per_cycle:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                                      <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a>)
+                                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'q) -&gt;
+record_backtraces:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'r) -&gt;
+'r</code></pre>
+<pre><span class="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">init:'a -&gt;
+check_access:('a -&gt;
+              ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'b) -&gt;
+jobs:('b -&gt;
+      ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      'c) -&gt;
+main_execution_context:('c -&gt;
+                        ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                         <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'd) -&gt;
+current_execution_context:('d -&gt;
+                           ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                            <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                           <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'e) -&gt;
+uncaught_exn:('e -&gt;
+              ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'f) -&gt;
+global_kill_index:('f -&gt;
+                   ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a>)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'g) -&gt;
+num_jobs_run:('g -&gt;
+              ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'h) -&gt;
+cycle_count:('h -&gt;
+             ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'i) -&gt;
+cycle_start:('i -&gt;
+             ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'j) -&gt;
+run_every_cycle_start:('j -&gt;
+                       ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) list)
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'k) -&gt;
+last_cycle_time:('k -&gt;
+                 ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a>)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'l) -&gt;
+last_cycle_num_jobs:('l -&gt;
+                     ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'm) -&gt;
+events:('m -&gt;
+        ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a>)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'n) -&gt;
+finalizer_jobs:('n -&gt;
+                ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                 <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'o) -&gt;
+thread_safe_finalizer_hook:('o -&gt;
+                            ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, unit -&gt; unit)
+                            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'p) -&gt;
+check_invariants:('p -&gt;
+                  ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'q) -&gt;
+max_num_jobs_per_priority_per_cycle:('q -&gt;
+                                     ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                                      <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a>)
+                                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'r) -&gt;
+record_backtraces:('r -&gt;
+                   ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 's) -&gt;
+'s</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">init:'a -&gt;
+check_access:('a -&gt;
+              ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'b) -&gt;
+jobs:('b -&gt;
+      ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      'c) -&gt;
+main_execution_context:('c -&gt;
+                        ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                         <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'd) -&gt;
+current_execution_context:('d -&gt;
+                           ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                            <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                           <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'e) -&gt;
+uncaught_exn:('e -&gt;
+              ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'f) -&gt;
+global_kill_index:('f -&gt;
+                   ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a>)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'g) -&gt;
+num_jobs_run:('g -&gt;
+              ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'h) -&gt;
+cycle_count:('h -&gt;
+             ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'i) -&gt;
+cycle_start:('i -&gt;
+             ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'j) -&gt;
+run_every_cycle_start:('j -&gt;
+                       ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) list)
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'k) -&gt;
+last_cycle_time:('k -&gt;
+                 ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a>)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'l) -&gt;
+last_cycle_num_jobs:('l -&gt;
+                     ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'm) -&gt;
+events:('m -&gt;
+        ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a>)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'n) -&gt;
+finalizer_jobs:('n -&gt;
+                ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                 <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'o) -&gt;
+thread_safe_finalizer_hook:('o -&gt;
+                            ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, unit -&gt; unit)
+                            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'p) -&gt;
+check_invariants:('p -&gt;
+                  ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'q) -&gt;
+max_num_jobs_per_priority_per_cycle:('q -&gt;
+                                     ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                                      <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a>)
+                                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'r) -&gt;
+record_backtraces:('r -&gt;
+                   ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 's) -&gt;
+'s</code></pre>
+<pre><span class="VALmap_poly"><span class="keyword">val</span> map_poly</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, 'a) <a href="?package=fieldslib&amp;module=Field&amp;type=user">Fieldslib.Field.user</a> -&gt; 'a list</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, 'a) <a href="?package=fieldslib&amp;module=Field&amp;type=user">Fieldslib.Field.user</a> -&gt; 'a list</code></pre>
+<pre><span class="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">check_access:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      bool) -&gt;
+main_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                         <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+current_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                            <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                           <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+uncaught_exn:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+global_kill_index:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a>)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+num_jobs_run:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+cycle_count:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+run_every_cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) list)
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+last_cycle_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a>)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+last_cycle_num_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+events:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a>)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+finalizer_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                 <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+thread_safe_finalizer_hook:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, unit -&gt; unit)
+                            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+check_invariants:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+max_num_jobs_per_priority_per_cycle:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                                      <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a>)
+                                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+record_backtraces:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+bool</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">check_access:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      bool) -&gt;
+main_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                         <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+current_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                            <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                           <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+uncaught_exn:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+global_kill_index:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a>)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+num_jobs_run:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+cycle_count:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+run_every_cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) list)
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+last_cycle_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a>)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+last_cycle_num_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+events:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a>)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+finalizer_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                 <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+thread_safe_finalizer_hook:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, unit -&gt; unit)
+                            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+check_invariants:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+max_num_jobs_per_priority_per_cycle:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                                      <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a>)
+                                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+record_backtraces:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+bool</code></pre>
+<pre><span class="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">check_access:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      bool) -&gt;
+main_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                         <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+current_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                            <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                           <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+uncaught_exn:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+global_kill_index:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a>)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+num_jobs_run:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+cycle_count:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+run_every_cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) list)
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+last_cycle_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a>)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+last_cycle_num_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+events:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a>)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+finalizer_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                 <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+thread_safe_finalizer_hook:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, unit -&gt; unit)
+                            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+check_invariants:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+max_num_jobs_per_priority_per_cycle:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                                      <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a>)
+                                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+record_backtraces:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+bool</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">check_access:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      bool) -&gt;
+main_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                         <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+current_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                            <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                           <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+uncaught_exn:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+global_kill_index:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a>)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+num_jobs_run:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+cycle_count:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+run_every_cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) list)
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+last_cycle_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a>)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+last_cycle_num_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+events:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a>)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+finalizer_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                 <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+thread_safe_finalizer_hook:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, unit -&gt; unit)
+                            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+check_invariants:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+max_num_jobs_per_priority_per_cycle:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                                      <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a>)
+                                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+record_backtraces:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+bool</code></pre>
+<pre><span class="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type">check_access:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      'a) -&gt;
+main_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                         <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+current_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                            <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                           <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+uncaught_exn:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+global_kill_index:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a>)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+num_jobs_run:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+cycle_count:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+run_every_cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) list)
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+last_cycle_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a>)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+last_cycle_num_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+events:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a>)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+finalizer_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                 <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+thread_safe_finalizer_hook:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, unit -&gt; unit)
+                            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+check_invariants:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+max_num_jobs_per_priority_per_cycle:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                                      <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a>)
+                                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+record_backtraces:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+'a list</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">check_access:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      'a) -&gt;
+main_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                         <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+current_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                            <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                           <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+uncaught_exn:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+global_kill_index:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a>)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+num_jobs_run:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+cycle_count:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+run_every_cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) list)
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+last_cycle_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a>)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+last_cycle_num_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+events:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a>)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+finalizer_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                 <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+thread_safe_finalizer_hook:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, unit -&gt; unit)
+                            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+check_invariants:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+max_num_jobs_per_priority_per_cycle:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                                      <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a>)
+                                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+record_backtraces:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+'a list</code></pre>
+<div class="ocaml_module sig" name="Direct"><pre><span class="keyword">module</span> <a href="?package=async_core&amp;module=Raw_scheduler.T.Fields.Direct">Direct</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALiter"><span class="keyword">val</span> iter</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt;
+check_access:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; (unit -&gt; unit) option -&gt; 'a) -&gt;
+jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a> -&gt; 'b) -&gt;
+main_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                         <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                        <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a> -&gt; 'c) -&gt;
+current_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                            <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                           <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                           <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a> -&gt; 'd) -&gt;
+uncaught_exn:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+              <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option -&gt; 'e) -&gt;
+global_kill_index:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a>)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a> -&gt; 'f) -&gt;
+num_jobs_run:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; int -&gt; 'g) -&gt;
+cycle_count:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; int -&gt; 'h) -&gt;
+cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a> -&gt; 'i) -&gt;
+run_every_cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) list)
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                       <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; (unit -&gt; unit) list -&gt; 'j) -&gt;
+last_cycle_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a>)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                 <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a> -&gt; 'k) -&gt;
+last_cycle_num_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; int -&gt; 'l) -&gt;
+events:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a>)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+        <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a> -&gt; 'm) -&gt;
+finalizer_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                 <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt;
+                <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt; 'n) -&gt;
+thread_safe_finalizer_hook:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, unit -&gt; unit)
+                            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                            <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; (unit -&gt; unit) -&gt; 'o) -&gt;
+check_invariants:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; bool -&gt; 'p) -&gt;
+max_num_jobs_per_priority_per_cycle:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                                      <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a>)
+                                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                                     <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt;
+                                     <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a> -&gt;
+                                     'q) -&gt;
+record_backtraces:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; bool -&gt; 'r) -&gt;
+'r</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt;
+check_access:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; (unit -&gt; unit) option -&gt; 'a) -&gt;
+jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a> -&gt; 'b) -&gt;
+main_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                         <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                        <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a> -&gt; 'c) -&gt;
+current_execution_context:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                            <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                           <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                           <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a> -&gt; 'd) -&gt;
+uncaught_exn:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+              <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option -&gt; 'e) -&gt;
+global_kill_index:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a>)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a> -&gt; 'f) -&gt;
+num_jobs_run:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; int -&gt; 'g) -&gt;
+cycle_count:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; int -&gt; 'h) -&gt;
+cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a> -&gt; 'i) -&gt;
+run_every_cycle_start:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) list)
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                       <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; (unit -&gt; unit) list -&gt; 'j) -&gt;
+last_cycle_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a>)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                 <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a> -&gt; 'k) -&gt;
+last_cycle_num_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; int -&gt; 'l) -&gt;
+events:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a>)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+        <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a> -&gt; 'm) -&gt;
+finalizer_jobs:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                 <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt;
+                <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt; 'n) -&gt;
+thread_safe_finalizer_hook:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, unit -&gt; unit)
+                            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                            <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; (unit -&gt; unit) -&gt; 'o) -&gt;
+check_invariants:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; bool -&gt; 'p) -&gt;
+max_num_jobs_per_priority_per_cycle:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                                      <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a>)
+                                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                                     <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt;
+                                     <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a> -&gt;
+                                     'q) -&gt;
+record_backtraces:(([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; bool -&gt; 'r) -&gt;
+'r</code></pre>
+<pre><span class="VALfold"><span class="keyword">val</span> fold</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt;
+init:'a -&gt;
+check_access:('a -&gt;
+              ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; (unit -&gt; unit) option -&gt; 'b) -&gt;
+jobs:('b -&gt;
+      ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a> -&gt; 'c) -&gt;
+main_execution_context:('c -&gt;
+                        ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                         <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                        <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a> -&gt; 'd) -&gt;
+current_execution_context:('d -&gt;
+                           ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                            <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                           <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                           <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a> -&gt; 'e) -&gt;
+uncaught_exn:('e -&gt;
+              ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+              <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option -&gt; 'f) -&gt;
+global_kill_index:('f -&gt;
+                   ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a>)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a> -&gt; 'g) -&gt;
+num_jobs_run:('g -&gt;
+              ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; int -&gt; 'h) -&gt;
+cycle_count:('h -&gt;
+             ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; int -&gt; 'i) -&gt;
+cycle_start:('i -&gt;
+             ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a> -&gt; 'j) -&gt;
+run_every_cycle_start:('j -&gt;
+                       ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) list)
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                       <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; (unit -&gt; unit) list -&gt; 'k) -&gt;
+last_cycle_time:('k -&gt;
+                 ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a>)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                 <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a> -&gt; 'l) -&gt;
+last_cycle_num_jobs:('l -&gt;
+                     ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; int -&gt; 'm) -&gt;
+events:('m -&gt;
+        ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a>)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+        <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a> -&gt; 'n) -&gt;
+finalizer_jobs:('n -&gt;
+                ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                 <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt;
+                <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt; 'o) -&gt;
+thread_safe_finalizer_hook:('o -&gt;
+                            ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, unit -&gt; unit)
+                            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                            <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; (unit -&gt; unit) -&gt; 'p) -&gt;
+check_invariants:('p -&gt;
+                  ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; bool -&gt; 'q) -&gt;
+max_num_jobs_per_priority_per_cycle:('q -&gt;
+                                     ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                                      <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a>)
+                                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                                     <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt;
+                                     <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a> -&gt;
+                                     'r) -&gt;
+record_backtraces:('r -&gt;
+                   ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; bool -&gt; 's) -&gt;
+'s</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt;
+init:'a -&gt;
+check_access:('a -&gt;
+              ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; (unit -&gt; unit) option -&gt; 'b) -&gt;
+jobs:('b -&gt;
+      ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+      <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Jobs&amp;type=t">Jobs.t</a> -&gt; 'c) -&gt;
+main_execution_context:('c -&gt;
+                        ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                         <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                        <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a> -&gt; 'd) -&gt;
+current_execution_context:('d -&gt;
+                           ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                            <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a>)
+                           <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                           <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a> -&gt; 'e) -&gt;
+uncaught_exn:('e -&gt;
+              ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+              <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> option -&gt; 'f) -&gt;
+global_kill_index:('f -&gt;
+                   ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a>)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Kill_index&amp;type=t">Kill_index.t</a> -&gt; 'g) -&gt;
+num_jobs_run:('g -&gt;
+              ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; int -&gt; 'h) -&gt;
+cycle_count:('h -&gt;
+             ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; int -&gt; 'i) -&gt;
+cycle_start:('i -&gt;
+             ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+             <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a> -&gt; 'j) -&gt;
+run_every_cycle_start:('j -&gt;
+                       ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, (unit -&gt; unit) list)
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                       <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; (unit -&gt; unit) list -&gt; 'k) -&gt;
+last_cycle_time:('k -&gt;
+                 ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a>)
+                 <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                 <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a> -&gt; 'l) -&gt;
+last_cycle_num_jobs:('l -&gt;
+                     ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, int)
+                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; int -&gt; 'm) -&gt;
+events:('m -&gt;
+        ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a>)
+        <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+        <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Timing_wheel&amp;type=t">Core.Std.Timing_wheel.t</a> -&gt; 'n) -&gt;
+finalizer_jobs:('n -&gt;
+                ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                 <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt;
+                <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> <a href="?package=core&amp;module=Std.Thread_safe_queue&amp;type=t">Core.Std.Thread_safe_queue.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt; 'o) -&gt;
+thread_safe_finalizer_hook:('o -&gt;
+                            ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, unit -&gt; unit)
+                            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                            <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; (unit -&gt; unit) -&gt; 'p) -&gt;
+check_invariants:('p -&gt;
+                  ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; bool -&gt; 'q) -&gt;
+max_num_jobs_per_priority_per_cycle:('q -&gt;
+                                     ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>,
+                                      <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a>)
+                                     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                                     <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt;
+                                     <a href="?package=async_core&amp;module=Import.Max_num_jobs_per_priority_per_cycle&amp;type=t">Import.Max_num_jobs_per_priority_per_cycle.t</a> -&gt;
+                                     'r) -&gt;
+record_backtraces:('r -&gt;
+                   ([&lt; `Read | `Set_and_create ], <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a>, bool)
+                   <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.T&amp;type=t">t</a> -&gt; bool -&gt; 's) -&gt;
+'s</code></pre></div></div></div></div></div></div>
+<div class="ocaml_include ident" path="?package=async_core&amp;module=Raw_scheduler.T" items="[&quot;Fields&quot;]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=async_core&amp;module=Raw_scheduler.T">T</a></code></code></pre></div>
+<pre><span class="VALinvariant"><span class="keyword">val</span> invariant</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">unit -&gt; <a href="?package=async_core&amp;module=Raw_scheduler&amp;type=t">t</a></code></pre>
+<pre><span class="VALis_dead"><span class="keyword">val</span> is_dead</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler&amp;type=t">t</a> -&gt; bool</code></pre>
+<pre><span class="VALset_check_access"><span class="keyword">val</span> set_check_access</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler&amp;type=t">t</a> -&gt; (unit -&gt; unit) option -&gt; unit</code></pre>
+<pre><span class="VALt_ref"><span class="keyword">val</span> t_ref</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler&amp;type=t">t</a> <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre>
+<pre><span class="VALcheck_access"><span class="keyword">val</span> check_access</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VALt"><span class="keyword">val</span> t</span> : <code class="type">unit -&gt; <a href="?package=async_core&amp;module=Raw_scheduler&amp;type=t">t</a></code></pre>
+<pre><span class="VALcurrent_execution_context"><span class="keyword">val</span> current_execution_context</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a></code></pre>
+<pre><span class="VALset_execution_context"><span class="keyword">val</span> set_execution_context</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a> -&gt; unit</code></pre>
+<pre><span class="VALwith_execution_context"><span class="keyword">val</span> with_execution_context</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a> -&gt; f:(unit -&gt; 'a) -&gt; 'a</code></pre>
+<pre><span class="VALadd_job"><span class="keyword">val</span> add_job</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Job&amp;type=t">Job.t</a> -&gt; unit</code></pre>
+<pre><span class="VALgot_uncaught_exn"><span class="keyword">val</span> got_uncaught_exn</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a> -&gt; unit</code></pre>
+<pre><span class="VALmonitor_is_alive"><span class="keyword">val</span> monitor_is_alive</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.Monitor&amp;type=t">Monitor.t</a> -&gt; bool</code></pre>
+<pre><span class="VALexecution_context_is_alive"><span class="keyword">val</span> execution_context_is_alive</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Execution_context&amp;type=t">Execution_context.t</a> -&gt; bool</code></pre>
+<pre><span class="VALkill_monitor"><span class="keyword">val</span> kill_monitor</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler&amp;type=t">t</a> -&gt; <a href="?package=async_core&amp;module=Raw_scheduler.Monitor&amp;type=t">Monitor.t</a> -&gt; unit</code></pre>
+<pre><span class="VALstabilize"><span class="keyword">val</span> stabilize</span> : <code class="type"><a href="?package=async_core&amp;module=Raw_scheduler&amp;type=t">t</a> -&gt; (unit, exn) <a href="?package=core&amp;module=Std.Result&amp;type=t">Core.Std.Result.t</a></code></pre>
+
+</div>

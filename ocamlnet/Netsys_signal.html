@@ -1,0 +1,68 @@
+<div class="ocaml_toplevel_module"><div class="info">Signal handler framework<br/>    This module defines a simple framework for setting signal handlers.
+    When two modules want to set the handler for the same signal, the framework
+    decides in which order the handlers are executed.<br/>    The module also defines an empty handler list for <code class="code">Sys.sigpipe</code>, so these
+    signals are ignored by the program. This empty list can be extended, 
+    however.<br/>    Win32: Only <code class="code">Sys.sigint</code> handlers can effectively be registered. 
+    Registrations for other signal types are accepted but ignored.</div>
+<pre><span class="VALregister_handler"><span class="keyword">val</span> register_handler</span> : <code class="type">?library:string -&gt;
+?priority:int -&gt;
+?keep_default:bool -&gt;
+name:string -&gt; signal:int -&gt; callback:(int -&gt; unit) -&gt; unit -&gt; unit</code></pre><div class="info"><div class="info">This function registers a handler called <code class="code">name</code> for signal number
+      <code class="code">signal</code>. The handler function is <code class="code">callback</code>. The int argument of
+      the callback is the signal number.<br/>      By default, the handler is an application handler. If <code class="code">library</code> is set,
+      the handler is for this library. The name passed as <code class="code">library</code> is the
+      findlib name of the library.<br/>      By registering another handler for the same <code class="code">library</code>, <code class="code">name</code>, and
+      <code class="code">signal</code>, the old handler is overridden.<br/>      When several handlers are defined for the same signal, all handlers
+      are executed that are defined for the signal (when the signal happens).
+      The order of execution is given by <code class="code">priority</code>. The handler functions
+      are executed in ascending priority order. If the priority number is
+      equal for two handlers, the order is undefined.<br/>      The priority defaults to 0 for library handlers, and to 100 for
+      application handlers. Libraries should only use values from 0 to 99,
+      and applications only from 100 to 199.<br/>      If all handlers for a certain signal set <code class="code">keep_default</code>, then there
+      will be a special action after all signal handlers have been executed.
+      The special action emulates the default behavior for the signal.
+      For now, there is only a simple emulation: If the signal terminates
+      the process, the process is immediately exited with code 126.
+      If the default behaviour is &quot;no-op&quot;, nothing happens. We don't try
+      (yet) to do better (emulate core-dumps, emulate the right process
+      status) because this is difficult in the general case.<br/>      The handler definition takes place immediately.<br/>      Any exceptions occuring during the execution of a handler are caught
+      and ignored.</div></div>
+<pre><span class="VALregister_exclusive_handler"><span class="keyword">val</span> register_exclusive_handler</span> : <code class="type">name:string -&gt; signal:int -&gt; install:(unit -&gt; unit) -&gt; unit -&gt; unit</code></pre><div class="info"><div class="info">An exclusive handler for a signal is the only handler for the signal.
+      If it is tried to register another handler when there is already
+      an exclusive handler, the second registration fails. Also, an
+      exclusive handler cannot be registered when there is already a normal
+      handler for the signal. It is, however, possible to replace the
+      registered exclusive handler by another exclusive handler for the
+      same signal.<br/>      An exclusive handler is installed by running the <code class="code">install</code> function,
+      which can e.g. call <code class="code">Sys.set_signal</code> to define the handler. Other
+      methods (e.g. use some C wrapper) are also possible. It is assumed
+      that <code class="code">install</code> overrides any existing handler.</div></div>
+<pre><span class="VALrestore_management"><span class="keyword">val</span> restore_management</span> : <code class="type">int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">restore_management signo</code>: Restores signal handling management for
+      <code class="code">signo</code> as defined by
+      the handler list for this signal. Calling <code class="code">restore_management</code> makes
+      sense when
+      the signal handler has been overridden with <code class="code">Sys.set_signal</code>, but at
+      some point this module is again responsible for managing the signal
+      handling for this signal.</div></div>
+<pre><span class="VALkeep_away_from"><span class="keyword">val</span> keep_away_from</span> : <code class="type">int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">keep_away_from signo</code>: This signal <code class="code">signo</code> is added to the 
+      &quot;keep away list&quot;. This means that this module will never try to 
+      change the signal behavior again for <code class="code">signo</code>. Even <code class="code">restore_management</code>
+      will not restore the signal handling again. This function should only
+      by called by applications wishing to do the signal handling all 
+      themselves.<br/>      This function does not have any effect on the already installed
+      handlers. It is nevertheless useful for applications calling
+      <code class="code">Sys.set_signal</code> directly to ensure that <code class="code">Netsys_signal</code> will never
+      again try to override the handler.</div></div>
+<pre><span class="TYPEaction"><span class="keyword">type</span> action</span> = <code class="type">[ `Callback of int -&gt; unit | `Install of unit -&gt; unit ]</code></pre><div class="info"><div class="info"><code class="code">`Callback</code> is used for normal handlers, and <code class="code">`Install</code> for exclusive
+      handlers.</div></div>
+<pre><code><span class="TYPEentry"><span class="keyword">type</span> entry</span> = {</code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTentry.sig_number">sig_number</span> : <code class="type">int</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTentry.sig_library">sig_library</span> : <code class="type">string option</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTentry.sig_priority">sig_priority</span> : <code class="type">int</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTentry.sig_keep_default">sig_keep_default</span> : <code class="type">bool</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTentry.sig_name">sig_name</span> : <code class="type">string</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTentry.sig_action">sig_action</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_signal&amp;type=action">action</a></code>;</code></td></tr><tr><td>}</td></tr></table>
+<pre><span class="VALlist"><span class="keyword">val</span> list</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Netsys_signal&amp;type=entry">entry</a> list</code></pre><div class="info"><div class="info">Returns the list of signal handlers</div></div>
+<pre><span class="VALkeep_away_list"><span class="keyword">val</span> keep_away_list</span> : <code class="type">unit -&gt; int list</code></pre><div class="info"><div class="info">Returns the &quot;keep away list&quot;.</div></div>
+<pre><span class="VALinit"><span class="keyword">val</span> init</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info">Call this function to ensure that this module is initialized. It is
+      also possible to call any other function. After initialization the
+      Sigpipe handler is set.</div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Debugging</h1></div></div>
+<div class="ocaml_module sig" name="Debug"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netsys_signal.Debug">Debug</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALenable"><span class="keyword">val</span> enable</span> : <code class="type">bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">Enables  <a href="#Netlog">Netlog</a>-style debugging of this module</div></div></div></div>
+</div>

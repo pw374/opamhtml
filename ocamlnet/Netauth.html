@@ -1,0 +1,31 @@
+<div class="ocaml_toplevel_module"><div class="info">Some primitives for authentication</div>
+<pre><span class="VALhmac"><span class="keyword">val</span> hmac</span> : <code class="type">h:(string -&gt; string) -&gt;
+b:int -&gt; l:int -&gt; k:string -&gt; message:string -&gt; string</code></pre><div class="info"><div class="info">The HMAC algorithm of RFC 2104. The function <code class="code">h</code> is the hash function.
+      <code class="code">b</code> and <code class="code">l</code> are properties of <code class="code">h</code> (see the RFC or below). The string
+      <code class="code">k</code> is the key, up to <code class="code">b</code> bytes. The <code class="code">message</code> is authenticated.<br/>      The key <code class="code">k</code> should ideally have length <code class="code">l</code>. If this cannot be ensured
+      by other means, one should pass <code class="code">k = h any_k</code>.<br/>      Common values of <code class="code">b</code> and <code class="code">l</code>:<ul><li>For <code class="code">h=MD5</code>: <code class="code">b=64</code>, <code class="code">l=16</code></li><li>For <code class="code">h=SHA-1</code>: <code class="code">b=64</code>, <code class="code">l=20</code>
+   </li></ul></div></div>
+<pre><span class="TYPEkey_type"><span class="keyword">type</span> key_type</span> = <code class="type">[ `Kc | `Ke | `Ki ]</code></pre><div class="info"><div class="info">Key types:<ul><li><code class="code">`Kc</code> is used for computing checksums</li><li><code class="code">`Ke</code> is used for encrypting confidential messages</li><li><code class="code">`Ki</code> is used for computing integrity checksums for encrypted
+         messages
+   </li></ul></div></div>
+<pre><span class="VALderive_key_rfc3961_simplified"><span class="keyword">val</span> derive_key_rfc3961_simplified</span> : <code class="type">encrypt:(string -&gt; string) -&gt;
+random_to_key:(string -&gt; string) -&gt;
+block_size:int -&gt; k:int -&gt; usage:int -&gt; key_type:<a href="?package=ocamlnet&amp;module=Netauth&amp;type=key_type">key_type</a> -&gt; string</code></pre><div class="info"><div class="info">Derives a special key from a base key, as described in RFC 3961.<br/>      - <code class="code">encrypt</code>: Encrypts the argument with the base key and the
+        initial cipher state.<ul><li><code class="code">random_to_key</code>: Converts a random string of size <code class="code">k</code> to a key</li><li><code class="code">block_size</code>: The block size of the cipher underlying <code class="code">encrypt</code>.
+        It is ensured that <code class="code">encrypt</code> is called with strings having exactly
+        this many bits. (The <code class="code">c</code> parameter in the RFC text.) Minimum: 40.</li><li><code class="code">k</code>: The input size for <code class="code">random_to_key</code> in bits. Must be divisible
+        by 8.</li><li><code class="code">usage</code>: The usage number (here restricted to 0-255, although the
+        RFC would allow 32 bits). Examples for usage numbers can be found
+        in RFC 4121 section 2.</li><li><code class="code">key_type</code>: Which key type to derive</li></ul>      The output is a key as produced by <code class="code">random_to_key</code>.</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Bitstring operations</h2></div></div>
+<pre><span class="VALxor_s"><span class="keyword">val</span> xor_s</span> : <code class="type">string -&gt; string -&gt; string</code></pre><div class="info"><div class="info">Performs the bitwise XOR of these strings (which must have the same
+      length)</div></div>
+<pre><span class="VALadd_1_complement"><span class="keyword">val</span> add_1_complement</span> : <code class="type">string -&gt; string -&gt; string</code></pre><div class="info"><div class="info">The addition algorithm for 1's-complement numbers. The two numbers to
+      add are given as bitstrings (big endian), and must have the same
+      length</div></div>
+<pre><span class="VALrotate_right"><span class="keyword">val</span> rotate_right</span> : <code class="type">int -&gt; string -&gt; string</code></pre><div class="info"><div class="info">Rotate the (big-endian) bitstring to the right by n bits. This also
+      works for negative n (left rotation), and for n whose absolute value
+      is greater or equal than the bit length of the string.</div></div>
+<pre><span class="VALn_fold"><span class="keyword">val</span> n_fold</span> : <code class="type">int -&gt; string -&gt; string</code></pre><div class="info"><div class="info">Blumenthal's n-fold algorithm for an n that is divisible by 8.
+      (RFC 3961, section 5.1)</div></div>
+</div>

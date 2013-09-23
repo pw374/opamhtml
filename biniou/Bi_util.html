@@ -1,0 +1,8 @@
+<div class="ocaml_toplevel_module"><div class="info">Error handling etc.</div>
+<pre><span class="EXCEPTIONError"><span class="keyword">exception</span> Error</span> <span class="keyword">of</span> <code class="type">string</code></pre><div class="info"><div class="info">Multipurpose exception normally raised when invalid data
+      is found by a read or write operation.</div></div>
+<pre><span class="VALerror"><span class="keyword">val</span> error</span> : <code class="type">string -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">error msg</code> is equivalent to <code class="code">raise (Error msg)</code>.</div></div>
+<pre><span class="VALstring8_of_int"><span class="keyword">val</span> string8_of_int</span> : <code class="type">int -&gt; string</code></pre>
+<pre><span class="VALstring4_of_int"><span class="keyword">val</span> string4_of_int</span> : <code class="type">int -&gt; string</code></pre>
+<pre><span class="VALprint_bits"><span class="keyword">val</span> print_bits</span> : <code class="type">?pos:int -&gt; ?len:int -&gt; string -&gt; string</code></pre>
+</div>

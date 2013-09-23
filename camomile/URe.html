@@ -1,0 +1,37 @@
+<div class="ocaml_toplevel_module"><div class="info">Regular expression engine.</div>
+<pre><span class="TYPEregexp"><span class="keyword">type</span> regexp</span> = <code class="type">[ `After of <a href="?package=camomile&amp;module=URe&amp;type=regexp">regexp</a>
+| `Alt of <a href="?package=camomile&amp;module=URe&amp;type=regexp">regexp</a> * <a href="?package=camomile&amp;module=URe&amp;type=regexp">regexp</a>
+| `Before of <a href="?package=camomile&amp;module=URe&amp;type=regexp">regexp</a>
+| `BoS
+| `EoS
+| `Epsilon
+| `Group of <a href="?package=camomile&amp;module=URe&amp;type=regexp">regexp</a>
+| `OneChar
+| `Rep of <a href="?package=camomile&amp;module=URe&amp;type=regexp">regexp</a>
+| `Repn of <a href="?package=camomile&amp;module=URe&amp;type=regexp">regexp</a> * int * int option
+| `Seq of <a href="?package=camomile&amp;module=URe&amp;type=regexp">regexp</a> * <a href="?package=camomile&amp;module=URe&amp;type=regexp">regexp</a>
+| `Set of <a href="?package=camomile&amp;module=USet&amp;type=t">USet.t</a>
+| `String of <a href="?package=camomile&amp;module=UChar&amp;type=t">UChar.t</a> list ]</code></pre><div class="info"><div class="info">Abstract syntax trees of regular expressions.</div></div>
+<pre><span class="TYPEmatch_semantics"><span class="keyword">type</span> match_semantics</span> = <code class="type">[ `First | `Longest | `Shortest ]</code></pre><div class="info"><div class="info">Match semantics.</div></div>
+<pre><span class="VALno_group"><span class="keyword">val</span> no_group</span> : <code class="type"><a href="?package=camomile&amp;module=URe&amp;type=regexp">regexp</a> -&gt; <a href="?package=camomile&amp;module=URe&amp;type=regexp">regexp</a></code></pre><div class="info"><div class="info">Remove <code class="code">`Group</code> from the regular expressions.</div></div>
+<div class="ocaml_module sig" name="Type"><pre><span class="keyword">module type</span> <a href="?package=camomile&amp;module=URe.Type">Type</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEtext"><span class="keyword">type</span> text</span> </pre>
+<pre><span class="TYPEindex"><span class="keyword">type</span> index</span> </pre>
+<pre><span class="TYPEcompiled_regexp"><span class="keyword">type</span> compiled_regexp</span> </pre>
+<div class="ocaml_module ident" name="SubText" path="?package=camomile&amp;module=SubText.Type"><pre><span class="keyword">module</span> <a href="?package=camomile&amp;module=URe.Type.SubText">SubText</a> : <code class="type"><code class="code"><a href="?package=camomile&amp;module=SubText.Type">SubText.Type</a></code> with type ur_index = <a href="?package=camomile&amp;module=URe.Type&amp;type=index">index</a> and type ur_text = <a href="?package=camomile&amp;module=URe.Type&amp;type=text">text</a></code></pre></div>
+<pre><span class="VALcompile"><span class="keyword">val</span> compile</span> : <code class="type"><a href="?package=camomile&amp;module=URe&amp;type=regexp">regexp</a> -&gt; <a href="?package=camomile&amp;module=URe.Type&amp;type=compiled_regexp">compiled_regexp</a></code></pre><div class="info"><div class="info">Compile regular expressions.</div></div>
+<pre><span class="VALregexp_match"><span class="keyword">val</span> regexp_match</span> : <code class="type">?sem:<a href="?package=camomile&amp;module=URe&amp;type=match_semantics">match_semantics</a> -&gt;
+<a href="?package=camomile&amp;module=URe.Type&amp;type=compiled_regexp">compiled_regexp</a> -&gt; <a href="?package=camomile&amp;module=URe.Type&amp;type=text">text</a> -&gt; <a href="?package=camomile&amp;module=URe.Type&amp;type=index">index</a> -&gt; <a href="?package=camomile&amp;module=URe.Type.SubText&amp;type=t">SubText.t</a> option array option</code></pre><div class="info"><div class="info"><code class="code">regexp_match ?sem r t i</code> tries matching <code class="code">r</code> and substrings
+   of <code class="code">t</code> beginning from <code class="code">i</code>.  If match successes,  <code class="code">Some g</code> is 
+   returned where <code class="code">g</code> is the array containing the matched 
+   string of <code class="code">n</code>-th group in the <code class="code">n</code>-element.  
+   The matched string of the whole <code class="code">r</code> is stored in the <code class="code">0</code>-th element.  
+   If matching fails, <code class="code">None</code> is returned.</div></div>
+<pre><span class="VALstring_match"><span class="keyword">val</span> string_match</span> : <code class="type"><a href="?package=camomile&amp;module=URe.Type&amp;type=compiled_regexp">compiled_regexp</a> -&gt; <a href="?package=camomile&amp;module=URe.Type&amp;type=text">text</a> -&gt; <a href="?package=camomile&amp;module=URe.Type&amp;type=index">index</a> -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">string_match r t i</code> tests whether <code class="code">r</code> can match a substring
+   of <code class="code">t</code> beginning from <code class="code">i</code>.</div></div>
+<pre><span class="VALsearch_forward"><span class="keyword">val</span> search_forward</span> : <code class="type">?sem:<a href="?package=camomile&amp;module=URe&amp;type=match_semantics">match_semantics</a> -&gt;
+<a href="?package=camomile&amp;module=URe.Type&amp;type=compiled_regexp">compiled_regexp</a> -&gt; <a href="?package=camomile&amp;module=URe.Type&amp;type=text">text</a> -&gt; <a href="?package=camomile&amp;module=URe.Type&amp;type=index">index</a> -&gt; <a href="?package=camomile&amp;module=URe.Type.SubText&amp;type=t">SubText.t</a> option array option</code></pre><div class="info"><div class="info"><code class="code">search_forward ?sem r t i</code> searches a substring of <code class="code">t</code>
+   matching <code class="code">r</code> from <code class="code">i</code>.  The returned value is similar to 
+    <a href="#URe.Type.regexp_match">URe.Type.regexp_match</a>.</div></div></div></div>
+<div class="ocaml_module ident" name="Make" path="?package=camomile&amp;module=URe.Type"><pre><span class="keyword">module</span> <a href="?package=camomile&amp;module=URe.Make">Make</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">Text</code><code class="code"> : </code><code class="code"><a href="?package=camomile&amp;module=UnicodeString.Type">UnicodeString.Type</a></code><code class="code">) -&gt; </code><code class="code"><a href="?package=camomile&amp;module=URe.Type">Type</a></code> with type <a href="?package=camomile&amp;module=URe.Type&amp;type=index">index</a> = Text.index and type <a href="?package=camomile&amp;module=URe.Type&amp;type=text">text</a> = Text.t</div></code></pre></div>
+</div>

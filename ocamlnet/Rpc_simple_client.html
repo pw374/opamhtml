@@ -1,0 +1,30 @@
+<div class="ocaml_toplevel_module"><div class="info">Synchronous API for RPC clients</div>
+<div class="info"><div class="info">This is a synchronous client that suffices for most applications
+ of RPC.</div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">The type of simple clients</div></div>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=connector">Rpc_client.connector</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_program&amp;type=t">Rpc_program.t</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_simple_client&amp;type=t">t</a></code></pre><div class="info"><div class="info">Create a simple client that connects with the given server using
+ the given protocol type. The program argument specifies the remote
+ program.</div></div>
+<pre><span class="VALcall"><span class="keyword">val</span> call</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_simple_client&amp;type=t">t</a> -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_value">Xdr.xdr_value</a> -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_value">Xdr.xdr_value</a></code></pre><div class="info"><div class="info"><code class="code">call simple_client procedure_name procedure_arg</code>:
+ Call the procedure with the given name and the given argument. Returns
+ the result of the procedure on success; otherwise raises an exception.<br/> Note that it is possible that the connection is aborted and the
+ client is reset. In this case <code class="code">call</code> raises an exception but it is
+ currently difficult to recognize this case.
+ Other reasons may be that the server refuses the call (e.g. because
+ of missing authentication).<br/> Frequent exceptions:<br/> - <code class="code">Rpc.Rpc_server condition</code>:  The server did not like the call;
+                                the 'condition' explains why<ul><li><code class="code">Rpc.Rpc_cannot_unpack reason</code>:  Got a badly formatted message.</li><li><code class="code">Rpc_client.Message_lost</code>:   The stream ended before there was any
+                                reply (perhaps not even the call could
+                                be sent over the stream)</li><li><code class="code">Rpc_client.Message_timeout</code>: There was no reply for the specified
+                                period of time</li><li><code class="code">Rpc_client.Communication_error x</code>:
+                                An I/O error or a serious internal
+                                error happened
+ <code class="code">Failure s</code>:                   Mostly: The internal state of the client
+                                does not allow to do another call</li></ul> Note that only the <code class="code">Rpc_server</code> exception has clear semantics as it is
+ known that the procedure has not been invoked.
+ It is a good choice to shut down the connection if one of the other
+ exceptions happens. (Note that the connection may already have been
+ shutted down, but it is ok to shut down twice.)</div></div>
+<pre><span class="VALshut_down"><span class="keyword">val</span> shut_down</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_simple_client&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Shut the connection down. After the client has been shutted down, it
+ is not possible to call further remote procedures. Throw the client
+ away and create a new one if you want to continue.</div></div>
+</div>

@@ -1,0 +1,25 @@
+<div class="ocaml_toplevel_module">
+<pre><span class="VALsprintf"><span class="keyword">val</span> sprintf</span> : <code class="type">('a, unit, string) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format">Pervasives.format</a> -&gt; 'a</code></pre>
+<pre><span class="VALksprintf"><span class="keyword">val</span> ksprintf</span> : <code class="type">(string -&gt; 'a) -&gt; ('b, unit, string, 'a) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format4">Pervasives.format4</a> -&gt; 'b</code></pre>
+<div class="ocaml_module sig" name="Time"><pre><span class="keyword">module</span> <a href="?package=custom_printf&amp;module=Test.Time">Time</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre>
+<pre><span class="VALnow"><span class="keyword">val</span> now</span> : <code class="type">unit -&gt; <a href="?package=custom_printf&amp;module=Test.Time&amp;type=t">t</a></code></pre>
+<pre><span class="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="?package=custom_printf&amp;module=Test.Time&amp;type=t">t</a> -&gt; string</code></pre>
+<div class="ocaml_module sig" name="Format"><pre><span class="keyword">module</span> <a href="?package=custom_printf&amp;module=Test.Time.Format">Format</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALto_sec_string"><span class="keyword">val</span> to_sec_string</span> : <code class="type"><a href="?package=custom_printf&amp;module=Test.Time&amp;type=t">t</a> -&gt; string</code></pre></div></div></div></div>
+<div class="ocaml_module sig" name="Zone"><pre><span class="keyword">module</span> <a href="?package=custom_printf&amp;module=Test.Zone">Zone</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre>
+<pre><span class="VALmachine_zone"><span class="keyword">val</span> machine_zone</span> : <code class="type">unit -&gt; <a href="?package=custom_printf&amp;module=Test.Zone&amp;type=t">t</a></code></pre>
+<pre><span class="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="?package=custom_printf&amp;module=Test.Zone&amp;type=t">t</a> -&gt; string</code></pre></div></div>
+
+
+
+
+
+
+
+
+
+
+
+</div>

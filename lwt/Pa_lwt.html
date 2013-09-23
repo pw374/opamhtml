@@ -1,0 +1,80 @@
+<div class="ocaml_toplevel_module"><div class="info">Syntactic sugars for lwt</div>
+<div class="info"><div class="info">This extension add the following sugars:<br/>    - anonymous bind:<br/>      <pre class="codepre"><code class="code">
+         write stdio &quot;Hello, &quot; &gt;&gt; write stdio &quot;world!&quot;
+      </code></pre><br/>    - lwt-binding:<br/>      <pre class="codepre"><code class="code">
+         lwt ch = get_char stdin in
+         code
+      </code></pre><br/>      is the same as <code class="code">bind (get_char stdin) (fun ch -&gt; code)</code><br/>      Moreover it supports parallel binding:<br/>      <pre class="codepre"><code class="code">
+         lwt x = do_something1 ()
+         and y = do_something2 in
+         code
+      </code></pre><br/>      will let <code class="code">do_something1 ()</code> and <code class="code">do_something2 ()</code> runs then
+      bind their result to <code class="code">x</code> and <code class="code">y</code>. It is the same as:<br/>      <pre class="codepre"><code class="code">
+         let t1 = do_something1
+         and t2 = do_something2 in
+         bind t1 (fun x -&gt; bind t2 (fun y -&gt; code))
+      </code></pre><br/>    - exception catching:<br/>      <pre class="codepre"><code class="code">
+         try_lwt
+           &lt;expr&gt;
+      </code></pre>,<br/>      <pre class="codepre"><code class="code">
+         try_lwt
+           &lt;expr&gt;
+         with
+           &lt;branches&gt;
+      </code></pre>,<br/>      <pre class="codepre"><code class="code">
+         try_lwt
+           &lt;expr&gt;
+         finally
+           &lt;expr&gt;
+       </code></pre><br/>    and:<br/>      <pre class="codepre"><code class="code">
+         try_lwt
+           &lt;expr&gt;
+         with
+           &lt;branches&gt;
+         finally
+           &lt;expr&gt;
+      </code></pre><br/>    For example:<br/>      <pre class="codepre"><code class="code">
+         try_lwt
+           f x
+         with
+           | Failure msg -&gt;
+               prerr_endline msg;
+               return ()
+      </code></pre><br/>    is expanded to:<br/>      <pre class="codepre"><code class="code">
+         catch (fun _ -&gt; f x)
+           (function
+              | Failure msg -&gt;
+                  prerr_endline msg;
+                  return ()
+              | exn -&gt;
+                  Lwt.fail exn)
+      </code></pre><br/>    Note that the <code class="code">exn -&gt; Lwt.fail exn</code> branch is automatically addedd
+    when needed.<br/>    The construction <code class="code">try_lwt &lt;expr&gt;</code> just catch regular exception
+    into lwt exception. i.e. it is the same as <code class="code">catch (fun _ -&gt; &lt;expr&gt;) fail</code>.<br/>    - exception raising:<br/>      <pre class="codepre"><code class="code">
+        raise_lwt &lt;expr&gt;
+      </code></pre><br/>      This allow exception to be traced when the -lwt-debug switch is passed
+      to the syntax extension.<br/>    - assertion:<br/>      <pre class="codepre"><code class="code">
+        assert_lwt &lt;expr&gt;
+      </code></pre><br/>    - for loop:<br/>      <pre class="codepre"><code class="code">
+        for_lwt i = &lt;expr&gt; to &lt;expr&gt; do
+          &lt;expr&gt;
+        done
+      </code></pre><br/>    and:<br/>      <pre class="codepre"><code class="code">
+        for_lwt i = &lt;expr&gt; downto &lt;expr&gt; do
+          &lt;expr&gt;
+        done
+      </code></pre><br/>    - iteration over streams:<br/>      <pre class="codepre"><code class="code">
+        for_lwt &lt;patt&gt; in &lt;expr&gt; do
+          &lt;expr&gt;
+        done
+      </code></pre><br/>    - while loop:<br/>      <pre class="codepre"><code class="code">
+        while_lwt &lt;expr&gt; do
+          &lt;expr&gt;
+        done
+      </code></pre><br/>    - pattern mattching:<br/>      <pre class="codepre"><code class="code">
+        match_lwt &lt;expr&gt; with
+          | &lt;patt_1&gt; -&gt; &lt;expr_1&gt;
+          ...
+          | &lt;patt_n&gt; -&gt; &lt;expr_n&gt;
+      </code></pre></div></div>
+</div>

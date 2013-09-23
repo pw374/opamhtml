@@ -1,0 +1,18 @@
+<div class="ocaml_toplevel_module"><div class="info">Regular expressions on ropes</div>
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">Type of compiled regular expressions.</div></div>
+<pre><span class="TYPEmatch_result"><span class="keyword">type</span> match_result</span> = <code class="type">(<a href="?package=zed&amp;module=Zed_rope.Zip&amp;type=t">Zed_rope.Zip.t</a> * <a href="?package=zed&amp;module=Zed_rope.Zip&amp;type=t">Zed_rope.Zip.t</a>) option array option</code></pre><div class="info"><div class="info">Type of a match result. If the match fail, <code class="code">None</code> is
+        returned. Otherwise an array of matched sub-strings is
+        returned, the index <code class="code">0</code> corresponding to the full match, and
+        other indexes to matched groups.</div></div>
+<pre><span class="VALcompile"><span class="keyword">val</span> compile</span> : <code class="type"><a href="?package=camomile&amp;module=CamomileLibrary.URe&amp;type=regexp">CamomileLibrary.URe.regexp</a> -&gt; <a href="?package=zed&amp;module=Zed_re&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">compile regexp</code> compiles the given regular expression.</div></div>
+<pre><span class="VALregexp_match"><span class="keyword">val</span> regexp_match</span> : <code class="type">?sem:<a href="?package=camomile&amp;module=CamomileLibrary.URe&amp;type=match_semantics">CamomileLibrary.URe.match_semantics</a> -&gt;
+<a href="?package=zed&amp;module=Zed_re&amp;type=t">t</a> -&gt; <a href="?package=zed&amp;module=Zed_rope&amp;type=t">Zed_rope.t</a> -&gt; int -&gt; <a href="?package=zed&amp;module=Zed_re&amp;type=match_result">match_result</a></code></pre><div class="info"><div class="info"><code class="code">regexp_match ?sem regexp rope pos</code> tries to match <code class="code">regexp</code> on
+      given rope, starting at <code class="code">pos</code>.</div></div>
+<pre><span class="VALsearch_forward"><span class="keyword">val</span> search_forward</span> : <code class="type">?sem:<a href="?package=camomile&amp;module=CamomileLibrary.URe&amp;type=match_semantics">CamomileLibrary.URe.match_semantics</a> -&gt;
+<a href="?package=zed&amp;module=Zed_re&amp;type=t">t</a> -&gt; <a href="?package=zed&amp;module=Zed_rope&amp;type=t">Zed_rope.t</a> -&gt; int -&gt; <a href="?package=zed&amp;module=Zed_re&amp;type=match_result">match_result</a></code></pre><div class="info"><div class="info"><code class="code">search_forward ?sem regexp rope pos</code> searches the given regular
+      expression in <code class="code">rope</code> starting at <code class="code">pos</code>.</div></div>
+<pre><span class="VALsearch_backward"><span class="keyword">val</span> search_backward</span> : <code class="type">?sem:<a href="?package=camomile&amp;module=CamomileLibrary.URe&amp;type=match_semantics">CamomileLibrary.URe.match_semantics</a> -&gt;
+<a href="?package=zed&amp;module=Zed_re&amp;type=t">t</a> -&gt; <a href="?package=zed&amp;module=Zed_rope&amp;type=t">Zed_rope.t</a> -&gt; int -&gt; <a href="?package=zed&amp;module=Zed_re&amp;type=match_result">match_result</a></code></pre><div class="info"><div class="info"><code class="code">search_backward ?sem regexp rope pos</code> searches the given
+      regular expression in <code class="code">rope</code> starting at <code class="code">pos</code>, in reverse
+      order.</div></div>
+</div>

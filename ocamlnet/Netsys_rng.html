@@ -1,0 +1,8 @@
+<div class="ocaml_toplevel_module"><div class="info">Random-number generator</div>
+<div class="info"><div class="info">This is an interface to an OS-provided RNG that is fast and nevertheless
+    secure enough for creating session keys. Note that it should not be used
+    for creating long-term keys.<br/>    On Unix, the <code class="code">/dev/urandom</code> device is used. If it is not available, the
+    functions fail.<br/>    On Win32, an RNG is obtained using <code class="code">CryptAcquireContext</code>.</div></div>
+<pre><span class="VALset_rng"><span class="keyword">val</span> set_rng</span> : <code class="type">(string -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info">Sets the globally used RNG</div></div>
+<pre><span class="VALfill_random"><span class="keyword">val</span> fill_random</span> : <code class="type">string -&gt; unit</code></pre><div class="info"><div class="info">Fills this string with random bytes</div></div>
+</div>

@@ -1,0 +1,50 @@
+<div class="ocaml_toplevel_module"><div class="info">FTP filesystem</div>
+<div class="ocaml_class sig" name="ftp_stream_fs"><pre><span class="TYPEftp_stream_fs"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Ftp_fs&amp;class=ftp_stream_fs">ftp_stream_fs</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Netfs&amp;class=stream_fs"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Netfs&amp;class=stream_fs">Netfs.stream_fs</a></pre></div>
+
+<pre><span class="METHODftp_client"><span class="keyword">method</span> ftp_client</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_client">Ftp_client.ftp_client</a></code></pre>
+<div class="info"><div class="info">The FTP client backing this filesystem</div></div>
+<pre><span class="METHODlast_ftp_state"><span class="keyword">method</span> last_ftp_state</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_state">Ftp_client.ftp_state</a></code></pre>
+<div class="info"><div class="info">The last state of the last operation, or <code class="code">Not_found</code></div></div>
+<pre><span class="METHODtranslate"><span class="keyword">method</span> translate</span> : <code class="code">string -&gt; string</code></pre>
+<div class="info"><div class="info">Translates a path into a URL</div></div>
+<pre><span class="METHODclose"><span class="keyword">method</span> close</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Forces that the FTP client is closed. (See <code class="code">keep_open</code> option.)
+	The client remains functional - the next operation will re-open
+	the connection.</div></div></div></div>
+<div class="ocaml_class ident" name="ftp_fs" path="?package=ocamlnet&amp;module=Ftp_fs&amp;class=ftp_stream_fs"><pre><span class="TYPEftp_fs"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Ftp_fs&amp;class=ftp_fs">ftp_fs</a></span> : <code class="type">(<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_client">Ftp_client.ftp_client</a> -&gt; unit) option -&gt; string option -&gt; string option -&gt; (string -&gt; string) option -&gt; (string -&gt; string) option -&gt; bool option -&gt; string -&gt; </code><a href="?package=ocamlnet&amp;module=Ftp_fs&amp;class=ftp_stream_fs">ftp_stream_fs</a></pre><div class="info"><div class="info"><code class="code">ftp_fs base_url</code>: Access the FTP file system rooted at <code class="code">base_url</code>.<br/>      The <code class="code">base_url</code> must follow the <code class="code">ftp://user@host:port/path</code> scheme.
+      Passwords in <code class="code">base_url</code> are ignored.<br/>      The following access methods are supported (compare with
+       <a href="#Netfs.stream_fs">Netfs.stream_fs</a>). Note that not all FTP servers can perform
+      all operations:<ul><li><code class="code">path_encoding</code>: If the FTP server announces that it uses UTF-8
+        as path encoding, this is returned here; else <code class="code">None</code>.</li><li><code class="code">path_exclusions</code>: is just <code class="code">0,0; 47,47</code></li><li><code class="code">nominal_dot_dot</code> is true. &quot;.&quot; and &quot;..&quot; are resolved by the client
+        before sending paths to the server.</li><li><code class="code">read</code>: is supported. Note that FTP distinguishes between text
+        and binary mode, so don't forget to pass the <code class="code">`Binary</code> flag if needed.
+        The <code class="code">`Skip</code> flag is only emulated - the full
+        file is retrieved first, and only the first bytes are hidden
+        from the user. There is no support for streaming mode; the
+        <code class="code">`Streaming</code> flag is ignored. This means that the file is first
+        downloaded to a temporary file, and the returned object is just
+        a handle for this file.</li><li><code class="code">write</code>: is supported, but - depending on the server - not all
+        flag combinations. The flag list <code class="code">[`Create; `Truncate]</code> should
+        always work. For other flag lists, the server needs to support
+        the <code class="code">MLST</code> command for checking whether the file already exists.
+        If this support is missing, an FTP error is raised. It is not
+        supported to omit both <code class="code">`Create</code> and <code class="code">`Truncate</code>. Also, the
+        <code class="code">`Exclusive</code> flag is not supported. As for <code class="code">read</code>, there is no
+        streaming mode, and a temporary file is used as container.</li><li><code class="code">size</code>: works only if the server supports the <code class="code">SIZE</code> command
+        (otherwise ENOSYS).</li><li><code class="code">test</code> and <code class="code">test_list</code>: works only if the server supports the
+        <code class="code">MLST</code> command (otherwise ENOSYS). The tests <code class="code">`N</code>, <code class="code">`E</code>, <code class="code">`D</code>, <code class="code">`F</code>, 
+        <code class="code">`S</code>, <code class="code">`R</code>, <code class="code">`W</code>, and <code class="code">`X</code> should work.
+        Files are never recognized as symlinks.</li><li><code class="code">remove</code>: works, but the <code class="code">`Recursive</code> flag is not supported
+        (and an emulation is considered as too dangerous)</li><li><code class="code">readdir</code>: works</li><li><code class="code">rename</code>: works</li><li><code class="code">mkdir</code>: works, but the flags are ignored</li><li><code class="code">rmdir</code>: works</li></ul>      There is no support for <code class="code">symlink</code>, <code class="code">readlink</code>, and <code class="code">copy</code>.<br/>      Options:<ul><li><code class="code">config_client</code>: one can enable further features on the client
+        object (e.g. proxies)</li><li><code class="code">tmp_directory</code>: directory for temporary files</li><li><code class="code">tmp_prefix</code>: file prefix for temporary files (w/o directory)</li><li><code class="code">get_password</code>: This function should return the password for 
+        the user (passed in as argument). Defaults to &quot;&quot;.</li><li><code class="code">get_account</code>: This function should return the account name for 
+        the user (passed in as argument). Defaults to &quot;&quot;.</li><li><code class="code">keep_open</code>: By default, a new FTP connection is started for
+        each operation, and it is shut down afterward. By setting <code class="code">keep_open</code>
+        the connection is kept open. The user has to call <code class="code">close</code> when done.
+   </li></ul></div></div></div>
+<pre><span class="VALftp_fs"><span class="keyword">val</span> ftp_fs</span> : <code class="type">?config_client:(<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_client">Ftp_client.ftp_client</a> -&gt; unit) -&gt;
+?tmp_directory:string -&gt;
+?tmp_prefix:string -&gt;
+?get_password:(string -&gt; string) -&gt;
+?get_account:(string -&gt; string) -&gt; ?keep_open:bool -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Ftp_fs&amp;type=ftp_stream_fs">ftp_stream_fs</a></code></pre><div class="info"><div class="info">Same as function</div></div>
+</div>

@@ -1,0 +1,18 @@
+<div class="ocaml_toplevel_module"><div class="info">Semaphores<div class="authors"><b>Author(s): </b><span class="author">Markus Mottl &lt;mmottl@janestreet.com&gt;</span></div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> </pre><div class="info"><div class="info">Type of semaphores</div></div>
+<pre><span class="VALinit"><span class="keyword">val</span> init</span> : <code class="type">'a option -&gt; 'a <a href="?package=core_extended&amp;module=Semaphore&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">init v</code> initializes a semaphore with an optional value <code class="code">v</code>.  If it is
+    <code class="code">Some x</code>, then  <a href="#Semaphore.wait">Semaphore.wait</a> will return immediately with <code class="code">x</code>,
+    otherwise it will block until  <a href="#Semaphore.signal">Semaphore.signal</a> is called.</div></div>
+<pre><span class="VALsignal"><span class="keyword">val</span> signal</span> : <code class="type">'a <a href="?package=core_extended&amp;module=Semaphore&amp;type=t">t</a> -&gt; 'a -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">signal sem v</code> allows one thread blocked in  <a href="#Semaphore.wait">Semaphore.wait</a> on
+    semaphore <code class="code">sem</code> to continue.  The semaphore will then block again
+    further threads.</div></div>
+<pre><span class="VALwait"><span class="keyword">val</span> wait</span> : <code class="type">'a <a href="?package=core_extended&amp;module=Semaphore&amp;type=t">t</a> -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">wait sem</code> blocks the calling thread on semaphore <code class="code">sem</code> if it was not
+    initialized with <code class="code">Some x</code> or not signalled before.  The semaphore
+    is reset to <code class="code">None</code>, i.e. calling <code class="code">wait</code> again will block unless the
+    semaphore was signalled inbetween.</div></div>
+<pre><span class="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a <a href="?package=core_extended&amp;module=Semaphore&amp;type=t">t</a> -&gt; 'a option</code></pre><div class="info"><div class="info"><code class="code">get sem</code> <b>Returns</b> <code class="code">None</code> if semaphore is not set, <code class="code">Some value</code>
+    otherwise.  The semaphore is reset to <code class="code">None</code>, and a subsequent wait
+    will block again.</div></div>
+<pre><span class="VALlook"><span class="keyword">val</span> look</span> : <code class="type">'a <a href="?package=core_extended&amp;module=Semaphore&amp;type=t">t</a> -&gt; 'a option</code></pre><div class="info"><div class="info"><code class="code">look sem</code> <b>Returns</b> <code class="code">None</code> if semaphore is not set, <code class="code">Some value</code>
+    otherwise.  The state of the semaphore remains unchanged.</div></div>
+</div>

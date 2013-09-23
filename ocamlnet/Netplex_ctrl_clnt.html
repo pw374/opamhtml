@@ -1,0 +1,489 @@
+<div class="ocaml_toplevel_module"><div class="ocaml_module sig" name="Make'Control"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_ctrl_clnt.Make'Control">Make'Control</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">U'C</code><code class="code"> : </code><code class="code"><a href="?package=ocamlnet&amp;module=Rpc_client.USE_CLIENT">Rpc_client.USE_CLIENT</a></code><code class="code">) -&gt; </code><code class="code">sig</code> .. <code class="code">end</code></div></code></pre><div class="ocaml_module_content">
+<div class="ocaml_module sig" name="V1"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_ctrl_clnt.Make'Control.V1">V1</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type">U'C.t</code></pre>
+<pre><span class="VAL_program"><span class="keyword">val</span> _program</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_program&amp;type=t">Rpc_program.t</a></code></pre>
+<pre><span class="VALping"><span class="keyword">val</span> ping</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Control'V1'ping'arg">Netplex_ctrl_aux.t_Control'V1'ping'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Control'V1'ping'res">Netplex_ctrl_aux.t_Control'V1'ping'res</a></code></pre>
+<pre><span class="VALping'async"><span class="keyword">val</span> ping'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Control'V1'ping'arg">Netplex_ctrl_aux.t_Control'V1'ping'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Control'V1'ping'res">Netplex_ctrl_aux.t_Control'V1'ping'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALpoll"><span class="keyword">val</span> poll</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Control'V1'poll'arg">Netplex_ctrl_aux.t_Control'V1'poll'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Control'V1'poll'res">Netplex_ctrl_aux.t_Control'V1'poll'res</a></code></pre>
+<pre><span class="VALpoll'async"><span class="keyword">val</span> poll'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Control'V1'poll'arg">Netplex_ctrl_aux.t_Control'V1'poll'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Control'V1'poll'res">Netplex_ctrl_aux.t_Control'V1'poll'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALaccepted"><span class="keyword">val</span> accepted</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Control'V1'accepted'arg">Netplex_ctrl_aux.t_Control'V1'accepted'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Control'V1'accepted'res">Netplex_ctrl_aux.t_Control'V1'accepted'res</a></code></pre>
+<pre><span class="VALaccepted'async"><span class="keyword">val</span> accepted'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Control'V1'accepted'arg">Netplex_ctrl_aux.t_Control'V1'accepted'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Control'V1'accepted'res">Netplex_ctrl_aux.t_Control'V1'accepted'res</a>) -&gt; unit) -&gt; unit</code></pre></div></div></div></div>
+<div class="ocaml_module sig" name="Control"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_ctrl_clnt.Control">Control</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<div class="ocaml_module sig" name="V1"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_ctrl_clnt.Control.V1">V1</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a></code></pre>
+<pre><span class="VALcreate_client"><span class="keyword">val</span> create_client</span> : <code class="type">?esys:<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt;
+?program_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt;
+?version_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=connector">Rpc_client.connector</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a></code></pre>
+<pre><span class="VALcreate_portmapped_client"><span class="keyword">val</span> create_portmapped_client</span> : <code class="type">?esys:<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt;
+?program_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt;
+?version_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a></code></pre>
+<pre><span class="VALcreate_client2"><span class="keyword">val</span> create_client2</span> : <code class="type">?esys:<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt;
+?program_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt;
+?version_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=mode2">Rpc_client.mode2</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a></code></pre>
+<pre><span class="VAL_program"><span class="keyword">val</span> _program</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_program&amp;type=t">Rpc_program.t</a></code></pre>
+<pre><span class="VALping"><span class="keyword">val</span> ping</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Control'V1'ping'arg">Netplex_ctrl_aux.t_Control'V1'ping'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Control'V1'ping'res">Netplex_ctrl_aux.t_Control'V1'ping'res</a></code></pre>
+<pre><span class="VALping'async"><span class="keyword">val</span> ping'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Control'V1'ping'arg">Netplex_ctrl_aux.t_Control'V1'ping'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Control'V1'ping'res">Netplex_ctrl_aux.t_Control'V1'ping'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALpoll"><span class="keyword">val</span> poll</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Control'V1'poll'arg">Netplex_ctrl_aux.t_Control'V1'poll'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Control'V1'poll'res">Netplex_ctrl_aux.t_Control'V1'poll'res</a></code></pre>
+<pre><span class="VALpoll'async"><span class="keyword">val</span> poll'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Control'V1'poll'arg">Netplex_ctrl_aux.t_Control'V1'poll'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Control'V1'poll'res">Netplex_ctrl_aux.t_Control'V1'poll'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALaccepted"><span class="keyword">val</span> accepted</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Control'V1'accepted'arg">Netplex_ctrl_aux.t_Control'V1'accepted'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Control'V1'accepted'res">Netplex_ctrl_aux.t_Control'V1'accepted'res</a></code></pre>
+<pre><span class="VALaccepted'async"><span class="keyword">val</span> accepted'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Control'V1'accepted'arg">Netplex_ctrl_aux.t_Control'V1'accepted'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Control'V1'accepted'res">Netplex_ctrl_aux.t_Control'V1'accepted'res</a>) -&gt; unit) -&gt; unit</code></pre></div></div></div></div>
+<div class="ocaml_module sig" name="Make'System"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_ctrl_clnt.Make'System">Make'System</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">U'C</code><code class="code"> : </code><code class="code"><a href="?package=ocamlnet&amp;module=Rpc_client.USE_CLIENT">Rpc_client.USE_CLIENT</a></code><code class="code">) -&gt; </code><code class="code">sig</code> .. <code class="code">end</code></div></code></pre><div class="ocaml_module_content">
+<div class="ocaml_module sig" name="V1"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_ctrl_clnt.Make'System.V1">V1</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type">U'C.t</code></pre>
+<pre><span class="VAL_program"><span class="keyword">val</span> _program</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_program&amp;type=t">Rpc_program.t</a></code></pre>
+<pre><span class="VALping"><span class="keyword">val</span> ping</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'ping'arg">Netplex_ctrl_aux.t_System'V1'ping'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'ping'res">Netplex_ctrl_aux.t_System'V1'ping'res</a></code></pre>
+<pre><span class="VALping'async"><span class="keyword">val</span> ping'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'ping'arg">Netplex_ctrl_aux.t_System'V1'ping'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'ping'res">Netplex_ctrl_aux.t_System'V1'ping'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALlookup"><span class="keyword">val</span> lookup</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'lookup'arg">Netplex_ctrl_aux.t_System'V1'lookup'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'lookup'res">Netplex_ctrl_aux.t_System'V1'lookup'res</a></code></pre>
+<pre><span class="VALlookup'async"><span class="keyword">val</span> lookup'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'lookup'arg">Netplex_ctrl_aux.t_System'V1'lookup'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'lookup'res">Netplex_ctrl_aux.t_System'V1'lookup'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALsend_message"><span class="keyword">val</span> send_message</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'send_message'arg">Netplex_ctrl_aux.t_System'V1'send_message'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'send_message'res">Netplex_ctrl_aux.t_System'V1'send_message'res</a></code></pre>
+<pre><span class="VALsend_message'async"><span class="keyword">val</span> send_message'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'send_message'arg">Netplex_ctrl_aux.t_System'V1'send_message'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'send_message'res">Netplex_ctrl_aux.t_System'V1'send_message'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALlog"><span class="keyword">val</span> log</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'log'arg">Netplex_ctrl_aux.t_System'V1'log'arg</a> -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'log'res">Netplex_ctrl_aux.t_System'V1'log'res</a></code></pre>
+<pre><span class="VALlog'async"><span class="keyword">val</span> log'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'log'arg">Netplex_ctrl_aux.t_System'V1'log'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'log'res">Netplex_ctrl_aux.t_System'V1'log'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALcall_plugin"><span class="keyword">val</span> call_plugin</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'call_plugin'arg">Netplex_ctrl_aux.t_System'V1'call_plugin'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'call_plugin'res">Netplex_ctrl_aux.t_System'V1'call_plugin'res</a></code></pre>
+<pre><span class="VALcall_plugin'async"><span class="keyword">val</span> call_plugin'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'call_plugin'arg">Netplex_ctrl_aux.t_System'V1'call_plugin'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'call_plugin'res">Netplex_ctrl_aux.t_System'V1'call_plugin'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALregister_container_socket"><span class="keyword">val</span> register_container_socket</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'register_container_socket'arg">Netplex_ctrl_aux.t_System'V1'register_container_socket'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'register_container_socket'res">Netplex_ctrl_aux.t_System'V1'register_container_socket'res</a></code></pre>
+<pre><span class="VALregister_container_socket'async"><span class="keyword">val</span> register_container_socket'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'register_container_socket'arg">Netplex_ctrl_aux.t_System'V1'register_container_socket'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'register_container_socket'res">Netplex_ctrl_aux.t_System'V1'register_container_socket'res</a>) -&gt; unit) -&gt;
+unit</code></pre>
+<pre><span class="VALlookup_container_sockets"><span class="keyword">val</span> lookup_container_sockets</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'lookup_container_sockets'arg">Netplex_ctrl_aux.t_System'V1'lookup_container_sockets'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'lookup_container_sockets'res">Netplex_ctrl_aux.t_System'V1'lookup_container_sockets'res</a></code></pre>
+<pre><span class="VALlookup_container_sockets'async"><span class="keyword">val</span> lookup_container_sockets'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'lookup_container_sockets'arg">Netplex_ctrl_aux.t_System'V1'lookup_container_sockets'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'lookup_container_sockets'res">Netplex_ctrl_aux.t_System'V1'lookup_container_sockets'res</a>) -&gt; unit) -&gt;
+unit</code></pre>
+<pre><span class="VALactivate_lever"><span class="keyword">val</span> activate_lever</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'activate_lever'arg">Netplex_ctrl_aux.t_System'V1'activate_lever'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'activate_lever'res">Netplex_ctrl_aux.t_System'V1'activate_lever'res</a></code></pre>
+<pre><span class="VALactivate_lever'async"><span class="keyword">val</span> activate_lever'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'activate_lever'arg">Netplex_ctrl_aux.t_System'V1'activate_lever'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'activate_lever'res">Netplex_ctrl_aux.t_System'V1'activate_lever'res</a>) -&gt; unit) -&gt; unit</code></pre></div></div></div></div>
+<div class="ocaml_module sig" name="System"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_ctrl_clnt.System">System</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<div class="ocaml_module sig" name="V1"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_ctrl_clnt.System.V1">V1</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a></code></pre>
+<pre><span class="VALcreate_client"><span class="keyword">val</span> create_client</span> : <code class="type">?esys:<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt;
+?program_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt;
+?version_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=connector">Rpc_client.connector</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a></code></pre>
+<pre><span class="VALcreate_portmapped_client"><span class="keyword">val</span> create_portmapped_client</span> : <code class="type">?esys:<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt;
+?program_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt;
+?version_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a></code></pre>
+<pre><span class="VALcreate_client2"><span class="keyword">val</span> create_client2</span> : <code class="type">?esys:<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt;
+?program_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt;
+?version_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=mode2">Rpc_client.mode2</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a></code></pre>
+<pre><span class="VAL_program"><span class="keyword">val</span> _program</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_program&amp;type=t">Rpc_program.t</a></code></pre>
+<pre><span class="VALping"><span class="keyword">val</span> ping</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'ping'arg">Netplex_ctrl_aux.t_System'V1'ping'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'ping'res">Netplex_ctrl_aux.t_System'V1'ping'res</a></code></pre>
+<pre><span class="VALping'async"><span class="keyword">val</span> ping'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'ping'arg">Netplex_ctrl_aux.t_System'V1'ping'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'ping'res">Netplex_ctrl_aux.t_System'V1'ping'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALlookup"><span class="keyword">val</span> lookup</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'lookup'arg">Netplex_ctrl_aux.t_System'V1'lookup'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'lookup'res">Netplex_ctrl_aux.t_System'V1'lookup'res</a></code></pre>
+<pre><span class="VALlookup'async"><span class="keyword">val</span> lookup'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'lookup'arg">Netplex_ctrl_aux.t_System'V1'lookup'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'lookup'res">Netplex_ctrl_aux.t_System'V1'lookup'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALsend_message"><span class="keyword">val</span> send_message</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'send_message'arg">Netplex_ctrl_aux.t_System'V1'send_message'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'send_message'res">Netplex_ctrl_aux.t_System'V1'send_message'res</a></code></pre>
+<pre><span class="VALsend_message'async"><span class="keyword">val</span> send_message'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'send_message'arg">Netplex_ctrl_aux.t_System'V1'send_message'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'send_message'res">Netplex_ctrl_aux.t_System'V1'send_message'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALlog"><span class="keyword">val</span> log</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'log'arg">Netplex_ctrl_aux.t_System'V1'log'arg</a> -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'log'res">Netplex_ctrl_aux.t_System'V1'log'res</a></code></pre>
+<pre><span class="VALlog'async"><span class="keyword">val</span> log'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'log'arg">Netplex_ctrl_aux.t_System'V1'log'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'log'res">Netplex_ctrl_aux.t_System'V1'log'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALcall_plugin"><span class="keyword">val</span> call_plugin</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'call_plugin'arg">Netplex_ctrl_aux.t_System'V1'call_plugin'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'call_plugin'res">Netplex_ctrl_aux.t_System'V1'call_plugin'res</a></code></pre>
+<pre><span class="VALcall_plugin'async"><span class="keyword">val</span> call_plugin'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'call_plugin'arg">Netplex_ctrl_aux.t_System'V1'call_plugin'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'call_plugin'res">Netplex_ctrl_aux.t_System'V1'call_plugin'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALregister_container_socket"><span class="keyword">val</span> register_container_socket</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'register_container_socket'arg">Netplex_ctrl_aux.t_System'V1'register_container_socket'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'register_container_socket'res">Netplex_ctrl_aux.t_System'V1'register_container_socket'res</a></code></pre>
+<pre><span class="VALregister_container_socket'async"><span class="keyword">val</span> register_container_socket'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'register_container_socket'arg">Netplex_ctrl_aux.t_System'V1'register_container_socket'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'register_container_socket'res">Netplex_ctrl_aux.t_System'V1'register_container_socket'res</a>) -&gt; unit) -&gt;
+unit</code></pre>
+<pre><span class="VALlookup_container_sockets"><span class="keyword">val</span> lookup_container_sockets</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'lookup_container_sockets'arg">Netplex_ctrl_aux.t_System'V1'lookup_container_sockets'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'lookup_container_sockets'res">Netplex_ctrl_aux.t_System'V1'lookup_container_sockets'res</a></code></pre>
+<pre><span class="VALlookup_container_sockets'async"><span class="keyword">val</span> lookup_container_sockets'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'lookup_container_sockets'arg">Netplex_ctrl_aux.t_System'V1'lookup_container_sockets'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'lookup_container_sockets'res">Netplex_ctrl_aux.t_System'V1'lookup_container_sockets'res</a>) -&gt; unit) -&gt;
+unit</code></pre>
+<pre><span class="VALactivate_lever"><span class="keyword">val</span> activate_lever</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'activate_lever'arg">Netplex_ctrl_aux.t_System'V1'activate_lever'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'activate_lever'res">Netplex_ctrl_aux.t_System'V1'activate_lever'res</a></code></pre>
+<pre><span class="VALactivate_lever'async"><span class="keyword">val</span> activate_lever'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'activate_lever'arg">Netplex_ctrl_aux.t_System'V1'activate_lever'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_System'V1'activate_lever'res">Netplex_ctrl_aux.t_System'V1'activate_lever'res</a>) -&gt; unit) -&gt; unit</code></pre></div></div></div></div>
+<div class="ocaml_module sig" name="Make'Admin"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_ctrl_clnt.Make'Admin">Make'Admin</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">U'C</code><code class="code"> : </code><code class="code"><a href="?package=ocamlnet&amp;module=Rpc_client.USE_CLIENT">Rpc_client.USE_CLIENT</a></code><code class="code">) -&gt; </code><code class="code">sig</code> .. <code class="code">end</code></div></code></pre><div class="ocaml_module_content">
+<div class="ocaml_module sig" name="V2"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_ctrl_clnt.Make'Admin.V2">V2</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type">U'C.t</code></pre>
+<pre><span class="VAL_program"><span class="keyword">val</span> _program</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_program&amp;type=t">Rpc_program.t</a></code></pre>
+<pre><span class="VALping"><span class="keyword">val</span> ping</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'ping'arg">Netplex_ctrl_aux.t_Admin'V2'ping'arg</a> -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'ping'res">Netplex_ctrl_aux.t_Admin'V2'ping'res</a></code></pre>
+<pre><span class="VALping'async"><span class="keyword">val</span> ping'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'ping'arg">Netplex_ctrl_aux.t_Admin'V2'ping'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'ping'res">Netplex_ctrl_aux.t_Admin'V2'ping'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALlist"><span class="keyword">val</span> list</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'list'arg">Netplex_ctrl_aux.t_Admin'V2'list'arg</a> -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'list'res">Netplex_ctrl_aux.t_Admin'V2'list'res</a></code></pre>
+<pre><span class="VALlist'async"><span class="keyword">val</span> list'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'list'arg">Netplex_ctrl_aux.t_Admin'V2'list'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'list'res">Netplex_ctrl_aux.t_Admin'V2'list'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALenable"><span class="keyword">val</span> enable</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'enable'arg">Netplex_ctrl_aux.t_Admin'V2'enable'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'enable'res">Netplex_ctrl_aux.t_Admin'V2'enable'res</a></code></pre>
+<pre><span class="VALenable'async"><span class="keyword">val</span> enable'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'enable'arg">Netplex_ctrl_aux.t_Admin'V2'enable'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'enable'res">Netplex_ctrl_aux.t_Admin'V2'enable'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALdisable"><span class="keyword">val</span> disable</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'disable'arg">Netplex_ctrl_aux.t_Admin'V2'disable'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'disable'res">Netplex_ctrl_aux.t_Admin'V2'disable'res</a></code></pre>
+<pre><span class="VALdisable'async"><span class="keyword">val</span> disable'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'disable'arg">Netplex_ctrl_aux.t_Admin'V2'disable'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'disable'res">Netplex_ctrl_aux.t_Admin'V2'disable'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALrestart"><span class="keyword">val</span> restart</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'restart'arg">Netplex_ctrl_aux.t_Admin'V2'restart'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'restart'res">Netplex_ctrl_aux.t_Admin'V2'restart'res</a></code></pre>
+<pre><span class="VALrestart'async"><span class="keyword">val</span> restart'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'restart'arg">Netplex_ctrl_aux.t_Admin'V2'restart'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'restart'res">Netplex_ctrl_aux.t_Admin'V2'restart'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALrestart_all"><span class="keyword">val</span> restart_all</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'restart_all'arg">Netplex_ctrl_aux.t_Admin'V2'restart_all'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'restart_all'res">Netplex_ctrl_aux.t_Admin'V2'restart_all'res</a></code></pre>
+<pre><span class="VALrestart_all'async"><span class="keyword">val</span> restart_all'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'restart_all'arg">Netplex_ctrl_aux.t_Admin'V2'restart_all'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'restart_all'res">Netplex_ctrl_aux.t_Admin'V2'restart_all'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALsystem_shutdown"><span class="keyword">val</span> system_shutdown</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'system_shutdown'arg">Netplex_ctrl_aux.t_Admin'V2'system_shutdown'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'system_shutdown'res">Netplex_ctrl_aux.t_Admin'V2'system_shutdown'res</a></code></pre>
+<pre><span class="VALsystem_shutdown'async"><span class="keyword">val</span> system_shutdown'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'system_shutdown'arg">Netplex_ctrl_aux.t_Admin'V2'system_shutdown'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'system_shutdown'res">Netplex_ctrl_aux.t_Admin'V2'system_shutdown'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALreopen_logfiles"><span class="keyword">val</span> reopen_logfiles</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'reopen_logfiles'arg">Netplex_ctrl_aux.t_Admin'V2'reopen_logfiles'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'reopen_logfiles'res">Netplex_ctrl_aux.t_Admin'V2'reopen_logfiles'res</a></code></pre>
+<pre><span class="VALreopen_logfiles'async"><span class="keyword">val</span> reopen_logfiles'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'reopen_logfiles'arg">Netplex_ctrl_aux.t_Admin'V2'reopen_logfiles'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'reopen_logfiles'res">Netplex_ctrl_aux.t_Admin'V2'reopen_logfiles'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALsend_admin_message"><span class="keyword">val</span> send_admin_message</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'send_admin_message'arg">Netplex_ctrl_aux.t_Admin'V2'send_admin_message'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'send_admin_message'res">Netplex_ctrl_aux.t_Admin'V2'send_admin_message'res</a></code></pre>
+<pre><span class="VALsend_admin_message'async"><span class="keyword">val</span> send_admin_message'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'send_admin_message'arg">Netplex_ctrl_aux.t_Admin'V2'send_admin_message'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'send_admin_message'res">Netplex_ctrl_aux.t_Admin'V2'send_admin_message'res</a>) -&gt; unit) -&gt;
+unit</code></pre></div></div></div></div>
+<div class="ocaml_module sig" name="Admin"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_ctrl_clnt.Admin">Admin</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<div class="ocaml_module sig" name="V2"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_ctrl_clnt.Admin.V2">V2</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a></code></pre>
+<pre><span class="VALcreate_client"><span class="keyword">val</span> create_client</span> : <code class="type">?esys:<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt;
+?program_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt;
+?version_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=connector">Rpc_client.connector</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a></code></pre>
+<pre><span class="VALcreate_portmapped_client"><span class="keyword">val</span> create_portmapped_client</span> : <code class="type">?esys:<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt;
+?program_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt;
+?version_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a></code></pre>
+<pre><span class="VALcreate_client2"><span class="keyword">val</span> create_client2</span> : <code class="type">?esys:<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt;
+?program_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt;
+?version_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=mode2">Rpc_client.mode2</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a></code></pre>
+<pre><span class="VAL_program"><span class="keyword">val</span> _program</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_program&amp;type=t">Rpc_program.t</a></code></pre>
+<pre><span class="VALping"><span class="keyword">val</span> ping</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'ping'arg">Netplex_ctrl_aux.t_Admin'V2'ping'arg</a> -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'ping'res">Netplex_ctrl_aux.t_Admin'V2'ping'res</a></code></pre>
+<pre><span class="VALping'async"><span class="keyword">val</span> ping'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'ping'arg">Netplex_ctrl_aux.t_Admin'V2'ping'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'ping'res">Netplex_ctrl_aux.t_Admin'V2'ping'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALlist"><span class="keyword">val</span> list</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'list'arg">Netplex_ctrl_aux.t_Admin'V2'list'arg</a> -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'list'res">Netplex_ctrl_aux.t_Admin'V2'list'res</a></code></pre>
+<pre><span class="VALlist'async"><span class="keyword">val</span> list'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'list'arg">Netplex_ctrl_aux.t_Admin'V2'list'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'list'res">Netplex_ctrl_aux.t_Admin'V2'list'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALenable"><span class="keyword">val</span> enable</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'enable'arg">Netplex_ctrl_aux.t_Admin'V2'enable'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'enable'res">Netplex_ctrl_aux.t_Admin'V2'enable'res</a></code></pre>
+<pre><span class="VALenable'async"><span class="keyword">val</span> enable'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'enable'arg">Netplex_ctrl_aux.t_Admin'V2'enable'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'enable'res">Netplex_ctrl_aux.t_Admin'V2'enable'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALdisable"><span class="keyword">val</span> disable</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'disable'arg">Netplex_ctrl_aux.t_Admin'V2'disable'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'disable'res">Netplex_ctrl_aux.t_Admin'V2'disable'res</a></code></pre>
+<pre><span class="VALdisable'async"><span class="keyword">val</span> disable'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'disable'arg">Netplex_ctrl_aux.t_Admin'V2'disable'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'disable'res">Netplex_ctrl_aux.t_Admin'V2'disable'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALrestart"><span class="keyword">val</span> restart</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'restart'arg">Netplex_ctrl_aux.t_Admin'V2'restart'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'restart'res">Netplex_ctrl_aux.t_Admin'V2'restart'res</a></code></pre>
+<pre><span class="VALrestart'async"><span class="keyword">val</span> restart'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'restart'arg">Netplex_ctrl_aux.t_Admin'V2'restart'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'restart'res">Netplex_ctrl_aux.t_Admin'V2'restart'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALrestart_all"><span class="keyword">val</span> restart_all</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'restart_all'arg">Netplex_ctrl_aux.t_Admin'V2'restart_all'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'restart_all'res">Netplex_ctrl_aux.t_Admin'V2'restart_all'res</a></code></pre>
+<pre><span class="VALrestart_all'async"><span class="keyword">val</span> restart_all'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'restart_all'arg">Netplex_ctrl_aux.t_Admin'V2'restart_all'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'restart_all'res">Netplex_ctrl_aux.t_Admin'V2'restart_all'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALsystem_shutdown"><span class="keyword">val</span> system_shutdown</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'system_shutdown'arg">Netplex_ctrl_aux.t_Admin'V2'system_shutdown'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'system_shutdown'res">Netplex_ctrl_aux.t_Admin'V2'system_shutdown'res</a></code></pre>
+<pre><span class="VALsystem_shutdown'async"><span class="keyword">val</span> system_shutdown'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'system_shutdown'arg">Netplex_ctrl_aux.t_Admin'V2'system_shutdown'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'system_shutdown'res">Netplex_ctrl_aux.t_Admin'V2'system_shutdown'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALreopen_logfiles"><span class="keyword">val</span> reopen_logfiles</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'reopen_logfiles'arg">Netplex_ctrl_aux.t_Admin'V2'reopen_logfiles'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'reopen_logfiles'res">Netplex_ctrl_aux.t_Admin'V2'reopen_logfiles'res</a></code></pre>
+<pre><span class="VALreopen_logfiles'async"><span class="keyword">val</span> reopen_logfiles'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'reopen_logfiles'arg">Netplex_ctrl_aux.t_Admin'V2'reopen_logfiles'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'reopen_logfiles'res">Netplex_ctrl_aux.t_Admin'V2'reopen_logfiles'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALsend_admin_message"><span class="keyword">val</span> send_admin_message</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'send_admin_message'arg">Netplex_ctrl_aux.t_Admin'V2'send_admin_message'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'send_admin_message'res">Netplex_ctrl_aux.t_Admin'V2'send_admin_message'res</a></code></pre>
+<pre><span class="VALsend_admin_message'async"><span class="keyword">val</span> send_admin_message'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'send_admin_message'arg">Netplex_ctrl_aux.t_Admin'V2'send_admin_message'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Admin'V2'send_admin_message'res">Netplex_ctrl_aux.t_Admin'V2'send_admin_message'res</a>) -&gt; unit) -&gt;
+unit</code></pre></div></div></div></div>
+<div class="ocaml_module sig" name="Make'Semaphore"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_ctrl_clnt.Make'Semaphore">Make'Semaphore</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">U'C</code><code class="code"> : </code><code class="code"><a href="?package=ocamlnet&amp;module=Rpc_client.USE_CLIENT">Rpc_client.USE_CLIENT</a></code><code class="code">) -&gt; </code><code class="code">sig</code> .. <code class="code">end</code></div></code></pre><div class="ocaml_module_content">
+<div class="ocaml_module sig" name="V1"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_ctrl_clnt.Make'Semaphore.V1">V1</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type">U'C.t</code></pre>
+<pre><span class="VAL_program"><span class="keyword">val</span> _program</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_program&amp;type=t">Rpc_program.t</a></code></pre>
+<pre><span class="VALping"><span class="keyword">val</span> ping</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'ping'arg">Netplex_ctrl_aux.t_Semaphore'V1'ping'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'ping'res">Netplex_ctrl_aux.t_Semaphore'V1'ping'res</a></code></pre>
+<pre><span class="VALping'async"><span class="keyword">val</span> ping'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'ping'arg">Netplex_ctrl_aux.t_Semaphore'V1'ping'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'ping'res">Netplex_ctrl_aux.t_Semaphore'V1'ping'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALincrement"><span class="keyword">val</span> increment</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'increment'arg">Netplex_ctrl_aux.t_Semaphore'V1'increment'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'increment'res">Netplex_ctrl_aux.t_Semaphore'V1'increment'res</a></code></pre>
+<pre><span class="VALincrement'async"><span class="keyword">val</span> increment'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'increment'arg">Netplex_ctrl_aux.t_Semaphore'V1'increment'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'increment'res">Netplex_ctrl_aux.t_Semaphore'V1'increment'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALdecrement"><span class="keyword">val</span> decrement</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'decrement'arg">Netplex_ctrl_aux.t_Semaphore'V1'decrement'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'decrement'res">Netplex_ctrl_aux.t_Semaphore'V1'decrement'res</a></code></pre>
+<pre><span class="VALdecrement'async"><span class="keyword">val</span> decrement'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'decrement'arg">Netplex_ctrl_aux.t_Semaphore'V1'decrement'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'decrement'res">Netplex_ctrl_aux.t_Semaphore'V1'decrement'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALget"><span class="keyword">val</span> get</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'get'arg">Netplex_ctrl_aux.t_Semaphore'V1'get'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'get'res">Netplex_ctrl_aux.t_Semaphore'V1'get'res</a></code></pre>
+<pre><span class="VALget'async"><span class="keyword">val</span> get'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'get'arg">Netplex_ctrl_aux.t_Semaphore'V1'get'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'get'res">Netplex_ctrl_aux.t_Semaphore'V1'get'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'create'arg">Netplex_ctrl_aux.t_Semaphore'V1'create'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'create'res">Netplex_ctrl_aux.t_Semaphore'V1'create'res</a></code></pre>
+<pre><span class="VALcreate'async"><span class="keyword">val</span> create'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'create'arg">Netplex_ctrl_aux.t_Semaphore'V1'create'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'create'res">Netplex_ctrl_aux.t_Semaphore'V1'create'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALdestroy"><span class="keyword">val</span> destroy</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'destroy'arg">Netplex_ctrl_aux.t_Semaphore'V1'destroy'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'destroy'res">Netplex_ctrl_aux.t_Semaphore'V1'destroy'res</a></code></pre>
+<pre><span class="VALdestroy'async"><span class="keyword">val</span> destroy'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'destroy'arg">Netplex_ctrl_aux.t_Semaphore'V1'destroy'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'destroy'res">Netplex_ctrl_aux.t_Semaphore'V1'destroy'res</a>) -&gt; unit) -&gt; unit</code></pre></div></div></div></div>
+<div class="ocaml_module sig" name="Semaphore"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_ctrl_clnt.Semaphore">Semaphore</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<div class="ocaml_module sig" name="V1"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_ctrl_clnt.Semaphore.V1">V1</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a></code></pre>
+<pre><span class="VALcreate_client"><span class="keyword">val</span> create_client</span> : <code class="type">?esys:<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt;
+?program_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt;
+?version_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=connector">Rpc_client.connector</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a></code></pre>
+<pre><span class="VALcreate_portmapped_client"><span class="keyword">val</span> create_portmapped_client</span> : <code class="type">?esys:<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt;
+?program_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt;
+?version_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a></code></pre>
+<pre><span class="VALcreate_client2"><span class="keyword">val</span> create_client2</span> : <code class="type">?esys:<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt;
+?program_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt;
+?version_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=mode2">Rpc_client.mode2</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a></code></pre>
+<pre><span class="VAL_program"><span class="keyword">val</span> _program</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_program&amp;type=t">Rpc_program.t</a></code></pre>
+<pre><span class="VALping"><span class="keyword">val</span> ping</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'ping'arg">Netplex_ctrl_aux.t_Semaphore'V1'ping'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'ping'res">Netplex_ctrl_aux.t_Semaphore'V1'ping'res</a></code></pre>
+<pre><span class="VALping'async"><span class="keyword">val</span> ping'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'ping'arg">Netplex_ctrl_aux.t_Semaphore'V1'ping'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'ping'res">Netplex_ctrl_aux.t_Semaphore'V1'ping'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALincrement"><span class="keyword">val</span> increment</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'increment'arg">Netplex_ctrl_aux.t_Semaphore'V1'increment'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'increment'res">Netplex_ctrl_aux.t_Semaphore'V1'increment'res</a></code></pre>
+<pre><span class="VALincrement'async"><span class="keyword">val</span> increment'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'increment'arg">Netplex_ctrl_aux.t_Semaphore'V1'increment'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'increment'res">Netplex_ctrl_aux.t_Semaphore'V1'increment'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALdecrement"><span class="keyword">val</span> decrement</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'decrement'arg">Netplex_ctrl_aux.t_Semaphore'V1'decrement'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'decrement'res">Netplex_ctrl_aux.t_Semaphore'V1'decrement'res</a></code></pre>
+<pre><span class="VALdecrement'async"><span class="keyword">val</span> decrement'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'decrement'arg">Netplex_ctrl_aux.t_Semaphore'V1'decrement'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'decrement'res">Netplex_ctrl_aux.t_Semaphore'V1'decrement'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALget"><span class="keyword">val</span> get</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'get'arg">Netplex_ctrl_aux.t_Semaphore'V1'get'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'get'res">Netplex_ctrl_aux.t_Semaphore'V1'get'res</a></code></pre>
+<pre><span class="VALget'async"><span class="keyword">val</span> get'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'get'arg">Netplex_ctrl_aux.t_Semaphore'V1'get'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'get'res">Netplex_ctrl_aux.t_Semaphore'V1'get'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'create'arg">Netplex_ctrl_aux.t_Semaphore'V1'create'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'create'res">Netplex_ctrl_aux.t_Semaphore'V1'create'res</a></code></pre>
+<pre><span class="VALcreate'async"><span class="keyword">val</span> create'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'create'arg">Netplex_ctrl_aux.t_Semaphore'V1'create'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'create'res">Netplex_ctrl_aux.t_Semaphore'V1'create'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALdestroy"><span class="keyword">val</span> destroy</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'destroy'arg">Netplex_ctrl_aux.t_Semaphore'V1'destroy'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'destroy'res">Netplex_ctrl_aux.t_Semaphore'V1'destroy'res</a></code></pre>
+<pre><span class="VALdestroy'async"><span class="keyword">val</span> destroy'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'destroy'arg">Netplex_ctrl_aux.t_Semaphore'V1'destroy'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Semaphore'V1'destroy'res">Netplex_ctrl_aux.t_Semaphore'V1'destroy'res</a>) -&gt; unit) -&gt; unit</code></pre></div></div></div></div>
+<div class="ocaml_module sig" name="Make'Sharedvar"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_ctrl_clnt.Make'Sharedvar">Make'Sharedvar</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">U'C</code><code class="code"> : </code><code class="code"><a href="?package=ocamlnet&amp;module=Rpc_client.USE_CLIENT">Rpc_client.USE_CLIENT</a></code><code class="code">) -&gt; </code><code class="code">sig</code> .. <code class="code">end</code></div></code></pre><div class="ocaml_module_content">
+<div class="ocaml_module sig" name="V1"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_ctrl_clnt.Make'Sharedvar.V1">V1</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type">U'C.t</code></pre>
+<pre><span class="VAL_program"><span class="keyword">val</span> _program</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_program&amp;type=t">Rpc_program.t</a></code></pre>
+<pre><span class="VALping"><span class="keyword">val</span> ping</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'ping'arg">Netplex_ctrl_aux.t_Sharedvar'V1'ping'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'ping'res">Netplex_ctrl_aux.t_Sharedvar'V1'ping'res</a></code></pre>
+<pre><span class="VALping'async"><span class="keyword">val</span> ping'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'ping'arg">Netplex_ctrl_aux.t_Sharedvar'V1'ping'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'ping'res">Netplex_ctrl_aux.t_Sharedvar'V1'ping'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALcreate_var"><span class="keyword">val</span> create_var</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'create_var'arg">Netplex_ctrl_aux.t_Sharedvar'V1'create_var'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'create_var'res">Netplex_ctrl_aux.t_Sharedvar'V1'create_var'res</a></code></pre>
+<pre><span class="VALcreate_var'async"><span class="keyword">val</span> create_var'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'create_var'arg">Netplex_ctrl_aux.t_Sharedvar'V1'create_var'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'create_var'res">Netplex_ctrl_aux.t_Sharedvar'V1'create_var'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALset_value"><span class="keyword">val</span> set_value</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'set_value'arg">Netplex_ctrl_aux.t_Sharedvar'V1'set_value'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'set_value'res">Netplex_ctrl_aux.t_Sharedvar'V1'set_value'res</a></code></pre>
+<pre><span class="VALset_value'async"><span class="keyword">val</span> set_value'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'set_value'arg">Netplex_ctrl_aux.t_Sharedvar'V1'set_value'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'set_value'res">Netplex_ctrl_aux.t_Sharedvar'V1'set_value'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALget_value"><span class="keyword">val</span> get_value</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'get_value'arg">Netplex_ctrl_aux.t_Sharedvar'V1'get_value'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'get_value'res">Netplex_ctrl_aux.t_Sharedvar'V1'get_value'res</a></code></pre>
+<pre><span class="VALget_value'async"><span class="keyword">val</span> get_value'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'get_value'arg">Netplex_ctrl_aux.t_Sharedvar'V1'get_value'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'get_value'res">Netplex_ctrl_aux.t_Sharedvar'V1'get_value'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALdelete_var"><span class="keyword">val</span> delete_var</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'delete_var'arg">Netplex_ctrl_aux.t_Sharedvar'V1'delete_var'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'delete_var'res">Netplex_ctrl_aux.t_Sharedvar'V1'delete_var'res</a></code></pre>
+<pre><span class="VALdelete_var'async"><span class="keyword">val</span> delete_var'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'delete_var'arg">Netplex_ctrl_aux.t_Sharedvar'V1'delete_var'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'delete_var'res">Netplex_ctrl_aux.t_Sharedvar'V1'delete_var'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALwait_for_value"><span class="keyword">val</span> wait_for_value</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'wait_for_value'arg">Netplex_ctrl_aux.t_Sharedvar'V1'wait_for_value'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'wait_for_value'res">Netplex_ctrl_aux.t_Sharedvar'V1'wait_for_value'res</a></code></pre>
+<pre><span class="VALwait_for_value'async"><span class="keyword">val</span> wait_for_value'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'wait_for_value'arg">Netplex_ctrl_aux.t_Sharedvar'V1'wait_for_value'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'wait_for_value'res">Netplex_ctrl_aux.t_Sharedvar'V1'wait_for_value'res</a>) -&gt; unit) -&gt;
+unit</code></pre>
+<pre><span class="VALdump"><span class="keyword">val</span> dump</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'dump'arg">Netplex_ctrl_aux.t_Sharedvar'V1'dump'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'dump'res">Netplex_ctrl_aux.t_Sharedvar'V1'dump'res</a></code></pre>
+<pre><span class="VALdump'async"><span class="keyword">val</span> dump'async</span> : <code class="type">U'C.t -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'dump'arg">Netplex_ctrl_aux.t_Sharedvar'V1'dump'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'dump'res">Netplex_ctrl_aux.t_Sharedvar'V1'dump'res</a>) -&gt; unit) -&gt; unit</code></pre></div></div></div></div>
+<div class="ocaml_module sig" name="Sharedvar"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_ctrl_clnt.Sharedvar">Sharedvar</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<div class="ocaml_module sig" name="V1"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_ctrl_clnt.Sharedvar.V1">V1</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a></code></pre>
+<pre><span class="VALcreate_client"><span class="keyword">val</span> create_client</span> : <code class="type">?esys:<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt;
+?program_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt;
+?version_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=connector">Rpc_client.connector</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a></code></pre>
+<pre><span class="VALcreate_portmapped_client"><span class="keyword">val</span> create_portmapped_client</span> : <code class="type">?esys:<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt;
+?program_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt;
+?version_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a></code></pre>
+<pre><span class="VALcreate_client2"><span class="keyword">val</span> create_client2</span> : <code class="type">?esys:<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt;
+?program_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt;
+?version_number:<a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">Netnumber.uint4</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=mode2">Rpc_client.mode2</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a></code></pre>
+<pre><span class="VAL_program"><span class="keyword">val</span> _program</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_program&amp;type=t">Rpc_program.t</a></code></pre>
+<pre><span class="VALping"><span class="keyword">val</span> ping</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'ping'arg">Netplex_ctrl_aux.t_Sharedvar'V1'ping'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'ping'res">Netplex_ctrl_aux.t_Sharedvar'V1'ping'res</a></code></pre>
+<pre><span class="VALping'async"><span class="keyword">val</span> ping'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'ping'arg">Netplex_ctrl_aux.t_Sharedvar'V1'ping'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'ping'res">Netplex_ctrl_aux.t_Sharedvar'V1'ping'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALcreate_var"><span class="keyword">val</span> create_var</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'create_var'arg">Netplex_ctrl_aux.t_Sharedvar'V1'create_var'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'create_var'res">Netplex_ctrl_aux.t_Sharedvar'V1'create_var'res</a></code></pre>
+<pre><span class="VALcreate_var'async"><span class="keyword">val</span> create_var'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'create_var'arg">Netplex_ctrl_aux.t_Sharedvar'V1'create_var'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'create_var'res">Netplex_ctrl_aux.t_Sharedvar'V1'create_var'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALset_value"><span class="keyword">val</span> set_value</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'set_value'arg">Netplex_ctrl_aux.t_Sharedvar'V1'set_value'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'set_value'res">Netplex_ctrl_aux.t_Sharedvar'V1'set_value'res</a></code></pre>
+<pre><span class="VALset_value'async"><span class="keyword">val</span> set_value'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'set_value'arg">Netplex_ctrl_aux.t_Sharedvar'V1'set_value'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'set_value'res">Netplex_ctrl_aux.t_Sharedvar'V1'set_value'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALget_value"><span class="keyword">val</span> get_value</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'get_value'arg">Netplex_ctrl_aux.t_Sharedvar'V1'get_value'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'get_value'res">Netplex_ctrl_aux.t_Sharedvar'V1'get_value'res</a></code></pre>
+<pre><span class="VALget_value'async"><span class="keyword">val</span> get_value'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'get_value'arg">Netplex_ctrl_aux.t_Sharedvar'V1'get_value'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'get_value'res">Netplex_ctrl_aux.t_Sharedvar'V1'get_value'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALdelete_var"><span class="keyword">val</span> delete_var</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'delete_var'arg">Netplex_ctrl_aux.t_Sharedvar'V1'delete_var'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'delete_var'res">Netplex_ctrl_aux.t_Sharedvar'V1'delete_var'res</a></code></pre>
+<pre><span class="VALdelete_var'async"><span class="keyword">val</span> delete_var'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'delete_var'arg">Netplex_ctrl_aux.t_Sharedvar'V1'delete_var'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'delete_var'res">Netplex_ctrl_aux.t_Sharedvar'V1'delete_var'res</a>) -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALwait_for_value"><span class="keyword">val</span> wait_for_value</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'wait_for_value'arg">Netplex_ctrl_aux.t_Sharedvar'V1'wait_for_value'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'wait_for_value'res">Netplex_ctrl_aux.t_Sharedvar'V1'wait_for_value'res</a></code></pre>
+<pre><span class="VALwait_for_value'async"><span class="keyword">val</span> wait_for_value'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'wait_for_value'arg">Netplex_ctrl_aux.t_Sharedvar'V1'wait_for_value'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'wait_for_value'res">Netplex_ctrl_aux.t_Sharedvar'V1'wait_for_value'res</a>) -&gt; unit) -&gt;
+unit</code></pre>
+<pre><span class="VALdump"><span class="keyword">val</span> dump</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'dump'arg">Netplex_ctrl_aux.t_Sharedvar'V1'dump'arg</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'dump'res">Netplex_ctrl_aux.t_Sharedvar'V1'dump'res</a></code></pre>
+<pre><span class="VALdump'async"><span class="keyword">val</span> dump'async</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">Rpc_client.t</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'dump'arg">Netplex_ctrl_aux.t_Sharedvar'V1'dump'arg</a> -&gt;
+((unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux&amp;type=t_Sharedvar'V1'dump'res">Netplex_ctrl_aux.t_Sharedvar'V1'dump'res</a>) -&gt; unit) -&gt; unit</code></pre></div></div></div></div>
+</div>

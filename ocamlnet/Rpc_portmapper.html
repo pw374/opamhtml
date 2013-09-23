@@ -1,0 +1,54 @@
+<div class="ocaml_toplevel_module"><div class="info">Portmapper version 2</div>
+<div class="info"><div class="info">Call the portmapper version 2. Note that version 2 is an older version
+ (version 3 and 4 are called 'rpcbind'), but it is normally available.<br/> The task of the portmapper is to map program numbers to port numbers.
+ A RPC service that should be available in the whole network should:<ul><li>on startup: call the <code class="code">set</code> procedure to establish a mapping of the
+   own program number to the port that has been allocated previously</li><li>on shutdown: call the <code class="code">unset</code> procedure to remove the mapping
+   (this is NEVER done automatically!)</li></ul> To call an RPC service which is only known by its program number one should
+ contact the portmapper using <code class="code">getport</code> to find out the port where the
+ service is actually listening.</div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">represents a client for the portmapper</div></div>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=connector">Rpc_client.connector</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_portmapper&amp;type=t">t</a></code></pre><div class="info"><div class="info">Connects to the portmapper service listening on the given connector.</div></div>
+<pre><span class="VALcreate_inet"><span class="keyword">val</span> create_inet</span> : <code class="type">string -&gt; <a href="?package=ocamlnet&amp;module=Rpc_portmapper&amp;type=t">t</a></code></pre><div class="info"><div class="info">Connects to a portmapper listening on an Internet port. The argument
+ is the hostname where the portmapper is running or its internet
+ address. This function connects always to the port 111 on the given
+ host; this is the standard for portmapper daemons.</div></div>
+<pre><span class="VALshut_down"><span class="keyword">val</span> shut_down</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_portmapper&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Shuts down the connection to the portmapper.</div></div>
+<pre><span class="VALnull"><span class="keyword">val</span> null</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_portmapper&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Calls the 'NULL' procedure of the portmapper. This procedure has no
+ effect. You can use 'null' to determine whether a procedure call is
+ possible or not.</div></div>
+<pre><span class="VALset"><span class="keyword">val</span> set</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_portmapper&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a> -&gt; <a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> -&gt; int -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">set pm_client program_nr version_nr protocol port_nr</code>:
+ Extends the mapping managed by the portmapper: The triple
+ <code class="code">(program_nr, version_nr, protocol)</code> is mapped to the given
+ <code class="code">port_nr</code>.
+ It is not allowed to overwrite an existing mapping.
+ The procedure returns <code class="code">true</code> if the mapping has been extended
+ and <code class="code">false</code> otherwise.
+ Note that it usually only possible to <code class="code">set</code> a mapping on the local
+ host.</div></div>
+<pre><span class="VALunset"><span class="keyword">val</span> unset</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_portmapper&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a> -&gt; <a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> -&gt; int -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">unset pm_client program_nr version_nr protocol port_nr</code>:
+ removes the mapping.
+ The procedure returns <code class="code">true</code> if the mapping has been removed
+ and <code class="code">false</code> otherwise.
+ Note that it usually only possible to <code class="code">unset</code> a mapping on the local
+ host.</div></div>
+<pre><span class="VALgetport"><span class="keyword">val</span> getport</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_portmapper&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a> -&gt; <a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> -&gt; int</code></pre><div class="info"><div class="info"><code class="code">getport pm_client program_nr version_nr protocol</code>:
+ finds out the port where the given service runs. Returns 0 if the
+ service is not registered.</div></div>
+<pre><span class="VALdump"><span class="keyword">val</span> dump</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_portmapper&amp;type=t">t</a> -&gt; (<a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a> * <a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a> * <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> * int) list</code></pre><div class="info"><div class="info">returns the list of known mappings. The quadrupels have the meaning
+ <code class="code">(program_nr, version_nr, protocol, port)</code></div></div>
+<pre><span class="VALcallit"><span class="keyword">val</span> callit</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_portmapper&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_program&amp;type=t">Rpc_program.t</a> -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_value">Xdr.xdr_value</a> -&gt; int * <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_value">Xdr.xdr_value</a></code></pre><div class="info"><div class="info"><code class="code">callit pm_client program_spec proc_name argument</code>:
+ This is an alternate way of calling a remote procedure. Instead
+ of directly invoking the procedure, the portmapper does it for you.<br/> You must pass a program specification, the procedure name and the
+ argument to <code class="code">callit</code>. On return, you get the port of the service
+ and the result of the procedure invocation.<br/> Note that there are several disadvantages:<ul><li>Error conditions cannot be transmitted back from the portmapper.
+   <code class="code">callit</code> gets a timeout in this case.</li><li>The portmapper uses always UDP. This means that the length of
+   the messages that are exchanged is limited to a total of 8000 bytes.</li></ul> It is NOT recommended to use <code class="code">callit</code> for indirecting calls.
+ The <code class="code">callit</code> interface was designed for broadcasts and should only
+ be used for this purpose.
+ <b>This</b> implementation of a <code class="code">callit</code> client cannot be used for
+ broadcasts, however.</div></div>
+<pre><span class="VALport_of_program"><span class="keyword">val</span> port_of_program</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_program&amp;type=t">Rpc_program.t</a> -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> -&gt; int</code></pre><div class="info"><div class="info"><code class="code">port_of_program program host protocol</code>:
+ queries the portmapper running on <code class="code">host</code> for the <code class="code">program</code> registered
+ for <code class="code">protocol</code>.
+ Returns the port number or fails if the number is not known.</div></div>
+</div>

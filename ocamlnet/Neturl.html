@@ -1,0 +1,298 @@
+<div class="ocaml_toplevel_module"><div class="info">Uniform Resource Locators (URLs)<br/> <b>Contents</b><br/> -  <a href="#Neturl.interface">Neturl.interface</a><br/> The tutorial has been moved to  <a href="#Neturl_tut">Neturl_tut</a>.</div>
+<div class="info"><div class="info"><h1 id="interface">Interface</h1><br/> This module provides functions to parse URLs, to print URLs, to
+ store URLs, to modify URLs, and to apply relative URLs.<br/> URLs are strings formed according to pattern (1) or (2):<br/> + <code class="code">scheme://user;userparams:password@host:port/path;params?query#fragment</code><ol><li><code class="code">scheme:other;params?query#fragment</code></li></ol> The word at the beginning of the URL identifies the URL scheme
+ (such as &quot;http&quot; or &quot;file&quot;). Depending on the scheme, not all of the
+ parts are allowed, or parts may be omitted. This module defines the
+ type <code class="code">url_syntax</code> whose values describe which parts are allowed/required/
+ not allowed for a concrete URL scheme (see below).<br/> Not all characters are allowed in a URL. Some characters are allowed,
+ but have the special task to separate the various parts of the URL
+ (reserved characters).
+ However, it is possible to include even invalid or reserved characters
+ as normal content by applying the <code class="code">%</code>-encoding on these characters:
+ A <code class="code">'%'</code> indicates that an encoded character follows, and the character
+ is denoted by a two-digit hexadecimal number (e.g. <code class="code">%2f</code> for <code class="code">'/'</code>).
+ In the following descriptions, the term &quot;encoded string&quot; means a string
+ containing such <code class="code">%</code>-encoded characters, and the &quot;decoded string&quot; means a
+ string not containing such characters.
+ See the module  <a href="#Netencoding.Url">Netencoding.Url</a> for functions encoding or decoding
+ strings.<br/> The type <code class="code">url</code> describes values storing the components of a URL,
+ and the <code class="code">url_syntax</code> for the URL. In general, the components are
+ stored as encoded strings; however, not for all components the
+ <code class="code">%</code>-encoding is applicable.<br/> For convenience, the functions creating, modifying, and accessing
+ URLs can handle both encoded and decoded strings. In order to
+ avoid errors, the functions pass strings even in their decoded form.<br/> Note that there is currently no function to compare URLs. The
+ canoncical comparison ( <code class="code">=</code> ) is not applicable because the same URL
+ may be written in different ways.<br/> Note that nothing is said about the character set/encoding of URLs.
+ Some protocols and standards prefer UTF-8 as fundamental encoding
+ and apply the <code class="code">%</code>-encoding on top of it; i.e. the byte sequence
+ representing a character in UTF-8 is <code class="code">%</code>-encoded.<br/> <b>Standards Compliance</b><br/> This module implements RFC 1738 and RFC 1808. There is also a newer
+ RFC, 2396, updating the former RFCs, but this module is not fully
+ compatible with RFC 2396. The following (minor) problems may occur:<br/> - The module escapes more characters than needed. All characters that
+   are &quot;unsafe&quot; or &quot;reserved&quot; in either RFC document are escaped.<ul><li>URL parameters (appended with a &quot;;&quot;) are handled as in RFCs 1738/1808.
+   In RFC 2396, every path component may have parameters, and the
+   algorithm to resolve relative URLs is different in this point.
+   If it is required to apply RFC 2396, one can disable URL parameters
+   in the syntax, and extract them from the path by a self-written
+   postprocessor. Usually, this is only required for <code class="code">imap</code> URLs.</li></ul> In one point, RFC 2396 is preferred:<br/> - Authorities may be terminated by a question mark, as in
+   <code class="code">&quot;http://host?query&quot;</code>. This is illegal in RFC 1738. The consequence
+   is, however, that question marks in user strings must be escaped.<br/> RFC 3986 introduces IPv6 addresses. These are now supported (but see
+ the comments below).</div></div>
+<pre><span class="EXCEPTIONMalformed_URL"><span class="keyword">exception</span> Malformed_URL</span></pre><div class="info"><div class="info">Raised by a number of functions when encountering a badly formed
+ URL.</div></div>
+<pre><span class="VALextract_url_scheme"><span class="keyword">val</span> extract_url_scheme</span> : <code class="type">string -&gt; string</code></pre><div class="info"><div class="info">Returns the URL scheme from the string representation of an URL.
+ E.g. <code class="code">extract_url_scheme &quot;http://host/path&quot; = &quot;http&quot;</code>.
+ The scheme name is always converted to lowercase characters.
+ Raises <code class="code">Malformed_URL</code> if the scheme name is not found.</div></div>
+<pre><code><span class="TYPEurl_syntax_option"><span class="keyword">type</span> url_syntax_option</span> = </code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTurl_syntax_option.Url_part_not_recognized"><span class="constructor">Url_part_not_recognized</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">The part, even if there, is not even recognized</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTurl_syntax_option.Url_part_allowed"><span class="constructor">Url_part_allowed</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">The part can be present</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTurl_syntax_option.Url_part_required"><span class="constructor">Url_part_required</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">The part must be present</div></td></tr></table>
+<pre><code><span class="TYPEurl_syntax"><span class="keyword">type</span> url_syntax</span> = {</code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTurl_syntax.url_enable_scheme">url_enable_scheme</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url_syntax_option">url_syntax_option</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTurl_syntax.url_enable_user">url_enable_user</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url_syntax_option">url_syntax_option</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTurl_syntax.url_enable_user_param">url_enable_user_param</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url_syntax_option">url_syntax_option</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTurl_syntax.url_enable_password">url_enable_password</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url_syntax_option">url_syntax_option</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTurl_syntax.url_enable_host">url_enable_host</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url_syntax_option">url_syntax_option</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTurl_syntax.url_enable_port">url_enable_port</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url_syntax_option">url_syntax_option</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTurl_syntax.url_enable_path">url_enable_path</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url_syntax_option">url_syntax_option</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTurl_syntax.url_enable_param">url_enable_param</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url_syntax_option">url_syntax_option</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTurl_syntax.url_enable_query">url_enable_query</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url_syntax_option">url_syntax_option</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTurl_syntax.url_enable_fragment">url_enable_fragment</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url_syntax_option">url_syntax_option</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTurl_syntax.url_enable_other">url_enable_other</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url_syntax_option">url_syntax_option</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTurl_syntax.url_accepts_8bits">url_accepts_8bits</span> : <code class="type">bool</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTurl_syntax.url_is_valid">url_is_valid</span> : <code class="type">url -&gt; bool</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTurl_syntax.url_enable_relative">url_enable_relative</span> : <code class="type">bool</code>;</code></td></tr><tr><td>}</td></tr></table><div class="info"><div class="info">Values of type <code class="code">url_syntax</code> describe which components of an URL are
+ recognized, which are allowed (and optional), and which are required.
+ Not all combinations are valid; the predicate expressed by the
+ function <code class="code">url_syntax_is_valid</code> must hold.<br/> The function <code class="code">url_is_valid</code> is applied when a fresh URL is created
+ and must return <code class="code">true</code>. This function allows it to add an arbitrary
+ validity criterion to <code class="code">url_syntax</code>. (Note that the URL passed to
+ this function is not fully working; you can safely assume that the
+ accessor functions <code class="code">url_scheme</code> etc. can be applied to it.)<br/> Switch <code class="code">url_accepts_8bit</code>: If <code class="code">true</code>, the bytes with code 128 to
+ 255 are treated like alphanumeric characters; if <code class="code">false</code> these bytes
+ are illegal (but it is still possible to include such byte in their
+ encoded form: <code class="code">%80</code> to <code class="code">%FF</code>).<br/> Switch <code class="code">url_enable_relative</code>: If <code class="code">true</code>, the syntax allows relative
+ URLs in principle. Actually, parsing of relative URLs is possible
+ when the optional parts are flagged as <code class="code">Url_part_allowed</code> and not
+ as <code class="code">Url_part_required</code>. However, it is useful to specify URL syntaxes
+ always as absolute URLs, and to weaken them on demand when a relative
+ URL is found by the parser. This switch enables that. In particular,
+ the function <code class="code">partial_url_syntax</code> checks this flag.</div></div>
+<pre><span class="TYPEurl"><span class="keyword">type</span> url</span> </pre><div class="info"><div class="info">Values of type <code class="code">url</code> describe concrete URLs. Every URL must have
+ a fundamental <code class="code">url_syntax</code>, and it is only possible to create URLs
+ conforming to the syntax. See <code class="code">make_url</code> for further information.</div></div>
+<pre><span class="VALurl_syntax_is_valid"><span class="keyword">val</span> url_syntax_is_valid</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url_syntax">url_syntax</a> -&gt; bool</code></pre><div class="info"><div class="info">Checks whether the passed <code class="code">url_syntax</code> is valid. This means:<ul><li>If passwords are recognized, users (and hosts) must be recognized, too</li><li>If ports are recognized, hosts must be recognized, too</li><li>If users are recognized, hosts must be recognized, too</li><li>Either the syntax recognizes one of the phrases
+   { user, password, host, port, path }, or the syntax recognized
+   the phrase 'other'.
+   </li></ul></div></div>
+<pre><span class="VALpartial_url_syntax"><span class="keyword">val</span> partial_url_syntax</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url_syntax">url_syntax</a> -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url_syntax">url_syntax</a></code></pre><div class="info"><div class="info">Transforms the syntax into another syntax where all required parts are
+ changed into optional parts.</div></div>
+<pre><span class="VALnull_url_syntax"><span class="keyword">val</span> null_url_syntax</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url_syntax">url_syntax</a></code></pre><div class="info"><div class="info">An URL syntax that recognizes nothing. Use this as base for your own
+ definitions, e.g.
+ <pre class="codepre"><code class="code">
+ let my_syntax = { null_url_syntax with
+                     url_enable_host = Url_part_required; ... }
+ </code></pre></div></div>
+<pre><span class="VALip_url_syntax"><span class="keyword">val</span> ip_url_syntax</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url_syntax">url_syntax</a></code></pre><div class="info"><div class="info">Syntax for IP based protocols. This syntax allows scheme, user,
+ password, host, port, path, param, query, fragment, but not &quot;other&quot;.
+ It does not accept 8 bit bytes.</div></div>
+<pre><span class="VALcommon_url_syntax"><span class="keyword">val</span> common_url_syntax</span> : <code class="type">(string, <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url_syntax">url_syntax</a>) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">Hashtbl.t</a></code></pre><div class="info"><div class="info">Syntax descriptions for common URL schemes. The key of the hashtable
+ is the scheme name, and the value is the corresponding syntax.<br/> - <code class="code">&quot;file&quot;</code>: scheme, host?, path<ul><li><code class="code">&quot;ftp&quot;</code>: scheme, user?, password?, host, port?, path?, param?
+   Note: param is not checked.</li><li><code class="code">&quot;http&quot;</code>, <code class="code">&quot;https&quot;</code>:
+   scheme, user?, password?, host, port?, path?, query?</li><li><code class="code">&quot;mailto&quot;</code>: scheme, other, query? (RFC 2368)</li><li><code class="code">&quot;pop&quot;</code>, <code class="code">&quot;pops&quot;</code>: scheme, user?, user_param?, password?, host, port?
+   Note: user_param is not checked.
+   (RFC 2384)</li><li><code class="code">&quot;imap&quot;</code>, <code class="code">&quot;imaps&quot;</code>: scheme, user?, user_param?, password?, host, port?,
+   path?, query? (RFC 2192)
+   Note: &quot;param&quot; is intentionally not recognized to get the resolution of
+   relative URLs as described in the RFC. When analysing this kind of URL,
+   it is recommended to re-parse it with &quot;param&quot; enabled.</li><li><code class="code">&quot;news&quot;</code>: scheme, other (RFC 1738)</li><li><code class="code">&quot;nntp&quot;</code>, <code class="code">&quot;nntps&quot;</code>: scheme, host, port?, path (with two components)
+   (RFC 1738)</li><li><code class="code">&quot;data&quot;</code>: scheme, other (RFC 2397). &quot;other&quot; is not further decomposed.</li><li><code class="code">&quot;ipp&quot;</code>, <code class="code">&quot;ipps&quot;</code>: scheme, host, port? , path?, query? (RFC 3510)</li><li><code class="code">&quot;cid&quot;</code>, <code class="code">&quot;mid&quot;</code>: Content/message identifiers: scheme, other</li></ul> Notes:<ul><li>These syntax descriptions can be weakened for partial/relative URLs
+   by changing the required parts to optional parts: See the function
+   <code class="code">partial_url_syntax</code>.</li><li>None of the descriptions allows fragments. These can be enabled by
+   setting <code class="code">url_enable_fragment</code> to <code class="code">Url_part_allowed</code>. E.g.
+   <pre class="codepre"><code class="code"> { file_url_syntax with url_enable_fragment = Url_part_allowed } </code></pre></li><li>8 bit bytes are not accepted</li><li>A large number of standardised scheme syntaxes are not available,
+   e.g. gopher, prospero, wais. The selection is a bit subjective,
+   but I have tried to omit protocols that are no longer in common
+   use, or that are very special.</li><li>The LDAP URL syntax (RFC 1959) does not fit into our scheme, it
+   is omitted for now because of this.
+   </li></ul></div></div>
+<pre><span class="VALnull_url"><span class="keyword">val</span> null_url</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a></code></pre><div class="info"><div class="info">A URL without any component and <code class="code">null_url_syntax</code></div></div>
+<pre><span class="VALmake_url"><span class="keyword">val</span> make_url</span> : <code class="type">?encoded:bool -&gt;
+?scheme:string -&gt;
+?user:string -&gt;
+?user_param:string list -&gt;
+?password:string -&gt;
+?host:string -&gt;
+?addr:<a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a> -&gt;
+?port:int -&gt;
+?socksymbol:<a href="?package=ocamlnet&amp;module=Netsockaddr&amp;type=socksymbol">Netsockaddr.socksymbol</a> -&gt;
+?path:string list -&gt;
+?param:string list -&gt;
+?query:string -&gt; ?fragment:string -&gt; ?other:string -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url_syntax">url_syntax</a> -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a></code></pre><div class="info"><div class="info">Creates a URL from components:<br/> - The components <code class="code">scheme</code> and <code class="code">host</code> are simple strings to which the
+   <code class="code">%</code>-encoding is not applicable. <code class="code">host</code> may be a (DNS) name, an
+   IPv4 address as &quot;dotted quad&quot;, or an IPv6 address enclosed in
+   brackets.<ul><li><code class="code">addr</code> also sets <code class="code">host</code>, but directly from an <code class="code">inet_addr</code>.</li><li>The component <code class="code">port</code> is a simple number. Of course, the <code class="code">%</code>-encoding
+   is not applicable, too.</li><li><code class="code">socksymbol</code> sets both <code class="code">host</code> and <code class="code">port</code> from the socksymbol of
+   type <code class="code">`Inet</code> or <code class="code">`Inet_byname</code>.</li><li>The components <code class="code">user</code>, <code class="code">password</code>, <code class="code">query</code>, <code class="code">fragment</code>, and <code class="code">other</code>
+   are strings which may contain <code class="code">%</code>-encoded characters. By default,
+   you can pass any string for these components, and problematic characters
+   are automatically encoded. If you set <code class="code">encoded:true</code>, the passed
+   strings must already be encoded, but the function checks whether
+   the encoding is syntactically correct.
+   Note that for <code class="code">query</code> even the characters <code class="code">'?'</code> and <code class="code">'='</code> are encoded
+   by default, so you need to set <code class="code">encoded:true</code> to pass a reasonable
+   query string.</li><li>The components <code class="code">user_param</code>, <code class="code">path</code> and <code class="code">param</code> are lists of strings which may
+   contain <code class="code">%</code>-encoded characters. Again, the default is to pass
+   decoded strings to the function, and the function encodes them
+   automatically, and by setting <code class="code">encoded:true</code> the caller is responsible
+   for encoding the strings. Passing empty lists for these components
+   means that they are not part of the constructed URL.
+   See below for the respresentation of these components.</li></ul> <code class="code">socksymbol</code> has precedence over <code class="code">addr</code>, which has precedence over
+ <code class="code">host</code>. <code class="code">socksymbol</code> also has precedence over <code class="code">port</code>.<br/> The strings representing the components do not
+ contain the characters separating the components from each other.<br/> The created URL must conform to the <code class="code">url_syntax</code>, i.e.:<ul><li>The URL must only contain components which are recognized by the
+   syntax</li><li>The URL must contain components which are required by the syntax</li><li>The URL must fulfill the predicate expressed by the <code class="code">url_is_valid</code>
+   function of the syntax.</li></ul> The path of a URL is represented as a list of <code class="code">'/'</code>-separated path
+ components. i.e.<br/> <code class="code"> [ s1; s2; ...; sN ] </code>  represents the path
+                        <code class="code">s1 ^ &quot;/&quot; ^ s2 ^ &quot;/&quot; ^ ... ^ &quot;/&quot; ^ sN</code><br/> As special cases:<ul><li> <code class="code">[]</code>                   is the non-existing path</li><li> <code class="code">[ &quot;&quot; ]</code>               is <code class="code">&quot;/&quot;</code></li><li> <code class="code">[ &quot;&quot;;&quot;&quot; ]</code>            is illegal</li></ul> Except of <code class="code">s1</code> and <code class="code">sN</code>, the path components must not be empty strings.<br/> To avoid ambiguities, it is illegal to create URLs with both relative
+ paths (<code class="code">s1 &lt;&gt; &quot;&quot;</code>) and host components.<br/> Parameters of URLs (<code class="code">param</code> and <code class="code">user_param</code>) are components
+ beginning with <code class="code">';'</code>. The list
+ of parameters is represented as list of strings where the strings
+ contain the value following <code class="code">';'</code>.</div></div>
+<pre><span class="VALmodify_url"><span class="keyword">val</span> modify_url</span> : <code class="type">?syntax:<a href="?package=ocamlnet&amp;module=Neturl&amp;type=url_syntax">url_syntax</a> -&gt;
+?encoded:bool -&gt;
+?scheme:string -&gt;
+?user:string -&gt;
+?user_param:string list -&gt;
+?password:string -&gt;
+?host:string -&gt;
+?addr:<a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a> -&gt;
+?port:int -&gt;
+?socksymbol:<a href="?package=ocamlnet&amp;module=Netsockaddr&amp;type=socksymbol">Netsockaddr.socksymbol</a> -&gt;
+?path:string list -&gt;
+?param:string list -&gt;
+?query:string -&gt; ?fragment:string -&gt; ?other:string -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a></code></pre><div class="info"><div class="info">Modifies the passed components and returns the modified URL.
+ The modfied URL shares unmodified components with the original
+ URL.</div></div>
+<pre><span class="VALremove_from_url"><span class="keyword">val</span> remove_from_url</span> : <code class="type">?scheme:bool -&gt;
+?user:bool -&gt;
+?user_param:bool -&gt;
+?password:bool -&gt;
+?host:bool -&gt;
+?port:bool -&gt;
+?path:bool -&gt;
+?param:bool -&gt; ?query:bool -&gt; ?fragment:bool -&gt; ?other:bool -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a></code></pre><div class="info"><div class="info">Removes the <code class="code">true</code> components from the URL, and returns the modified
+ URL.
+ The modfied URL shares unmodified components with the original
+ URL.</div></div>
+<pre><span class="VALdefault_url"><span class="keyword">val</span> default_url</span> : <code class="type">?encoded:bool -&gt;
+?scheme:string -&gt;
+?user:string -&gt;
+?user_param:string list -&gt;
+?password:string -&gt;
+?host:string -&gt;
+?port:int -&gt;
+?path:string list -&gt;
+?param:string list -&gt;
+?query:string -&gt; ?fragment:string -&gt; ?other:string -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a></code></pre><div class="info"><div class="info">Adds missing components and returns the modified URL.
+ The modfied URL shares unmodified components with the original
+ URL.</div></div>
+<pre><span class="VALundefault_url"><span class="keyword">val</span> undefault_url</span> : <code class="type">?scheme:string -&gt;
+?user:string -&gt;
+?user_param:string list -&gt;
+?password:string -&gt;
+?host:string -&gt;
+?port:int -&gt;
+?path:string list -&gt;
+?param:string list -&gt;
+?query:string -&gt; ?fragment:string -&gt; ?other:string -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a></code></pre><div class="info"><div class="info">Removes components from the URL if they have the passed value, and
+ returns the modified URL.
+ Note: The values must always be passed in <b>encoded</b> form!
+ The modfied URL shares unmodified components with the original
+ URL.</div></div>
+<pre><span class="VALurl_syntax_of_url"><span class="keyword">val</span> url_syntax_of_url</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url_syntax">url_syntax</a></code></pre><div class="info"><div class="info">Returns the <code class="code">url_syntax</code> record of a URL.</div></div>
+<pre><span class="VALurl_of_string"><span class="keyword">val</span> url_of_string</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url_syntax">url_syntax</a> -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a></code></pre><div class="info"><div class="info">Parses the passed string according to the passed <code class="code">url_syntax</code>.</div></div>
+<pre><span class="VALstring_of_url"><span class="keyword">val</span> string_of_url</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; string</code></pre><div class="info"><div class="info">Returns the URL as string</div></div>
+<pre><span class="VALparse_url"><span class="keyword">val</span> parse_url</span> : <code class="type">?schemes:(string, <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url_syntax">url_syntax</a>) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">Hashtbl.t</a> -&gt;
+?base_syntax:<a href="?package=ocamlnet&amp;module=Neturl&amp;type=url_syntax">url_syntax</a> -&gt;
+?accept_8bits:bool -&gt; ?enable_fragment:bool -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a></code></pre><div class="info"><div class="info">Parses the string and returns the URL the string represents.
+ If the URL is absolute (i.e. begins with a scheme like
+ &quot;http:...&quot;), the syntax will be looked up in <code class="code">schemes</code>.
+ If the URL is relative, the <code class="code">base_syntax</code> will be taken
+ if passed. Without <code class="code">base_syntax</code>, relative URLs cannot be
+ parsed.<div class="parameters"><div class="param_info"><code class="code">schemes</code> : This hashtable maps scheme names to syntax descriptions.
+   The default is <code class="code">common_url_syntax</code>.</div><div class="param_info"><code class="code">base_syntax</code> : If passed, the function can parse relative URLs
+   according to this syntax. If not passed, the function will raise
+   <code class="code">Malformed_URL</code> on a relative URL.</div><div class="param_info"><code class="code">accept_8bits</code> : If <code class="code">false</code>, the default, it depends on the
+   syntax descriptions in <code class="code">schemes</code> whether 8 bit characters are
+   accepted in the input or not. If <code class="code">true</code>, 8 bit characters are
+   always accepted.</div><div class="param_info"><code class="code">enable_fragment</code> : If <code class="code">false</code>, the default, it depends on the
+   syntax descriptions in <code class="code">schemes</code> whether fragment identifiers
+   (e.g. &quot;#fragment&quot;) are recognized or not. If <code class="code">true</code>, fragments
+   are always recognized.</div></div></div></div>
+<pre><span class="VALfixup_url_string"><span class="keyword">val</span> fixup_url_string</span> : <code class="type">?escape_hash:bool -&gt; string -&gt; string</code></pre><div class="info"><div class="info">Escapes some unsafe or &quot;unwise&quot; characters that are commonly used
+ in URL strings: space, &lt; &gt; { } ^ \\ | and double quotes.
+ Call this function before parsing the URL to support these
+ characters.<br/> If <code class="code">escape_hash</code> is set, '#' is also escaped.<br/> Change: Since Ocamlnet-3.4, square brackets are no longer fixed up,
+ because they have now a legal use to denote IPv6 addresses.</div></div>
+<pre><span class="VALurl_provides"><span class="keyword">val</span> url_provides</span> : <code class="type">?scheme:bool -&gt;
+?user:bool -&gt;
+?user_param:bool -&gt;
+?password:bool -&gt;
+?host:bool -&gt;
+?port:bool -&gt;
+?path:bool -&gt;
+?param:bool -&gt; ?query:bool -&gt; ?fragment:bool -&gt; ?other:bool -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; bool</code></pre><div class="info"><div class="info">Returns <code class="code">true</code> iff the URL has all of the components passed with
+ <code class="code">true</code> value.</div></div>
+<pre><span class="VALurl_scheme"><span class="keyword">val</span> url_scheme</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; string</code></pre>
+<pre><span class="VALurl_user"><span class="keyword">val</span> url_user</span> : <code class="type">?encoded:bool -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; string</code></pre>
+<pre><span class="VALurl_user_param"><span class="keyword">val</span> url_user_param</span> : <code class="type">?encoded:bool -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; string list</code></pre>
+<pre><span class="VALurl_password"><span class="keyword">val</span> url_password</span> : <code class="type">?encoded:bool -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; string</code></pre>
+<pre><span class="VALurl_host"><span class="keyword">val</span> url_host</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; string</code></pre>
+<pre><span class="VALurl_port"><span class="keyword">val</span> url_port</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; int</code></pre>
+<pre><span class="VALurl_path"><span class="keyword">val</span> url_path</span> : <code class="type">?encoded:bool -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; string list</code></pre>
+<pre><span class="VALurl_param"><span class="keyword">val</span> url_param</span> : <code class="type">?encoded:bool -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; string list</code></pre>
+<pre><span class="VALurl_query"><span class="keyword">val</span> url_query</span> : <code class="type">?encoded:bool -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; string</code></pre>
+<pre><span class="VALurl_fragment"><span class="keyword">val</span> url_fragment</span> : <code class="type">?encoded:bool -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; string</code></pre>
+<pre><span class="VALurl_other"><span class="keyword">val</span> url_other</span> : <code class="type">?encoded:bool -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; string</code></pre><div class="info"><div class="info">Return components of the URL. The functions return decoded strings
+ unless <code class="code">encoded:true</code> is set.
+ If the component does not exist, the exception <code class="code">Not_found</code>
+ is raised.<br/> Note that IPv6 addresses, when returned by <code class="code">url_host</code>, are enclosed
+ in square brackets. Modules calling <code class="code">url_host</code> may require porting
+ to support this syntax variant.</div></div>
+<pre><span class="VALurl_addr"><span class="keyword">val</span> url_addr</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a></code></pre><div class="info"><div class="info">If the <code class="code">host</code> part of the URL is an IP address, the address is returned.
+      Works for IPv4 and IPv6 addresses. Otherwise <code class="code">Not_found</code> is raised.</div></div>
+<pre><span class="VALurl_socksymbol"><span class="keyword">val</span> url_socksymbol</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netsockaddr&amp;type=socksymbol">Netsockaddr.socksymbol</a></code></pre><div class="info"><div class="info"><code class="code">url_socksymbol url default_port</code>: Returns the <code class="code">host</code> and <code class="code">port</code> parts
+      of the URL as <code class="code">socksymbol</code>. If the port is missing in the URL,
+      <code class="code">default_port</code> is substituted. If the <code class="code">host</code> is missing in the URL
+      the exception <code class="code">Not_found</code> is raised.</div></div>
+<pre><span class="VALsplit_path"><span class="keyword">val</span> split_path</span> : <code class="type">string -&gt; string list</code></pre><div class="info"><div class="info">Splits a <code class="code">'/'</code>-separated path into components (e.g. to set up the
+ <code class="code">path</code> argument of <code class="code">make_url</code>).
+ E.g.
+ <pre class="codepre"><code class="code">
+ split_path &quot;a/b/c&quot; = [ &quot;a&quot;; &quot;b&quot;; &quot;c&quot; ],
+ split_path &quot;/a/b&quot;  = [ &quot;&quot;; &quot;a&quot;; &quot;b&quot; ],
+ split_path &quot;a/b/&quot;  = [ &quot;a&quot;; &quot;b&quot;; &quot;&quot; ] </code></pre>
+ Beware that <code class="code">split_path &quot;..&quot;</code> returns <code class="code">[&quot;..&quot;]</code> while <code class="code">split_path &quot;../&quot;</code>
+ returns <code class="code">[&quot;..&quot;; &quot;&quot;]</code>.  The two will behave differently, for example
+ when used with  <a href="#Neturl.apply_relative_url">Neturl.apply_relative_url</a>.</div></div>
+<pre><span class="VALjoin_path"><span class="keyword">val</span> join_path</span> : <code class="type">string list -&gt; string</code></pre><div class="info"><div class="info">Concatenates the path components (reverse function of split_path).</div></div>
+<pre><span class="VALnorm_path"><span class="keyword">val</span> norm_path</span> : <code class="type">string list -&gt; string list</code></pre><div class="info"><div class="info">Removes <code class="code">&quot;.&quot;</code> and <code class="code">&quot;..&quot;</code> from the path if possible. Deletes double slashes.<br/> <b>Examples</b><br/> <ul><li><code class="code">norm_path [&quot;a&quot;; &quot;..&quot;] = []</code><br/>           means: &quot;a/..&quot; = &quot;&quot;</li><li><code class="code">norm_path [&quot;a&quot;; &quot;b&quot;; &quot;&quot;; &quot;..&quot;; &quot;c&quot;; &quot;&quot;] = [&quot;a&quot;; &quot;c&quot;; &quot;&quot;]</code><br/>           means: &quot;a/b//../c/&quot; = &quot;a/c/&quot;</li><li><code class="code">norm_path [&quot;&quot;;&quot;&quot;;&quot;a&quot;;&quot;&quot;;&quot;b&quot;] = [&quot;&quot;; &quot;a&quot;; &quot;b&quot;]</code><br/>           means: &quot;//a//b&quot; = &quot;/a/b&quot;</li><li><code class="code">norm_path [&quot;a&quot;; &quot;b&quot;; &quot;..&quot;; &quot;c&quot;; &quot;&quot;] = [&quot;a&quot;; &quot;c&quot;; &quot;&quot;]</code><br/>           means: &quot;a/b/../c/&quot; = &quot;a/c/&quot;</li><li><code class="code">norm_path [&quot;a&quot;; &quot;b&quot;; &quot;..&quot;; &quot;c&quot; ] = [&quot;a&quot;; &quot;c&quot;]</code><br/>           means: &quot;a/b/../c&quot; = &quot;a/c&quot;</li><li><code class="code">norm_path [&quot;..&quot;; &quot;&quot;] = [&quot;..&quot;; &quot;&quot;]</code><br/>           means: &quot;../&quot; = &quot;../&quot;</li><li><code class="code">norm_path [&quot;..&quot;] = [&quot;..&quot;; &quot;&quot;]</code><br/>           means: &quot;..&quot; = &quot;../&quot;</li><li><code class="code">norm_path [&quot;a&quot;; &quot;.&quot;; &quot;b&quot;; &quot;.&quot;] = [&quot;a&quot;; &quot;b&quot;; &quot;&quot;]</code><br/>           means: &quot;a/./b/.&quot; = &quot;a/b/&quot;</li><li><code class="code">norm_path [&quot;a&quot;; &quot;b&quot;; &quot;.&quot;] = [&quot;a&quot;; &quot;b&quot;; &quot;&quot;]</code><br/>           means: &quot;a/b/.&quot; = &quot;a/b/&quot;</li><li><code class="code">norm_path [&quot;a&quot;; &quot;.&quot;] = [&quot;a&quot;; &quot;&quot;]</code><br/>           means: &quot;a/.&quot; = &quot;a/&quot;</li><li><code class="code">norm_path [&quot;.&quot;; &quot;&quot;] = []</code><br/>           means: &quot;./&quot; = &quot;&quot;</li><li><code class="code">norm_path [&quot;.&quot;] = []</code><br/>           means: &quot;.&quot; = &quot;&quot;</li></ul></div></div>
+<pre><span class="VALapply_relative_url"><span class="keyword">val</span> apply_relative_url</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a></code></pre><div class="info"><div class="info"><code class="code">apply_relative_url base rel</code>:
+ Interprets <code class="code">rel</code> relative to <code class="code">base</code> and returns the new URL. This
+ function implements RFC 1808.<br/> It is not necessary that <code class="code">rel</code> has the same syntax as <code class="code">base</code>.
+ Note, however, that it is checked whether the resulting URL is
+ syntactically correct with the syntax of <code class="code">base</code>. If not, the
+ exception <code class="code">Malformed_URL</code> will be raised.<br/> Examples (the URLs are represented as strings, see  <a href="#Neturl.split_path">Neturl.split_path</a>
+ to split them for  <a href="#Neturl.make_url">Neturl.make_url</a>):<br/> base=&quot;x/y&quot;, url=&quot;a/b&quot; =&gt; result=&quot;x/a/b&quot;
+ base=&quot;x/y/&quot;, url=&quot;a/b&quot; =&gt; result=&quot;x/y/a/b&quot;
+ base=&quot;x/y/..&quot;, url=&quot;a/b&quot; =&gt; result=&quot;x/y/a/b&quot;   (beware!)
+ base=&quot;x/y/../&quot;, url=&quot;a/b&quot; =&gt; result=&quot;x/a/b&quot;</div></div>
+<pre><span class="VALensure_absolute_url"><span class="keyword">val</span> ensure_absolute_url</span> : <code class="type">?base:<a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a></code></pre><div class="info"><div class="info">If the anonymous URL is absolute, it is just returned as result of
+ this function. If the URL is relative, it is tried to make it
+ absolute by resolving it relative to <code class="code">base</code>. If there is no <code class="code">base</code>
+ or if the the base URL does not allow the parts that would be added
+ (e.g. if the anonymous URL possesses a fragment and <code class="code">base</code> does not
+ allow that), this will fail, and the function raises <code class="code">Malformed_URL</code>.</div></div>
+<pre><span class="VALfile_url_of_local_path"><span class="keyword">val</span> file_url_of_local_path</span> : <code class="type">?getcwd:(unit -&gt; string) -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a></code></pre><div class="info"><div class="info">Generates a URL with &quot;file&quot; scheme from the passed path name. The
+ URL is always absolute, i.e. the current directory is prepended if the
+ path is not absolute.<br/> Note that no character set conversions are performed.<br/> Win32: The input path name may use forward or backward slashes.
+ Absolute paths with drive letters and UNC paths are recognised.
+ Relative paths with drive letters, however, are not recognised
+ (e.g. <code class="code">&quot;c:file&quot;</code>), as it is not possible to access the drive-specific
+ working directory from the O'Caml runtime.<br/> Cygwin: The input path name may use forward or backward slashes.
+ Absolute paths with drive letters and UNC paths are recognised.
+ The former are translated to <code class="code">&quot;/cygdrive&quot;</code> names.<div class="parameters"><div class="param_info"><code class="code">getcwd</code> : The function returns the path taken as current working
+   directory. Note that for
+   Win32 this must be either an absolute name with drive letter,
+   or an UNC path. Default: <code class="code">Sys.getcwd</code></div></div></div></div>
+<pre><span class="VALlocal_path_of_file_url"><span class="keyword">val</span> local_path_of_file_url</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; string</code></pre><div class="info"><div class="info">Extracts the path from an absolute file URL, and returns a
+ correct path name.<br/> If the URL is not a file URL, or is not absolute, the function will
+ fail.<br/> Win32: The URL must either contain a drive letter, or must refer
+ to another host.<br/> Cygwin: Drive letters and remote URLs are recognised.</div></div>
+<pre><span class="VALprint_url"><span class="keyword">val</span> print_url</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Neturl&amp;type=url">url</a> -&gt; unit</code></pre><div class="info"><div class="info">Printer for the toploop.</div></div>
+</div>

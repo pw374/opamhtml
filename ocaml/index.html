@@ -1,0 +1,235 @@
+<h1>Modules</h1>
+<table class="indextable">
+    <tr><td class="module"><a href="?package=ocaml&amp;module=Arg">Arg</a></td><td><div class="info">Parsing of command line arguments.<br/>   This module provides a general mechanism for extracting options and
+   arguments from the command line to the program.<br/>   Syntax of command lines:
+    A keyword is a character string starting with a <code class="code">-</code>.
+    An option is a keyword alone or followed by an argument.
+    The types of keywords are: <code class="code">Unit</code>, <code class="code">Bool</code>, <code class="code">Set</code>, <code class="code">Clear</code>,
+    <code class="code">String</code>, <code class="code">Set_string</code>, <code class="code">Int</code>, <code class="code">Set_int</code>, <code class="code">Float</code>, <code class="code">Set_float</code>,
+    <code class="code">Tuple</code>, <code class="code">Symbol</code>, and <code class="code">Rest</code>.
+    <code class="code">Unit</code>, <code class="code">Set</code> and <code class="code">Clear</code> keywords take no argument. A <code class="code">Rest</code>
+    keyword takes the remaining of the command line as arguments.
+    Every other keyword takes the following word on the command line
+    as argument.
+    Arguments not preceded by a keyword are called anonymous arguments.<br/>   Examples (<code class="code">cmd</code> is assumed to be the command name):<ul><li>  <code class="code">cmd -flag           </code>(a unit option)</li><li>  <code class="code">cmd -int 1          </code>(an int option with argument <code class="code">1</code>)</li><li>  <code class="code">cmd -string foobar  </code>(a string option with argument <code class="code">&quot;foobar&quot;</code>)</li><li>  <code class="code">cmd -float 12.34    </code>(a float option with argument <code class="code">12.34</code>)</li><li>  <code class="code">cmd a b c           </code>(three anonymous arguments: <code class="code">&quot;a&quot;</code>, <code class="code">&quot;b&quot;</code>, and <code class="code">&quot;c&quot;</code>)</li><li>  <code class="code">cmd a b -- c d      </code>(two anonymous arguments and a rest option with
+                           two arguments)
+</li></ul></div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Arith_flags">Arith_flags</a></td><td/></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Arith_status">Arith_status</a></td><td><div class="info">Flags that control rational arithmetic.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Array">Array</a></td><td><div class="info">Array operations.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=ArrayLabels">ArrayLabels</a></td><td><div class="info">Array operations.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Big_int">Big_int</a></td><td><div class="info">Operations on arbitrary-precision integers.<br/>   Big integers (type <code class="code">big_int</code>) are signed integers of arbitrary size.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Bigarray">Bigarray</a></td><td><div class="info">Large, multi-dimensional, numerical arrays.<br/>   This module implements multi-dimensional arrays of integers and
+   floating-point numbers, thereafter referred to as 'big arrays'.
+   The implementation allows efficient sharing of large numerical
+   arrays between OCaml code and C or Fortran numerical libraries.<br/>   Concerning the naming conventions, users of this module are encouraged
+   to do <code class="code">open Bigarray</code> in their source, then refer to array types and
+   operations via short dot notation, e.g. <code class="code">Array1.t</code> or <code class="code">Array2.sub</code>.<br/>   Big arrays support all the OCaml ad-hoc polymorphic operations:<ul><li>comparisons (<code class="code">=</code>, <code class="code">&lt;&gt;</code>, <code class="code">&lt;=</code>, etc, as well as  <a href="#Pervasives.compare">Pervasives.compare</a>);</li><li>hashing (module <code class="code">Hash</code>);</li><li>and structured input-output (the functions from the
+      <a href="#Marshal">Marshal</a> module, as well as  <a href="#Pervasives.output_value">Pervasives.output_value</a>
+     and  <a href="#Pervasives.input_value">Pervasives.input_value</a>).
+</li></ul></div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Buffer">Buffer</a></td><td><div class="info">Extensible string buffers.<br/>   This module implements string buffers that automatically expand
+   as necessary.  It provides accumulative concatenation of strings
+   in quasi-linear time (instead of quadratic time when strings are
+   concatenated pairwise).</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Callback">Callback</a></td><td><div class="info">Registering OCaml values with the C runtime.<br/>   This module allows OCaml values to be registered with the C runtime
+   under a symbolic name, so that C code can later call back registered
+   OCaml functions, or raise registered OCaml exceptions.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=CamlinternalLazy">CamlinternalLazy</a></td><td><div class="info">Run-time support for lazy values.
+    All functions in this module are for system use only, not for the
+    casual user.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=CamlinternalMod">CamlinternalMod</a></td><td><div class="info">Run-time support for recursive modules.
+    All functions in this module are for system use only, not for the
+    casual user.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=CamlinternalOO">CamlinternalOO</a></td><td><div class="info">Run-time support for objects and classes.
+    All functions in this module are for system use only, not for the
+    casual user.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Char">Char</a></td><td><div class="info">Character operations.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Complex">Complex</a></td><td><div class="info">Complex numbers.<br/>    This module provides arithmetic operations on complex numbers.
+    Complex numbers are represented by their real and imaginary parts
+    (cartesian representation).  Each part is represented by a
+    double-precision floating-point number (type <code class="code">float</code>).</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Digest">Digest</a></td><td><div class="info">MD5 message digest.<br/>   This module provides functions to compute 128-bit 'digests' of
+   arbitrary-length strings or files. The digests are of cryptographic
+   quality: it is very hard, given a digest, to forge a string having
+   that digest. The algorithm used is MD5. This module should not be
+   used for secure and sensitive cryptographic applications. For these
+   kind of applications more recent and stronger cryptographic
+   primitives should be used instead.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Filename">Filename</a></td><td><div class="info">Operations on file names.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Format">Format</a></td><td/></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Gc">Gc</a></td><td><div class="info">Memory management control and statistics; finalised values.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Genlex">Genlex</a></td><td><div class="info">A generic lexical analyzer.<br/>   This module implements a simple 'standard' lexical analyzer, presented
+   as a function from character streams to token streams. It implements
+   roughly the lexical conventions of OCaml, but is parameterized by the
+   set of keywords of your language.<br/>   Example: a lexer suitable for a desk calculator is obtained by
+   <pre class="codepre"><code class="code">     let lexer = make_lexer [&quot;+&quot;;&quot;-&quot;;&quot;*&quot;;&quot;/&quot;;&quot;let&quot;;&quot;=&quot;; &quot;(&quot;; &quot;)&quot;]  </code></pre><br/>   The associated parser would be a function from <code class="code">token stream</code>
+   to, for instance, <code class="code">int</code>, and would have rules such as:<br/>   <pre class="codepre"><code class="code">
+           let rec parse_expr = parser
+             | [&lt; n1 = parse_atom; n2 = parse_remainder n1 &gt;] -&gt; n2
+           and parse_atom = parser
+             | [&lt; 'Int n &gt;] -&gt; n
+             | [&lt; 'Kwd &quot;(&quot;; n = parse_expr; 'Kwd &quot;)&quot; &gt;] -&gt; n
+           and parse_remainder n1 = parser
+             | [&lt; 'Kwd &quot;+&quot;; n2 = parse_expr &gt;] -&gt; n1+n2
+             | [&lt; &gt;] -&gt; n1
+   </code></pre><br/>   One should notice that the use of the <code class="code">parser</code> keyword and associated
+   notation for streams are only available through camlp4 extensions. This
+   means that one has to preprocess its sources <i>e. g.</i> by using the
+   <code class="code">&quot;-pp&quot;</code> command-line switch of the compilers.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Graphics">Graphics</a></td><td><div class="info">Machine-independent graphics primitives.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=GraphicsX11">GraphicsX11</a></td><td><div class="info">Additional graphics primitives for the X Windows system.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Hashtbl">Hashtbl</a></td><td><div class="info">Hash tables and hash functions.<br/>   Hash tables are hashed association tables, with in-place modification.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Int32">Int32</a></td><td><div class="info">32-bit integers.<br/>   This module provides operations on the type <code class="code">int32</code>
+   of signed 32-bit integers.  Unlike the built-in <code class="code">int</code> type,
+   the type <code class="code">int32</code> is guaranteed to be exactly 32-bit wide on all
+   platforms.  All arithmetic operations over <code class="code">int32</code> are taken
+   modulo 2<sup class="superscript">32</sup>.<br/>   Performance notice: values of type <code class="code">int32</code> occupy more memory
+   space than values of type <code class="code">int</code>, and arithmetic operations on
+   <code class="code">int32</code> are generally slower than those on <code class="code">int</code>.  Use <code class="code">int32</code>
+   only when the application requires exact 32-bit arithmetic.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Int64">Int64</a></td><td><div class="info">64-bit integers.<br/>   This module provides operations on the type <code class="code">int64</code> of
+   signed 64-bit integers.  Unlike the built-in <code class="code">int</code> type,
+   the type <code class="code">int64</code> is guaranteed to be exactly 64-bit wide on all
+   platforms.  All arithmetic operations over <code class="code">int64</code> are taken
+   modulo 2<sup class="superscript">64</sup><br/>   Performance notice: values of type <code class="code">int64</code> occupy more memory
+   space than values of type <code class="code">int</code>, and arithmetic operations on
+   <code class="code">int64</code> are generally slower than those on <code class="code">int</code>.  Use <code class="code">int64</code>
+   only when the application requires exact 64-bit arithmetic.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Int_misc">Int_misc</a></td><td/></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Lazy">Lazy</a></td><td><div class="info">Deferred computations.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Lexing">Lexing</a></td><td><div class="info">The run-time library for lexers generated by <code class="code">ocamllex</code>.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=List">List</a></td><td><div class="info">List operations.<br/>   Some functions are flagged as not tail-recursive.  A tail-recursive
+   function uses constant stack space, while a non-tail-recursive function
+   uses stack space proportional to the length of its list argument, which
+   can be a problem with very long lists.  When the function takes several
+   list arguments, an approximate formula giving stack usage (in some
+   unspecified constant unit) is shown in parentheses.<br/>   The above considerations can usually be ignored if your lists are not
+   longer than about 10000 elements.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=ListLabels">ListLabels</a></td><td><div class="info">List operations.<br/>   Some functions are flagged as not tail-recursive.  A tail-recursive
+   function uses constant stack space, while a non-tail-recursive function
+   uses stack space proportional to the length of its list argument, which
+   can be a problem with very long lists.  When the function takes several
+   list arguments, an approximate formula giving stack usage (in some
+   unspecified constant unit) is shown in parentheses.<br/>   The above considerations can usually be ignored if your lists are not
+   longer than about 10000 elements.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Map">Map</a></td><td><div class="info">Association tables over ordered types.<br/>   This module implements applicative association tables, also known as
+   finite maps or dictionaries, given a total ordering function
+   over the keys.
+   All operations over maps are purely applicative (no side-effects).
+   The implementation uses balanced binary trees, and therefore searching
+   and insertion take time logarithmic in the size of the map.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Marshal">Marshal</a></td><td><div class="info">Marshaling of data structures.<br/>   This module provides functions to encode arbitrary data structures
+   as sequences of bytes, which can then be written on a file or
+   sent over a pipe or network connection.  The bytes can then
+   be read back later, possibly in another process, and decoded back
+   into a data structure. The format for the byte sequences
+   is compatible across all machines for a given version of OCaml.<br/>   Warning: marshaling is currently not type-safe. The type
+   of marshaled data is not transmitted along the value of the data,
+   making it impossible to check that the data read back possesses the
+   type expected by the context. In particular, the result type of
+   the <code class="code">Marshal.from_*</code> functions is given as <code class="code">'a</code>, but this is
+   misleading: the returned OCaml value does not possess type <code class="code">'a</code>
+   for all <code class="code">'a</code>; it has one, unique type which cannot be determined
+   at compile-type.  The programmer should explicitly give the expected
+   type of the returned value, using the following syntax:<ul><li><code class="code">(Marshal.from_channel chan : type)</code>.
+   Anything can happen at run-time if the object in the file does not
+   belong to the given type.</li></ul>   OCaml exception values (of type <code class="code">exn</code>) returned by the unmarhsaller
+   should not be pattern-matched over through <code class="code">match ... with</code> or <code class="code">try
+   ... with</code>, because unmarshalling does not preserve the information
+   required for matching their exception constructor. Structural
+   equalities with other exception values, or most other uses such as
+   Printexc.to_string, will still work as expected.<br/>   The representation of marshaled values is not human-readable,
+   and uses bytes that are not printable characters. Therefore,
+   input and output channels used in conjunction with <code class="code">Marshal.to_channel</code>
+   and <code class="code">Marshal.from_channel</code> must be opened in binary mode, using e.g.
+   <code class="code">open_out_bin</code> or <code class="code">open_in_bin</code>; channels opened in text mode will
+   cause unmarshaling errors on platforms where text channels behave
+   differently than binary channels, e.g. Windows.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=MoreLabels">MoreLabels</a></td><td><div class="info">Extra labeled libraries.<br/>   This meta-module provides labelized version of the  <a href="#Hashtbl">Hashtbl</a>,
+    <a href="#Map">Map</a> and  <a href="#Set">Set</a> modules.<br/>   They only differ by their labels. They are provided to help
+   porting from previous versions of OCaml.
+   The contents of this module are subject to change.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Nat">Nat</a></td><td/></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Nativeint">Nativeint</a></td><td><div class="info">Processor-native integers.<br/>   This module provides operations on the type <code class="code">nativeint</code> of
+   signed 32-bit integers (on 32-bit platforms) or
+   signed 64-bit integers (on 64-bit platforms).
+   This integer type has exactly the same width as that of a <code class="code">long</code>
+   integer type in the C compiler.  All arithmetic operations over
+   <code class="code">nativeint</code> are taken modulo 2<sup class="superscript">32</sup> or 2<sup class="superscript">64</sup> depending
+   on the word size of the architecture.<br/>   Performance notice: values of type <code class="code">nativeint</code> occupy more memory
+   space than values of type <code class="code">int</code>, and arithmetic operations on
+   <code class="code">nativeint</code> are generally slower than those on <code class="code">int</code>.  Use <code class="code">nativeint</code>
+   only when the application requires the extra bit of precision
+   over the <code class="code">int</code> type.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Num">Num</a></td><td><div class="info">Operation on arbitrary-precision numbers.<br/>   Numbers (type <code class="code">num</code>) are arbitrary-precision rational numbers,
+   plus the special elements <code class="code">1/0</code> (infinity) and <code class="code">0/0</code> (undefined).</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Obj">Obj</a></td><td><div class="info">Operations on internal representations of values.<br/>   Not for the casual user.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Oo">Oo</a></td><td><div class="info">Operations on objects</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Parsing">Parsing</a></td><td><div class="info">The run-time library for parsers generated by <code class="code">ocamlyacc</code>.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Pervasives">Pervasives</a></td><td><div class="info">The initially opened module.<br/>   This module provides the basic operations over the built-in types
+   (numbers, booleans, strings, exceptions, references, lists, arrays,
+   input-output channels, ...).<br/>   This module is automatically opened at the beginning of each compilation.
+   All components of this module can therefore be referred by their short
+   name, without prefixing them by <code class="code">Pervasives</code>.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Printexc">Printexc</a></td><td><div class="info">Facilities for printing exceptions and inspecting current call stack.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Printf">Printf</a></td><td><div class="info">Formatted output functions.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Queue">Queue</a></td><td><div class="info">First-in first-out queues.<br/>   This module implements queues (FIFOs), with in-place modification.<br/>   <b>Warning</b> This module is not thread-safe: each  <a href="#Queue.t">Queue.t</a> value
+   must be protected from concurrent access (e.g. with a  <a href="#Mutex.t">Mutex.t</a>).
+   Failure to do so can lead to a crash.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Random">Random</a></td><td><div class="info">Pseudo-random number generators (PRNG).</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Ratio">Ratio</a></td><td><div class="info">Operation on rational numbers.<br/>    This module is used to support the implementation of  <a href="#Num">Num</a> and
+    should not be called directly.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Scanf">Scanf</a></td><td><div class="info">Formatted input functions.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Set">Set</a></td><td><div class="info">Sets over ordered types.<br/>   This module implements the set data structure, given a total ordering
+   function over the set elements. All operations over sets
+   are purely applicative (no side-effects).
+   The implementation uses balanced binary trees, and is therefore
+   reasonably efficient: insertion and membership take time
+   logarithmic in the size of the set, for instance.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Sort">Sort</a></td><td><div class="info">Sorting and merging lists.<span class="warning">Deprecated.</span> This module is obsolete and exists only for backward
+   compatibility.
+   The sorting functions in  <a href="#Array">Array</a> and  <a href="#List">List</a> should be used instead.
+   The new functions are faster and use less memory.<br/></div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Stack">Stack</a></td><td><div class="info">Last-in first-out stacks.<br/>   This module implements stacks (LIFOs), with in-place modification.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=StdLabels">StdLabels</a></td><td><div class="info">Standard labeled libraries.<br/>   This meta-module provides labelized version of the  <a href="#Array">Array</a>,
+    <a href="#List">List</a> and  <a href="#String">String</a> modules.<br/>   They only differ by their labels. Detailed interfaces can be found
+   in <code class="code">arrayLabels.mli</code>, <code class="code">listLabels.mli</code> and <code class="code">stringLabels.mli</code>.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Std_exit">Std_exit</a></td><td/></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Str">Str</a></td><td><div class="info">Regular expressions and high-level string processing</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Stream">Stream</a></td><td><div class="info">Streams and parsers.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=String">String</a></td><td><div class="info">String operations.<br/>  Given a string <code class="code">s</code> of length <code class="code">l</code>, we call character number in <code class="code">s</code>
+  the index of a character in <code class="code">s</code>.  Indexes start at <code class="code">0</code>, and we will
+  call a character number valid in <code class="code">s</code> if it falls within the range
+  <code class="code">[0...l-1]</code>. A position is the point between two characters or at
+  the beginning or end of the string.  We call a position valid
+  in <code class="code">s</code> if it falls within the range <code class="code">[0...l]</code>. Note that character
+  number <code class="code">n</code> is between positions <code class="code">n</code> and <code class="code">n+1</code>.<br/>  Two parameters <code class="code">start</code> and <code class="code">len</code> are said to designate a valid
+  substring of <code class="code">s</code> if <code class="code">len &gt;= 0</code> and <code class="code">start</code> and <code class="code">start+len</code> are
+  valid positions in <code class="code">s</code>.<br/>  OCaml strings can be modified in place, for instance via the
+   <a href="#String.set">String.set</a> and  <a href="#String.blit">String.blit</a> functions described below.  This
+  possibility should be used rarely and with much care, however, since
+  both the OCaml compiler and most OCaml libraries share strings as if
+  they were immutable, rather than copying them.  In particular,
+  string literals are shared: a single copy of the string is created
+  at program loading time and returned by all evaluations of the
+  string literal.  Consider for example:<br/>  <pre class="codepre"><code class="code">
+      # let f () = &quot;foo&quot;;;
+      val f : unit -&gt; string = &lt;fun&gt;
+      # (f ()).[0] &lt;- 'b';;
+      - : unit = ()
+      # f ();;
+      - : string = &quot;boo&quot;
+  </code></pre><br/>  Likewise, many functions from the standard library can return string
+  literals or one of their string arguments.  Therefore, the returned strings
+  must not be modified directly.  If mutation is absolutely necessary,
+  it should be performed on a fresh copy of the string, as produced by
+   <a href="#String.copy">String.copy</a>.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=StringLabels">StringLabels</a></td><td><div class="info">String operations.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Sys">Sys</a></td><td><div class="info">System interface.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Unix">Unix</a></td><td><div class="info">Interface to the Unix system</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=UnixLabels">UnixLabels</a></td><td><div class="info">Interface to the Unix system.
+   To use as replacement to default  <a href="#Unix">Unix</a> module,
+   add <code class="code">module Unix = UnixLabels</code> in your implementation.</div></td></tr>
+<tr><td class="module"><a href="?package=ocaml&amp;module=Weak">Weak</a></td><td><div class="info">Arrays of weak pointers and hash tables of weak pointers.</div></td></tr>
+</table>

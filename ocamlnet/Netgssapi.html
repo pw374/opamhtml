@@ -1,0 +1,404 @@
+<div class="ocaml_toplevel_module"><div class="info">GSS-API Definition</div>
+<div class="info"><div class="info">This is mainly a translation of RFC 2743/2744 to Ocaml.</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Types</h2></div></div>
+<pre><span class="TYPEoid"><span class="keyword">type</span> oid</span> = <code class="type">int array</code></pre><div class="info"><div class="info">OIDs like &quot;1.3.6.1.5.6.2&quot; as array of int's. The empty array
+	means <code class="code">GSS_C_NO_OID</code>.</div></div>
+<pre><span class="TYPEoid_set"><span class="keyword">type</span> oid_set</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a> list</code></pre><div class="info"><div class="info">A set of OID's. These lists should not contain OID's twice.
+	The empty list means <code class="code">GSS_C_NO_OID_SET</code>.</div></div>
+<pre><span class="TYPEcredential"><span class="keyword">type</span> credential</span> = <code class="type">&lt; otype : [ `Credential ] &gt;</code></pre><div class="info"><div class="info">A credential is opaque for the caller of the GSS-API.
+	The provider of the GSS-API can emit new credential objects,
+	and hand them out to the caller. When the caller passes 
+	credentials back to the provider, the provider must check
+	whether the object is known, and reject any fake objects
+	created by the caller by raising <code class="code">Invalid_argument</code>.</div></div>
+<pre><span class="TYPEcontext"><span class="keyword">type</span> context</span> = <code class="type">&lt; otype : [ `Context ]; valid : bool &gt;</code></pre><div class="info"><div class="info">A context is also opaque, and the same rules apply as for
+	<code class="code">credential</code>.<br/>	The method <code class="code">valid</code> is true as long as the context is not
+	deleted.</div></div>
+<pre><span class="TYPEtoken"><span class="keyword">type</span> token</span> = <code class="type">string</code></pre><div class="info"><div class="info">Authentication tokens. These are also opaque to the caller,
+	but have a string representation so that they can be sent
+	over the wire.</div></div>
+<pre><span class="TYPEinterprocess_token"><span class="keyword">type</span> interprocess_token</span> = <code class="type">string</code></pre><div class="info"><div class="info">Interprocess tokens. These are also opaque to the caller,
+	but have a string representation so that they can be sent
+	over the wire.</div></div>
+<pre><span class="TYPEcalling_error"><span class="keyword">type</span> calling_error</span> = <code class="type">[ `Bad_structure | `Inaccessible_read | `Inaccessible_write | `None ]</code></pre><div class="info"><div class="info">Possible errors caused by the caller</div></div>
+<pre><span class="TYPEroutine_error"><span class="keyword">type</span> routine_error</span> = <code class="type">[ `Bad_QOP
+| `Bad_bindings
+| `Bad_mech
+| `Bad_mic
+| `Bad_name
+| `Bad_nametype
+| `Bad_status
+| `Context_expired
+| `Credentials_expired
+| `Defective_credential
+| `Defective_token
+| `Duplicate_element
+| `Failure
+| `Name_not_mn
+| `No_context
+| `No_cred
+| `None
+| `Unauthorized
+| `Unavailable ]</code></pre><div class="info"><div class="info">Possible errors caused by the provider</div></div>
+<pre><span class="TYPEsuppl_status"><span class="keyword">type</span> suppl_status</span> = <code class="type">[ `Continue_needed
+| `Duplicate_token
+| `Gap_token
+| `Old_token
+| `Unseq_token ]</code></pre><div class="info"><div class="info">Further flags</div></div>
+<pre><span class="TYPEmajor_status"><span class="keyword">type</span> major_status</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=calling_error">calling_error</a> * <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=routine_error">routine_error</a> * <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=suppl_status">suppl_status</a> list</code></pre><div class="info"><div class="info">The major status consists of these three elements. The bits of the
+	supplementary status field are represented as list</div></div>
+<pre><span class="TYPEminor_status"><span class="keyword">type</span> minor_status</span> = <code class="type">int32</code></pre><div class="info"><div class="info">The minor status is provider-specific. Note that GSS-API defines
+	it as <b>unsigned</b> 32-bit integer whereas <code class="code">int32</code> is signed.</div></div>
+<pre><span class="TYPEname"><span class="keyword">type</span> name</span> = <code class="type">&lt; otype : [ `Name ] &gt;</code></pre><div class="info"><div class="info">A name is also opaque, and the same rules apply as for
+	<code class="code">credential</code>.</div></div>
+<pre><span class="TYPEaddress"><span class="keyword">type</span> address</span> = <code class="type">[ `Inet of <a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a>
+| `Local of string
+| `Nulladdr
+| `Other of int32 * string
+| `Unspecified of string ]</code></pre><div class="info"><div class="info">Addresses tagged by address types</div></div>
+<pre><span class="TYPEchannel_bindings"><span class="keyword">type</span> channel_bindings</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=address">address</a> * <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=address">address</a> * string</code></pre><div class="info"><div class="info">Channel binding as tuple
+	<code class="code">(initiator_address, acceptor_address, application_data)</code></div></div>
+<pre><span class="TYPEcred_usage"><span class="keyword">type</span> cred_usage</span> = <code class="type">[ `Accept | `Both | `Initiate ]</code></pre>
+<pre><span class="TYPEqop"><span class="keyword">type</span> qop</span> = <code class="type">&lt; otype : [ `QOP ] &gt;</code></pre><div class="info"><div class="info">Quality-of-proctection parameters are mechanism-specific</div></div>
+<pre><span class="TYPEmessage"><span class="keyword">type</span> message</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring">Xdr_mstring.mstring</a> list</code></pre><div class="info"><div class="info">Messages are represented as lists of <code class="code">mstring</code></div></div>
+<pre><span class="TYPEret_flag"><span class="keyword">type</span> ret_flag</span> = <code class="type">[ `Anon_flag
+| `Conf_flag
+| `Deleg_flag
+| `Integ_flag
+| `Mutual_flag
+| `Prot_ready_flag
+| `Replay_flag
+| `Sequence_flag
+| `Trans_flag ]</code></pre><div class="info"><div class="info">Flags for the <code class="code">accept_sec_context</code> method</div></div>
+<pre><span class="TYPEreq_flag"><span class="keyword">type</span> req_flag</span> = <code class="type">[ `Anon_flag
+| `Conf_flag
+| `Deleg_flag
+| `Integ_flag
+| `Mutual_flag
+| `Replay_flag
+| `Sequence_flag ]</code></pre><div class="info"><div class="info">Flags for the <code class="code">init_sec_context</code> method</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Exceptions</h2></div></div>
+<div class="info"><div class="info">There are no defined exceptions.<br/>    Errors should be reported using the <code class="code">major_status</code> and <code class="code">minor_status</code>
+    codes as much as possible.<br/>    <code class="code">Invalid_argument</code> may be raised for clear violations of calling
+    requirements, e.g. when an opaque object is passed to this interface
+    that was not returned by it before.</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">The API</h2></div></div>
+<div class="info"><div class="info">The methods have generally a type of the form<br/>    <pre class="codepre"><code class="code"> 
+       m : 't . arg1 -&gt; ... -&gt; argN -&gt; out:( ret1 -&gt; ... -&gt; retM -&gt; 't ) -&gt; 't 
+    </code></pre><br/>    where <code class="code">arg</code>s are input arguments (with the exception of <code class="code">context</code> 
+    which is in/out), and where outputs are passed back by calling the <code class="code">out</code>
+    functions with the outputs. The return value of <code class="code">out</code> is the return
+    value of the method call.<br/>    For example, if only <code class="code">output_token</code> of the <code class="code">accept_sec_context</code> method
+    is needed, one could call this method as in<br/>    <pre class="codepre"><code class="code">
+      let output_token =
+	gss_api # accept_sec_context 
+	   ... 
+	   ~out:(fun ~src_name ~mech_type ~output_token ~ret_flags
+		     ~time_rec ~delegated_cred_handle ~minor_status
+		     ~major_status -&gt;
+		  output_token
+		)
+    </code></pre><br/>    Output values may not be defined when <code class="code">major_status</code> indicates
+    an error. (But see the RFC for details; especially <code class="code">init_sec_contect</code>
+    and <code class="code">accept_sec_context</code> may emit tokens even when <code class="code">major_status</code>
+    indicates an error.)<br/>    The names of the parameters are taken from RFC 2744, only
+    suffixes like <code class="code">_handle</code> have been removed. When the prefixes
+    <code class="code">input_</code> and <code class="code">output_</code> are meaningless, they are also removed.
+    All prefixes like &quot;GSS&quot; are removed anyway.</div></div>
+<div class="ocaml_class sig" name="gss_api"><pre><span class="TYPEgss_api"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netgssapi&amp;class=gss_api">gss_api</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><pre><span class="METHODprovider"><span class="keyword">method</span> provider</span> : <code class="code">string</code></pre>
+<div class="info"><div class="info">A string name identifying the provider</div></div>
+<pre><span class="METHODno_credential"><span class="keyword">method</span> no_credential</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=credential">credential</a></code></pre>
+<div class="info"><div class="info">A substitute credential for <code class="code">GSS_C_NO_CREDENTIAL</code></div></div>
+<pre><span class="METHODno_name"><span class="keyword">method</span> no_name</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=name">name</a></code></pre>
+<div class="info"><div class="info">A substitute name for <code class="code">GSS_C_NO_NAME</code></div></div>
+<pre><span class="METHODaccept_sec_context"><span class="keyword">method</span> accept_sec_context</span> : <code class="code">'t.
+  context:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=context">context</a> option -&gt;
+  acceptor_cred:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=credential">credential</a> -&gt;
+  input_token:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=token">token</a> -&gt;
+  chan_bindings:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=channel_bindings">channel_bindings</a> option -&gt;
+  out:(src_name:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=name">name</a> -&gt;
+       mech_type:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a> -&gt;
+       output_context:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=context">context</a> option -&gt;
+       output_token:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=token">token</a> -&gt;
+       ret_flags:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=ret_flag">ret_flag</a> list -&gt;
+       time_rec:[ `Indefinite | `This of float ] -&gt;
+       delegated_cred:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=credential">credential</a> -&gt;
+       minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+<div class="info"><div class="info">On the first call, pass <code class="code">~context:None</code>. If successful, the
+	function outputs a non-None <code class="code">~output_context</code> which should be
+	passed as new <code class="code">~context</code> in follow-up calls.<br/>	If the <code class="code">output_token</code> is non-empty, it must be transmitted to
+	the peer - independent of the <code class="code">major_status</code>.</div></div>
+<pre><span class="METHODacquire_cred"><span class="keyword">method</span> acquire_cred</span> : <code class="code">'t.
+  desired_name:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=name">name</a> -&gt;
+  time_req:[ `Indefinite | `None | `This of float ] -&gt;
+  desired_mechs:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid_set">oid_set</a> -&gt;
+  cred_usage:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=cred_usage">cred_usage</a> -&gt;
+  out:(cred:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=credential">credential</a> -&gt;
+       actual_mechs:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid_set">oid_set</a> -&gt;
+       time_rec:[ `Indefinite | `This of float ] -&gt;
+       minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+
+<pre><span class="METHODadd_cred"><span class="keyword">method</span> add_cred</span> : <code class="code">'t.
+  input_cred:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=credential">credential</a> -&gt;
+  desired_name:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=name">name</a> -&gt;
+  desired_mech:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a> -&gt;
+  cred_usage:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=cred_usage">cred_usage</a> -&gt;
+  initiator_time_req:[ `Indefinite | `None | `This of float ] -&gt;
+  acceptor_time_req:[ `Indefinite | `None | `This of float ] -&gt;
+  out:(output_cred:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=credential">credential</a> -&gt;
+       actual_mechs:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid_set">oid_set</a> -&gt;
+       initiator_time_rec:[ `Indefinite | `This of float ] -&gt;
+       acceptor_time_rec:[ `Indefinite | `This of float ] -&gt;
+       minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+
+<pre><span class="METHODcanonicalize_name"><span class="keyword">method</span> canonicalize_name</span> : <code class="code">'t.
+  input_name:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=name">name</a> -&gt;
+  mech_type:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a> -&gt;
+  out:(output_name:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=name">name</a> -&gt;
+       minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+
+<pre><span class="METHODcompare_name"><span class="keyword">method</span> compare_name</span> : <code class="code">'t.
+  name1:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=name">name</a> -&gt;
+  name2:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=name">name</a> -&gt;
+  out:(name_equal:bool -&gt;
+       minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+
+<pre><span class="METHODcontext_time"><span class="keyword">method</span> context_time</span> : <code class="code">'t.
+  context:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=context">context</a> -&gt;
+  out:(time_rec:[ `Indefinite | `This of float ] -&gt;
+       minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+
+<pre><span class="METHODdelete_sec_context"><span class="keyword">method</span> delete_sec_context</span> : <code class="code">'t.
+  context:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=context">context</a> -&gt;
+  out:(minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+<div class="info"><div class="info">Output tokens are not supported (this is a deprecated feature of
+	 GSSAPI)</div></div>
+<pre><span class="METHODdisplay_name"><span class="keyword">method</span> display_name</span> : <code class="code">'t.
+  input_name:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=name">name</a> -&gt;
+  out:(output_name:string -&gt;
+       output_name_type:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a> -&gt;
+       minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+
+<pre><span class="METHODdisplay_minor_status"><span class="keyword">method</span> display_minor_status</span> : <code class="code">'t.
+  minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt;
+  mech_type:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a> -&gt;
+  out:(status_strings:string list -&gt;
+       minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+<div class="info"><div class="info">Note that <code class="code">display_minor_status</code> decodes all status value parts in
+	one step and returns the result as <code class="code">string list</code>. Also, this
+	method is restricted to decoding minor statuses</div></div>
+<pre><span class="METHODexport_name"><span class="keyword">method</span> export_name</span> : <code class="code">'t.
+  name:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=name">name</a> -&gt;
+  out:(exported_name:string -&gt;
+       minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+
+<pre><span class="METHODexport_sec_context"><span class="keyword">method</span> export_sec_context</span> : <code class="code">'t.
+  context:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=context">context</a> -&gt;
+  out:(interprocess_token:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=interprocess_token">interprocess_token</a> -&gt;
+       minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+
+<pre><span class="METHODget_mic"><span class="keyword">method</span> get_mic</span> : <code class="code">'t.
+  context:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=context">context</a> -&gt;
+  qop_req:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=qop">qop</a> option -&gt;
+  message:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt;
+  out:(msg_token:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=token">token</a> -&gt;
+       minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+
+<pre><span class="METHODimport_name"><span class="keyword">method</span> import_name</span> : <code class="code">'t.
+  input_name:string -&gt;
+  input_name_type:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a> -&gt;
+  out:(output_name:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=name">name</a> -&gt;
+       minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+
+<pre><span class="METHODimport_sec_context"><span class="keyword">method</span> import_sec_context</span> : <code class="code">'t.
+  interprocess_token:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=interprocess_token">interprocess_token</a> -&gt;
+  out:(context:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=context">context</a> option -&gt;
+       minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+
+<pre><span class="METHODindicate_mechs"><span class="keyword">method</span> indicate_mechs</span> : <code class="code">'t.
+  out:(mech_set:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid_set">oid_set</a> -&gt;
+       minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+
+<pre><span class="METHODinit_sec_context"><span class="keyword">method</span> init_sec_context</span> : <code class="code">'t.
+  initiator_cred:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=credential">credential</a> -&gt;
+  context:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=context">context</a> option -&gt;
+  target_name:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=name">name</a> -&gt;
+  mech_type:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a> -&gt;
+  req_flags:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=req_flag">req_flag</a> list -&gt;
+  time_rec:float option -&gt;
+  chan_bindings:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=channel_bindings">channel_bindings</a> option -&gt;
+  input_token:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=token">token</a> option -&gt;
+  out:(actual_mech_type:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a> -&gt;
+       output_context:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=context">context</a> option -&gt;
+       output_token:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=token">token</a> -&gt;
+       ret_flags:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=ret_flag">ret_flag</a> list -&gt;
+       time_rec:[ `Indefinite | `This of float ] -&gt;
+       minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+<div class="info"><div class="info">On the first call, pass <code class="code">~context:None</code>. If successful, the
+	function outputs a non-None <code class="code">~output_context</code> which should be
+	passed as new <code class="code">~context</code> in follow-up calls.<br/>	If the <code class="code">output_token</code> is non-empty, it must be transmitted to
+	the peer - independent of the <code class="code">major_status</code>.</div></div>
+<pre><span class="METHODinquire_context"><span class="keyword">method</span> inquire_context</span> : <code class="code">'t.
+  context:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=context">context</a> -&gt;
+  out:(src_name:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=name">name</a> -&gt;
+       targ_name:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=name">name</a> -&gt;
+       lifetime_req:[ `Indefinite | `This of float ] -&gt;
+       mech_type:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a> -&gt;
+       ctx_flags:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=ret_flag">ret_flag</a> list -&gt;
+       locally_initiated:bool -&gt;
+       is_open:bool -&gt;
+       minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+
+<pre><span class="METHODinquire_cred"><span class="keyword">method</span> inquire_cred</span> : <code class="code">'t.
+  cred:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=credential">credential</a> -&gt;
+  out:(name:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=name">name</a> -&gt;
+       lifetime:[ `Indefinite | `This of float ] -&gt;
+       cred_usage:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=cred_usage">cred_usage</a> -&gt;
+       mechanisms:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid_set">oid_set</a> -&gt;
+       minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+
+<pre><span class="METHODinquire_cred_by_mech"><span class="keyword">method</span> inquire_cred_by_mech</span> : <code class="code">'t.
+  cred:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=credential">credential</a> -&gt;
+  mech_type:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a> -&gt;
+  out:(name:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=name">name</a> -&gt;
+       initiator_lifetime:[ `Indefinite | `This of float ] -&gt;
+       acceptor_lifetime:[ `Indefinite | `This of float ] -&gt;
+       cred_usage:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=cred_usage">cred_usage</a> -&gt;
+       minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+
+<pre><span class="METHODinquire_mechs_for_name"><span class="keyword">method</span> inquire_mechs_for_name</span> : <code class="code">'t.
+  name:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=name">name</a> -&gt;
+  out:(mech_types:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid_set">oid_set</a> -&gt;
+       minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+
+<pre><span class="METHODinquire_names_for_mech"><span class="keyword">method</span> inquire_names_for_mech</span> : <code class="code">'t.
+  mechanism:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a> -&gt;
+  out:(name_types:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid_set">oid_set</a> -&gt;
+       minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+
+<pre><span class="METHODprocess_context_token"><span class="keyword">method</span> process_context_token</span> : <code class="code">'t.
+  context:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=context">context</a> -&gt;
+  token:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=token">token</a> -&gt;
+  out:(minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+
+<pre><span class="METHODunwrap"><span class="keyword">method</span> unwrap</span> : <code class="code">'t.
+  context:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=context">context</a> -&gt;
+  input_message:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt;
+  output_message_preferred_type:[ `Memory | `String ] -&gt;
+  out:(output_message:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt;
+       conf_state:bool -&gt;
+       qop_state:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=qop">qop</a> -&gt;
+       minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+<div class="info"><div class="info">Note that the <code class="code">output_message</code> can be a buffer of different type
+	(string vs. bigarray) than <code class="code">input_message</code>. In 
+	<code class="code">output_message_preferred_type</code> the called may wish a certain
+	representation. It is, however, not ensured that the wish is
+	granted.</div></div>
+<pre><span class="METHODverify_mic"><span class="keyword">method</span> verify_mic</span> : <code class="code">'t.
+  context:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=context">context</a> -&gt;
+  message:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt;
+  token:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=token">token</a> -&gt;
+  out:(qop_state:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=qop">qop</a> -&gt;
+       minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+
+<pre><span class="METHODwrap"><span class="keyword">method</span> wrap</span> : <code class="code">'t.
+  context:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=context">context</a> -&gt;
+  conf_req:bool -&gt;
+  qop_req:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=qop">qop</a> option -&gt;
+  input_message:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt;
+  output_message_preferred_type:[ `Memory | `String ] -&gt;
+  out:(conf_state:bool -&gt;
+       output_message:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt;
+       minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+<div class="info"><div class="info"><code class="code">output_message_preferred_type</code>: see <code class="code">unwrap</code></div></div>
+<pre><span class="METHODwrap_size_limit"><span class="keyword">method</span> wrap_size_limit</span> : <code class="code">'t.
+  context:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=context">context</a> -&gt;
+  conf_req:bool -&gt;
+  qop_req:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=qop">qop</a> option -&gt;
+  req_output_size:int -&gt;
+  out:(max_input_size:int -&gt;
+       minor_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=minor_status">minor_status</a> -&gt; major_status:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; unit -&gt; 't) -&gt;
+  unit -&gt; 't</code></pre>
+</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Utility functions</h2></div></div>
+<div class="info"><div class="info">These functions convert values to strings. Useful for generating
+    log messages.</div></div>
+<pre><span class="VALstring_of_calling_error"><span class="keyword">val</span> string_of_calling_error</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=calling_error">calling_error</a> -&gt; string</code></pre>
+<pre><span class="VALstring_of_routine_error"><span class="keyword">val</span> string_of_routine_error</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=routine_error">routine_error</a> -&gt; string</code></pre>
+<pre><span class="VALstring_of_suppl_status"><span class="keyword">val</span> string_of_suppl_status</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=suppl_status">suppl_status</a> -&gt; string</code></pre>
+<pre><span class="VALstring_of_major_status"><span class="keyword">val</span> string_of_major_status</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=major_status">major_status</a> -&gt; string</code></pre>
+<div class="info"><div class="info"><h2 id="2_TITLE">Common OID's for name types</h2></div></div>
+<div class="info"><div class="info">See RFC 2078, section 4</div></div>
+<pre><span class="VALnt_hostbased_service"><span class="keyword">val</span> nt_hostbased_service</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a></code></pre><div class="info"><div class="info">names like &quot;service</div></div>
+<pre><span class="VALnt_user_name"><span class="keyword">val</span> nt_user_name</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a></code></pre><div class="info"><div class="info">names like &quot;username&quot;</div></div>
+<pre><span class="VALnt_machine_uid_name"><span class="keyword">val</span> nt_machine_uid_name</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a></code></pre><div class="info"><div class="info">user ID in host byte order</div></div>
+<pre><span class="VALnt_string_uid_name"><span class="keyword">val</span> nt_string_uid_name</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a></code></pre><div class="info"><div class="info">user ID as string of digits</div></div>
+<pre><span class="VALnt_anonymous"><span class="keyword">val</span> nt_anonymous</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a></code></pre><div class="info"><div class="info">anonymous name</div></div>
+<pre><span class="VALnt_export_name"><span class="keyword">val</span> nt_export_name</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a></code></pre><div class="info"><div class="info">an export name</div></div>
+<pre><span class="VALparse_hostbased_service"><span class="keyword">val</span> parse_hostbased_service</span> : <code class="type">string -&gt; string * string</code></pre><div class="info"><div class="info">Returns (<code class="code">service,host</code>) for &quot;service</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Encodings</h2></div></div>
+<div class="info"><div class="info">There is some chance that some of these routines will finally be moved to
+    netstring</div></div>
+<pre><span class="VALoid_to_string"><span class="keyword">val</span> oid_to_string</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a> -&gt; string</code></pre>
+<pre><span class="VALstring_to_oid"><span class="keyword">val</span> string_to_oid</span> : <code class="type">string -&gt; <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a></code></pre><div class="info"><div class="info">Convert OID's to/from curly brace notation</div></div>
+<pre><span class="VALoid_to_der"><span class="keyword">val</span> oid_to_der</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a> -&gt; string</code></pre>
+<pre><span class="VALder_to_oid"><span class="keyword">val</span> der_to_oid</span> : <code class="type">string -&gt; int <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a> -&gt; <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a></code></pre><div class="info"><div class="info">Convert OID's to/from DER. <code class="code">der_to_oid</code> takes a cursor as second arg.</div></div>
+<pre><span class="VALwire_encode_token"><span class="keyword">val</span> wire_encode_token</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a> -&gt; <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=token">token</a> -&gt; string</code></pre>
+<pre><span class="VALwire_decode_token"><span class="keyword">val</span> wire_decode_token</span> : <code class="type">string -&gt; int <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a> -&gt; <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a> * <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=token">token</a></code></pre><div class="info"><div class="info">Encode tokens as described in section 3.1 of RFC 2078. This is usually
+      only done for the initiating token.</div></div>
+<pre><span class="VALencode_exported_name"><span class="keyword">val</span> encode_exported_name</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a> -&gt; string -&gt; string</code></pre>
+<pre><span class="VALdecode_exported_name"><span class="keyword">val</span> decode_exported_name</span> : <code class="type">string -&gt; int <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a> -&gt; <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">oid</a> * string</code></pre><div class="info"><div class="info">Encode names as described in section 3.2 of RFC 2078</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Create tokens</h2></div></div>
+<div class="info"><div class="info">Format of the tokens: see RFC 4121</div></div>
+<pre><span class="VALcreate_mic_token"><span class="keyword">val</span> create_mic_token</span> : <code class="type">sent_by_acceptor:bool -&gt;
+acceptor_subkey:bool -&gt;
+sequence_number:int64 -&gt;
+get_mic:(<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt; string) -&gt; message:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt; string</code></pre><div class="info"><div class="info">Create a MIC token:<br/>      - <code class="code">sent_by_acceptor</code>: whether this token comes from the acceptor<ul><li><code class="code">acceptor_subkey</code>: see RFC</li><li><code class="code">sequence_number</code>: a sequence number</li><li><code class="code">get_mic</code>: the checksum function
+        (e.g.  <a href="#Netmech_scram.Cryptosystem.get_mic">Netmech_scram.Cryptosystem.get_mic</a>)</li><li><code class="code">message</code>: the message to be signed</li></ul>      The function returns the MIC token</div></div>
+<pre><span class="VALparse_mic_token_header"><span class="keyword">val</span> parse_mic_token_header</span> : <code class="type">string -&gt; bool * bool * int64</code></pre><div class="info"><div class="info">Returns the triple
+      (<code class="code">sent_by_acceptor</code>, <code class="code">acceptor_subkey</code>, <code class="code">sequence_number</code>) from
+      the header of a MIC token that is passed to this function as
+      string. Fails if not parsable</div></div>
+<pre><span class="VALverify_mic_token"><span class="keyword">val</span> verify_mic_token</span> : <code class="type">get_mic:(<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt; string) -&gt; message:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt; token:string -&gt; bool</code></pre><div class="info"><div class="info">Verifies the MIC <code class="code">token</code> with <code class="code">get_mic</code>, and returns true if the
+      verification is successful</div></div>
+<pre><span class="VALcreate_wrap_token_conf"><span class="keyword">val</span> create_wrap_token_conf</span> : <code class="type">sent_by_acceptor:bool -&gt;
+acceptor_subkey:bool -&gt;
+sequence_number:int64 -&gt;
+get_ec:(int -&gt; int) -&gt;
+encrypt_and_sign:(<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt; <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a>) -&gt; message:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt; <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a></code></pre><div class="info"><div class="info">Wraps a <code class="code">message</code> so that it is encrypted and signed (confidential).<br/>      - <code class="code">sent_by_acceptor</code>: whether this token comes from the acceptor<ul><li><code class="code">acceptor_subkey</code>: see RFC</li><li><code class="code">sequence_number</code>: a sequence number</li><li><code class="code">get_ec</code>: This function returns the &quot;extra count&quot; number for
+        the size of the plaintext w/o filler (e.g. use
+         <a href="#Netmech_scram.Cryptosystem.get_ec">Netmech_scram.Cryptosystem.get_ec</a>).</li><li><code class="code">encrypt_and_sign</code>: the encryption function from the cryptosystem.
+        The plaintext is passed to this function, and the ciphertext with
+        the appended signature must be returned in the string.</li><li><code class="code">message</code>: the payload message</li></ul>      The function returns the token wrapping the message.</div></div>
+<pre><span class="VALparse_wrap_token_header"><span class="keyword">val</span> parse_wrap_token_header</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt; bool * bool * bool * int64</code></pre><div class="info"><div class="info"><code class="code">let (sent_by_acceptor, sealed, acceptor_subkey, sequence_number) =
+      parse_wrap_token_header token</code><br/>      Fails if the <code class="code">token</code> cannot be parsed.</div></div>
+<pre><span class="VALunwrap_wrap_token_conf"><span class="keyword">val</span> unwrap_wrap_token_conf</span> : <code class="type">decrypt_and_verify:(<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt; <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a>) -&gt; token:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt; <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a></code></pre><div class="info"><div class="info">Unwraps the <code class="code">token</code> using the decryption function
+      <code class="code">decrypt_and_verify</code> from the cryptosystem.<br/>      The functions fails if there is a format error, or the integrity
+      check fails.<br/>      Non-confidential messages cannot be unwrapped with this function.</div></div>
+<div class="info"><div class="info">Token functions for non-confidential messages are still missing</div></div>
+</div>

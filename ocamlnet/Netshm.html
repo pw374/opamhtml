@@ -1,0 +1,163 @@
+<div class="ocaml_toplevel_module"><div class="info">Shared memory for O'Caml programs using multi-processing</div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Shared Memory Descriptors</h1></div></div>
+<pre><span class="TYPEshm_descr"><span class="keyword">type</span> shm_descr</span> </pre><div class="info"><div class="info">A shared memory descriptor refers to a shared memory object.
+ Such a descriptor must only be opened once for every process.</div></div>
+<pre><span class="TYPEshm_type"><span class="keyword">type</span> shm_type</span> = <code class="type">[ `File | `POSIX ]</code></pre>
+<pre><span class="VALsupported_types"><span class="keyword">val</span> supported_types</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_type">shm_type</a> list</code></pre><div class="info"><div class="info">The types supported for this OS</div></div>
+<pre><span class="TYPEshm_name"><span class="keyword">type</span> shm_name</span> = <code class="type">[ `File of string | `POSIX of string ]</code></pre><div class="info"><div class="info">A <code class="code">shm_name</code> is a name for a shared memory object.</div></div>
+<pre><span class="VALshm_type_of_name"><span class="keyword">val</span> shm_type_of_name</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_name">shm_name</a> -&gt; <a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_type">shm_type</a></code></pre>
+<pre><span class="VALopen_shm"><span class="keyword">val</span> open_shm</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_name">shm_name</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=open_flag">Unix.open_flag</a> list -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_descr">shm_descr</a></code></pre><div class="info"><div class="info">Opens the shared memory object.<br/> For <code class="code">POSIX_shm</code> not all open flags can be specified. The flags
+ are limited to <code class="code">O_RDONLY</code>, <code class="code">O_RDWR</code>, <code class="code">O_CREAT</code>, <code class="code">O_EXCL</code> and
+ <code class="code">O_TRUNC</code>.</div></div>
+<pre><span class="VALcreate_unique_shm"><span class="keyword">val</span> create_unique_shm</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_name">shm_name</a> -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_descr">shm_descr</a></code></pre><div class="info"><div class="info">Create a shared memory object under a name that is derived
+ from the passed <code class="code">shm_name</code>. The actual name can be queried with
+ <code class="code">name_of_shm</code> (below).<br/> For <code class="code">POSIX</code> and <code class="code">File</code> names, deriving works by replacing
+ the 'X' letters in the file name by random digits and letters.
+ For example, if the name is <code class="code">File &quot;/my/directory/ocaml.XXXXXX&quot;</code>
+ six random characters are generated and replace the 'X' letters
+ such that the file is unique.<br/> The integer is the file permission.</div></div>
+<pre><span class="VALname_of_shm"><span class="keyword">val</span> name_of_shm</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_descr">shm_descr</a> -&gt; <a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_name">shm_name</a></code></pre><div class="info"><div class="info">Returns the name of an object</div></div>
+<pre><span class="VALclose_shm"><span class="keyword">val</span> close_shm</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_descr">shm_descr</a> -&gt; unit</code></pre><div class="info"><div class="info">Closes the object. The object remains existent and can be
+ opened again.</div></div>
+<pre><span class="VALunlink_shm"><span class="keyword">val</span> unlink_shm</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_name">shm_name</a> -&gt; unit</code></pre><div class="info"><div class="info">Removes the name permanently from the system</div></div>
+<pre><span class="VALchmod_shm"><span class="keyword">val</span> chmod_shm</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_descr">shm_descr</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALchown_shm"><span class="keyword">val</span> chown_shm</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_descr">shm_descr</a> -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">Set file permission bits, user and group ownership of the object</div></div>
+<pre><span class="TYPElocking_method"><span class="keyword">type</span> locking_method</span> = <code class="type">[ `No_locking | `Record_locking ]</code></pre><div class="info"><div class="info">The locking method is used to ensure that parallel read and write
+ operations to the memory object do not interfer with each other.
+ If <code class="code">No_locking</code> is selected, such protection is not done - this
+ is ok if only read accesses occur or if the user can ensure that
+ never a write access is done in parallel with another access.
+ The locking method must be compatible with the type of shared memory.</div></div>
+<pre><span class="VALbest_locking_method"><span class="keyword">val</span> best_locking_method</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_type">shm_type</a> -&gt; <a href="?package=ocamlnet&amp;module=Netshm&amp;type=locking_method">locking_method</a></code></pre><div class="info"><div class="info">Return the best locking method other than <code class="code">No_locking</code></div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Shared Memory Tables</h1></div></div>
+<div class="info"><div class="info">This is a quite basic data structure implemented for shared memory:
+ hash tables with <code class="code">int32</code> as key and one-dimensional <code class="code">int32</code>
+ bigarray as values.</div></div>
+<div class="info"><div class="info">The semantics resembles the <code class="code">Hashtbl</code> of stdlib</div></div>
+<pre><span class="TYPEshm_table"><span class="keyword">type</span> shm_table</span> </pre>
+<pre><span class="TYPEint32_array"><span class="keyword">type</span> int32_array</span> = <code class="type">(int32, <a href="?package=ocaml&amp;module=Bigarray&amp;type=int32_elt">Bigarray.int32_elt</a>, <a href="?package=ocaml&amp;module=Bigarray&amp;type=c_layout">Bigarray.c_layout</a>) <a href="?package=ocaml&amp;module=Bigarray.Array1&amp;type=t">Bigarray.Array1.t</a></code></pre>
+<pre><span class="EXCEPTIONCorrupt_file"><span class="keyword">exception</span> Corrupt_file</span> <span class="keyword">of</span> <code class="type">string</code></pre><div class="info"><div class="info">Raised when a violation of the object format is detected</div></div>
+<pre><span class="EXCEPTIONDeadlock"><span class="keyword">exception</span> Deadlock</span></pre><div class="info"><div class="info">Raised when a deadlock situation was detected. Deadlocks can occur
+ when the <code class="code">group</code> function is used</div></div>
+<pre><span class="VALmanage"><span class="keyword">val</span> manage</span> : <code class="type">?pagesize:int -&gt; ?init:int -&gt; <a href="?package=ocamlnet&amp;module=Netshm&amp;type=locking_method">locking_method</a> -&gt; <a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_descr">shm_descr</a> -&gt; <a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_table">shm_table</a></code></pre><div class="info"><div class="info">Starts managing an open shared memory object as <code class="code">shm_table</code>. If
+ the object is empty, it is automatically enlarged to the 
+ minimum size and initialized. If the object is non-empty it is
+ expected that it already contains a valid <code class="code">shm_table</code> structure.<br/> The object automatically grows in size when new elements are
+ added to the object. By removing elements, however, the
+ object is never shrinked. Unused memory is held back for later
+ reallocation by the same <code class="code">shm_table</code>.<br/> By default, the table uses a page size of 256 bytes. The page size is
+ the unit of memory allocation. The parameter <code class="code">pagesize</code> overrides
+ this default. The page size must be at least 160 and divisible by 4.
+ The page size must be the same when the table was created.<br/> By passing <code class="code">init</code> it is enforced that the table is re-initialized
+ (deleted and again created). The argument of <code class="code">init</code> is a hint
+ for the number of elements the table will contain. The data
+ structure is then created such that this many elements can be added
+ without needing expensive data reorganization.<br/> Special note for using <code class="code">shm_table</code> with multiple processes: Every
+ process must create its own <code class="code">shm_descr</code>, and every process must
+ call <code class="code">manage</code> to manage it. It is not sufficient to just fork
+ a new process, and to keep using the already existing
+ <code class="code">shm_descr</code> or <code class="code">shm_table</code> in the subprocess. (This doesn't work
+ because the underlying file descriptor would be shared.)</div></div>
+<pre><span class="VALgroup"><span class="keyword">val</span> group</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_table">shm_table</a> -&gt; ('a -&gt; 'b) -&gt; 'a -&gt; 'b</code></pre><div class="info"><div class="info">Execute a sequence of operations in a group:<br/> <pre class="codepre"><code class="code">
+ let r =
+    group table
+      (fun arg -&gt;
+         operation1; operation2; ...)
+      arg
+ </code></pre><br/> Operations can be any reading or writing functions from below. The
+ effect is that the locking requirements of the operations are merged,
+ so that no operation of another process can interfer with the grouped
+ sequence. Note, however, that this gives no real atomicity as there
+ is no way to roll back half-executed sequences.<br/> Groups can be nested.<br/> An example of <code class="code">group</code> is to set a binding depending on the previous
+ value of the binding. Here, we add 1:<br/> <pre class="codepre"><code class="code">
+ let add_one table =
+    group table
+      (fun key -&gt;
+        let ba =
+          try find table key 
+          with Not_found -&gt; 
+            Bigarray.Array1.create Bigarray.int32 Bigarray.c_layout 1 in
+        ba.{ 0 } &lt;- Int32.succ ba.{ 0 };
+        replace table key ba
+      )
+ </code></pre><br/> Grouping protects the update from modifications done by other processes
+ at the same time. In particular, without grouping it can happen that
+ another process also modifies the same value between <code class="code">find</code> and
+ <code class="code">replace</code>.</div></div>
+<pre><span class="VALadd"><span class="keyword">val</span> add</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_table">shm_table</a> -&gt; int32 -&gt; <a href="?package=ocamlnet&amp;module=Netshm&amp;type=int32_array">int32_array</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">add tbl key value</code>: Adds the binding of <code class="code">key</code> to <code class="code">value</code> to the
+ table. Previous bindings are not removed, but simply hidden.</div></div>
+<pre><span class="VALfind"><span class="keyword">val</span> find</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_table">shm_table</a> -&gt; int32 -&gt; <a href="?package=ocamlnet&amp;module=Netshm&amp;type=int32_array">int32_array</a></code></pre><div class="info"><div class="info"><code class="code">find tbl key</code>: Finds the current binding of <code class="code">key</code> in <code class="code">tbl</code> or
+ raises <code class="code">Not_found</code> if no such binding exists.</div></div>
+<pre><span class="VALfind_all"><span class="keyword">val</span> find_all</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_table">shm_table</a> -&gt; int32 -&gt; <a href="?package=ocamlnet&amp;module=Netshm&amp;type=int32_array">int32_array</a> list</code></pre><div class="info"><div class="info"><code class="code">find_all tbl key</code> returns the list of all data
+ associated with <code class="code">key</code> in <code class="code">tbl</code>.
+ The current binding is returned first, then the previous
+ bindings, in reverse order of introduction in the table.</div></div>
+<pre><span class="VALmem"><span class="keyword">val</span> mem</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_table">shm_table</a> -&gt; int32 -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">mem tbl key</code> checks if <code class="code">key</code> is bound in <code class="code">tbl</code>.</div></div>
+<pre><span class="VALremove"><span class="keyword">val</span> remove</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_table">shm_table</a> -&gt; int32 -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">remove tbl key</code> removes the current binding of <code class="code">key</code> in <code class="code">tbl</code>,
+ restoring the previous binding if it exists.
+ It does nothing if <code class="code">key</code> is not bound in <code class="code">tbl</code>.</div></div>
+<pre><span class="VALreplace"><span class="keyword">val</span> replace</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_table">shm_table</a> -&gt; int32 -&gt; <a href="?package=ocamlnet&amp;module=Netshm&amp;type=int32_array">int32_array</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">replace tbl key value</code> replaces the current binding of <code class="code">key</code>
+ in <code class="code">tbl</code> by a binding of <code class="code">key</code> to <code class="code">value</code>.  If <code class="code">key</code> is unbound in <code class="code">tbl</code>,
+ a binding of <code class="code">key</code> to <code class="code">value</code> is added to <code class="code">tbl</code>.</div></div>
+<pre><span class="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(int32 -&gt; <a href="?package=ocamlnet&amp;module=Netshm&amp;type=int32_array">int32_array</a> -&gt; unit) -&gt; <a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_table">shm_table</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">iter f tbl</code> applies <code class="code">f</code> to all bindings in table <code class="code">tbl</code>.
+ <code class="code">f</code> receives the key as first argument, and the associated value
+ as second argument. Each binding is presented exactly once to <code class="code">f</code>.
+ The order in which the bindings are passed to <code class="code">f</code> is unspecified.
+ However, if the table contains several bindings for the same key,
+ they are passed to <code class="code">f</code> in reverse order of introduction, that is,
+ the most recent binding is passed first. <br/> While the iteration is in progress, the table is read-locked.
+ That means you cannot modify it during the iteration.</div></div>
+<pre><span class="VALiter_keys"><span class="keyword">val</span> iter_keys</span> : <code class="type">(int32 -&gt; unit) -&gt; <a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_table">shm_table</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">iter_keys f tbl</code> applies <code class="code">f</code> to all keys in table <code class="code">tbl</code>. If there
+ are several bindings for a key, <code class="code">f</code> is only called once.<br/> While the iteration is in progress, the table is locked.
+ That means you cannot modify it during the iteration.</div></div>
+<pre><span class="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">(int32 -&gt; <a href="?package=ocamlnet&amp;module=Netshm&amp;type=int32_array">int32_array</a> -&gt; 'a -&gt; 'a) -&gt; <a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_table">shm_table</a> -&gt; 'a -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">fold f tbl init</code> computes
+ <code class="code">(f kN dN ... (f k1 d1 init)...)</code>,
+ where <code class="code">k1 ... kN</code> are the keys of all bindings in <code class="code">tbl</code>,
+ and <code class="code">d1 ... dN</code> are the associated values.
+ Each binding is presented exactly once to <code class="code">f</code>.
+ The order in which the bindings are passed to <code class="code">f</code> is unspecified.
+ However, if the table contains several bindings for the same key,
+ they are passed to <code class="code">f</code> in reverse order of introduction, that is,
+ the most recent binding is passed first. <br/> While the iteration is in progress, the table is locked.
+ That means you cannot modify it during the iteration.</div></div>
+<pre><span class="VALlength"><span class="keyword">val</span> length</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_table">shm_table</a> -&gt; int</code></pre><div class="info"><div class="info"><code class="code">length tbl</code> returns the number of bindings in <code class="code">tbl</code>.
+ Multiple bindings are counted multiply, so <code class="code">length</code>
+ gives the number of times <code class="code">iter</code> calls its first argument.</div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Enhanced API to shared memory tables</h1></div></div>
+<pre><span class="EXCEPTIONNext"><span class="keyword">exception</span> Next</span></pre>
+<pre><span class="EXCEPTIONBreak"><span class="keyword">exception</span> Break</span></pre>
+<pre><span class="VALread_blocks"><span class="keyword">val</span> read_blocks</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_table">shm_table</a> -&gt; int32 -&gt; (<a href="?package=ocamlnet&amp;module=Netshm&amp;type=int32_array">int32_array</a> option -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">find_blocks tbl key f</code>: The values may be stored in several
+ disk blocks. This interface allows one to access the values block by
+ block. As <code class="code">find_all</code>, all bindings for <code class="code">key</code> in <code class="code">tbl</code> are determined
+ in reverse order, i.e. the newest binding first, the oldest last.
+ For every binding <code class="code">value</code>, the function <code class="code">f</code> is invoked in a sequence
+ <code class="code">f (Some v1)</code>, <code class="code">f (Some v2)</code>, ..., <code class="code">f (Some vN)</code>, <code class="code">f None</code> 
+ where
+ <code class="code">value</code> is the array concatenation of <code class="code">v1</code>, <code class="code">v2</code>, ..., <code class="code">vN</code>.
+ The function <code class="code">f</code> may raise the exception <code class="code">Next</code> to go
+ directly to the start of the next binding of <code class="code">key</code>.
+ The exception <code class="code">Break</code> stops the iteration immediately.<br/> Note that the <code class="code">int32_array</code> fragments <code class="code">vK</code> point to shared memory.
+ Any assignment would modify the shared memory object directly!
+ The binding is at that time, however, only read-locked, so this
+ should be avoided.</div></div>
+<pre><span class="TYPEwrite_op"><span class="keyword">type</span> write_op</span> = <code class="type">[ `Remove_binding ]</code></pre>
+<pre><span class="TYPEctrl_op"><span class="keyword">type</span> ctrl_op</span> = <code class="type">[ `Nop | `Remove_binding ]</code></pre>
+<pre><span class="VALwrite_blocks"><span class="keyword">val</span> write_blocks</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_table">shm_table</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netshm&amp;type=write_op">write_op</a> list -&gt; int32 -&gt; (<a href="?package=ocamlnet&amp;module=Netshm&amp;type=int32_array">int32_array</a> option -&gt; <a href="?package=ocamlnet&amp;module=Netshm&amp;type=ctrl_op">ctrl_op</a>) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">write_blocks tbl ops key f</code>: Like <code class="code">read_blocks</code> this function iterates
+ over the blocks of all bindings for <code class="code">key</code>. For every binding <code class="code">value</code>,
+ the function <code class="code">f</code> is invoked in a sequence
+ <code class="code">f (Some v1)</code>, <code class="code">f (Some v2)</code>, ..., <code class="code">f (Some vN)</code>, <code class="code">f None</code>.
+ Unlike <code class="code">read_blocks</code> the function <code class="code">f</code> returns a value.
+ The last non-<code class="code">`Nop</code> result value in this sequence determines the
+ modification to carry out for the binding:<br/> - <code class="code">`Remove_binding</code>: The whole binding is removed from the table.<br/> If all invocations of <code class="code">f</code> just return <code class="code">`Nop</code>, no further modification
+ is done.<br/> The modifications must be announced in the <code class="code">ops</code> argument. It is
+ not allowed that <code class="code">f</code> returns a value not being a member of <code class="code">ops</code>
+ (except <code class="code">`Nop</code>).<br/> It is possible to raise the special exceptions <code class="code">Next</code> and <code class="code">Break</code>
+ just as for <code class="code">read_blocks</code>.<br/> Note that the <code class="code">int32_array</code> fragments <code class="code">vK</code> point to shared memory.
+ Any assignment will modify the shared memory object directly!
+ The binding is at that time write-locked, so such assignments
+ are protected against concurrent writes.</div></div>
+<pre><span class="VALdump"><span class="keyword">val</span> dump</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_table">shm_table</a> -&gt; unit</code></pre>
+<pre><span class="VALbigarray"><span class="keyword">val</span> bigarray</span> : <code class="type">int array -&gt; <a href="?package=ocamlnet&amp;module=Netshm&amp;type=int32_array">int32_array</a></code></pre>
+<pre><span class="VALmemory"><span class="keyword">val</span> memory</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_table">shm_table</a> -&gt; (int32, <a href="?package=ocaml&amp;module=Bigarray&amp;type=int32_elt">Bigarray.int32_elt</a>, <a href="?package=ocaml&amp;module=Bigarray&amp;type=c_layout">Bigarray.c_layout</a>) <a href="?package=ocaml&amp;module=Bigarray.Array2&amp;type=t">Bigarray.Array2.t</a></code></pre>
+</div>

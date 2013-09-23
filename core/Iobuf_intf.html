@@ -1,0 +1,55 @@
+<div class="ocaml_toplevel_module">
+<pre><span class="TYPEno_seek"><span class="keyword">type</span> no_seek</span> </pre><div class="info"><div class="info"><code class="code">no_seek</code> and <code class="code">seek</code> are defined and used in a similar manner to <code class="code">read_only</code> and
+    <code class="code">read_write</code>.</div></div>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core&amp;module=Iobuf_intf&amp;type=no_seek">no_seek</a> -&gt; unit</code></pre>
+<pre><span class="VALsexp_of_no_seek"><span class="keyword">val</span> sexp_of_no_seek</span> : <code class="type">'a -&gt; 'b</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">'a -&gt; 'b</code></pre>
+<pre><span class="TYPEseek"><span class="keyword">type</span> seek</span> = <code class="type"><a href="?package=core&amp;module=Iobuf_intf&amp;type=no_seek">no_seek</a></code><span class="keyword">private</span></pre><div class="info"><div class="info">like <code class="code">read_only</code></div></div>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core&amp;module=Iobuf_intf&amp;type=seek">seek</a> -&gt; unit</code></pre>
+<pre><span class="VALsexp_of_seek"><span class="keyword">val</span> sexp_of_seek</span> : <code class="type">'a -&gt; 'b</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">'a -&gt; 'b</code></pre>
+<div class="info"><div class="info">like <code class="code">read_write</code></div></div>
+<div class="ocaml_module sig" name="Accessors"><pre><span class="keyword">module type</span> <a href="?package=core&amp;module=Iobuf_intf.Accessors">Accessors</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">A collection of iobuf access functions.  This abstracts over <code class="code">Iobuf.Consume</code>,
+    <code class="code">Iobuf.Fill</code>, <code class="code">Iobuf.Peek</code>, and <code class="code">Iobuf.Poke</code>.</div></div><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'd, 'w) </code>t</span> </pre><div class="info"><div class="info"><code class="code">('d, 'w) Iobuf.t</code> accessor function manipulating <code class="code">'a</code>, either writing it to the
+      iobuf or reading it from the iobuf.</div></div>
+<pre><span class="VALchar"><span class="keyword">val</span> char</span> : <code class="type">(char, 'd, 'w) <a href="?package=core&amp;module=Iobuf_intf.Accessors&amp;type=t">t</a></code></pre>
+<pre><span class="VALint8"><span class="keyword">val</span> int8</span> : <code class="type">(int, 'd, 'w) <a href="?package=core&amp;module=Iobuf_intf.Accessors&amp;type=t">t</a></code></pre>
+<pre><span class="VALint16_be"><span class="keyword">val</span> int16_be</span> : <code class="type">(int, 'd, 'w) <a href="?package=core&amp;module=Iobuf_intf.Accessors&amp;type=t">t</a></code></pre>
+<pre><span class="VALint16_le"><span class="keyword">val</span> int16_le</span> : <code class="type">(int, 'd, 'w) <a href="?package=core&amp;module=Iobuf_intf.Accessors&amp;type=t">t</a></code></pre>
+<pre><span class="VALint32_be"><span class="keyword">val</span> int32_be</span> : <code class="type">(int, 'd, 'w) <a href="?package=core&amp;module=Iobuf_intf.Accessors&amp;type=t">t</a></code></pre>
+<pre><span class="VALint32_le"><span class="keyword">val</span> int32_le</span> : <code class="type">(int, 'd, 'w) <a href="?package=core&amp;module=Iobuf_intf.Accessors&amp;type=t">t</a></code></pre>
+<pre><span class="VALuint8"><span class="keyword">val</span> uint8</span> : <code class="type">(int, 'd, 'w) <a href="?package=core&amp;module=Iobuf_intf.Accessors&amp;type=t">t</a></code></pre>
+<pre><span class="VALuint16_be"><span class="keyword">val</span> uint16_be</span> : <code class="type">(int, 'd, 'w) <a href="?package=core&amp;module=Iobuf_intf.Accessors&amp;type=t">t</a></code></pre>
+<pre><span class="VALuint16_le"><span class="keyword">val</span> uint16_le</span> : <code class="type">(int, 'd, 'w) <a href="?package=core&amp;module=Iobuf_intf.Accessors&amp;type=t">t</a></code></pre>
+<pre><span class="VALuint32_be"><span class="keyword">val</span> uint32_be</span> : <code class="type">(int, 'd, 'w) <a href="?package=core&amp;module=Iobuf_intf.Accessors&amp;type=t">t</a></code></pre>
+<pre><span class="VALuint32_le"><span class="keyword">val</span> uint32_le</span> : <code class="type">(int, 'd, 'w) <a href="?package=core&amp;module=Iobuf_intf.Accessors&amp;type=t">t</a></code></pre>
+<pre><span class="VALint64_be"><span class="keyword">val</span> int64_be</span> : <code class="type">(int, 'd, 'w) <a href="?package=core&amp;module=Iobuf_intf.Accessors&amp;type=t">t</a></code></pre>
+<pre><span class="VALint64_le"><span class="keyword">val</span> int64_le</span> : <code class="type">(int, 'd, 'w) <a href="?package=core&amp;module=Iobuf_intf.Accessors&amp;type=t">t</a></code></pre>
+<pre><span class="VALint64_t_be"><span class="keyword">val</span> int64_t_be</span> : <code class="type">(<a href="?package=ocaml&amp;module=Int64&amp;type=t">Int64.t</a>, 'd, 'w) <a href="?package=core&amp;module=Iobuf_intf.Accessors&amp;type=t">t</a></code></pre>
+<pre><span class="VALint64_t_le"><span class="keyword">val</span> int64_t_le</span> : <code class="type">(<a href="?package=ocaml&amp;module=Int64&amp;type=t">Int64.t</a>, 'd, 'w) <a href="?package=core&amp;module=Iobuf_intf.Accessors&amp;type=t">t</a></code></pre>
+<pre><span class="VALpadded_fixed_string"><span class="keyword">val</span> padded_fixed_string</span> : <code class="type">padding:char -&gt; len:int -&gt; (string, 'd, 'w) <a href="?package=core&amp;module=Iobuf_intf.Accessors&amp;type=t">t</a></code></pre>
+<pre><span class="VALstring"><span class="keyword">val</span> string</span> : <code class="type">?str_pos:int -&gt; ?len:int -&gt; (string, 'd, 'w) <a href="?package=core&amp;module=Iobuf_intf.Accessors&amp;type=t">t</a></code></pre>
+<pre><span class="VALbigstring"><span class="keyword">val</span> bigstring</span> : <code class="type">?str_pos:int -&gt; ?len:int -&gt; (<a href="?package=core&amp;module=Bigstring&amp;type=t">Bigstring.t</a>, 'd, 'w) <a href="?package=core&amp;module=Iobuf_intf.Accessors&amp;type=t">t</a></code></pre></div></div>
+<div class="ocaml_module sig" name="Bound"><pre><span class="keyword">module type</span> <a href="?package=core&amp;module=Iobuf_intf.Bound">Bound</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">An iobuf window bound, either upper or lower.  You can't see its int value, but you
+    can save and restore it.</div></div><div class="ocaml_module_content">
+<pre><span class="TYPEiobuf"><span class="keyword">type</span> <code class="type">('d, 'w) </code>iobuf</span> </pre>
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre>
+<pre><span class="VALwindow"><span class="keyword">val</span> window</span> : <code class="type">('a, 'b) <a href="?package=core&amp;module=Iobuf_intf.Bound&amp;type=iobuf">iobuf</a> -&gt; <a href="?package=core&amp;module=Iobuf_intf.Bound&amp;type=t">t</a></code></pre>
+<pre><span class="VALlimit"><span class="keyword">val</span> limit</span> : <code class="type">('a, 'b) <a href="?package=core&amp;module=Iobuf_intf.Bound&amp;type=iobuf">iobuf</a> -&gt; <a href="?package=core&amp;module=Iobuf_intf.Bound&amp;type=t">t</a></code></pre>
+<pre><span class="VALrestore"><span class="keyword">val</span> restore</span> : <code class="type"><a href="?package=core&amp;module=Iobuf_intf.Bound&amp;type=t">t</a> -&gt; ('a, <a href="?package=core&amp;module=Iobuf_intf&amp;type=seek">seek</a>) <a href="?package=core&amp;module=Iobuf_intf.Bound&amp;type=iobuf">iobuf</a> -&gt; unit</code></pre>
+<pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type"><a href="?package=core&amp;module=Iobuf_intf.Bound&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre></div></div>
+
+<div class="ocaml_module ident" name="Unix" path="?package=core&amp;module=Core_unix"><pre><span class="keyword">module</span> <a href="?package=core&amp;module=Iobuf_intf.Unix">Unix</a> : <code class="type"><code class="code"><a href="?package=core&amp;module=Core_unix">Core_unix</a></code></code></pre></div>
+
+<div class="info"><div class="info"><code class="code">no_seek</code> and <code class="code">seek</code> are defined and used in a similar manner to <code class="code">read_only</code> and
+    <code class="code">read_write</code>.</div></div>
+<div class="info"><div class="info">like <code class="code">read_only</code></div></div>
+<div class="info"><div class="info">like <code class="code">read_write</code></div></div>
+<div class="info"><div class="info">A collection of iobuf access functions.  This abstracts over <code class="code">Iobuf.Consume</code>,
+    <code class="code">Iobuf.Fill</code>, <code class="code">Iobuf.Peek</code>, and <code class="code">Iobuf.Poke</code>.</div></div>
+<div class="info"><div class="info"><code class="code">('d, 'w) Iobuf.t</code> accessor function manipulating <code class="code">'a</code>, either writing it to the
+      iobuf or reading it from the iobuf.</div></div>
+<div class="info"><div class="info">An iobuf window bound, either upper or lower.  You can't see its int value, but you
+    can save and restore it.</div></div>
+</div>

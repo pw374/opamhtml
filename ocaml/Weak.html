@@ -1,0 +1,92 @@
+<div class="ocaml_toplevel_module"><div class="info">Arrays of weak pointers and hash tables of weak pointers.</div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Low-level functions</h6></div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> </pre><div class="info"><div class="info">The type of arrays of weak pointers (weak arrays).  A weak
+   pointer is a value that the garbage collector may erase whenever
+   the value is not used any more (through normal pointers) by the
+   program.  Note that finalisation functions are run after the
+   weak pointers are erased.<br/>   A weak pointer is said to be full if it points to a value,
+   empty if the value was erased by the GC.<br/>   Notes:<ul><li>Integers are not allocated and cannot be stored in weak arrays.</li><li>Weak arrays cannot be marshaled using  <a href="#Pervasives.output_value">Pervasives.output_value</a>
+     nor the functions of the  <a href="#Marshal">Marshal</a> module.
+</li></ul></div></div>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -&gt; 'a <a href="?package=ocaml&amp;module=Weak&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">Weak.create n</code> returns a new weak array of length <code class="code">n</code>.
+   All the pointers are initially empty.  Raise <code class="code">Invalid_argument</code>
+   if <code class="code">n</code> is negative or greater than  <a href="#Sys.max_array_length">Sys.max_array_length</a><code class="code">-1</code>.</div></div>
+<pre><span class="VALlength"><span class="keyword">val</span> length</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Weak&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info"><code class="code">Weak.length ar</code> returns the length (number of elements) of
+   <code class="code">ar</code>.</div></div>
+<pre><span class="VALset"><span class="keyword">val</span> set</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Weak&amp;type=t">t</a> -&gt; int -&gt; 'a option -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">Weak.set ar n (Some el)</code> sets the <code class="code">n</code>th cell of <code class="code">ar</code> to be a
+   (full) pointer to <code class="code">el</code>; <code class="code">Weak.set ar n None</code> sets the <code class="code">n</code>th
+   cell of <code class="code">ar</code> to empty.
+   Raise <code class="code">Invalid_argument &quot;Weak.set&quot;</code> if <code class="code">n</code> is not in the range
+   0 to  <a href="#Weak.length">Weak.length</a><code class="code"> a - 1</code>.</div></div>
+<pre><span class="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Weak&amp;type=t">t</a> -&gt; int -&gt; 'a option</code></pre><div class="info"><div class="info"><code class="code">Weak.get ar n</code> returns None if the <code class="code">n</code>th cell of <code class="code">ar</code> is
+   empty, <code class="code">Some x</code> (where <code class="code">x</code> is the value) if it is full.
+   Raise <code class="code">Invalid_argument &quot;Weak.get&quot;</code> if <code class="code">n</code> is not in the range
+   0 to  <a href="#Weak.length">Weak.length</a><code class="code"> a - 1</code>.</div></div>
+<pre><span class="VALget_copy"><span class="keyword">val</span> get_copy</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Weak&amp;type=t">t</a> -&gt; int -&gt; 'a option</code></pre><div class="info"><div class="info"><code class="code">Weak.get_copy ar n</code> returns None if the <code class="code">n</code>th cell of <code class="code">ar</code> is
+   empty, <code class="code">Some x</code> (where <code class="code">x</code> is a (shallow) copy of the value) if
+   it is full.
+   In addition to pitfalls with mutable values, the interesting
+   difference with <code class="code">get</code> is that <code class="code">get_copy</code> does not prevent
+   the incremental GC from erasing the value in its current cycle
+   (<code class="code">get</code> may delay the erasure to the next GC cycle).
+   Raise <code class="code">Invalid_argument &quot;Weak.get&quot;</code> if <code class="code">n</code> is not in the range
+   0 to  <a href="#Weak.length">Weak.length</a><code class="code"> a - 1</code>.</div></div>
+<pre><span class="VALcheck"><span class="keyword">val</span> check</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Weak&amp;type=t">t</a> -&gt; int -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">Weak.check ar n</code> returns <code class="code">true</code> if the <code class="code">n</code>th cell of <code class="code">ar</code> is
+   full, <code class="code">false</code> if it is empty.  Note that even if <code class="code">Weak.check ar n</code>
+   returns <code class="code">true</code>, a subsequent  <a href="#Weak.get">Weak.get</a><code class="code"> ar n</code> can return <code class="code">None</code>.</div></div>
+<pre><span class="VALfill"><span class="keyword">val</span> fill</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Weak&amp;type=t">t</a> -&gt; int -&gt; int -&gt; 'a option -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">Weak.fill ar ofs len el</code> sets to <code class="code">el</code> all pointers of <code class="code">ar</code> from
+   <code class="code">ofs</code> to <code class="code">ofs + len - 1</code>.  Raise <code class="code">Invalid_argument &quot;Weak.fill&quot;</code>
+   if <code class="code">ofs</code> and <code class="code">len</code> do not designate a valid subarray of <code class="code">a</code>.</div></div>
+<pre><span class="VALblit"><span class="keyword">val</span> blit</span> : <code class="type">'a <a href="?package=ocaml&amp;module=Weak&amp;type=t">t</a> -&gt; int -&gt; 'a <a href="?package=ocaml&amp;module=Weak&amp;type=t">t</a> -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">Weak.blit ar1 off1 ar2 off2 len</code> copies <code class="code">len</code> weak pointers
+   from <code class="code">ar1</code> (starting at <code class="code">off1</code>) to <code class="code">ar2</code> (starting at <code class="code">off2</code>).
+   It works correctly even if <code class="code">ar1</code> and <code class="code">ar2</code> are the same.
+   Raise <code class="code">Invalid_argument &quot;Weak.blit&quot;</code> if <code class="code">off1</code> and <code class="code">len</code> do
+   not designate a valid subarray of <code class="code">ar1</code>, or if <code class="code">off2</code> and <code class="code">len</code>
+   do not designate a valid subarray of <code class="code">ar2</code>.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Weak hash tables</h6></div></div>
+<div class="info"><div class="info">A weak hash table is a hashed set of values.  Each value may
+    magically disappear from the set when it is not used by the
+    rest of the program any more.  This is normally used to share
+    data structures without inducing memory leaks.
+    Weak hash tables are defined on values from a  <a href="#Hashtbl.HashedType">Hashtbl.HashedType</a>
+    module; the <code class="code">equal</code> relation and <code class="code">hash</code> function are taken from that
+    module.  We will say that <code class="code">v</code> is an instance of <code class="code">x</code> if <code class="code">equal x v</code>
+    is <code class="code">true</code>.<br/>    The <code class="code">equal</code> relation must be able to work on a shallow copy of
+    the values and give the same result as with the values themselves.</div></div>
+<div class="ocaml_module sig" name="S"><pre><span class="keyword">module type</span> <a href="?package=ocaml&amp;module=Weak.S">S</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">The output signature of the functor  <a href="#Weak.Make">Weak.Make</a>.</div></div><div class="ocaml_module_content">
+<pre><span class="TYPEdata"><span class="keyword">type</span> data</span> </pre><div class="info"><div class="info">The type of the elements stored in the table.</div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">The type of tables that contain elements of type <code class="code">data</code>.
+        Note that weak hash tables cannot be marshaled using
+         <a href="#Pervasives.output_value">Pervasives.output_value</a> or the functions of the  <a href="#Marshal">Marshal</a>
+        module.</div></div>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -&gt; <a href="?package=ocaml&amp;module=Weak.S&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create n</code> creates a new empty weak hash table, of initial
+        size <code class="code">n</code>.  The table will grow as needed.</div></div>
+<pre><span class="VALclear"><span class="keyword">val</span> clear</span> : <code class="type"><a href="?package=ocaml&amp;module=Weak.S&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Remove all elements from the table.</div></div>
+<pre><span class="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type"><a href="?package=ocaml&amp;module=Weak.S&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Weak.S&amp;type=data">data</a> -&gt; <a href="?package=ocaml&amp;module=Weak.S&amp;type=data">data</a></code></pre><div class="info"><div class="info"><code class="code">merge t x</code> returns an instance of <code class="code">x</code> found in <code class="code">t</code> if any,
+        or else adds <code class="code">x</code> to <code class="code">t</code> and return <code class="code">x</code>.</div></div>
+<pre><span class="VALadd"><span class="keyword">val</span> add</span> : <code class="type"><a href="?package=ocaml&amp;module=Weak.S&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Weak.S&amp;type=data">data</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">add t x</code> adds <code class="code">x</code> to <code class="code">t</code>.  If there is already an instance
+        of <code class="code">x</code> in <code class="code">t</code>, it is unspecified which one will be
+        returned by subsequent calls to <code class="code">find</code> and <code class="code">merge</code>.</div></div>
+<pre><span class="VALremove"><span class="keyword">val</span> remove</span> : <code class="type"><a href="?package=ocaml&amp;module=Weak.S&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Weak.S&amp;type=data">data</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">remove t x</code> removes from <code class="code">t</code> one instance of <code class="code">x</code>.  Does
+        nothing if there is no instance of <code class="code">x</code> in <code class="code">t</code>.</div></div>
+<pre><span class="VALfind"><span class="keyword">val</span> find</span> : <code class="type"><a href="?package=ocaml&amp;module=Weak.S&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Weak.S&amp;type=data">data</a> -&gt; <a href="?package=ocaml&amp;module=Weak.S&amp;type=data">data</a></code></pre><div class="info"><div class="info"><code class="code">find t x</code> returns an instance of <code class="code">x</code> found in <code class="code">t</code>.
+        Raise <code class="code">Not_found</code> if there is no such element.</div></div>
+<pre><span class="VALfind_all"><span class="keyword">val</span> find_all</span> : <code class="type"><a href="?package=ocaml&amp;module=Weak.S&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Weak.S&amp;type=data">data</a> -&gt; <a href="?package=ocaml&amp;module=Weak.S&amp;type=data">data</a> list</code></pre><div class="info"><div class="info"><code class="code">find_all t x</code> returns a list of all the instances of <code class="code">x</code>
+        found in <code class="code">t</code>.</div></div>
+<pre><span class="VALmem"><span class="keyword">val</span> mem</span> : <code class="type"><a href="?package=ocaml&amp;module=Weak.S&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Weak.S&amp;type=data">data</a> -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">mem t x</code> returns <code class="code">true</code> if there is at least one instance
+        of <code class="code">x</code> in <code class="code">t</code>, false otherwise.</div></div>
+<pre><span class="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(<a href="?package=ocaml&amp;module=Weak.S&amp;type=data">data</a> -&gt; unit) -&gt; <a href="?package=ocaml&amp;module=Weak.S&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">iter f t</code> calls <code class="code">f</code> on each element of <code class="code">t</code>, in some unspecified
+        order.  It is not specified what happens if <code class="code">f</code> tries to change
+        <code class="code">t</code> itself.</div></div>
+<pre><span class="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">(<a href="?package=ocaml&amp;module=Weak.S&amp;type=data">data</a> -&gt; 'a -&gt; 'a) -&gt; <a href="?package=ocaml&amp;module=Weak.S&amp;type=t">t</a> -&gt; 'a -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">fold f t init</code> computes <code class="code">(f d1 (... (f dN init)))</code> where
+        <code class="code">d1 ... dN</code> are the elements of <code class="code">t</code> in some unspecified order.
+        It is not specified what happens if <code class="code">f</code> tries to change <code class="code">t</code>
+        itself.</div></div>
+<pre><span class="VALcount"><span class="keyword">val</span> count</span> : <code class="type"><a href="?package=ocaml&amp;module=Weak.S&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">Count the number of elements in the table.  <code class="code">count t</code> gives the
+        same result as <code class="code">fold (fun _ n -&gt; n+1) t 0</code> but does not delay the
+        deallocation of the dead elements.</div></div>
+<pre><span class="VALstats"><span class="keyword">val</span> stats</span> : <code class="type"><a href="?package=ocaml&amp;module=Weak.S&amp;type=t">t</a> -&gt; int * int * int * int * int * int</code></pre><div class="info"><div class="info">Return statistics on the table.  The numbers are, in order:
+        table length, number of entries, sum of bucket lengths,
+        smallest bucket length, median bucket length, biggest bucket length.</div></div></div></div>
+<div class="ocaml_module ident" name="Make" path="?package=ocaml&amp;module=Weak.S"><pre><span class="keyword">module</span> <a href="?package=ocaml&amp;module=Weak.Make">Make</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">H</code><code class="code"> : </code><code class="code"><a href="?package=ocaml&amp;module=Hashtbl.HashedType">Hashtbl.HashedType</a></code><code class="code">) -&gt; </code><code class="code"><a href="?package=ocaml&amp;module=Weak.S">S</a></code> with type <a href="?package=ocaml&amp;module=Weak.S&amp;type=data">data</a> = H.t</div></code></pre><div class="info"><div class="info">Functor building an implementation of the weak hash table structure.</div></div></div>
+</div>

@@ -1,0 +1,95 @@
+<div class="ocaml_toplevel_module"><div class="info">Processor-native integers.<br/>   This module provides operations on the type <code class="code">nativeint</code> of
+   signed 32-bit integers (on 32-bit platforms) or
+   signed 64-bit integers (on 64-bit platforms).
+   This integer type has exactly the same width as that of a <code class="code">long</code>
+   integer type in the C compiler.  All arithmetic operations over
+   <code class="code">nativeint</code> are taken modulo 2<sup class="superscript">32</sup> or 2<sup class="superscript">64</sup> depending
+   on the word size of the architecture.<br/>   Performance notice: values of type <code class="code">nativeint</code> occupy more memory
+   space than values of type <code class="code">int</code>, and arithmetic operations on
+   <code class="code">nativeint</code> are generally slower than those on <code class="code">int</code>.  Use <code class="code">nativeint</code>
+   only when the application requires the extra bit of precision
+   over the <code class="code">int</code> type.</div>
+<pre><span class="VALzero"><span class="keyword">val</span> zero</span> : <code class="type">nativeint</code></pre><div class="info"><div class="info">The native integer 0.</div></div>
+<pre><span class="VALone"><span class="keyword">val</span> one</span> : <code class="type">nativeint</code></pre><div class="info"><div class="info">The native integer 1.</div></div>
+<pre><span class="VALminus_one"><span class="keyword">val</span> minus_one</span> : <code class="type">nativeint</code></pre><div class="info"><div class="info">The native integer -1.</div></div>
+<pre><span class="VALneg"><span class="keyword">val</span> neg</span> : <code class="type">nativeint -&gt; nativeint</code></pre><div class="info"><div class="info">Unary negation.</div></div>
+<pre><span class="VALadd"><span class="keyword">val</span> add</span> : <code class="type">nativeint -&gt; nativeint -&gt; nativeint</code></pre><div class="info"><div class="info">Addition.</div></div>
+<pre><span class="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">nativeint -&gt; nativeint -&gt; nativeint</code></pre><div class="info"><div class="info">Subtraction.</div></div>
+<pre><span class="VALmul"><span class="keyword">val</span> mul</span> : <code class="type">nativeint -&gt; nativeint -&gt; nativeint</code></pre><div class="info"><div class="info">Multiplication.</div></div>
+<pre><span class="VALdiv"><span class="keyword">val</span> div</span> : <code class="type">nativeint -&gt; nativeint -&gt; nativeint</code></pre><div class="info"><div class="info">Integer division.  Raise <code class="code">Division_by_zero</code> if the second
+   argument is zero.  This division rounds the real quotient of
+   its arguments towards zero, as specified for  <a href="#Pervasives.(/)">Pervasives.(/)</a>.</div></div>
+<pre><span class="VALrem"><span class="keyword">val</span> rem</span> : <code class="type">nativeint -&gt; nativeint -&gt; nativeint</code></pre><div class="info"><div class="info">Integer remainder.  If <code class="code">y</code> is not zero, the result
+   of <code class="code">Nativeint.rem x y</code> satisfies the following properties:
+   <code class="code">Nativeint.zero &lt;= Nativeint.rem x y &lt; Nativeint.abs y</code> and
+   <code class="code">x = Nativeint.add (Nativeint.mul (Nativeint.div x y) y)
+                      (Nativeint.rem x y)</code>.
+   If <code class="code">y = 0</code>, <code class="code">Nativeint.rem x y</code> raises <code class="code">Division_by_zero</code>.</div></div>
+<pre><span class="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type">nativeint -&gt; nativeint</code></pre><div class="info"><div class="info">Successor.
+   <code class="code">Nativeint.succ x</code> is <code class="code">Nativeint.add x Nativeint.one</code>.</div></div>
+<pre><span class="VALpred"><span class="keyword">val</span> pred</span> : <code class="type">nativeint -&gt; nativeint</code></pre><div class="info"><div class="info">Predecessor.
+   <code class="code">Nativeint.pred x</code> is <code class="code">Nativeint.sub x Nativeint.one</code>.</div></div>
+<pre><span class="VALabs"><span class="keyword">val</span> abs</span> : <code class="type">nativeint -&gt; nativeint</code></pre><div class="info"><div class="info">Return the absolute value of its argument.</div></div>
+<pre><span class="VALsize"><span class="keyword">val</span> size</span> : <code class="type">int</code></pre><div class="info"><div class="info">The size in bits of a native integer.  This is equal to <code class="code">32</code>
+   on a 32-bit platform and to <code class="code">64</code> on a 64-bit platform.</div></div>
+<pre><span class="VALmax_int"><span class="keyword">val</span> max_int</span> : <code class="type">nativeint</code></pre><div class="info"><div class="info">The greatest representable native integer,
+   either 2<sup class="superscript">31</sup> - 1 on a 32-bit platform,
+   or 2<sup class="superscript">63</sup> - 1 on a 64-bit platform.</div></div>
+<pre><span class="VALmin_int"><span class="keyword">val</span> min_int</span> : <code class="type">nativeint</code></pre><div class="info"><div class="info">The greatest representable native integer,
+   either -2<sup class="superscript">31</sup> on a 32-bit platform,
+   or -2<sup class="superscript">63</sup> on a 64-bit platform.</div></div>
+<pre><span class="VALlogand"><span class="keyword">val</span> logand</span> : <code class="type">nativeint -&gt; nativeint -&gt; nativeint</code></pre><div class="info"><div class="info">Bitwise logical and.</div></div>
+<pre><span class="VALlogor"><span class="keyword">val</span> logor</span> : <code class="type">nativeint -&gt; nativeint -&gt; nativeint</code></pre><div class="info"><div class="info">Bitwise logical or.</div></div>
+<pre><span class="VALlogxor"><span class="keyword">val</span> logxor</span> : <code class="type">nativeint -&gt; nativeint -&gt; nativeint</code></pre><div class="info"><div class="info">Bitwise logical exclusive or.</div></div>
+<pre><span class="VALlognot"><span class="keyword">val</span> lognot</span> : <code class="type">nativeint -&gt; nativeint</code></pre><div class="info"><div class="info">Bitwise logical negation</div></div>
+<pre><span class="VALshift_left"><span class="keyword">val</span> shift_left</span> : <code class="type">nativeint -&gt; int -&gt; nativeint</code></pre><div class="info"><div class="info"><code class="code">Nativeint.shift_left x y</code> shifts <code class="code">x</code> to the left by <code class="code">y</code> bits.
+   The result is unspecified if <code class="code">y &lt; 0</code> or <code class="code">y &gt;= bitsize</code>,
+   where <code class="code">bitsize</code> is <code class="code">32</code> on a 32-bit platform and
+   <code class="code">64</code> on a 64-bit platform.</div></div>
+<pre><span class="VALshift_right"><span class="keyword">val</span> shift_right</span> : <code class="type">nativeint -&gt; int -&gt; nativeint</code></pre><div class="info"><div class="info"><code class="code">Nativeint.shift_right x y</code> shifts <code class="code">x</code> to the right by <code class="code">y</code> bits.
+   This is an arithmetic shift: the sign bit of <code class="code">x</code> is replicated
+   and inserted in the vacated bits.
+   The result is unspecified if <code class="code">y &lt; 0</code> or <code class="code">y &gt;= bitsize</code>.</div></div>
+<pre><span class="VALshift_right_logical"><span class="keyword">val</span> shift_right_logical</span> : <code class="type">nativeint -&gt; int -&gt; nativeint</code></pre><div class="info"><div class="info"><code class="code">Nativeint.shift_right_logical x y</code> shifts <code class="code">x</code> to the right
+   by <code class="code">y</code> bits.
+   This is a logical shift: zeroes are inserted in the vacated bits
+   regardless of the sign of <code class="code">x</code>.
+   The result is unspecified if <code class="code">y &lt; 0</code> or <code class="code">y &gt;= bitsize</code>.</div></div>
+<pre><span class="VALof_int"><span class="keyword">val</span> of_int</span> : <code class="type">int -&gt; nativeint</code></pre><div class="info"><div class="info">Convert the given integer (type <code class="code">int</code>) to a native integer
+   (type <code class="code">nativeint</code>).</div></div>
+<pre><span class="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type">nativeint -&gt; int</code></pre><div class="info"><div class="info">Convert the given native integer (type <code class="code">nativeint</code>) to an
+   integer (type <code class="code">int</code>).  The high-order bit is lost during
+   the conversion.</div></div>
+<pre><span class="VALof_float"><span class="keyword">val</span> of_float</span> : <code class="type">float -&gt; nativeint</code></pre><div class="info"><div class="info">Convert the given floating-point number to a native integer,
+   discarding the fractional part (truncate towards 0).
+   The result of the conversion is undefined if, after truncation,
+   the number is outside the range
+   [ <a href="#Nativeint.min_int">Nativeint.min_int</a>,  <a href="#Nativeint.max_int">Nativeint.max_int</a>].</div></div>
+<pre><span class="VALto_float"><span class="keyword">val</span> to_float</span> : <code class="type">nativeint -&gt; float</code></pre><div class="info"><div class="info">Convert the given native integer to a floating-point number.</div></div>
+<pre><span class="VALof_int32"><span class="keyword">val</span> of_int32</span> : <code class="type">int32 -&gt; nativeint</code></pre><div class="info"><div class="info">Convert the given 32-bit integer (type <code class="code">int32</code>)
+   to a native integer.</div></div>
+<pre><span class="VALto_int32"><span class="keyword">val</span> to_int32</span> : <code class="type">nativeint -&gt; int32</code></pre><div class="info"><div class="info">Convert the given native integer to a
+   32-bit integer (type <code class="code">int32</code>).  On 64-bit platforms,
+   the 64-bit native integer is taken modulo 2<sup class="superscript">32</sup>,
+   i.e. the top 32 bits are lost.  On 32-bit platforms,
+   the conversion is exact.</div></div>
+<pre><span class="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -&gt; nativeint</code></pre><div class="info"><div class="info">Convert the given string to a native integer.
+   The string is read in decimal (by default) or in hexadecimal,
+   octal or binary if the string begins with <code class="code">0x</code>, <code class="code">0o</code> or <code class="code">0b</code>
+   respectively.
+   Raise <code class="code">Failure &quot;int_of_string&quot;</code> if the given string is not
+   a valid representation of an integer, or if the integer represented
+   exceeds the range of integers representable in type <code class="code">nativeint</code>.</div></div>
+<pre><span class="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">nativeint -&gt; string</code></pre><div class="info"><div class="info">Return the string representation of its argument, in decimal.</div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type">nativeint</code></pre><div class="info"><div class="info">An alias for the type of native integers.</div></div>
+<pre><span class="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="?package=ocaml&amp;module=Nativeint&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Nativeint&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">The comparison function for native integers, with the same specification as
+     <a href="#Pervasives.compare">Pervasives.compare</a>.  Along with the type <code class="code">t</code>, this function <code class="code">compare</code>
+    allows the module <code class="code">Nativeint</code> to be passed as argument to the functors
+     <a href="#Set.Make">Set.Make</a> and  <a href="#Map.Make">Map.Make</a>.</div></div>
+<pre><span class="VALformat"><span class="keyword">val</span> format</span> : <code class="type">string -&gt; nativeint -&gt; string</code></pre><div class="info"><div class="info"><code class="code">Nativeint.format fmt n</code> return the string representation of the
+   native integer <code class="code">n</code> in the format specified by <code class="code">fmt</code>.
+   <code class="code">fmt</code> is a <code class="code">Printf</code>-style format consisting of exactly
+   one <code class="code">%d</code>, <code class="code">%i</code>, <code class="code">%u</code>, <code class="code">%x</code>, <code class="code">%X</code> or <code class="code">%o</code> conversion specification.
+   This function is deprecated; use  <a href="#Printf.sprintf">Printf.sprintf</a> with a <code class="code">%nx</code> format
+   instead.</div></div>
+</div>

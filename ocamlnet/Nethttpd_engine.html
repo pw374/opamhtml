@@ -1,0 +1,175 @@
+<div class="ocaml_toplevel_module"><div class="info"><h1 id="1_TITLE">The event-based encapsulation of the HTTP daemon</h1><br/> This is a user-friendlier encapsulation of the HTTP daemon. It uses
+ the engine module defined in <code class="code">Uq_engines</code>.</div>
+<pre><span class="TYPEengine_req_state"><span class="keyword">type</span> engine_req_state</span> = <code class="type">[ `Finishing | `Received_header | `Received_request | `Receiving_body ]</code></pre>
+<div class="ocaml_class sig" name="http_engine_config"><pre><span class="TYPEhttp_engine_config"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Nethttpd_engine&amp;class=http_engine_config">http_engine_config</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Nethttpd_reactor&amp;class=http_processor_config"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Nethttpd_reactor&amp;class=http_processor_config">Nethttpd_reactor.http_processor_config</a></pre></div>
+
+<pre><span class="METHODconfig_input_flow_control"><span class="keyword">method</span> config_input_flow_control</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">If <code class="code">true</code>, the engine stops reading input tokens from the HTTP kernel when
+ there is data in the input channel of the engine not yet read. If <code class="code">false</code>,
+ all available input tokens are fetched from the kernel and buffered up
+ in the input channel.<br/> In general, this <b>should</b> be set to <code class="code">true</code>. However, this is only possible
+ when the user of the engine is prepared for flow control. In particular,
+ all data contained in the input channel must be immediately read, or else
+ the engine blocks. By calling <code class="code">input_ch_async # request_notification</code>, the
+ user can be notified when there is data to read.<br/> When set to <code class="code">false</code>, the engine never blocks, but the price is that the
+ input channel may become as large as needed to store the whole request.<br/> The option <code class="code">config_limit_pipeline_size</code> does not have any effect for engines.</div></div>
+<pre><span class="METHODconfig_output_flow_control"><span class="keyword">method</span> config_output_flow_control</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">If <code class="code">true</code>, the engine signals the user when there is already enough data
+ to output, and no more output should be generated. The user can query
+ this state by calling <code class="code">output_ch_async # can_output</code>, and react
+ accordingly. The user can also ignore this signal, and the output channel
+ buffers all data.<br/> If <code class="code">false</code>, the mentioned method <code class="code">can_output</code> returns always <code class="code">true</code>. This
+ turns off flow control in the case it is implemented by the user of the
+ engine, but actually not wanted.<br/> The internal processing of data is not affected by this configuration option.
+ In doubt, set it to <code class="code">true</code>.</div></div></div></div>
+<pre><span class="VALdefault_http_engine_config"><span class="keyword">val</span> default_http_engine_config</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Nethttpd_engine&amp;type=http_engine_config">http_engine_config</a></code></pre><div class="info"><div class="info">The default config:<ul><li><code class="code">config_input_flow_control=false</code></li><li><code class="code">config_output_flow_control=true</code>
+   </li></ul></div></div>
+<div class="ocaml_class ident" name="modify_http_engine_config" path="?package=ocamlnet&amp;module=Nethttpd_engine&amp;class=http_engine_config"><pre><span class="TYPEmodify_http_engine_config"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Nethttpd_engine&amp;class=modify_http_engine_config">modify_http_engine_config</a></span> : <code class="type">(<a href="?package=ocamlnet&amp;module=Nethttpd_kernel&amp;type=http_protocol_config">Nethttpd_kernel.http_protocol_config</a> -&gt; <a href="?package=ocamlnet&amp;module=Nethttpd_kernel&amp;type=http_protocol_config">Nethttpd_kernel.http_protocol_config</a>)
+option -&gt; (<a href="?package=ocamlnet&amp;module=Nethttpd_reactor&amp;type=http_processor_config">Nethttpd_reactor.http_processor_config</a> -&gt;
+ <a href="?package=ocamlnet&amp;module=Nethttpd_reactor&amp;type=http_processor_config">Nethttpd_reactor.http_processor_config</a>)
+option -&gt; bool option -&gt; bool option -&gt; <a href="?package=ocamlnet&amp;module=Nethttpd_engine&amp;type=http_engine_config">http_engine_config</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Nethttpd_engine&amp;class=http_engine_config">http_engine_config</a></pre><div class="info"><div class="info">Modifies the passed config object as specified by the optional
+      arguments.<br/>      <code class="code">modify_http_protocol_config</code> and <code class="code">modify_http_processor_config</code>:
+      These functions can be used to modify the
+      parts of the config object that are inherited from <code class="code">http_protocol_config</code>
+      and <code class="code">http_processor_config</code>, respectively:
+      For example:<br/>      <pre class="codepre"><code class="code">
+        let new_cfg =
+          new modify_http_engine_config
+            ~modify_http_protocol_config:
+               (new Nethttpd_kernel.modify_http_protocol_config
+                  ~config_suppress_broken_pipe:true)
+            ~modify_http_processor_config:
+               (new Nethttpd_reactor.modify_http_processor_config
+                  ~config_timeout:15.0)
+            old_cfg
+      </code></pre></div></div></div>
+<div class="ocaml_class sig" name="extended_async_environment"><pre><span class="TYPEextended_async_environment"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Nethttpd_engine&amp;class=extended_async_environment">extended_async_environment</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Nethttpd_types&amp;class=extended_environment"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;class=extended_environment">Nethttpd_types.extended_environment</a></pre></div>
+
+<div class="info"><div class="info">Environment also providing asynchronous views to I/O</div></div>
+<pre><span class="METHODinput_ch_async"><span class="keyword">method</span> input_ch_async</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=async_in_channel">Uq_engines.async_in_channel</a></code></pre>
+<div class="info"><div class="info">This is the <code class="code">input_ch</code> channel taken as asynchonous channel. This type of
+ channel indicates when data is available to read, and also sends notifications.
+ Note that this is only an alternate interface of the <code class="code">input_ch</code> object.<br/> The method <code class="code">can_input</code> returns true when there is at least one byte of
+ the body to read, or the EOF has been seen. The channel buffers any arriving
+ data (which can be limited in amount by <code class="code">config_pipeline_size</code>).<br/> The behaviour of this channel is influenced by the configuration option
+ <code class="code">config_input_flow_control</code>.</div></div>
+<pre><span class="METHODoutput_ch_async"><span class="keyword">method</span> output_ch_async</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=async_out_channel">Uq_engines.async_out_channel</a></code></pre>
+<div class="info"><div class="info">This is the <code class="code">output_ch</code> channel taken as asynchronous channel. This type of
+ channel indicates when space is available for further output, and also sends
+ notifications. 
+ Note that this is only an alternate interface of the <code class="code">output_ch</code> object.<br/> The method <code class="code">can_output</code> returns <code class="code">true</code> only when the internal buffer is empty,
+ i.e. all data have been transmitted to the client. Independent of this, the
+ channel buffers all data written to it.<br/> The behaviour of this channel is influenced by the configuration option
+ <code class="code">config_output_flow_control</code>.</div></div></div></div>
+<div class="ocaml_class sig" name="http_request_header_notification"><pre><span class="TYPEhttp_request_header_notification"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Nethttpd_engine&amp;class=http_request_header_notification">http_request_header_notification</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><div class="info"><div class="info">Notification that a new request header has arrived<br/> This object notifies the user that a new request header has arrived.
+ The header is accessible by the <code class="code">environment</code> object. The channels
+ also contained in this object are locked at this moment. The user must
+ now either call <code class="code">schedule_accept_body</code> or <code class="code">schedule_reject_body</code>. The
+ user will get a second notification (a <code class="code">http_request_notification</code>, below)
+ when the request body has completely arrived (in case of acceptance), or
+ immediately (in case of rejection). One can also call <code class="code">schedule_finish</code>
+ at any time to drop the current request.</div></div>
+<pre><span class="METHODreq_state"><span class="keyword">method</span> req_state</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Nethttpd_engine&amp;type=engine_req_state">engine_req_state</a></code></pre>
+<div class="info"><div class="info">Returns the request processing state which is <code class="code">`Received_header</code> at the
+ moment when this notification is delivered.</div></div>
+<pre><span class="METHODenvironment"><span class="keyword">method</span> environment</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Nethttpd_engine&amp;type=extended_async_environment">extended_async_environment</a></code></pre>
+<div class="info"><div class="info">The request environment. Depending on the request processing state, parts
+ of the environment are already set up or still unaccessible (&quot;locked&quot;).
+ In the state <code class="code">`Received_header</code> only the request header and the 
+ derived fields are accessible, and the input and output channels are
+ locked. In the state <code class="code">`Receiving_body</code> the input channel is unlocked,
+ but it is not yet filled (reading from it may cause the exception 
+ <code class="code">Buffer_underrun</code>). The output channel remains locked.
+ In the state <code class="code">`Received_request</code>, the input channel is unlocked and filled
+ with data, and the output channel is unlocked, too.<br/> This environment is not fully CGI-compatible. In particular, the following
+ differences exist:<ul><li>There is no <code class="code">cgi_path_info</code> and no <code class="code">cgi_path_translated</code>.</li><li>The user is always unauthenticated.</li><li>The <code class="code">Status</code> response header works as in CGI. The <code class="code">Location</code> header, however,
+   must be a full URL when set (only browser redirects)</li><li>When the request body is transmitted by chunked encoding, the header
+   <code class="code">Content-Length</code> is not set. In CGI this is interpreted as missing body.
+   It is unlikely that clients send requests with chunked encoding, as this
+   may cause interoperability problems anyway.</li></ul></div></div>
+<pre><span class="METHODschedule_accept_body"><span class="keyword">method</span> schedule_accept_body</span> : <code class="code">on_request:(http_request_notification -&gt; unit) -&gt;
+?on_error:(unit -&gt; unit) -&gt; unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Schedules that the request body is accepted. In terms of HTTP, this sends the
+ &quot;100 Continue&quot; response when necessary. One can reply with a positive or
+ negative message.<br/> This method returns immediately, and sets callbacks for certain events.
+ When the body has completely arrived (or is empty), the function 
+ <code class="code">on_request</code> is called back. The argument is the full request notification
+ (see below).<br/> When the request is dropped for some reason, <code class="code">on_error</code> is called back instead.
+ This can be used to free resources, for example.<br/> Neither of the callbacks must raise exceptions.</div></div>
+<pre><span class="METHODschedule_reject_body"><span class="keyword">method</span> schedule_reject_body</span> : <code class="code">on_request:(http_request_notification -&gt; unit) -&gt;
+?on_error:(unit -&gt; unit) -&gt; unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Schedules that the request body is rejected. In terms of HTTP, this prevents
+ sending the &quot;100 Continue&quot; response. Any arriving request body is silently
+ discarded. One should immediately reply with an error mesage.
+ negative message.<br/> This method returns immediately, and sets callbacks for certain events.
+ When the body has completely arrived (or is empty), the function 
+ <code class="code">on_request</code> is called back. The argument is the full request notification
+ (see below).<br/> When the request is dropped for some reason, <code class="code">on_error</code> is called back instead.
+ This can be used to free resources, for example.<br/> Neither of the callbacks must raise exceptions.</div></div>
+<pre><span class="METHODschedule_finish"><span class="keyword">method</span> schedule_finish</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Schedules that the request is finished. This method should be called after
+ the regular processing of the request to ensure that the HTTP protocol
+ is fulfilled. If the request body has not been
+ fully read, this is now done, and its data are dropped. If the response
+ is incomplete, it is completed. If the error is not recoverable, a &quot;Server
+ Error&quot; is generated.</div></div></div></div>
+<div class="ocaml_class sig" name="http_request_notification"><pre><span class="TYPEhttp_request_notification"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Nethttpd_engine&amp;class=http_request_notification">http_request_notification</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><div class="info"><div class="info">Notification that the whole request has arrived<br/> This object notifies the user that the request has fully arrived (including
+ the body if accepted), and can now be responded. The <code class="code">environment</code> is the
+ same as in the request header notification, but the channels are now
+ unlocked.</div></div>
+<pre><span class="METHODreq_state"><span class="keyword">method</span> req_state</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Nethttpd_engine&amp;type=engine_req_state">engine_req_state</a></code></pre>
+<div class="info"><div class="info">Returns the request processing state which is <code class="code">`Received_request</code> at the
+ moment when this notification is delivered.</div></div>
+<pre><span class="METHODenvironment"><span class="keyword">method</span> environment</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Nethttpd_engine&amp;type=extended_async_environment">extended_async_environment</a></code></pre>
+<div class="info"><div class="info">The request environment. See above.</div></div>
+<pre><span class="METHODschedule_finish"><span class="keyword">method</span> schedule_finish</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Schedules that the request is finished. See above.</div></div></div></div>
+<div class="ocaml_class ident" name="http_engine" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"><pre><span class="TYPEhttp_engine"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Nethttpd_engine&amp;class=http_engine">http_engine</a></span> : <code class="type"><a href="?package=ocamlnet&amp;module=Nethttpd_engine&amp;type=http_request_header_notification">http_request_header_notification</a> -&gt; unit -&gt; unit -&gt; #<a href="?package=ocamlnet&amp;module=Nethttpd_engine&amp;class=http_engine_config">http_engine_config</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=unix_event_system">Unixqueue.unix_event_system</a> -&gt; </code><code class="type">[unit] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">Uq_engines.engine</a></pre><div class="info"><div class="info">This engine processes the requests arriving on the file descriptor using
+ the Unix event system. Whenever a new request header arrives, the function
+ <code class="code">on_request_header</code> is called back, and must handle the request.<br/> Unless aborted using the <code class="code">abort</code> method, this engine is always successful.
+ Errors are logged, but not returned as result.<br/> The file descriptor is closed after processing all HTTP requests and
+ responses. It is also closed on error and when the engine is aborted.<br/> An aborted engine does not try to clean up resources external to the 
+ engine, e.g. by calling the <code class="code">on_error</code> functions. This is up to the user.</div></div></div>
+<div class="ocaml_class sig" name="http_engine_processing_config"><pre><span class="TYPEhttp_engine_processing_config"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Nethttpd_engine&amp;class=http_engine_processing_config">http_engine_processing_config</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><pre><span class="METHODconfig_synch_input"><span class="keyword">method</span> config_synch_input</span> : <code class="code">(<a href="?package=ocamlnet&amp;module=Netchannels&amp;type=in_obj_channel">Netchannels.in_obj_channel</a> -&gt; unit) -&gt; <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=async_in_channel">Uq_engines.async_in_channel</a> -&gt; unit</code></pre>
+<div class="info"><div class="info">The &quot;input synchronizer&quot;: It is called as <code class="code">obj # config_synch_input f ch</code>
+ to create a synchronous input channel from an asynchronous one, <code class="code">ch</code>.
+ The function <code class="code">f</code> must be called back by the synchronizer when synchronisation
+ is established, and with the synchronous channel <code class="code">ch'</code> as argument.
+ In particular, the task of the synchronizer is to turn blocking reads of
+ <code class="code">ch'</code> into non-blocking reads of <code class="code">ch</code>. In general there are two ways of
+ implementation:<ul><li>Buffer all input from <code class="code">ch</code> until the end of the channel is reached,
+   then call <code class="code">f</code> with a wrapper channel <code class="code">ch'</code> that just reads from the
+   buffer.</li><li>Run <code class="code">f</code> in a different thread that blocks whenever there is nothing to
+   read from <code class="code">ch</code>. </li></ul> Both implementations are allowed, i.e. <b>it is allowed that <code class="code">f</code> runs in
+ a different thread</b>.<br/> CHECK: How to handle exceptions raised from <code class="code">f</code>? Idea: <code class="code">f</code> is obliged to
+ close <code class="code">ch'</code> in this case, even if <code class="code">ch</code> is not yet at the end. The rest of
+ exception handling is up to the user. - The complementary must also be true:
+ When there is an error in the engine, <code class="code">ch</code> must be closed to signal the
+ other thread that we have a problem.</div></div>
+<pre><span class="METHODconfig_synch_output"><span class="keyword">method</span> config_synch_output</span> : <code class="code">(<a href="?package=ocamlnet&amp;module=Netchannels&amp;type=out_obj_channel">Netchannels.out_obj_channel</a> -&gt; unit) -&gt; <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=async_out_channel">Uq_engines.async_out_channel</a> -&gt; unit</code></pre>
+<div class="info"><div class="info">The &quot;output synchronizer&quot;: It is called as <code class="code">obj # config_synch_output f ch</code>
+ to create a synchronous output channel from an asynchronous one, <code class="code">ch</code>.
+ The function <code class="code">f</code> must be called back by the synchronizer when synchronisation
+ is established, and with the synchronous channel <code class="code">ch'</code> as argument.
+ In particular, the task of the synchronizer is to turn blocking writes to
+ <code class="code">ch'</code> into non-blocking writes to <code class="code">ch</code>. In general there are two ways of
+ implementation:<ul><li>Call <code class="code">f</code>, then buffer all output to <code class="code">ch'</code> until the end of the channel is
+   reached, and finally output the contents of the buffer in an asynchronous
+   way.</li><li>Run <code class="code">f</code> in a different thread that blocks whenever there is no space to
+   write to <code class="code">ch</code>. </li></ul> Both implementations are allowed, i.e. <b>it is allowed that <code class="code">f</code> runs in
+ a different thread</b>.<br/> CHECK: Exceptions.</div></div></div></div>
+<div class="ocaml_class ident" name="buffering_engine_processing_config" path="?package=ocamlnet&amp;module=Nethttpd_engine&amp;class=http_engine_processing_config"><pre><span class="TYPEbuffering_engine_processing_config"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Nethttpd_engine&amp;class=buffering_engine_processing_config">buffering_engine_processing_config</a></span> : <code class="type"/><a href="?package=ocamlnet&amp;module=Nethttpd_engine&amp;class=http_engine_processing_config">http_engine_processing_config</a></pre><div class="info"><div class="info">Implements the synchronisation by buffering</div></div></div>
+<div class="ocaml_class sig" name="http_engine_processing_context"><pre><span class="TYPEhttp_engine_processing_context"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Nethttpd_engine&amp;class=http_engine_processing_context">http_engine_processing_context</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><pre><span class="METHODengine"><span class="keyword">method</span> engine</span> : <code class="code">unit <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">Uq_engines.engine</a></code></pre>
+<div class="info"><div class="info">The engine doing HTTP</div></div></div></div>
+<pre><span class="VALprocess_connection"><span class="keyword">val</span> process_connection</span> : <code class="type">#<a href="?package=ocamlnet&amp;module=Nethttpd_reactor&amp;class=http_processor_config">Nethttpd_reactor.http_processor_config</a> -&gt;
+#<a href="?package=ocamlnet&amp;module=Nethttpd_engine&amp;class=http_engine_processing_config">http_engine_processing_config</a> -&gt;
+<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=unix_event_system">Unixqueue.unix_event_system</a> -&gt;
+'a <a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;type=http_service">Nethttpd_types.http_service</a> -&gt; <a href="?package=ocamlnet&amp;module=Nethttpd_engine&amp;type=http_engine_processing_context">http_engine_processing_context</a></code></pre><div class="info"><div class="info">Sets up an engine that processes all requests using the service description.
+ This function returns immediately, one needs to <code class="code">Unixqueue.run</code> the event
+ system to start the engine.<br/> The passed <code class="code">http_engine_processing_config</code> is crucial for good performance.
+ XXX</div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Debugging</h1></div></div>
+<div class="ocaml_module sig" name="Debug"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Nethttpd_engine.Debug">Debug</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALenable"><span class="keyword">val</span> enable</span> : <code class="type">bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">Enables  <a href="#Netlog">Netlog</a>-style debugging of this module</div></div></div></div>
+</div>

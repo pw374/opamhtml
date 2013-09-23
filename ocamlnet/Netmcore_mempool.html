@@ -1,0 +1,47 @@
+<div class="ocaml_toplevel_module"><div class="info">Memory pools<br/>    A memory pool is a block of shared memory that is set aside for storing
+    shared data structures. The pool needs to be created before the
+    worker processes are forked off that are going to use the pool.
+    The worker processes do not map the pool to some random address,
+    but rather the processes inherit the pool from the common master
+    process which ensures that all processes will see the pool at
+    the same address.<br/>    In order to allow inheritance, the function  <a href="#Netmcore.start">Netmcore.start</a>
+    for starting workers needs to get an additional argument
+    <code class="code">~inherit_resources</code>. The resource ID of the pool must be put
+    into this list - otherwise the worker does not get access to
+    the pool.<br/>    It is not possible to enlarge the pool later (because of the
+    inheritance method for making the pool accessible). It is advised
+    to make the pool large enough for all possible data cases, and
+    to let the user configure this size.</div>
+<pre><span class="EXCEPTIONOut_of_pool_memory"><span class="keyword">exception</span> Out_of_pool_memory</span></pre>
+<pre><span class="VALcreate_mempool"><span class="keyword">val</span> create_mempool</span> : <code class="type">?alloc_really:bool -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a></code></pre><div class="info"><div class="info">Creates the memory pool as shared memory object of the passed size
+      (rounded up to the next multiple of pages) and returns the resource ID.<br/>      Note that the process calling this function cannot use the pool,
+      but only worker processes that are forked later. It is possible
+      to call <code class="code">create_mempool</code> before running  <a href="#Netmcore.startup">Netmcore.startup</a>.<br/>      Option <code class="code">alloc_really</code>: On some operating systems (namely Linux)
+      shared memory is not fully included into the memory bookkeeping
+      as long as nothing is written into it (so-called
+      overcommitment). This means that the memory is not reserved, and
+      when something is written for the first time, it might happen
+      that the system cannot grant the request. The consequence is a
+      bus error. By setting <code class="code">alloc_really</code> to true, all allocated
+      memory pages are immediately written to, and thus the problem is
+      avoided (or better, if memory is really tight, you get the bus
+      error now immediately, at least).<br/>      <b>Note that memory pools have kernel persistence! They are not
+      automatically deleted when the process finishes. Call <code class="code">unlink_mempool</code>
+      to delete memory pools.</b></div></div>
+<pre><span class="VALalloc_mem"><span class="keyword">val</span> alloc_mem</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">Netsys_mem.memory</a></code></pre><div class="info"><div class="info">Allocate memory in this pool. The passed int the size of the
+      returned <code class="code">memory</code> object. The size is rounded up to the next
+      multiple of pages.<br/>      Blocks are actually allocated in units of pages.<br/>      Raises <code class="code">Out_of_pool_memory</code> if there is not enough contiguous
+      space in the pool.</div></div>
+<pre><span class="VALsize_mem"><span class="keyword">val</span> size_mem</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">Netsys_mem.memory</a> -&gt; int</code></pre><div class="info"><div class="info">Returns the size of this block, or raises <code class="code">Not_found</code></div></div>
+<pre><span class="VALsize_mem_at_addr"><span class="keyword">val</span> size_mem_at_addr</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; nativeint -&gt; int</code></pre><div class="info"><div class="info">Returns the size of the block at this address, or raises <code class="code">Not_found</code></div></div>
+<pre><span class="VALfree_mem"><span class="keyword">val</span> free_mem</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">Netsys_mem.memory</a> -&gt; unit</code></pre><div class="info"><div class="info">Frees this allocated block</div></div>
+<pre><span class="VALstats"><span class="keyword">val</span> stats</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; int * int * int</code></pre><div class="info"><div class="info">Returns <code class="code">(total, free, contiguous)</code> where<ul><li><code class="code">total</code> is the total size of the pool</li><li><code class="code">free</code> is the number of free bytes</li><li><code class="code">contiguous</code> is the size of the largest contiguous free block
+   </li></ul></div></div>
+<pre><span class="VALdebug_info"><span class="keyword">val</span> debug_info</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; string</code></pre><div class="info"><div class="info">Returns a string describing the allocations etc.</div></div>
+<pre><span class="VALshm_name"><span class="keyword">val</span> shm_name</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; string</code></pre><div class="info"><div class="info">Returns the name of the shared memory object</div></div>
+<pre><span class="VALsem_container"><span class="keyword">val</span> sem_container</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=container">Netsys_sem.container</a></code></pre><div class="info"><div class="info">Returns the semaphore container</div></div>
+<pre><span class="VALunlink_mempool"><span class="keyword">val</span> unlink_mempool</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; unit</code></pre><div class="info"><div class="info">Deletes the persistent objects of this pool</div></div>
+<div class="ocaml_module sig" name="Debug"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netmcore_mempool.Debug">Debug</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALenable"><span class="keyword">val</span> enable</span> : <code class="type">bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">Enable debugging</div></div>
+<pre><span class="VALenable_alloc"><span class="keyword">val</span> enable_alloc</span> : <code class="type">bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">Trace allocation and deallocation</div></div></div></div>
+</div>

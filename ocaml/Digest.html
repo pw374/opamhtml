@@ -1,0 +1,31 @@
+<div class="ocaml_toplevel_module"><div class="info">MD5 message digest.<br/>   This module provides functions to compute 128-bit 'digests' of
+   arbitrary-length strings or files. The digests are of cryptographic
+   quality: it is very hard, given a digest, to forge a string having
+   that digest. The algorithm used is MD5. This module should not be
+   used for secure and sensitive cryptographic applications. For these
+   kind of applications more recent and stronger cryptographic
+   primitives should be used instead.</div>
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type">string</code></pre><div class="info"><div class="info">The type of digests: 16-character strings.</div></div>
+<pre><span class="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="?package=ocaml&amp;module=Digest&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Digest&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">The comparison function for 16-character digest, with the same
+    specification as  <a href="#Pervasives.compare">Pervasives.compare</a> and the implementation
+    shared with  <a href="#String.compare">String.compare</a>. Along with the type <code class="code">t</code>, this
+    function <code class="code">compare</code> allows the module <code class="code">Digest</code> to be passed as
+    argument to the functors  <a href="#Set.Make">Set.Make</a> and  <a href="#Map.Make">Map.Make</a>. <b>Since</b> 4.00.0</div></div>
+<pre><span class="VALstring"><span class="keyword">val</span> string</span> : <code class="type">string -&gt; <a href="?package=ocaml&amp;module=Digest&amp;type=t">t</a></code></pre><div class="info"><div class="info">Return the digest of the given string.</div></div>
+<pre><span class="VALsubstring"><span class="keyword">val</span> substring</span> : <code class="type">string -&gt; int -&gt; int -&gt; <a href="?package=ocaml&amp;module=Digest&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">Digest.substring s ofs len</code> returns the digest of the substring
+   of <code class="code">s</code> starting at character number <code class="code">ofs</code> and containing <code class="code">len</code>
+   characters.</div></div>
+<pre><span class="VALchannel"><span class="keyword">val</span> channel</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a> -&gt; int -&gt; <a href="?package=ocaml&amp;module=Digest&amp;type=t">t</a></code></pre><div class="info"><div class="info">If <code class="code">len</code> is nonnegative, <code class="code">Digest.channel ic len</code> reads <code class="code">len</code>
+   characters from channel <code class="code">ic</code> and returns their digest, or raises
+   <code class="code">End_of_file</code> if end-of-file is reached before <code class="code">len</code> characters
+   are read.  If <code class="code">len</code> is negative, <code class="code">Digest.channel ic len</code> reads
+   all characters from <code class="code">ic</code> until end-of-file is reached and return
+   their digest.</div></div>
+<pre><span class="VALfile"><span class="keyword">val</span> file</span> : <code class="type">string -&gt; <a href="?package=ocaml&amp;module=Digest&amp;type=t">t</a></code></pre><div class="info"><div class="info">Return the digest of the file whose name is given.</div></div>
+<pre><span class="VALoutput"><span class="keyword">val</span> output</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a> -&gt; <a href="?package=ocaml&amp;module=Digest&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Write a digest on the given output channel.</div></div>
+<pre><span class="VALinput"><span class="keyword">val</span> input</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a> -&gt; <a href="?package=ocaml&amp;module=Digest&amp;type=t">t</a></code></pre><div class="info"><div class="info">Read a digest from the given input channel.</div></div>
+<pre><span class="VALto_hex"><span class="keyword">val</span> to_hex</span> : <code class="type"><a href="?package=ocaml&amp;module=Digest&amp;type=t">t</a> -&gt; string</code></pre><div class="info"><div class="info">Return the printable hexadecimal representation of the given digest.</div></div>
+<pre><span class="VALfrom_hex"><span class="keyword">val</span> from_hex</span> : <code class="type">string -&gt; <a href="?package=ocaml&amp;module=Digest&amp;type=t">t</a></code></pre><div class="info"><div class="info">Convert a hexadecimal representation back into the corresponding digest.
+   Raise <code class="code">Invalid_argument</code> if the argument is not exactly 32 hexadecimal
+   characters. <b>Since</b> 4.00.0</div></div>
+</div>

@@ -1,0 +1,195 @@
+<div class="ocaml_toplevel_module"><div class="info">Simple templating library.  It reads HTML files &quot;with variables&quot;
+    and can either output an OCaml module (reusable template with some
+    static checks) or perform substitutions and return the HTML.<br/>    To parametrize the HTML, you can add the following arguments to
+    any HTML tag:
+    <span class="verbatim">    ml:content=&quot;&lt;ident&gt;&quot;
+    ml:content=&quot;&lt;ident&gt; &lt;arg1&gt; ... &lt;argN&gt;&quot;
+    ml:strip=&quot;true&quot;   ml:strip=&quot;if empty&quot;
+    ml:replace=&quot;&lt;ident&gt;&quot;					     </span><br/>    - The argument <code class="code">ml:content=&quot;v&quot;</code> (<code class="code">v</code> is any valid OCaml variable
+      name) tells that the content of the HTML tag must be replaced by
+      the HTML contained in the OCaml variable <code class="code">v</code>.<ul><li><code class="code">ml:content=&quot;f v1 ... vN&quot;</code> does the same but uses the return
+      value of the OCaml function <code class="code">f</code> on the list <code class="code">[v1; ...; vN]</code> as
+      the replacement HTML.</li><li><code class="code">ml:strip=&quot;true&quot;</code> says that the HTML tag should be removed
+      and replaced by the content.</li><li><code class="code">ml:strip=&quot;if empty&quot;</code> says that the HTML tag should be removed
+      only if the replacement content is empty.</li><li><code class="code">ml:replace=&quot;v&quot;</code> is the same as <code class="code">ml:content=&quot;v&quot;</code> except that it
+      adds <code class="code">ml:strip=&quot;true&quot;</code>.</li></ul>    A special value of &lt;ident&gt; is &quot;include&quot;.  It serves to include the
+    files passed as arguments and does not define a new function.<br/>    Inside HTML arguments themselves, one can use<ul><li><code class="code">${&lt;ident&gt;}</code> which is replaced by the content (a string) of the
+      variable &lt;indent&gt;;</li><li><code class="code">${f v1 ... vN}</code> which is replaced by the string returned by the
+      function <code class="code">f</code> applied to the list <code class="code">[v1; ...; vN]</code>. </li></ul></div>
+<pre><span class="TYPEhtml"><span class="keyword">type</span> html</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Nethtml&amp;type=document">Nethtml.document</a> list</code></pre>
+<pre><span class="VALcompile_html"><span class="keyword">val</span> compile_html</span> : <code class="type">?trailer_ml:string -&gt;
+?trailer_mli:string -&gt;
+?hide:string list -&gt; ?module_name:string -&gt; string -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">compile_html fname</code> reads the HTML template file <code class="code">fname</code>
+    (typically a file with extension &quot;.html&quot;) and creates an OCaml
+    module with functions to fill the variables of the template.  The
+    module will be in files <code class="code">module_name</code>.ml and <code class="code">module_name</code>.mli.<div class="parameters"><div class="param_info"><code class="code">module_name</code> : the name of the generated module, possibly
+    preceded by a path to indicate where to save the module file.  By
+    default, it is the basename of <code class="code">fname</code> without its extension.</div><div class="param_info"><code class="code">trailer_ml</code> : additional code to be appended to the .ml file.
+    This code can use the functions of the interface (without the
+    module prefix) to set variables of the template.  You set a
+    variable <code class="code">v</code> using the value of a variable <code class="code">v'</code>, you should use
+    the construction <code class="code">Set.v tpl (fun t -&gt; ... Get.v' t ...)</code> (which
+    returns a copy of <code class="code">tpl</code> with <code class="code">v</code> set) to ensure that the value of
+    <code class="code">v'</code> at the time of rendering is used and not the one present in
+    <code class="code">tpl</code> when <code class="code">v</code> is set.  This is important to maintain the
+    independence of variables which may be set in any order (even if
+    documented, the fact that a variable depends on others will lead
+    to confusion and errors).  If you use <code class="code">Get.v</code> inside <code class="code">Set.v</code>,
+    <code class="code">Get.v</code> will return the previous value of the variable <code class="code">v</code>.</div><div class="param_info"><code class="code">trailer_mli</code> : additional code to be appended to the .mli file.</div><div class="param_info"><code class="code">hide</code> : variables of the template that will not be present
+    in the module interface.  This is only interesting if these
+    variables are used in <code class="code">trailer_ml</code> functions.</div></div></div></div>
+<pre><span class="VALcompile"><span class="keyword">val</span> compile</span> : <code class="type">?module_name:string -&gt; string -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">compile fname</code> does the same as <code class="code">compile_html</code> except that
+    trailer code is taken from <code class="code">fname</code>.ml and <code class="code">fname</code>.mli for the
+    implementation and interface respectively.  Moreover, to hide
+    the signature of a template variable, say &quot;var&quot;, one can add a
+    comment <code class="code">(* @hide var *)</code> in <code class="code">fname</code>.mli.  Special annotations
+    are added to the generated module implementation and interface
+    so errors point back to <code class="code">fname</code>.ml and <code class="code">fname</code>.mli respectively.</div></div>
+<div class="ocaml_module sig" name="Binding"><pre><span class="keyword">module</span> <a href="?package=weberizer&amp;module=Weberizer.Binding">Binding</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">Mutable value holding a collection of mappings from
+      names of variables to their values (both being strings).</div></div>
+<pre><span class="EXCEPTIONNot_found"><span class="keyword">exception</span> Not_found</span> <span class="keyword">of</span> <code class="type">string</code></pre><div class="info"><div class="info"><code class="code">Not_found var</code> is raised if the variable <code class="code">var</code> is not found
+      in the binding.</div></div>
+<pre><span class="VALmake"><span class="keyword">val</span> make</span> : <code class="type">unit -&gt; <a href="?package=weberizer&amp;module=Weberizer.Binding&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">make()</code></div></div>
+<pre><span class="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type"><a href="?package=weberizer&amp;module=Weberizer.Binding&amp;type=t">t</a> -&gt; <a href="?package=weberizer&amp;module=Weberizer.Binding&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">copy b</code></div></div>
+<pre><span class="VALstring"><span class="keyword">val</span> string</span> : <code class="type"><a href="?package=weberizer&amp;module=Weberizer.Binding&amp;type=t">t</a> -&gt; string -&gt; string -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">string b var s</code> add to the binding <code class="code">var</code> -&gt; <code class="code">s</code> to <code class="code">b</code>.</div></div>
+<pre><span class="VALhtml"><span class="keyword">val</span> html</span> : <code class="type"><a href="?package=weberizer&amp;module=Weberizer.Binding&amp;type=t">t</a> -&gt; string -&gt; <a href="?package=weberizer&amp;module=Weberizer&amp;type=html">html</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">html b var h</code> add to the binding <code class="code">var</code> -&gt; <code class="code">h</code> to <code class="code">b</code>.</div></div>
+<pre><span class="VALfun_html"><span class="keyword">val</span> fun_html</span> : <code class="type"><a href="?package=weberizer&amp;module=Weberizer.Binding&amp;type=t">t</a> -&gt;
+string -&gt; (&lt; content : <a href="?package=weberizer&amp;module=Weberizer&amp;type=html">html</a>; page : <a href="?package=weberizer&amp;module=Weberizer&amp;type=html">html</a> &gt; -&gt; string list -&gt; <a href="?package=weberizer&amp;module=Weberizer&amp;type=html">html</a>) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">fun_html b var f</code> add to the binding <code class="code">var</code> -&gt; <code class="code">f</code> to <code class="code">b</code>.  At
+      each occurrence of <code class="code">var</code>, <code class="code">f ctx args</code> will be executed and its
+      output will replace current HTML tag (or its content, depending
+      on whether <code class="code">ml:strip</code> was set or not).  <code class="code">ctx</code> is an object
+      giving some &quot;context&quot;.  <code class="code">ctx#content</code> is the html that is inside
+      the tag and which is going to be replaced.  It can be used as a
+      structured argument.  <code class="code">ctx#page</code> returns the whole HTML page —
+      this can be useful to generate a table of content for example.</div></div>
+<pre><span class="VALfun_string"><span class="keyword">val</span> fun_string</span> : <code class="type"><a href="?package=weberizer&amp;module=Weberizer.Binding&amp;type=t">t</a> -&gt; string -&gt; (&lt; page : <a href="?package=weberizer&amp;module=Weberizer&amp;type=html">html</a> &gt; -&gt; string list -&gt; string) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">fun_string b var f</code> add to the binding <code class="code">var</code> -&gt; <code class="code">f</code> to <code class="code">b</code>.
+      See  <a href="#fun_html">fun_html</a> for the arguments of <code class="code">f</code>.</div></div>
+<pre><span class="VALon_error"><span class="keyword">val</span> on_error</span> : <code class="type"><a href="?package=weberizer&amp;module=Weberizer.Binding&amp;type=t">t</a> -&gt; (string -&gt; string list -&gt; exn -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">on_error b f</code> when a function associated to a variable <code class="code">v</code>
+      applied to the arguments <code class="code">a</code> raises an exception <code class="code">e</code>, call <code class="code">f v
+      a e</code>.  The default value for <code class="code">f</code> prints an error on <code class="code">stderr</code>.</div></div></div></div>
+<pre><span class="VALsubst"><span class="keyword">val</span> subst</span> : <code class="type">?base:string -&gt; <a href="?package=weberizer&amp;module=Weberizer.Binding&amp;type=t">Binding.t</a> -&gt; <a href="?package=weberizer&amp;module=Weberizer&amp;type=html">html</a> -&gt; <a href="?package=weberizer&amp;module=Weberizer&amp;type=html">html</a></code></pre><div class="info"><div class="info"><code class="code">subst b html</code> return <code class="code">html</code> where all variables are substituted
+    according to the bindings <code class="code">b</code>.<div class="parameters"><div class="param_info"><code class="code">base</code> : All relative file names in &quot;include&quot; directives are
+    considered to be relative to <code class="code">base</code>.  Default: the current working
+    directory.</div></div> <b>Raises</b> <code>Invalid_argument</code> if variable names are not valid or
+    associated values do not correspond to their usage.<br/></div></div>
+<pre><span class="VALread"><span class="keyword">val</span> read</span> : <code class="type">?base:string -&gt; ?bindings:<a href="?package=weberizer&amp;module=Weberizer.Binding&amp;type=t">Binding.t</a> -&gt; string -&gt; <a href="?package=weberizer&amp;module=Weberizer&amp;type=html">html</a></code></pre><div class="info"><div class="info"><code class="code">read fname</code> reads the file <code class="code">fname</code> and returns its content in a
+    structured form.<div class="parameters"><div class="param_info"><code class="code">base</code> : All relative file names in &quot;include&quot; directives are
+    considered to be relative to <code class="code">base</code>.  Default: the <code class="code">Filename.dirname</code>
+    of <code class="code">fname</code>.</div><div class="param_info"><code class="code">bindings</code> : if provided, perform the substitutions it
+    mandates.  Otherwise, the &quot;raw&quot; HTML is returned (this is the
+    default).</div></div> <b>Raises</b> <code>Sys_error</code> if the file cannot be read.<br/></div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Utilities</h1></div></div>
+<pre><span class="VALwrite_html"><span class="keyword">val</span> write_html</span> : <code class="type">?doctype:bool -&gt; ?perm:int -&gt; <a href="?package=weberizer&amp;module=Weberizer&amp;type=html">html</a> -&gt; string -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">write_html html fname</code> writes the textual representation of the
+    <code class="code">html</code> to the file <code class="code">fname</code>.<div class="parameters"><div class="param_info"><code class="code">doctype</code> : whether to output a doctype (default: <code class="code">true</code>).</div><div class="param_info"><code class="code">perm</code> : the permissions of the created file (default: <code class="code">0o644</code>).
+                Whatever permissions you specify, the executable bits are
+                removed.</div></div></div></div>
+<pre><span class="VALbody_of"><span class="keyword">val</span> body_of</span> : <code class="type"><a href="?package=weberizer&amp;module=Weberizer&amp;type=html">html</a> -&gt; <a href="?package=weberizer&amp;module=Weberizer&amp;type=html">html</a></code></pre><div class="info"><div class="info"><code class="code">body_of html</code> returns the body of the HTML document or the
+    entire document if no body is found.</div></div>
+<pre><span class="VALtitle_of"><span class="keyword">val</span> title_of</span> : <code class="type"><a href="?package=weberizer&amp;module=Weberizer&amp;type=html">html</a> -&gt; string</code></pre><div class="info"><div class="info"><code class="code">title_of html</code> returns the title contained in <code class="code">html</code> (if no
+    title is present, it will return <code class="code">&quot;&quot;</code>).</div></div>
+<div class="ocaml_module sig" name="Path"><pre><span class="keyword">module</span> <a href="?package=weberizer&amp;module=Weberizer.Path">Path</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">Path relative to a base directory.</div></div>
+<pre><span class="VALbase"><span class="keyword">val</span> base</span> : <code class="type"><a href="?package=weberizer&amp;module=Weberizer.Path&amp;type=t">t</a></code></pre>
+<pre><span class="VALfrom_base"><span class="keyword">val</span> from_base</span> : <code class="type"><a href="?package=weberizer&amp;module=Weberizer.Path&amp;type=t">t</a> -&gt; string</code></pre><div class="info"><div class="info">The (normalized) path to the filename (the filename being
+      excluded) relative to the base directory.  Returns <code class="code">&quot;&quot;</code> if we
+      are in the base directory.</div></div>
+<pre><span class="VALfrom_base_split"><span class="keyword">val</span> from_base_split</span> : <code class="type"><a href="?package=weberizer&amp;module=Weberizer.Path&amp;type=t">t</a> -&gt; string list</code></pre><div class="info"><div class="info">The path to the filename (including it) relative to the base
+      directory splitted into its components (see <code class="code">Neturl</code> for the
+      precise format).</div></div>
+<pre><span class="VALfilename"><span class="keyword">val</span> filename</span> : <code class="type"><a href="?package=weberizer&amp;module=Weberizer.Path&amp;type=t">t</a> -&gt; string</code></pre><div class="info"><div class="info">The filename the path points to.  The path designates a
+      directory if and only if <code class="code">filename</code> returns <code class="code">&quot;&quot;</code>.</div></div>
+<pre><span class="VALto_base"><span class="keyword">val</span> to_base</span> : <code class="type"><a href="?package=weberizer&amp;module=Weberizer.Path&amp;type=t">t</a> -&gt; string</code></pre><div class="info"><div class="info">The path from the directory of the filename to the base
+      directory.  One can see it as the &quot;inverse&quot; of <code class="code">from_base</code>.</div></div>
+<pre><span class="VALin_base"><span class="keyword">val</span> in_base</span> : <code class="type"><a href="?package=weberizer&amp;module=Weberizer.Path&amp;type=t">t</a> -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">in_base p</code> returns <code class="code">true</code> if <code class="code">p</code> is the base directory or a
+      file in the base directory.</div></div>
+<pre><span class="VALto_base_split"><span class="keyword">val</span> to_base_split</span> : <code class="type"><a href="?package=weberizer&amp;module=Weberizer.Path&amp;type=t">t</a> -&gt; string list</code></pre><div class="info"><div class="info">The path from the directory of the filename to the base
+      directory.  One can see it as the &quot;inverse&quot; of <code class="code">from_base_split</code>.</div></div>
+<pre><span class="VALfull"><span class="keyword">val</span> full</span> : <code class="type"><a href="?package=weberizer&amp;module=Weberizer.Path&amp;type=t">t</a> -&gt; string</code></pre><div class="info"><div class="info">Returns a path that can be used to open the file (or query the
+      directory).</div></div>
+<pre><span class="VALdescription"><span class="keyword">val</span> description</span> : <code class="type"><a href="?package=weberizer&amp;module=Weberizer.Path&amp;type=t">t</a> -&gt; string</code></pre><div class="info"><div class="info"><code class="code">description p</code> returns the descriptive name for the file
+      pointed by <code class="code">p</code>.</div></div>
+<pre><span class="VALconcat_file"><span class="keyword">val</span> concat_file</span> : <code class="type"><a href="?package=weberizer&amp;module=Weberizer.Path&amp;type=t">t</a> -&gt; string -&gt; <a href="?package=weberizer&amp;module=Weberizer.Path&amp;type=t">t</a></code></pre>
+<pre><span class="VALnavigation"><span class="keyword">val</span> navigation</span> : <code class="type"><a href="?package=weberizer&amp;module=Weberizer.Path&amp;type=t">t</a> -&gt; (string * string) list</code></pre><div class="info"><div class="info"><code class="code">navigation p</code> returns the navigation information for the path
+      <code class="code">p</code>.  It consists of a list of pairs <code class="code">(name, path)</code> where
+      <code class="code">name</code> is a descriptive name of that directory of the path and
+      <code class="code">path</code> is the relative link to go from the location pointed by
+      <code class="code">p</code> to the directory.  If <code class="code">filename p</code> is of the form
+      index.html or index.&lt;lang&gt;.html, then only its directory is
+      included in the navigation information.<br/>      Descriptive names are based on the name of the directory or,
+      if an index.&lt;lang&gt;.html file is present it is taken as its
+      title (if any).  &lt;lang&gt; is determined according to the file
+      pointed by <code class="code">p</code> (if of the form name.&lt;lang&gt;.html).</div></div>
+<pre><span class="VALtranslations"><span class="keyword">val</span> translations</span> : <code class="type">?rel_dir:(string -&gt; string -&gt; string) -&gt;
+langs:string list -&gt; <a href="?package=weberizer&amp;module=Weberizer.Path&amp;type=t">t</a> -&gt; (string * string) list</code></pre><div class="info"><div class="info"><code class="code">translations langs p</code> returns a list of couples <code class="code">(lang, url)</code>
+      for all translations of the file pointed by the path <code class="code">p</code>.
+      <code class="code">langs</code> is the list of languages to examine, the first being the
+      default one (files with no explicit language).<div class="parameters"><div class="param_info"><code class="code">rel_dir</code> : is a function so that <code class="code">rel_dir lang l</code> gives the
+      relative path from the base directory of the current language
+      <code class="code">lang</code> of the file <code class="code">p</code> to the base directory of the translation
+      in the language <code class="code">l</code>.  Default: <code class="code">fun _ l -&gt; &quot;../&quot; ^ l</code>.</div></div></div></div></div></div>
+<pre><span class="VALiter_html"><span class="keyword">val</span> iter_html</span> : <code class="type">?langs:string list -&gt;
+?exts:string list -&gt;
+?filter:(<a href="?package=weberizer&amp;module=Weberizer.Path&amp;type=t">Path.t</a> -&gt; bool) -&gt;
+?perm:int -&gt;
+?out_dir:(string -&gt; string) -&gt;
+?out_ext:(string -&gt; string) -&gt; string -&gt; (string -&gt; <a href="?package=weberizer&amp;module=Weberizer.Path&amp;type=t">Path.t</a> -&gt; <a href="?package=weberizer&amp;module=Weberizer&amp;type=html">html</a>) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">iter_html base f</code> iterates <code class="code">f lang file</code> on all HTML files under
+    <code class="code">base</code> (the argument of <code class="code">f</code> is guaranteed to be a path to a file).
+    The resulting HTML code is written under the directory <code class="code">out_dir
+    lang</code>, the subpath begin the relative path of the file
+    w.r.t. <code class="code">base</code> and the filename is the original one with the
+    language removed.<div class="parameters"><div class="param_info"><code class="code">lang</code> : the accepted languages.  The first one being the
+    default one (for files that do not specify a language).</div><div class="param_info"><code class="code">exts</code> : the allowed file extensions.  Defaut: <code class="code">[&quot;.html&quot;]</code>.
+    May be useful, ofr example, if you want to deal PHP pages.</div><div class="param_info"><code class="code">filter</code> : examine the file of dir iff the condition <code class="code">filter
+    rel_dir f</code> holds on the relative path <code class="code">rel_dir</code> from <code class="code">root</code> and
+    final file or dir <code class="code">f</code>.  Default: accept all <code class="code">.html</code> files.
+    Files and dirs starting with a dot are <i>always</i> excluded.</div><div class="param_info"><code class="code">out_dir</code> : a function s.t. <code class="code">out_dir lang</code> gives the outpout
+    directory used for the language <code class="code">lang</code>.  Default: the identity.</div><div class="param_info"><code class="code">out_ext</code> : a function to transform the output extension given
+    the input one.  Default: the identity.</div></div> <b>Raises</b> <code>Invalid_argument</code> if <code class="code">base</code> is not a
+    directory.<br/><code>Invalid_argument</code> if languages are not lowercase only.<br/></div></div>
+<pre><span class="VALrelative_url_are_from_base"><span class="keyword">val</span> relative_url_are_from_base</span> : <code class="type"><a href="?package=weberizer&amp;module=Weberizer.Path&amp;type=t">Path.t</a> -&gt; <a href="?package=weberizer&amp;module=Weberizer&amp;type=html">html</a> -&gt; <a href="?package=weberizer&amp;module=Weberizer&amp;type=html">html</a></code></pre><div class="info"><div class="info"><code class="code">relative_url_are_from_base path html</code> prefix all relative URLs
+    in <code class="code">html</code> so that they are specified according to the directory
+    given by <code class="code">path</code> instead of the base path.</div></div>
+<pre><span class="VALemail"><span class="keyword">val</span> email</span> : <code class="type">?args:(string * string) list -&gt; ?content:<a href="?package=weberizer&amp;module=Weberizer&amp;type=html">html</a> -&gt; string -&gt; <a href="?package=weberizer&amp;module=Weberizer&amp;type=html">html</a></code></pre><div class="info"><div class="info"><code class="code">email e</code> return some HTML/javascript code to protect the email
+    <code class="code">e</code> from SPAM harvesters.  The email <code class="code">e</code> may end with &quot;?...&quot; in
+    order to specify options, e.g. <code class="code">?subject=...</code>.<div class="parameters"><div class="param_info"><code class="code">args</code> : arguments to the &lt;a&gt; HTML tag.  Default: <code class="code">[]</code>.</div><div class="param_info"><code class="code">content</code> : Tells whether the content of the email link is
+    the email itself (no <code class="code">content</code> specified, the default) or some
+    other data.</div></div></div></div>
+<pre><span class="VALprotect_emails"><span class="keyword">val</span> protect_emails</span> : <code class="type"><a href="?package=weberizer&amp;module=Weberizer&amp;type=html">html</a> -&gt; <a href="?package=weberizer&amp;module=Weberizer&amp;type=html">html</a></code></pre><div class="info"><div class="info"><code class="code">protect_emails html</code> changes all emails hrefs in <code class="code">html</code> in
+    order to make it more difficult for spammers to harvest them.</div></div>
+<div class="ocaml_module sig" name="Cache"><pre><span class="keyword">module</span> <a href="?package=weberizer&amp;module=Weberizer.Cache">Cache</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Simple cache with dependencies and timeout.</div></div><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> </pre><div class="info"><div class="info">A cache for elements of type 'a.</div></div>
+<pre><span class="VALmake"><span class="keyword">val</span> make</span> : <code class="type">?dep:'b <a href="?package=weberizer&amp;module=Weberizer.Cache&amp;type=t">t</a> -&gt;
+?new_if:('a <a href="?package=weberizer&amp;module=Weberizer.Cache&amp;type=t">t</a> -&gt; bool) -&gt;
+?timeout:float -&gt;
+?at_exit:bool -&gt; ?debug:bool -&gt; string -&gt; ('a option -&gt; 'a) -&gt; 'a <a href="?package=weberizer&amp;module=Weberizer.Cache&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">make key f</code> create a new cache to hold the return value of <code class="code">f</code>
+      using the <code class="code">key</code>.  <code class="code">f</code> is given its previously returned
+      value if any — it may be less work to update it than recreating
+      it afresh (note that, if the file was erased <code class="code">f None</code> will be
+      run despite the fact that it is not the first call to <code class="code">f</code>).  The
+      cache depends on the initial value <code class="code">f None</code> so it will be
+      retrived across multiplie runs of the program.  The type <code class="code">'a</code>
+      must be marshal-able.<div class="parameters"><div class="param_info"><code class="code">timeout</code> : the number of seconds after which the cached
+      value must be refreshed (running <code class="code">f</code> again).  Default: <code class="code">3600.</code>.
+      A non-positive value means no timeout.</div><div class="param_info"><code class="code">at_exit</code> : Update and cache the value when the program
+      exits.  This is interesting for mutable values that may be
+      modified during the course of the program.</div><div class="param_info"><code class="code">debug</code> : print messages on <code class="code">stderr</code> about cache usage and
+      refresh.  The string argument is a prefix to these messages to
+      be able to distinguish different caches.  Default: <code class="code">&quot;&quot;</code> i.e.,
+      no messages.</div></div></div></div>
+<pre><span class="VALupdate"><span class="keyword">val</span> update</span> : <code class="type">?f:('a option -&gt; 'a) -&gt; 'a <a href="?package=weberizer&amp;module=Weberizer.Cache&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">update t</code> update the cache immediately.  If <code class="code">f</code> is given, first
+      set the function generating values for the cache <code class="code">t</code> to <code class="code">f</code> and
+      then update the cache by running <code class="code">f</code>.</div></div>
+<pre><span class="VALdepend"><span class="keyword">val</span> depend</span> : <code class="type">'a <a href="?package=weberizer&amp;module=Weberizer.Cache&amp;type=t">t</a> -&gt; dep:'b <a href="?package=weberizer&amp;module=Weberizer.Cache&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">depend t t'</code> says that the cache <code class="code">t</code> depends on the cache <code class="code">t'</code>
+      i.e. that before updating <code class="code">t</code>, one must update <code class="code">t'</code>.</div></div>
+<pre><span class="VALget"><span class="keyword">val</span> get</span> : <code class="type">?update:bool -&gt; 'a <a href="?package=weberizer&amp;module=Weberizer.Cache&amp;type=t">t</a> -&gt; 'a</code></pre><div class="info"><div class="info">Get the value stored in the cache.  This operation will update
+      the cached value if necessary.<div class="parameters"><div class="param_info"><code class="code">update</code> : if <code class="code">true</code>, force an update.  Default: <code class="code">false</code>.</div></div></div></div>
+<pre><span class="VALresult"><span class="keyword">val</span> result</span> : <code class="type">?dep:'b <a href="?package=weberizer&amp;module=Weberizer.Cache&amp;type=t">t</a> -&gt;
+?new_if:('a <a href="?package=weberizer&amp;module=Weberizer.Cache&amp;type=t">t</a> -&gt; bool) -&gt;
+?timeout:float -&gt;
+?at_exit:bool -&gt; ?debug:bool -&gt; string -&gt; ('a option -&gt; 'a) -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">result key f</code> is a convenience function equivalent to
+      <code class="code">get(make key f)</code>.</div></div>
+<pre><span class="VALtime"><span class="keyword">val</span> time</span> : <code class="type">'a <a href="?package=weberizer&amp;module=Weberizer.Cache&amp;type=t">t</a> -&gt; float</code></pre><div class="info"><div class="info">The time of the last update of the cache.  Returns
+      <code class="code">neg_infinity</code> if the cache is not initialized.</div></div>
+<pre><span class="VALkey"><span class="keyword">val</span> key</span> : <code class="type">'a <a href="?package=weberizer&amp;module=Weberizer.Cache&amp;type=t">t</a> -&gt; string</code></pre><div class="info"><div class="info"><code class="code">key t</code> returns the key used to store the value.</div></div></div></div>
+</div>

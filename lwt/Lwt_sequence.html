@@ -1,0 +1,54 @@
+<div class="ocaml_toplevel_module"><div class="info">Mutable sequence of elements</div>
+<div class="info"><div class="info">A sequence is an object holding a list of elements which support
+    the following operations:<br/>    - adding an element to the left or the right in time and space O(1)<ul><li>taking an element from the left or the right in time and space O(1)</li><li>removing a previously added element from a sequence in time and space O(1)</li><li>removing an element while the sequence is being transversed.
+</li></ul></div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> </pre><div class="info"><div class="info">Type of a sequence holding values of type <code class="code">'a</code></div></div>
+<pre><span class="TYPEnode"><span class="keyword">type</span> <code class="type">'a </code>node</span> </pre><div class="info"><div class="info">Type of a node holding one value of type <code class="code">'a</code> in a sequence</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Operation on nodes</h6></div></div>
+<pre><span class="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=node">node</a> -&gt; 'a</code></pre><div class="info"><div class="info">Returns the contents of a node</div></div>
+<pre><span class="VALset"><span class="keyword">val</span> set</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=node">node</a> -&gt; 'a -&gt; unit</code></pre><div class="info"><div class="info">Change the contents of a node</div></div>
+<pre><span class="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=node">node</a> -&gt; unit</code></pre><div class="info"><div class="info">Removes a node from the sequence it is part of. It does nothing
+      if the node has already been removed.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Operations on sequence</h6></div></div>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">unit -&gt; 'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create ()</code> creates a new empty sequence</div></div>
+<pre><span class="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">t</a> -&gt; bool</code></pre><div class="info"><div class="info">Returns <code class="code">true</code> iff the given sequence is empty</div></div>
+<pre><span class="VALlength"><span class="keyword">val</span> length</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">Returns the number of elemenets in the given sequence. This is a
+      O(n) operation where <code class="code">n</code> is the number of elements in the
+      sequence.</div></div>
+<pre><span class="VALadd_l"><span class="keyword">val</span> add_l</span> : <code class="type">'a -&gt; 'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">t</a> -&gt; 'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=node">node</a></code></pre><div class="info"><div class="info"><code class="code">add_l x s</code> adds <code class="code">x</code> to the left of the sequence <code class="code">s</code></div></div>
+<pre><span class="VALadd_r"><span class="keyword">val</span> add_r</span> : <code class="type">'a -&gt; 'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">t</a> -&gt; 'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=node">node</a></code></pre><div class="info"><div class="info"><code class="code">add_l x s</code> adds <code class="code">x</code> to the right of the sequence <code class="code">s</code></div></div>
+<pre><span class="EXCEPTIONEmpty"><span class="keyword">exception</span> Empty</span></pre><div class="info"><div class="info">Exception raised by <code class="code">take_l</code> and <code class="code">tale_s</code> and when the sequence
+      is empty</div></div>
+<pre><span class="VALtake_l"><span class="keyword">val</span> take_l</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">t</a> -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">take_l x s</code> remove and returns the leftmost element of <code class="code">s</code> <b>Raises</b> <code>Empty</code> if the sequence is empty<br/></div></div>
+<pre><span class="VALtake_r"><span class="keyword">val</span> take_r</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">t</a> -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">take_l x s</code> remove and returns the rightmost element of <code class="code">s</code> <b>Raises</b> <code>Empty</code> if the sequence is empty<br/></div></div>
+<pre><span class="VALtake_opt_l"><span class="keyword">val</span> take_opt_l</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">t</a> -&gt; 'a option</code></pre><div class="info"><div class="info"><code class="code">take_opt_l x s</code> remove and returns <code class="code">Some x</code> where <code class="code">x</code> is the
+      leftmost element of <code class="code">s</code> or <code class="code">None</code> if <code class="code">s</code> is empty</div></div>
+<pre><span class="VALtake_opt_r"><span class="keyword">val</span> take_opt_r</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">t</a> -&gt; 'a option</code></pre><div class="info"><div class="info"><code class="code">take_opt_l x s</code> remove and returns <code class="code">Some x</code> where <code class="code">x</code> is the
+      rightmost element of <code class="code">s</code> or <code class="code">None</code> if <code class="code">s</code> is empty</div></div>
+<pre><span class="VALtransfer_l"><span class="keyword">val</span> transfer_l</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">t</a> -&gt; 'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">transfer_l s1 s2</code> removes all elements of <code class="code">s1</code> and add them at
+      the left of <code class="code">s2</code>. This operation runs in constant time and
+      space.</div></div>
+<pre><span class="VALtransfer_r"><span class="keyword">val</span> transfer_r</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">t</a> -&gt; 'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">transfer_r s1 s2</code> removes all elements of <code class="code">s1</code> and add them at
+      the right of <code class="code">s2</code>. This operation runs in constant time and
+      space.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Sequence iterators</h6></div></div>
+<div class="info"><div class="info">Note: it is OK to remove a node while traversing a sequence</div></div>
+<pre><span class="VALiter_l"><span class="keyword">val</span> iter_l</span> : <code class="type">('a -&gt; unit) -&gt; 'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">iter_l f s</code> applies <code class="code">f</code> on all elements of <code class="code">s</code> starting from
+      the left</div></div>
+<pre><span class="VALiter_r"><span class="keyword">val</span> iter_r</span> : <code class="type">('a -&gt; unit) -&gt; 'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">iter_l f s</code> applies <code class="code">f</code> on all elements of <code class="code">s</code> starting from
+      the right</div></div>
+<pre><span class="VALiter_node_l"><span class="keyword">val</span> iter_node_l</span> : <code class="type">('a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=node">node</a> -&gt; unit) -&gt; 'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">iter_l f s</code> applies <code class="code">f</code> on all nodes of <code class="code">s</code> starting from
+      the left</div></div>
+<pre><span class="VALiter_node_r"><span class="keyword">val</span> iter_node_r</span> : <code class="type">('a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=node">node</a> -&gt; unit) -&gt; 'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">iter_l f s</code> applies <code class="code">f</code> on all nodes of <code class="code">s</code> starting from
+      the right</div></div>
+<pre><span class="VALfold_l"><span class="keyword">val</span> fold_l</span> : <code class="type">('a -&gt; 'b -&gt; 'b) -&gt; 'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">t</a> -&gt; 'b -&gt; 'b</code></pre><div class="info"><div class="info"><code class="code">fold_l f s</code> is:
+      <pre class="codepre"><code class="code">
+        fold_l f s x = f en (... (f e2 (f e1 x)))
+      </code></pre>
+      where <code class="code">e1</code>, <code class="code">e2</code>, ..., <code class="code">en</code> are the elements of <code class="code">s</code></div></div>
+<pre><span class="VALfold_r"><span class="keyword">val</span> fold_r</span> : <code class="type">('a -&gt; 'b -&gt; 'b) -&gt; 'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">t</a> -&gt; 'b -&gt; 'b</code></pre><div class="info"><div class="info"><code class="code">fold_r f s</code> is:
+      <pre class="codepre"><code class="code">
+        fold_r f s x = f e1 (f e2 (... (f en x)))
+      </code></pre>
+      where <code class="code">e1</code>, <code class="code">e2</code>, ..., <code class="code">en</code> are the elements of <code class="code">s</code></div></div>
+</div>

@@ -1,0 +1,16 @@
+<h1>Modules</h1>
+<table class="indextable">
+    <tr><td class="module"><a href="?package=yojson&amp;module=Yojson">Yojson</a></td><td><div class="info">The Yojson library provides runtime functions for reading and writing JSON
+   data from OCaml. It addresses a few shortcomings of its predecessor
+   json-wheel and is about twice as fast (2.7x reading, 1.3x writing; results
+   may vary).
+   The design goals of Yojson are the following:<ul><li>Reducing inter-package dependencies by the use of polymorphic
+   variants for the JSON tree type.</li><li>Allowing type-aware serializers/deserializers 
+   to read and write directly without going through a generic JSON tree,
+   for efficiency purposes.
+   Readers and writers of all JSON syntaxic elements are provided
+   but are undocumented and meant to be used by generated OCaml code.</li><li>Distinguishing between ints and floats.</li><li>Providing optional extensions of the JSON syntax.
+   These extensions include comments, arbitrary strings,
+   optional quotes around field names, tuples and variants.</li></ul><div class="authors"><b>Author(s): </b><span class="author">Martin Jambon</span></div><div class="see"><b>See also</b> <ul>  <li> <a href="http://json.org">JSON specification</a></li></ul></div></div></td></tr>
+<tr><td class="module"><a href="?package=yojson&amp;module=Yojson_biniou">Yojson_biniou</a></td><td><div class="info">Conversions between JSON and biniou</div></td></tr>
+</table>

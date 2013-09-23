@@ -1,0 +1,11 @@
+<div class="ocaml_toplevel_module"><pre><span class="VALserver_auth_method"><span class="keyword">val</span> server_auth_method</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=auth_method">Rpc_server.auth_method</a></code></pre><div class="info"><div class="info">Return the authentication method <code class="code">AUTH_LOCAL</code>.<br/> Note that you need another authentication method that operates at
+ message level (like AUTH_NONE, AUTH_SYS, AUTH_DH), otherwise you will
+ get an error <code class="code">Auth_too_weak</code>. <code class="code">AUTH_LOCAL</code> overrides the result of the
+ other authentication method.</div></div>
+<pre><span class="VALget_peer_credentials"><span class="keyword">val</span> get_peer_credentials</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; int * int</code></pre><div class="info"><div class="info">Return the pair (euid,egid) for a Unix domain socket.
+ The function raises <code class="code">Invalid_argument</code> if it is not available for this
+ operating system. (Generally, this should work on Linux, BSD, and
+ Solaris, and OS with compatible system functions - supported methods are
+ <code class="code">SO_PEERCRED</code>, <code class="code">getpeerucred</code>, and <code class="code">getpeereid</code>).<br/> Some OS support this only for named Unix domain sockets but not for
+ socketpairs.</div></div>
+</div>

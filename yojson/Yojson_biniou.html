@@ -1,0 +1,5 @@
+<div class="ocaml_toplevel_module"><div class="info">Conversions between JSON and biniou</div>
+<pre><span class="VALbiniou_of_json"><span class="keyword">val</span> biniou_of_json</span> : <code class="type"><a href="?package=yojson&amp;module=Yojson.Safe&amp;type=json">Yojson.Safe.json</a> -&gt; <a href="?package=biniou&amp;module=Bi_io&amp;type=tree">Bi_io.tree</a></code></pre><div class="info"><div class="info">Converts from JSON to biniou. <b>Raises</b> <code>Failure</code> if conversion is not reversible.<br/></div></div>
+<pre><span class="VALjson_of_biniou"><span class="keyword">val</span> json_of_biniou</span> : <code class="type"><a href="?package=biniou&amp;module=Bi_io&amp;type=tree">Bi_io.tree</a> -&gt; <a href="?package=yojson&amp;module=Yojson.Safe&amp;type=json">Yojson.Safe.json</a></code></pre><div class="info"><div class="info">Converts from biniou to JSON. <b>Raises</b> <code>Failure</code> if conversion is not reversible, except for biniou
+      tables which are considered equivalent to arrays of records.<br/></div></div>
+</div>

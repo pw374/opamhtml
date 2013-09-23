@@ -1,0 +1,24 @@
+<div class="ocaml_toplevel_module"><pre><span class="VALpath_of_container_socket"><span class="keyword">val</span> path_of_container_socket</span> : <code class="type">string -&gt;
+string -&gt; string -&gt; [&lt; `Process of int | `Thread of int ] -&gt; string * string</code></pre>
+<pre><span class="VALany_file_client_connector_1"><span class="keyword">val</span> any_file_client_connector_1</span> : <code class="type">string -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=connector">Rpc_client.connector</a> * [&gt; `Socket_file | `UD | `W32_pipe_file ]</code></pre>
+<pre><span class="VALany_file_client_connector"><span class="keyword">val</span> any_file_client_connector</span> : <code class="type">string -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=connector">Rpc_client.connector</a></code></pre>
+<pre><span class="VALclient_connector"><span class="keyword">val</span> client_connector</span> : <code class="type">[&lt; `Container of
+     string * string * string * [&lt; `Any | `Process of int | `Thread of int ]
+ | `Socket of <a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a>
+ | `Socket_file of string
+ | `W32_pipe of string
+ | `W32_pipe_file of string ] -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=connector">Rpc_client.connector</a></code></pre>
+<pre><span class="VALtry_mkdir"><span class="keyword">val</span> try_mkdir</span> : <code class="type">string -&gt; unit</code></pre>
+<pre><span class="VALwith_fd"><span class="keyword">val</span> with_fd</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; (<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; 'a) -&gt; 'a</code></pre>
+<pre><span class="VALcreate_server_socket"><span class="keyword">val</span> create_server_socket</span> : <code class="type">'a -&gt;
+&lt; lstn_backlog : int; lstn_reuseaddr : bool; so_keepalive : bool; .. &gt; -&gt;
+[&lt; `Container of 'b
+ | `Socket of <a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a>
+ | `Socket_file of string
+ | `W32_pipe of string
+ | `W32_pipe_file of string ] -&gt;
+<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></pre>
+<pre><span class="VALclose_server_socket_1"><span class="keyword">val</span> close_server_socket_1</span> : <code class="type">?release:bool -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; unit</code></pre>
+<pre><span class="VALclose_server_socket"><span class="keyword">val</span> close_server_socket</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; unit</code></pre>
+</div>

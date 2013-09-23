@@ -1,0 +1,51 @@
+<div class="ocaml_toplevel_module"><div class="info">Lwt switches</div>
+<div class="info"><div class="info">Switch have two goals:<br/>    - being able to free multiple resources at the same time,<ul><li>offer a better alternative than always returning an id to free
+      some resource.</li></ul>    For example, considers the following interface:<br/>    <pre class="codepre"><code class="code">
+      type id
+
+      val free : id -&gt; unit Lwt.t
+
+      val f : unit -&gt; id Lwt.t
+      val g : unit -&gt; id Lwt.t
+      val h : unit -&gt; id Lwt.t
+    </code></pre><br/>    Now you want to calls <code class="code">f</code>, <code class="code">g</code> and <code class="code">h</code> in parallel. You can
+    simply do:<br/>    <pre class="codepre"><code class="code">
+      lwt idf = f () and idg = g () and idh = h () in
+      ...
+    </code></pre><br/>    However, one may wants to handle possible failures of <code class="code">f ()</code>, <code class="code">g
+    ()</code> and <code class="code">h ()</code>, and disable all allocated resources if one of
+    these three threads fails. This may be hard since you have to
+    remember which one failed and which one returned correctly.<br/>    Now we change a little bit the interface:<br/>    <pre class="codepre"><code class="code">
+      val f : ?switch : Lwt_switch.t -&gt; unit -&gt; id Lwt.t
+      val g : ?switch : Lwt_switch.t -&gt; unit -&gt; id Lwt.t
+      val h : ?switch : Lwt_switch.t -&gt; unit -&gt; id Lwt.t
+    </code></pre><br/>    and the code becomes:<br/>    <pre class="codepre"><code class="code">
+      let switch = Lwt_switch.create () in
+      try_lwt
+        lwt idf = f ~switch () and idg = g ~switch () and idh = h ~switch () in
+        ...
+      with exn -&gt;
+        lwt () = Lwt_switch.turn_off switch in
+        raise_lwt exn
+    </code></pre></div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">Type of switches.</div></div>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">unit -&gt; <a href="?package=lwt&amp;module=Lwt_switch&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create ()</code> creates a new switch.</div></div>
+<pre><span class="VALis_on"><span class="keyword">val</span> is_on</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_switch&amp;type=t">t</a> -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">is_on switch</code> returns <code class="code">true</code> if the switch is currently on, and
+      <code class="code">false</code> otherwise.</div></div>
+<pre><span class="VALturn_off"><span class="keyword">val</span> turn_off</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_switch&amp;type=t">t</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">turn_off switch</code> turns off the switch. It calls all registered
+      hooks, waits for all of them to terminates, and the returns. If
+      one of the hook failed, then it will fail with one of the
+      exception raised by hooks. If the switch is already off, then it
+      does nothing.</div></div>
+<pre><span class="EXCEPTIONOff"><span class="keyword">exception</span> Off</span></pre><div class="info"><div class="info">Exception raised when trying to add a hook to a switch that is
+      already off.</div></div>
+<pre><span class="VALcheck"><span class="keyword">val</span> check</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_switch&amp;type=t">t</a> option -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">check switch</code> does nothing if <code class="code">switch</code> is <code class="code">None</code> or contains an
+      switch that is currently on, and raise  <a href="#Off">Off</a> otherwise.</div></div>
+<pre><span class="VALadd_hook"><span class="keyword">val</span> add_hook</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_switch&amp;type=t">t</a> option -&gt; (unit -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">add_hook switch f</code> registers <code class="code">f</code> so it will be called when
+       <a href="#turn_off">turn_off</a> is invoked. It does nothing if <code class="code">switch</code> is
+      <code class="code">None</code>. If <code class="code">switch</code> contains an switch that is already off then
+       <a href="#Off">Off</a> is raised.</div></div>
+<pre><span class="VALadd_hook_or_exec"><span class="keyword">val</span> add_hook_or_exec</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_switch&amp;type=t">t</a> option -&gt; (unit -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">add_hook_or_exec switch f</code> is the same as  <a href="#add_hook">add_hook</a> except
+      that if the switch is already off, then <code class="code">f</code> is called
+      immediatly.</div></div>
+</div>

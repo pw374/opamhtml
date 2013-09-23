@@ -1,0 +1,125 @@
+<div class="ocaml_toplevel_module">
+<div class="ocaml_module sig" name="T"><pre><span class="keyword">module</span> <a href="?package=core_bench&amp;module=Column.T">T</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type">[ `Allocated
+| `Confidence
+| `Cycles
+| `GC
+| `Name
+| `Nanos
+| `Percentage
+| `Samples
+| `Speedup ]</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Column.T&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="?package=core_bench&amp;module=Column.T&amp;type=t">t</a> -&gt; <a href="?package=core_bench&amp;module=Column.T&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Column.T&amp;type=t">t</a> -&gt; <a href="?package=core_bench&amp;module=Column.T&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALcompare_t"><span class="keyword">val</span> compare_t</span> : <code class="type"><a href="?package=core_bench&amp;module=Column.T&amp;type=t">t</a> -&gt; <a href="?package=core_bench&amp;module=Column.T&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=core_bench&amp;module=Column.T&amp;type=t">t</a> -&gt; <a href="?package=core_bench&amp;module=Column.T&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VAL__t_of_sexp__"><span class="keyword">val</span> __t_of_sexp__</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt;
+[&gt; `Allocated
+ | `Confidence
+ | `Cycles
+ | `GC
+ | `Name
+ | `Nanos
+ | `Percentage
+ | `Samples
+ | `Speedup ]</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt;
+[&gt; `Allocated
+ | `Confidence
+ | `Cycles
+ | `GC
+ | `Name
+ | `Nanos
+ | `Percentage
+ | `Samples
+ | `Speedup ]</code></pre>
+<pre><span class="VALt_of_sexp"><span class="keyword">val</span> t_of_sexp</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt;
+[&gt; `Allocated
+ | `Confidence
+ | `Cycles
+ | `GC
+ | `Name
+ | `Nanos
+ | `Percentage
+ | `Samples
+ | `Speedup ]</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt;
+[&gt; `Allocated
+ | `Confidence
+ | `Cycles
+ | `GC
+ | `Name
+ | `Nanos
+ | `Percentage
+ | `Samples
+ | `Speedup ]</code></pre>
+<pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type">[&lt; `Allocated
+ | `Confidence
+ | `Cycles
+ | `GC
+ | `Name
+ | `Nanos
+ | `Percentage
+ | `Samples
+ | `Speedup ] -&gt;
+<a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">[&lt; `Allocated
+ | `Confidence
+ | `Cycles
+ | `GC
+ | `Name
+ | `Nanos
+ | `Percentage
+ | `Samples
+ | `Speedup ] -&gt;
+<a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre></div></div>
+<div class="ocaml_module ident" name="Map" path="?package=core&amp;module=Std.Map.Make"><pre><span class="keyword">module</span> <a href="?package=core_bench&amp;module=Column.Map">Map</a> : <code class="type"><code class="code"><a href="?package=core&amp;module=Std.Map.Make">Core.Std.Map.Make</a></code>(<code class="code"><a href="?package=core_bench&amp;module=Column.T">T</a></code>)</code></pre></div>
+<div class="ocaml_include ident" path="?package=core_bench&amp;module=Column.T" items="[]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core_bench&amp;module=Column.T">T</a></code></code></pre></div>
+<pre><span class="VALname_desc_assoc_list"><span class="keyword">val</span> name_desc_assoc_list</span> : <code class="type">(string *
+ [&gt; `Allocated
+  | `Confidence
+  | `Cycles
+  | `GC
+  | `Name
+  | `Nanos
+  | `Percentage
+  | `Samples
+  | `Speedup ] *
+ string)
+list</code></pre>
+<pre><span class="VALname_assoc_list"><span class="keyword">val</span> name_assoc_list</span> : <code class="type">(string *
+ [&gt; `Allocated
+  | `Confidence
+  | `Cycles
+  | `GC
+  | `Name
+  | `Nanos
+  | `Percentage
+  | `Samples
+  | `Speedup ])
+<a href="?package=core&amp;module=Std.List&amp;type=t">Core.Std.List.t</a></code></pre>
+<pre><span class="VALcolumn_description_table"><span class="keyword">val</span> column_description_table</span> : <code class="type"><a href="?package=core&amp;module=Std.String&amp;type=t">Core.Std.String.t</a></code></pre>
+<pre><span class="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type"><a href="?package=core&amp;module=Std.String&amp;type=t">Core.Std.String.t</a> -&gt;
+[ `Allocated
+| `Confidence
+| `Cycles
+| `GC
+| `If_not_empty of <a href="?package=core_bench&amp;module=Column&amp;type=t">t</a>
+| `Name
+| `Nanos
+| `Percentage
+| `Samples
+| `Speedup ]</code></pre>
+<pre><span class="VALarg"><span class="keyword">val</span> arg</span> : <code class="type">[ `Allocated
+| `Confidence
+| `Cycles
+| `GC
+| `If_not_empty of <a href="?package=core_bench&amp;module=Column&amp;type=t">t</a>
+| `Name
+| `Nanos
+| `Percentage
+| `Samples
+| `Speedup ] <a href="?package=core&amp;module=Std.Command.Spec.Arg_type&amp;type=t">Core.Std.Command.Spec.Arg_type.t</a></code></pre>
+
+</div>

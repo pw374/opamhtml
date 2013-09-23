@@ -1,0 +1,307 @@
+<div class="ocaml_toplevel_module"><div class="info">System calls missing in the <code class="code">Unix</code> module</div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Generic file descriptors</h1></div></div>
+<div class="info"><div class="info">Not all OS provide generic read/write functions, or some emulation
+    layer does not allow to use a descriptor with read/write. In the
+    following functions, the style of the descriptor can be passed along
+    with the descriptor to select the right I/O method. Effectively,
+    the <code class="code">fd_style</code> indicates which I/O function to call. Sometimes it is
+    mandatory to call this function, sometimes it is only a good advice
+    because the function provides the best interface for the kind of
+    descriptor.</div></div>
+<pre><span class="TYPEfd_style"><span class="keyword">type</span> fd_style</span> = <code class="type">[ `Read_write
+| `Recv_send of <a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a> * <a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a>
+| `Recv_send_implied
+| `Recvfrom_sendto
+| `W32_event
+| `W32_input_thread
+| `W32_output_thread
+| `W32_pipe
+| `W32_pipe_server
+| `W32_process ]</code></pre><div class="info"><div class="info">Some information what kind of operations are reasonable for descriptors:<ul><li><code class="code">`Read_write</code>: The descriptor is neither a socket not one of the
+        other special cases, so only read/write is possible if read/write
+        is possible at all. This style is also used if it is meaningless
+        to use data I/O like read/write at all.</li><li><code class="code">`Recv_send(sockaddr,peeraddr)</code>: The descriptor is a connected socket.
+        recv/send are the preferred operations.</li><li><code class="code">`Recvfrom_sendto</code>: The descriptor is an unconnected socket, and
+        it is possible to ask for addresses when exchanging data, so 
+        recvfrom/sendto are the preferred operations.</li><li><code class="code">`Recv_send_implied</code>: The descriptor is a socket with implied 
+        connection. There are no socket addresses.
+        recv/send are the preferred operations. It is not possible to call
+        <code class="code">getsockname</code> or <code class="code">getpeername</code>.</li><li><code class="code">`W32_pipe</code>: The descriptor is a proxy descriptor for a Win32 named
+        pipe as returned by  <a href="#Netsys_win32.pipe_descr">Netsys_win32.pipe_descr</a>. </li><li><code class="code">`W32_pipe_server</code>: The descriptor is a proxy descriptor for a Win32
+        pipe server as returned by
+         <a href="#Netsys_win32.pipe_server_descr">Netsys_win32.pipe_server_descr</a>. </li><li><code class="code">`W32_event</code>: The descriptor is a Win32 proxy descriptor for an event
+         as returned by  <a href="#Netsys_win32.create_event">Netsys_win32.create_event</a>. It is not possible to
+        read/write with these descriptors.</li><li><code class="code">`W32_process</code>: The descriptor is a proxy descriptor for a Win32
+        process as returned by
+         <a href="#Netsys_win32.create_process">Netsys_win32.create_process</a>. It is not possible to read/write
+        with these descriptors.</li><li><code class="code">`W32_input_thread</code>: The descriptor is a proxy descriptor for a
+        Win32-specific input thread
+        as returned by
+         <a href="#Netsys_win32.create_input_thread">Netsys_win32.create_input_thread</a>. </li><li><code class="code">`W32_output_thread</code>: The descriptor is a proxy descriptor for a
+        Win32-specific output thread
+        as returned by
+         <a href="#Netsys_win32.create_output_thread">Netsys_win32.create_output_thread</a>. </li></ul>      Win32: For the exact meaning of proxy descriptors, please see 
+       <a href="#Netsys_win32">Netsys_win32</a>. In short, a proxy descriptor is an abstract handle
+      for the I/O object. The handle itself cannot be used for I/O, however,
+      but only some specialized function. The proxy descriptor can only
+      be used to dereference the I/O object. Note that the following functions
+      like <code class="code">gread</code> and <code class="code">gwrite</code> automatically look up the I/O object behind
+      the proxy and call the right I/O function.</div></div>
+<pre><span class="VALget_fd_style"><span class="keyword">val</span> get_fd_style</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys&amp;type=fd_style">fd_style</a></code></pre><div class="info"><div class="info">Get the file descriptor style</div></div>
+<pre><span class="VALgread"><span class="keyword">val</span> gread</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys&amp;type=fd_style">fd_style</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; string -&gt; int -&gt; int -&gt; int</code></pre><div class="info"><div class="info"><code class="code">gread fd_style fd s pos len</code>: Reads up to <code class="code">len</code> bytes from 
+      descriptor <code class="code">fd</code> which is supposed to support the I/O style 
+      <code class="code">fd_style</code>, i.e. the right system call (<code class="code">read</code>, <code class="code">recv</code>,
+      <code class="code">recvfrom</code>) is chosen to read from the descriptor.
+       After <code class="code">n &lt;= len</code> bytes have been read these are put into
+      string <code class="code">s</code> at positions <code class="code">pos</code> to <code class="code">pos+n-1</code>, and <code class="code">n</code> is returned.
+      The function can fail with any I/O exception defined for the
+      actually performed I/O operation. Whether the operation is blocking
+      or non-blocking depends on the descriptor.<br/>      If <code class="code">len&gt;0</code> but <code class="code">n=0</code> the end of the input data is reached.</div></div>
+<pre><span class="VALblocking_gread"><span class="keyword">val</span> blocking_gread</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys&amp;type=fd_style">fd_style</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; string -&gt; int -&gt; int -&gt; int</code></pre><div class="info"><div class="info"><code class="code">let p = blocking_gread fd_style fd s pos len</code>: 
+      Like <code class="code">gread</code> up to <code class="code">len</code> bytes are read from <code class="code">fd</code> and stored in <code class="code">s</code>.
+      If the I/O operation is blocking but the descriptor is in 
+      non-blocking mode, this function blocks until the operation can
+      be performed. If the operation is interrupted by a signal it is
+      automatically restarted.<br/>      If <code class="code">n &lt; len</code> the end of the input data is reached (where <code class="code">n</code> is the
+      returned number).<br/>      See <code class="code">wait_until_readable</code> below for further information which
+      types of descriptors can be handled in non-blocking mode.</div></div>
+<pre><span class="VALreally_gread"><span class="keyword">val</span> really_gread</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys&amp;type=fd_style">fd_style</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; string -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">really_read fd_style fd s pos len</code>: Reads exactly <code class="code">len</code> bytes from <code class="code">fd</code>
+      and stores them in <code class="code">s</code> starting at <code class="code">pos</code>. If the end of file condition
+      is seen before <code class="code">len</code> bytes are read, the exception <code class="code">End_of_file</code>
+      is raised, and it is unspecified how many bytes have been stored in
+      <code class="code">s</code>. Like <code class="code">blocking_gread</code>, non-blocking descriptors are forced
+      to block until the operation becomes possible, and interruptions by
+      signals are handled.<br/>      See <code class="code">wait_until_readable</code> below for further information which
+      types of descriptors can be handled in non-blocking mode.</div></div>
+<pre><span class="VALgwrite"><span class="keyword">val</span> gwrite</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys&amp;type=fd_style">fd_style</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; string -&gt; int -&gt; int -&gt; int</code></pre><div class="info"><div class="info"><code class="code">gwrite fd_style fd s pos len</code>: Writes up to <code class="code">len</code> bytes to
+      descriptor <code class="code">fd</code> which is supposed to support the I/O style 
+      <code class="code">fd_style</code>, i.e. the right system call (<code class="code">write</code>, <code class="code">send</code>,
+      <code class="code">sendto</code>) is chosen to write to the descriptor.
+    . The <code class="code">n &lt;= len</code> written bytes are taken from string <code class="code">s</code>,
+      starting at position <code class="code">pos</code> until <code class="code">pos+n-1</code>. The number <code class="code">n</code> is
+      returned. The function can fail with any I/O exception defined for the
+      actually performed I/O operation. Whether the operation is blocking
+      or non-blocking depends on the descriptor.</div></div>
+<pre><span class="VALreally_gwrite"><span class="keyword">val</span> really_gwrite</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys&amp;type=fd_style">fd_style</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; string -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">really_write fd_style fd s pos len</code>: Writes exactly the <code class="code">len</code> bytes
+      from <code class="code">s</code> to <code class="code">fd</code> starting at <code class="code">pos</code>. 
+      If the I/O operation is blocking but the descriptor is in 
+      non-blocking mode, this function blocks until the operation can
+      be performed. If the operation is interrupted by a signal it is
+      automatically restarted.<br/>      See <code class="code">wait_until_writable</code> below for further information which
+      types of descriptors can be handled in non-blocking mode.</div></div>
+<pre><span class="EXCEPTIONShutdown_not_supported"><span class="keyword">exception</span> Shutdown_not_supported</span></pre><div class="info"><div class="info">See <code class="code">gshutdown</code></div></div>
+<pre><span class="VALgshutdown"><span class="keyword">val</span> gshutdown</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys&amp;type=fd_style">fd_style</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=shutdown_command">Unix.shutdown_command</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">gshutdown fd_style fd cmd</code>: If there is the possibility to shut down
+      the connection for this kind of descriptor, the shutdown is tried.
+      It is possible that the function raises the <code class="code">EAGAIN</code> Unix error if
+      the shutdown operation is non-blocking, and currently not possible. 
+      It is suggested to wait until the descriptor is writable, and to try
+      again then.<br/>      If there is no shutdown operation for this kind of descriptor, the
+      exception <code class="code">Shutdown_not_supported</code> is raised. In this case it is
+      usually sufficient to close the descriptor (<code class="code">gclose</code>, see below),
+      and when all descriptors to the resource are closed, the resource
+      is shut down by the OS.<br/>      Details by <code class="code">fd_style</code>:<ul><li><code class="code">`Recv_send</code> and <code class="code">`Recv_send_implied</code>: The socket is shut
+         down as requested by <code class="code">Unix.shutdown</code>. This only triggers the
+         shutdown, but does not wait until it is completed. Also,
+         errors are usually not immediately reported.</li><li><code class="code">`W32_pipe</code>: It is only possible to request <code class="code">SHUTDOWN_ALL</code>
+         for these descriptors.  For other shutdown types, the error
+         <code class="code">EPERM</code> is reported. The shutdown is synchronous and completed
+         when the function returns.</li><li><code class="code">`W32_pipe_server</code>: It is only possible to request <code class="code">SHUTDOWN_ALL</code>
+         for these descriptors.  For other shutdown types, the error
+         <code class="code">EPERM</code> is reported. A shutdown means here to stop accepting
+         new connections. The shutdown is synchronous and completed
+         when the function returns.</li><li><code class="code">`W32_output_thread</code>:  It is only possible to request <code class="code">SHUTDOWN_SEND</code>
+         for these descriptors. A <code class="code">SHUTDOWN_ALL</code> is also interpreted as
+         <code class="code">SHUTDOWN_SEND</code>, and a <code class="code">SHUTDOWN_RECEIVE</code> is ignored.
+         A shutdown means here that the EOF is appended
+         to the output buffer, and when the output thread has written the
+         buffer contents, the underlying descriptor (not <code class="code">fd</code>!) will be
+         closed. The shutdown operation is non-blocking. If it is not
+         possible at the moment of calling, the error <code class="code">EAGAIN</code> is reported.</li><li>Other styles raise <code class="code">Shutdown_not_supported</code>.
+   </li></ul></div></div>
+<pre><span class="VALis_readable"><span class="keyword">val</span> is_readable</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys&amp;type=fd_style">fd_style</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; bool</code></pre>
+<pre><span class="VALis_writable"><span class="keyword">val</span> is_writable</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys&amp;type=fd_style">fd_style</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; bool</code></pre>
+<pre><span class="VALis_prird"><span class="keyword">val</span> is_prird</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys&amp;type=fd_style">fd_style</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; bool</code></pre><div class="info"><div class="info">Test whether the descriptor would not block if one of the input,
+      output, or priority input operations were done.<br/>      On POSIX systems the tests work for a wide variety of descriptor 
+      types (but not for regular files which are assumed to be always
+      readable and writable).
+      If the <code class="code">poll</code> interface is available it is preferred over the
+      <code class="code">select</code> interface to conduct the test.<br/>      On Win32, the tests are limited to sockets, named pipes and
+      event objects. (The latter two only in the form provided by
+       <a href="#Netsys_win32">Netsys_win32</a>, see there.)<br/>      Generally, if the blocking status cannot be determined for
+      a class of I/O operations, the functions return <code class="code">true</code>, in
+      the hope that it is better to block than to never conduct
+      the operation.</div></div>
+<pre><span class="VALwait_until_readable"><span class="keyword">val</span> wait_until_readable</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys&amp;type=fd_style">fd_style</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; float -&gt; bool</code></pre>
+<pre><span class="VALwait_until_writable"><span class="keyword">val</span> wait_until_writable</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys&amp;type=fd_style">fd_style</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; float -&gt; bool</code></pre>
+<pre><span class="VALwait_until_prird"><span class="keyword">val</span> wait_until_prird</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys&amp;type=fd_style">fd_style</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; float -&gt; bool</code></pre><div class="info"><div class="info">Wait until an operation for a single descriptor becomes possible.
+      The float argument is the timeout (negative value means no timeout).
+      Returns whether the operation is possible (<code class="code">true</code>). Otherwise,
+      there was a timeout (<code class="code">false</code>).<br/>      On POSIX systems this works for a wide variety of descriptor 
+      types (but not for regular files which are assumed to be always
+      readable and writable).
+      If the <code class="code">poll</code> interface is available it is preferred over the
+      <code class="code">select</code> interface to wait for I/O. The functions also catch
+      interruptions by signals.<br/>      On Win32, waiting is limited to sockets, named pipes and
+      event objects. (The latter two only in the form provided by
+       <a href="#Netsys_win32">Netsys_win32</a>, see there.)<br/>      Generally, if waiting is not supported for
+      a class of I/O operations, the functions return immediately <code class="code">true</code>, in
+      the hope that it is better to block than to never conduct
+      the operation.</div></div>
+<pre><span class="VALgclose"><span class="keyword">val</span> gclose</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys&amp;type=fd_style">fd_style</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; unit</code></pre><div class="info"><div class="info">Shuts down the system object referenced by the descriptor so far
+      possible, and closes the descriptor.<br/>      Errors are logged to  <a href="#Netlog">Netlog</a> as <code class="code">`Crit</code> events, and
+      do not generate exceptions.<br/>      The exact semantics of the close operation varies from descriptor
+      style to descriptor style. Generally, <code class="code">gclose</code> assumes that all
+      I/O is done, and all buffers are flushed, and that one can tear
+      down the underlying communication circuits. <code class="code">gclose</code> is always
+      the right choice when the I/O channel needs to be aborted after a
+      fatal error, and it does not matter whether errors occur or not.
+      If a data connection needs to be orderly closed (i.e. without
+      data loss), one should first try to finish the communication,
+      either by protocol means (e.g. wait for ACK messages), or by
+      calling <code class="code">gshutdown</code> first (see above).</div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Functions for sockets</h1></div></div>
+<pre><span class="VALwait_until_connected"><span class="keyword">val</span> wait_until_connected</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; float -&gt; bool</code></pre><div class="info"><div class="info">After a non-blocking connect has been initiated, this function can be
+      used to wait until (1) the connect is successful, or (2) the connect
+      fails, or (3) the operation times out. The <code class="code">float</code> argument is the
+      timeout value (negative value means no timeout).
+      The function returns <code class="code">true</code> for the cases (1) and (2), and <code class="code">false</code>
+      for case (3). The cases (1) and (2) can be further analyzed by
+      calling <code class="code">connect_check</code> (see below).<br/>      On POSIX, this function is identical to <code class="code">wait_until_writable</code>. On
+      Win32 the wait condition is slightly different.<br/>      On Win32, this function also tolerates client proxy descriptors for
+      Win32 named pipes. However, there is no waiting - the function 
+      immediately returns.</div></div>
+<pre><span class="VALconnect_check"><span class="keyword">val</span> connect_check</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; unit</code></pre><div class="info"><div class="info">Tests whether the socket is connected with the peer after calling
+      <code class="code">Unix.connect</code>. If the socket is connected, the function returns normally.
+      Otherwise, the current socket error is raised as a <code class="code">Unix.Unix_error</code>
+      exception. This function is intended to be called after a 
+      non-blocking connect has been initiated, and the success or error
+      is indicated (e.g. after <code class="code">wait_until_connected</code> returns).<br/>      Side effect: The per-socket error code may be reset.<br/>      On Win32, this function also tolerates client proxy descriptors for
+      Win32 named pipes. However, there is no real check - the function 
+      immediately returns.</div></div>
+<pre><span class="VALdomain_of_inet_addr"><span class="keyword">val</span> domain_of_inet_addr</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=socket_domain">Unix.socket_domain</a></code></pre><div class="info"><div class="info">Returns the socket domain of Internet addresses, i.e. whether the
+ address is IPv4 or IPv6</div></div>
+<pre><span class="VALprotostring_of_inet_addr"><span class="keyword">val</span> protostring_of_inet_addr</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a> -&gt; string</code></pre>
+<pre><span class="VALinet_addr_of_protostring"><span class="keyword">val</span> inet_addr_of_protostring</span> : <code class="type">string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a></code></pre><div class="info"><div class="info">Converts an IP address to the 4 bytes (IPv4) or 16 bytes (IPv6)
+      representation in network byte order, and vice-versa</div></div>
+<pre><span class="VALgetpeername"><span class="keyword">val</span> getpeername</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a></code></pre><div class="info"><div class="info">like <code class="code">Unix.getpeername</code>, but errors are fixed up. <code class="code">ENOTCONN</code> is
+      ensured when the socked is unconnected or shut down.</div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Helper functions</h1></div></div>
+<pre><span class="VALis_absolute"><span class="keyword">val</span> is_absolute</span> : <code class="type">string -&gt; bool</code></pre><div class="info"><div class="info">Whether this file path is absolute. Works for Unix and Win32.</div></div>
+<pre><span class="VALrestart"><span class="keyword">val</span> restart</span> : <code class="type">('a -&gt; 'b) -&gt; 'a -&gt; 'b</code></pre><div class="info"><div class="info"><code class="code">restart f arg</code> calls <code class="code">f arg</code>, and restarts this call if the
+ exception <code class="code">Unix_error(EINTR,_,_)</code> is caught.<br/> Note that there are some cases where this handling of <code class="code">EINTR</code> is
+ not sufficient:<ul><li>Functions that have a timeout argument like <code class="code">Unix.select</code>: When
+   <code class="code">EINTR</code> is caught the timeout should be adjusted.</li><li><code class="code">Unix.connect</code> with a blocking descriptor because this is not
+   well-enough specified by POSIX
+   </li></ul></div></div>
+<pre><span class="VALrestart_tmo"><span class="keyword">val</span> restart_tmo</span> : <code class="type">(float -&gt; 'b) -&gt; float -&gt; 'b</code></pre><div class="info"><div class="info"><code class="code">restart_tmo f tmo</code> calls <code class="code">f</code> with a timeout argument <code class="code">tmo</code>, and
+ restarted the call if the exception <code class="code">Unix_error(EINTR,_,_)</code> is caught.
+ In the restart case, the timeout argument is reduced by the
+ already elapsed time.<br/> Negative timeout arguments are interpreted as &quot;no timeout&quot;.</div></div>
+<pre><span class="VALrestarting_select"><span class="keyword">val</span> restarting_select</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list -&gt;
+<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list -&gt;
+<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list -&gt;
+float -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list</code></pre><div class="info"><div class="info">A wrapper around <code class="code">Unix.select</code> that handles the <code class="code">EINTR</code> condition.<br/>      Note: This function calls <code class="code">Unix.select</code> and shares all pros and cons
+      with <code class="code">Unix.select</code>. In particular, the OS often sets a limit on the 
+      number (and/or the numeric value) of the descriptors (e.g. for
+      Linux it is 1024, for Windows it is 64). On Ocaml 3.11 the Windows
+      version of <code class="code">Unix.select</code> includes some support for other types
+      of descriptors than sockets.</div></div>
+<pre><span class="VALsleep"><span class="keyword">val</span> sleep</span> : <code class="type">float -&gt; unit</code></pre>
+<pre><span class="VALrestarting_sleep"><span class="keyword">val</span> restarting_sleep</span> : <code class="type">float -&gt; unit</code></pre><div class="info"><div class="info">Sleep for the passed time. <code class="code">restarting_sleep</code> additionally handles
+      <code class="code">EINTR</code>.</div></div>
+<pre><span class="VALunix_error_of_code"><span class="keyword">val</span> unix_error_of_code</span> : <code class="type">int -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=error">Unix.error</a></code></pre><div class="info"><div class="info">Converts an integer error into the corresponding variant</div></div>
+<pre><span class="VALint64_of_file_descr"><span class="keyword">val</span> int64_of_file_descr</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; int64</code></pre><div class="info"><div class="info">Returns the file descriptor as int64 number. Works for all OS.</div></div>
+<pre><span class="VALstring_of_fd"><span class="keyword">val</span> string_of_fd</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; string</code></pre><div class="info"><div class="info">Return a string describing the descriptor (for debugging)</div></div>
+<pre><span class="VALstring_of_sockaddr"><span class="keyword">val</span> string_of_sockaddr</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a> -&gt; string</code></pre><div class="info"><div class="info">Returns a human-readable string describing the address
+      (for debug messages)<br/>      Note that the reverse (parsing such a string) can be
+      accomplished with  <a href="#Netsockaddr.socksymbol_of_string">Netsockaddr.socksymbol_of_string</a> and
+       <a href="#Uq_resolver.sockaddr_of_socksymbol">Uq_resolver.sockaddr_of_socksymbol</a>.</div></div>
+<pre><span class="VALstring_of_fd_style"><span class="keyword">val</span> string_of_fd_style</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys&amp;type=fd_style">fd_style</a> -&gt; string</code></pre><div class="info"><div class="info">Returns a string describing the fd style (debugging)</div></div>
+<pre><span class="VALis_stdin"><span class="keyword">val</span> is_stdin</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; bool</code></pre>
+<pre><span class="VALis_stdout"><span class="keyword">val</span> is_stdout</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; bool</code></pre>
+<pre><span class="VALis_stderr"><span class="keyword">val</span> is_stderr</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; bool</code></pre><div class="info"><div class="info">Returns whether the descriptors are stdin/stdout/stderr</div></div>
+<pre><span class="VALset_close_on_exec"><span class="keyword">val</span> set_close_on_exec</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; unit</code></pre>
+<pre><span class="VALclear_close_on_exec"><span class="keyword">val</span> clear_close_on_exec</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; unit</code></pre><div class="info"><div class="info">Working versions of the functions with the same name in <code class="code">Unix</code></div></div>
+<pre><span class="VAL_exit"><span class="keyword">val</span> _exit</span> : <code class="type">int -&gt; unit</code></pre><div class="info"><div class="info">Exit the program immediately without running the atexit handlers.
+ The argument is the exit code, just as for <code class="code">exit</code>.</div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">IP addresses</h1></div></div>
+<pre><span class="VALlogand_inet_addr"><span class="keyword">val</span> logand_inet_addr</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a></code></pre><div class="info"><div class="info">Returns the bitwise AND of the two argument addresses</div></div>
+<pre><span class="VALlogor_inet_addr"><span class="keyword">val</span> logor_inet_addr</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a></code></pre><div class="info"><div class="info">Returns the bitwise OR of the two argument addresses</div></div>
+<pre><span class="VALlogxor_inet_addr"><span class="keyword">val</span> logxor_inet_addr</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a></code></pre><div class="info"><div class="info">Returns the bitwise XOR of the two argument addresses</div></div>
+<pre><span class="VALlognot_inet_addr"><span class="keyword">val</span> lognot_inet_addr</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a></code></pre><div class="info"><div class="info">Returns the bitwise NOT of the argument address</div></div>
+<pre><span class="VALis_ipv4_inet_addr"><span class="keyword">val</span> is_ipv4_inet_addr</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a> -&gt; bool</code></pre><div class="info"><div class="info">Whether the address is an IPv4 address</div></div>
+<pre><span class="VALis_ipv6_inet_addr"><span class="keyword">val</span> is_ipv6_inet_addr</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a> -&gt; bool</code></pre><div class="info"><div class="info">Whether the address is an IPv6 address</div></div>
+<pre><span class="VALis_multicast_inet_addr"><span class="keyword">val</span> is_multicast_inet_addr</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a> -&gt; bool</code></pre><div class="info"><div class="info">Whether the address is a multicast address (either IPv4 or IPv6)</div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Multicast Functions</h1></div></div>
+<pre><span class="VALmcast_set_loop"><span class="keyword">val</span> mcast_set_loop</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; bool -&gt; unit</code></pre><div class="info"><div class="info">Whether sent multicast messages are received by the sending host</div></div>
+<pre><span class="VALmcast_set_ttl"><span class="keyword">val</span> mcast_set_ttl</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">Set TTL/hops value</div></div>
+<pre><span class="VALmcast_add_membership"><span class="keyword">val</span> mcast_add_membership</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a> -&gt; unit</code></pre><div class="info"><div class="info">Join a multicast group.<br/>      First inet addr is the group to join. Second inet addr selects the
+      network interface (or <code class="code">Unix.inet_addr_any</code>).</div></div>
+<pre><span class="VALmcast_drop_membership"><span class="keyword">val</span> mcast_drop_membership</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a> -&gt; unit</code></pre><div class="info"><div class="info">Leave a multicast group.<br/>     First inet addr is the group to leave. Second inet addr selects the
+     network interface (or <code class="code">Unix.inet_addr_any</code>).</div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Profiling</h1></div></div>
+<pre><span class="VALmoncontrol"><span class="keyword">val</span> moncontrol</span> : <code class="type">bool -&gt; unit</code></pre><div class="info"><div class="info">Interface to the <code class="code">moncontrol</code> routine of the GPROF profiler. 
+      <code class="code">moncontrol false</code> stops profiling; <code class="code">moncontrol true</code> starts
+      profiling again.<br/>      This is a no-op if the program is not compiler for profiling.</div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Deprecated</h1></div></div>
+<div class="info"><div class="info">The following interfaces have been replaced by more generic implementations
+    that work on more platforms.</div></div>
+<pre><span class="VALblocking_read"><span class="keyword">val</span> blocking_read</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; string -&gt; int -&gt; int -&gt; int</code></pre><div class="info"><div class="info">Same as <code class="code">blocking_gread `Read_write</code></div></div>
+<pre><span class="VALreally_read"><span class="keyword">val</span> really_read</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; string -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">Same as <code class="code">really_gread `Read_write</code></div></div>
+<pre><span class="VALreally_write"><span class="keyword">val</span> really_write</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; string -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">Same as <code class="code">really_gwrite `Read_write</code></div></div>
+<div class="info"><div class="info">The following interfaces have been moved to  <a href="#Netsys_posix">Netsys_posix</a>.</div></div>
+<pre><span class="TYPEshm_open_flag"><span class="keyword">type</span> shm_open_flag</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=shm_open_flag">Netsys_posix.shm_open_flag</a></code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTshm_open_flag.SHM_O_RDONLY"><span class="constructor">SHM_O_RDONLY</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTshm_open_flag.SHM_O_RDWR"><span class="constructor">SHM_O_RDWR</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTshm_open_flag.SHM_O_CREAT"><span class="constructor">SHM_O_CREAT</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTshm_open_flag.SHM_O_EXCL"><span class="constructor">SHM_O_EXCL</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTshm_open_flag.SHM_O_TRUNC"><span class="constructor">SHM_O_TRUNC</span></span></code></td></tr></table>
+<pre><span class="VALhave_posix_shm"><span class="keyword">val</span> have_posix_shm</span> : <code class="type">unit -&gt; bool</code></pre>
+<pre><span class="VALshm_open"><span class="keyword">val</span> shm_open</span> : <code class="type">string -&gt; <a href="?package=ocamlnet&amp;module=Netsys&amp;type=shm_open_flag">shm_open_flag</a> list -&gt; int -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></pre>
+<pre><span class="VALshm_unlink"><span class="keyword">val</span> shm_unlink</span> : <code class="type">string -&gt; unit</code></pre>
+<div class="info"><div class="info"><h1 id="1_TITLE">Further Documentation</h1></div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">How to orderly close I/O channels</h2> <br/>    After reading from uni-directional descriptors, and seeing the
+    EOF, it is usually sufficient to call <code class="code">gclose</code> to free OS resources.<br/>    After writing to uni-directional descriptors one should call
+    <code class="code">gshutdown</code> to send an EOF (<code class="code">SHUTDOWN_SEND</code>). For some descriptors
+    one will get the exception <code class="code">Shutdown_not_supported</code> which can be
+    ignored in this context The <code class="code">gshutdown</code> function cannot,
+    however, report in all cases whether the operation was successful.
+    As a rule of thumb, error reporting works for local data connections,
+    but not always for remote connections, and there is no way to fix
+    this. After writing EOF, call <code class="code">gclose</code> to free OS resources.<br/>    For bidirectional connections, it is even more complicated. If the
+    connection is local, a bidirectional connection behaves much like a pair
+    of unidirectional connections. However, in the network case, we have
+    to go down to the protocol level.<br/>    For TCP the golden rule is that the client initiates the connection,
+    and the client finishes the connection. The case that the server
+    finishes the connection is not well-specified - or better, the server needs
+    the ACK from the client after triggering the connection termination. 
+    In practice we have the cases:<br/>    - Client sends EOF, and server replies with EOF: This is the normal
+      case for which TCP is designed. Client code can invoke
+      <code class="code">gshutdown</code> with <code class="code">SHUTDOWN_SEND</code> and then waits until the EOF from 
+      the server arrives,
+      and then <code class="code">gclose</code>s the descriptor. It may happen that the client
+      gets an error if some problem occurs, so this is reliable from the
+      perspective of the client. The server first sees the EOF from the
+      client, and then responds with another <code class="code">gshutdown</code>, followed by 
+      <code class="code">gclose</code>. From the server's perspective it does not matter whether
+      the operation results in an error or not - the client has lost
+      interest anyway.<ul><li>Client sends EOF, and server replies with data, and then EOF.
+      Here, the client has to read the final data, and then wait for the
+      server's EOF after sending its own EOF. On the server's side, 
+      some data is written before the final EOF. The question is how
+      the server can be sure that the data really arrived. Unfortunately,
+      there is no way to do so. The server may not get all errors because
+      these may arrive at the server computer after <code class="code">gshutdown</code>. There
+      is no way to fix this. (One should better fix the application protocol. 
+      Note
+      that even prominent researchers trapped into this problem. For example,
+      the first version of HTTP had this problem.)</li><li>Server sends EOF, and client replies with EOF: This is the difficult
+      case. Here, the server wants to be sure that the data sent immediately
+      before its EOF really arrives at the client. After <code class="code">gshutdown</code>
+      it is forbidden to immediately <code class="code">gclose</code>, because this may result
+      in a connection reset. Instead, the server has to wait for the 
+      client's EOF. (This is called &quot;lingering&quot;.) If the client's EOF is
+      seen one can <code class="code">gclose</code>.</li><li>Server sends EOF, and client replies with data, followed by EOF:
+      I admit I don't know whether TCP can handle this somehow.
+ </li></ul></div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Debugging</h1></div></div>
+<div class="ocaml_module sig" name="Debug"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netsys.Debug">Debug</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALenable"><span class="keyword">val</span> enable</span> : <code class="type">bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">Enables  <a href="#Netlog">Netlog</a>-style debugging</div></div></div></div>
+<pre><span class="VALset_moncontrol"><span class="keyword">val</span> set_moncontrol</span> : <code class="type">(bool -&gt; unit) -&gt; unit</code></pre>
+</div>

@@ -1,0 +1,13 @@
+<div class="ocaml_toplevel_module"><div class="info">Rate limiters</div>
+<div class="info"><div class="info">This module defines rate limiters. A rate limiter is parametrized
+    by its limit and a maximum waiting time. The <code class="code">wait</code> function will
+    collaboratively hang for a delay necessary to respect the
+    limit. If that delay exceeds the maximum waiting time, <code class="code">wait</code>
+    returns <code class="code">false</code>; otherwise it returns <code class="code">true</code>.</div></div>
+<div class="ocaml_module sig" name="S"><pre><span class="keyword">module type</span> <a href="?package=lwt&amp;module=Lwt_throttle.S">S</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEkey"><span class="keyword">type</span> key</span> </pre>
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">rate:int -&gt; max:int -&gt; n:int -&gt; <a href="?package=lwt&amp;module=Lwt_throttle.S&amp;type=t">t</a></code></pre><div class="info"><div class="info"><div class="parameters"><div class="param_info"><code class="code">rate</code> : maximum number of connections per second</div><div class="param_info"><code class="code">max</code> : maximum waiting time (in seconds)</div><div class="param_info"><code class="code">n</code> : initial size of the hash table</div></div></div></div>
+<pre><span class="VALwait"><span class="keyword">val</span> wait</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_throttle.S&amp;type=t">t</a> -&gt; <a href="?package=lwt&amp;module=Lwt_throttle.S&amp;type=key">key</a> -&gt; bool <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"> <b>Returns</b> <code class="code">false</code> if maximum reached, <code class="code">true</code> else</div></div></div></div>
+<div class="ocaml_module ident" name="Make" path="?package=lwt&amp;module=Lwt_throttle.S"><pre><span class="keyword">module</span> <a href="?package=lwt&amp;module=Lwt_throttle.Make">Make</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">H</code><code class="code"> : </code><code class="code"><a href="?package=ocaml&amp;module=Hashtbl.HashedType">Hashtbl.HashedType</a></code><code class="code">) -&gt; </code><code class="code"><a href="?package=lwt&amp;module=Lwt_throttle.S">S</a></code> with type <a href="?package=lwt&amp;module=Lwt_throttle.S&amp;type=key">key</a> = H.t</div></code></pre></div>
+</div>

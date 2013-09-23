@@ -1,0 +1,31 @@
+<div class="ocaml_toplevel_module"><div class="info">Printing on console tty's</div>
+<div class="ocaml_module sig" name="Ansi"><pre><span class="keyword">module</span> <a href="?package=textutils&amp;module=Console.Ansi">Ansi</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Handling of ansi codes.</div></div><div class="ocaml_module_content">
+<pre><span class="VALkill_line"><span class="keyword">val</span> kill_line</span> : <code class="type">unit -&gt; unit</code></pre>
+<pre><span class="VALbell"><span class="keyword">val</span> bell</span> : <code class="type">unit -&gt; unit</code></pre>
+<pre><span class="VALhome_cursor"><span class="keyword">val</span> home_cursor</span> : <code class="type">unit -&gt; unit</code></pre>
+<pre><span class="VALsave_cursor"><span class="keyword">val</span> save_cursor</span> : <code class="type">unit -&gt; unit</code></pre>
+<pre><span class="VALunsave_cursor"><span class="keyword">val</span> unsave_cursor</span> : <code class="type">unit -&gt; unit</code></pre>
+<pre><span class="TYPEcolor"><span class="keyword">type</span> color</span> = <code class="type">[ `Black | `Blue | `Cyan | `Green | `Magenta | `Red | `White | `Yellow ]</code></pre>
+<pre><span class="TYPEattr"><span class="keyword">type</span> attr</span> = <code class="type">[ `Bg of <a href="?package=textutils&amp;module=Console.Ansi&amp;type=color">color</a>
+| `Black
+| `Blue
+| `Bright
+| `Cyan
+| `Dim
+| `Green
+| `Magenta
+| `Red
+| `Reverse
+| `Underscore
+| `White
+| `Yellow ]</code></pre>
+<pre><span class="VALprintf"><span class="keyword">val</span> printf</span> : <code class="type"><a href="?package=textutils&amp;module=Console.Ansi&amp;type=attr">attr</a> list -&gt; ('a, <a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a>, unit) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format">Pervasives.format</a> -&gt; 'a</code></pre>
+<pre><span class="VALeprintf"><span class="keyword">val</span> eprintf</span> : <code class="type"><a href="?package=textutils&amp;module=Console.Ansi&amp;type=attr">attr</a> list -&gt; ('a, <a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a>, unit) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format">Pervasives.format</a> -&gt; 'a</code></pre>
+<pre><span class="VALoutput_string"><span class="keyword">val</span> output_string</span> : <code class="type"><a href="?package=textutils&amp;module=Console.Ansi&amp;type=attr">attr</a> list -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a> -&gt; string -&gt; unit</code></pre>
+<pre><span class="VALoutput"><span class="keyword">val</span> output</span> : <code class="type"><a href="?package=textutils&amp;module=Console.Ansi&amp;type=attr">attr</a> list -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a> -&gt; string -&gt; int -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALstring_with_attr"><span class="keyword">val</span> string_with_attr</span> : <code class="type"><a href="?package=textutils&amp;module=Console.Ansi&amp;type=attr">attr</a> list -&gt; string -&gt; string</code></pre></div></div>
+<pre><span class="VALis_color_tty"><span class="keyword">val</span> is_color_tty</span> : <code class="type">unit -&gt; bool</code></pre>
+<pre><span class="VALwidth"><span class="keyword">val</span> width</span> : <code class="type">unit -&gt; [ `Cols of int | `Not_a_tty | `Not_available ]</code></pre><div class="info"><div class="info">The width in characters of the current output. Returns <code class="code">None</code> if stdout is
+    not connected to a tty.</div></div>
+<pre><span class="VALprint_list"><span class="keyword">val</span> print_list</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a> -&gt; (string * <a href="?package=textutils&amp;module=Console.Ansi&amp;type=attr">Ansi.attr</a> list) list -&gt; unit</code></pre><div class="info"><div class="info">print a list in a columnize way (like the output of ls)</div></div>
+</div>

@@ -1,0 +1,190 @@
+<div class="ocaml_toplevel_module"><div class="info">Interactive line input</div>
+<div class="info"><div class="info">For a complete example of usage of this module, look at the shell
+    example (examples/shell.ml) distributed with Lambda-Term.</div></div>
+<pre><span class="EXCEPTIONInterrupt"><span class="keyword">exception</span> Interrupt</span></pre><div class="info"><div class="info">Exception raised when the user presses <code class="code">Ctrl^D</code> with an empty
+      input.</div></div>
+<pre><span class="TYPEprompt"><span class="keyword">type</span> prompt</span> = <code class="type"><a href="?package=lambda-term&amp;module=LTerm_text&amp;type=t">LTerm_text.t</a></code></pre><div class="info"><div class="info">Type of prompts.</div></div>
+<pre><span class="TYPEhistory"><span class="keyword">type</span> history</span> = <code class="type"><a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a> list</code></pre><div class="info"><div class="info">Type of histories. It is a list of entries from the most
+        recent to the oldest.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Completion</h6></div></div>
+<pre><span class="VALcommon_prefix"><span class="keyword">val</span> common_prefix</span> : <code class="type">string list -&gt; string</code></pre><div class="info"><div class="info">Returns the common prefix of a list of words.</div></div>
+<pre><span class="VALlookup"><span class="keyword">val</span> lookup</span> : <code class="type"><a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a> -&gt; <a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a> list -&gt; <a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a> list</code></pre><div class="info"><div class="info"><code class="code">lookup word words</code> lookup for completion of <code class="code">word</code> into
+      <code class="code">words</code>. It returns all words starting with <code class="code">word</code>.</div></div>
+<pre><span class="VALlookup_assoc"><span class="keyword">val</span> lookup_assoc</span> : <code class="type"><a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a> -&gt; (<a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a> * 'a) list -&gt; (<a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a> * 'a) list</code></pre><div class="info"><div class="info"><code class="code">lookup_assoc word words</code> does the same as  <a href="#lookup">lookup</a> but works
+      on associative list.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Actions</h6></div></div>
+<pre><code><span class="TYPEaction"><span class="keyword">type</span> action</span> = </code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTaction.Edit"><span class="constructor">Edit</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=lambda-term&amp;module=LTerm_edit&amp;type=action">LTerm_edit.action</a></code></code></td><td class="typefieldcomment" align="left"><div class="info">An edition action.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTaction.Interrupt_or_delete_next_char"><span class="constructor">Interrupt_or_delete_next_char</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Interrupt if at the beginning of an empty line, or delete
+          the next character.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTaction.Complete"><span class="constructor">Complete</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Complete current input.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTaction.Complete_bar_next"><span class="constructor">Complete_bar_next</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Go to the next possible completion in the completion bar.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTaction.Complete_bar_prev"><span class="constructor">Complete_bar_prev</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Go to the previous possible completion in the completion
+          bar.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTaction.Complete_bar_first"><span class="constructor">Complete_bar_first</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Goto the beginning of the completion bar.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTaction.Complete_bar_last"><span class="constructor">Complete_bar_last</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Goto the end of the completion bar.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTaction.Complete_bar"><span class="constructor">Complete_bar</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Complete current input using the completion bar.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTaction.History_prev"><span class="constructor">History_prev</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Go to the previous entry of the history.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTaction.History_next"><span class="constructor">History_next</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Go to the next entry of the history.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTaction.Accept"><span class="constructor">Accept</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Accept the current input.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTaction.Clear_screen"><span class="constructor">Clear_screen</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Clear the screen.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTaction.Prev_search"><span class="constructor">Prev_search</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Search backward in the history.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTaction.Cancel_search"><span class="constructor">Cancel_search</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Cancel search mode.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTaction.Break"><span class="constructor">Break</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Raise <code class="code">Sys.Break</code>.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTaction.Suspend"><span class="constructor">Suspend</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Suspend the program.</div></td></tr></table><div class="info"><div class="info">Type of actions.</div></div>
+<pre><span class="VALbindings"><span class="keyword">val</span> bindings</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm_read_line&amp;type=action">action</a> list ident print bug <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">Bindings.</div></div>
+<pre><span class="VALbind"><span class="keyword">val</span> bind</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm_key&amp;type=t">LTerm_key.t</a> list -&gt; <a href="?package=lambda-term&amp;module=LTerm_read_line&amp;type=action">action</a> list -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">bind seq actions</code> associates <code class="code">actions</code> to the given
+      sequence.</div></div>
+<pre><span class="VALunbind"><span class="keyword">val</span> unbind</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm_key&amp;type=t">LTerm_key.t</a> list -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">unbind seq</code> unbinds <code class="code">seq</code>.</div></div>
+<pre><span class="VALactions"><span class="keyword">val</span> actions</span> : <code class="type">(<a href="?package=lambda-term&amp;module=LTerm_read_line&amp;type=action">action</a> * string) list</code></pre><div class="info"><div class="info">List of actions with their names, except  <a href="#Edit">Edit</a>.</div></div>
+<pre><span class="VALdoc_of_action"><span class="keyword">val</span> doc_of_action</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm_read_line&amp;type=action">action</a> -&gt; string</code></pre><div class="info"><div class="info"><code class="code">doc_of_action action</code> returns a short description of the
+      action.</div></div>
+<pre><span class="VALaction_of_name"><span class="keyword">val</span> action_of_name</span> : <code class="type">string -&gt; <a href="?package=lambda-term&amp;module=LTerm_read_line&amp;type=action">action</a></code></pre><div class="info"><div class="info"><code class="code">action_of_name str</code> converts the given action name into an
+      action. Action name are the same as variants name but lowercased
+      and with '_' replaced by '-'. It raises <code class="code">Not_found</code> if the name
+      does not correspond to an action. It also recognizes edition
+      actions.</div></div>
+<pre><span class="VALname_of_action"><span class="keyword">val</span> name_of_action</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm_read_line&amp;type=action">action</a> -&gt; string</code></pre><div class="info"><div class="info"><code class="code">name_of_action act</code> returns the name of the given action.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">The read-line engine</h6></div></div>
+<pre><span class="VALmacro"><span class="keyword">val</span> macro</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm_read_line&amp;type=action">action</a> <a href="?package=zed&amp;module=Zed_macro&amp;type=t">Zed_macro.t</a></code></pre><div class="info"><div class="info">The global macro recorder.</div></div>
+<pre><code><span class="TYPEmode"><span class="keyword">type</span> mode</span> = </code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTmode.Edition"><span class="constructor">Edition</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Editing.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTmode.Search"><span class="constructor">Search</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Backward search.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTmode.Set_counter"><span class="constructor">Set_counter</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Setting the macro counter value.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTmode.Add_counter"><span class="constructor">Add_counter</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Adding a value to the macro counter.</div></td></tr></table><div class="info"><div class="info">The current read-line mode.</div></div>
+<div class="ocaml_class sig" name="engine"><pre><span class="TYPEengine"><span class="keyword">class</span> <span class="keyword">virtual </span><code class="type">['a] </code><a href="?package=lambda-term&amp;module=LTerm_read_line&amp;class=engine">engine</a></span> : <code class="type">unit -&gt; <a href="?package=lambda-term&amp;module=LTerm_read_line&amp;type=action">action</a> <a href="?package=zed&amp;module=Zed_macro&amp;type=t">Zed_macro.t</a> option -&gt; <a href="?package=zed&amp;module=Zed_edit&amp;type=clipboard">Zed_edit.clipboard</a> option -&gt; <a href="?package=lambda-term&amp;module=LTerm_read_line&amp;type=history">history</a> option -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">The read-line engine. If no clipboard is provided,
+     <a href="#LTerm_edit.clipboard">LTerm_edit.clipboard</a> is used. If no macro recorder is provided,
+     <a href="#macro">macro</a> is used.</div></div><div class="ocaml_class_content"><div class="info"><div class="info"><h6 id="6_TITLE">Result</h6></div></div>
+<pre><span class="METHODeval"><span class="keyword">method</span> <span class="keyword">virtual</span> eval</span> : <code class="code">'a</code></pre>
+<div class="info"><div class="info">Evaluates the contents of the engine.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Actions</h6></div></div>
+<pre><span class="METHODinsert"><span class="keyword">method</span> insert</span> : <code class="code"><a href="?package=camomile&amp;module=CamomileLibrary.UChar&amp;type=t">CamomileLibrary.UChar.t</a> -&gt; unit</code></pre>
+<div class="info"><div class="info">Inserts the given character. Note that is it also possible to
+        manipulate directly the edition context.</div></div>
+<pre><span class="METHODsend_action"><span class="keyword">method</span> send_action</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_read_line&amp;type=action">action</a> -&gt; unit</code></pre>
+<div class="info"><div class="info">Evolves according to the given action.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">State</h6></div></div>
+<pre><span class="METHODedit"><span class="keyword">method</span> edit</span> : <code class="code">unit <a href="?package=zed&amp;module=Zed_edit&amp;type=t">Zed_edit.t</a></code></pre>
+<div class="info"><div class="info">The edition engine used by this read-line engine.</div></div>
+<pre><span class="METHODcontext"><span class="keyword">method</span> context</span> : <code class="code">unit <a href="?package=zed&amp;module=Zed_edit&amp;type=context">Zed_edit.context</a></code></pre>
+<div class="info"><div class="info">The context for the edition engine.</div></div>
+<pre><span class="METHODclipboard"><span class="keyword">method</span> clipboard</span> : <code class="code"><a href="?package=zed&amp;module=Zed_edit&amp;type=clipboard">Zed_edit.clipboard</a></code></pre>
+<div class="info"><div class="info">The clipboard used by the edition engine.</div></div>
+<pre><span class="METHODmacro"><span class="keyword">method</span> macro</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_read_line&amp;type=action">action</a> <a href="?package=zed&amp;module=Zed_macro&amp;type=t">Zed_macro.t</a></code></pre>
+<div class="info"><div class="info">The macro recorder.</div></div>
+<pre><span class="METHODinput_prev"><span class="keyword">method</span> input_prev</span> : <code class="code"><a href="?package=zed&amp;module=Zed_rope&amp;type=t">Zed_rope.t</a></code></pre>
+<div class="info"><div class="info">The input before the cursor.</div></div>
+<pre><span class="METHODinput_next"><span class="keyword">method</span> input_next</span> : <code class="code"><a href="?package=zed&amp;module=Zed_rope&amp;type=t">Zed_rope.t</a></code></pre>
+<div class="info"><div class="info">The input after the cursor.</div></div>
+<pre><span class="METHODmode"><span class="keyword">method</span> mode</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_read_line&amp;type=mode">mode</a> <a href="?package=react&amp;module=React&amp;type=signal">React.signal</a></code></pre>
+<div class="info"><div class="info">The current mode.</div></div>
+<pre><span class="METHODstylise"><span class="keyword">method</span> stylise</span> : <code class="code">bool -&gt; <a href="?package=lambda-term&amp;module=LTerm_text&amp;type=t">LTerm_text.t</a> * int</code></pre>
+<div class="info"><div class="info">Returns the stylised input and the position of the cursor. The
+        argument is <code class="code">true</code> if this is for the last drawing or <code class="code">false</code>
+        otherwise.</div></div>
+<pre><span class="METHODhistory"><span class="keyword">method</span> history</span> : <code class="code">(<a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a> list * <a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a> list) <a href="?package=react&amp;module=React&amp;type=signal">React.signal</a></code></pre>
+<div class="info"><div class="info">The history zipper.</div></div>
+<pre><span class="METHODmessage"><span class="keyword">method</span> message</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_text&amp;type=t">LTerm_text.t</a> option <a href="?package=react&amp;module=React&amp;type=signal">React.signal</a></code></pre>
+<div class="info"><div class="info">A message to display in the completion box. When <code class="code">None</code> the
+        completion should be displayed, and when <code class="code">Some msg</code> <code class="code">msg</code>
+        should be displayed.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Completion</h6></div></div>
+<pre><span class="METHODcompletion_words"><span class="keyword">method</span> completion_words</span> : <code class="code">(<a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a> * <a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a>) list <a href="?package=react&amp;module=React&amp;type=signal">React.signal</a></code></pre>
+<div class="info"><div class="info">Current possible completions. Each completion is of the form
+        <code class="code">(word, suffix)</code> where <code class="code">word</code> is the completion itself and
+        <code class="code">suffix</code> is a suffix to add if the completion is choosen.</div></div>
+<pre><span class="METHODcompletion_index"><span class="keyword">method</span> completion_index</span> : <code class="code">int <a href="?package=react&amp;module=React&amp;type=signal">React.signal</a></code></pre>
+<div class="info"><div class="info">The position in the completion bar.</div></div>
+<pre><span class="METHODset_completion"><span class="keyword">method</span> set_completion</span> : <code class="code">int -&gt; (<a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a> * <a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a>) list -&gt; unit</code></pre>
+<div class="info"><div class="info"><code class="code">set_completion index words</code> sets the current
+        completions. <code class="code">index</code> is the index of the beginning of the word
+        being completed and <code class="code">words</code> is the list of possible
+        completions with their suffixes. The result is made available
+        through the  <a href="#compltion_words">compltion_words</a> signal.</div></div>
+<pre><span class="METHODcompletion"><span class="keyword">method</span> completion</span> : <code class="code">unit</code></pre>
+<div class="info"><div class="info">Ask for computing completion for current input. This method
+        should call  <a href="#set_completion">set_completion</a>.</div></div>
+<pre><span class="METHODcomplete"><span class="keyword">method</span> complete</span> : <code class="code">unit</code></pre>
+<div class="info"><div class="info">Complete current input. This is the method called when the
+        user presses Tab.</div></div>
+<pre><span class="METHODshow_box"><span class="keyword">method</span> show_box</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">Whether to show the box or not. It default to <code class="code">true</code>.</div></div></div></div>
+<div class="ocaml_class sig" name="abstract"><pre><span class="TYPEabstract"><span class="keyword">class</span> <span class="keyword">virtual </span><code class="type">['a] </code><a href="?package=lambda-term&amp;module=LTerm_read_line&amp;class=abstract">abstract</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Abstract version of  <a href="#engine">engine</a>.</div></div><div class="ocaml_class_content"><pre><span class="METHODeval"><span class="keyword">method</span> <span class="keyword">virtual</span> eval</span> : <code class="code">'a</code></pre>
+
+<pre><span class="METHODsend_action"><span class="keyword">method</span> <span class="keyword">virtual</span> send_action</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_read_line&amp;type=action">action</a> -&gt; unit</code></pre>
+
+<pre><span class="METHODinsert"><span class="keyword">method</span> <span class="keyword">virtual</span> insert</span> : <code class="code"><a href="?package=camomile&amp;module=CamomileLibrary.UChar&amp;type=t">CamomileLibrary.UChar.t</a> -&gt; unit</code></pre>
+
+<pre><span class="METHODedit"><span class="keyword">method</span> <span class="keyword">virtual</span> edit</span> : <code class="code">unit <a href="?package=zed&amp;module=Zed_edit&amp;type=t">Zed_edit.t</a></code></pre>
+
+<pre><span class="METHODcontext"><span class="keyword">method</span> <span class="keyword">virtual</span> context</span> : <code class="code">unit <a href="?package=zed&amp;module=Zed_edit&amp;type=context">Zed_edit.context</a></code></pre>
+
+<pre><span class="METHODclipboard"><span class="keyword">method</span> <span class="keyword">virtual</span> clipboard</span> : <code class="code"><a href="?package=zed&amp;module=Zed_edit&amp;type=clipboard">Zed_edit.clipboard</a></code></pre>
+
+<pre><span class="METHODmacro"><span class="keyword">method</span> <span class="keyword">virtual</span> macro</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_read_line&amp;type=action">action</a> <a href="?package=zed&amp;module=Zed_macro&amp;type=t">Zed_macro.t</a></code></pre>
+
+<pre><span class="METHODstylise"><span class="keyword">method</span> <span class="keyword">virtual</span> stylise</span> : <code class="code">bool -&gt; <a href="?package=lambda-term&amp;module=LTerm_text&amp;type=t">LTerm_text.t</a> * int</code></pre>
+
+<pre><span class="METHODhistory"><span class="keyword">method</span> <span class="keyword">virtual</span> history</span> : <code class="code">(<a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a> list * <a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a> list) <a href="?package=react&amp;module=React&amp;type=signal">React.signal</a></code></pre>
+
+<pre><span class="METHODmessage"><span class="keyword">method</span> <span class="keyword">virtual</span> message</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_text&amp;type=t">LTerm_text.t</a> option <a href="?package=react&amp;module=React&amp;type=signal">React.signal</a></code></pre>
+
+<pre><span class="METHODinput_prev"><span class="keyword">method</span> <span class="keyword">virtual</span> input_prev</span> : <code class="code"><a href="?package=zed&amp;module=Zed_rope&amp;type=t">Zed_rope.t</a></code></pre>
+
+<pre><span class="METHODinput_next"><span class="keyword">method</span> <span class="keyword">virtual</span> input_next</span> : <code class="code"><a href="?package=zed&amp;module=Zed_rope&amp;type=t">Zed_rope.t</a></code></pre>
+
+<pre><span class="METHODcompletion_words"><span class="keyword">method</span> <span class="keyword">virtual</span> completion_words</span> : <code class="code">(<a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a> * <a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a>) list <a href="?package=react&amp;module=React&amp;type=signal">React.signal</a></code></pre>
+
+<pre><span class="METHODcompletion_index"><span class="keyword">method</span> <span class="keyword">virtual</span> completion_index</span> : <code class="code">int <a href="?package=react&amp;module=React&amp;type=signal">React.signal</a></code></pre>
+
+<pre><span class="METHODset_completion"><span class="keyword">method</span> <span class="keyword">virtual</span> set_completion</span> : <code class="code">int -&gt; (<a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a> * <a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a>) list -&gt; unit</code></pre>
+
+<pre><span class="METHODcompletion"><span class="keyword">method</span> <span class="keyword">virtual</span> completion</span> : <code class="code">unit</code></pre>
+
+<pre><span class="METHODcomplete"><span class="keyword">method</span> <span class="keyword">virtual</span> complete</span> : <code class="code">unit</code></pre>
+
+<pre><span class="METHODshow_box"><span class="keyword">method</span> <span class="keyword">virtual</span> show_box</span> : <code class="code">bool</code></pre>
+
+<pre><span class="METHODmode"><span class="keyword">method</span> <span class="keyword">virtual</span> mode</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_read_line&amp;type=mode">mode</a> <a href="?package=react&amp;module=React&amp;type=signal">React.signal</a></code></pre>
+</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Predefined classes</h6></div></div>
+<div class="ocaml_class sig" name="read_line"><pre><span class="TYPEread_line"><span class="keyword">class</span> <a href="?package=lambda-term&amp;module=LTerm_read_line&amp;class=read_line">read_line</a></span> : <code class="type">unit -&gt; <a href="?package=lambda-term&amp;module=LTerm_read_line&amp;type=history">history</a> option -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Simple read-line engine which returns the result as a string.</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=lambda-term&amp;module=LTerm_read_line&amp;class=engine"> <pre><span class="keyword">inherit</span> <code class="type"/><code class="type">[<a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a>] </code><a href="?package=lambda-term&amp;module=LTerm_read_line&amp;class=engine">engine</a></pre></div>
+
+<pre><span class="METHODeval"><span class="keyword">method</span> eval</span> : <code class="code"><a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a></code></pre>
+<div class="info"><div class="info">Returns the result as a UTF-8 encoded string.</div></div></div></div>
+<div class="ocaml_class sig" name="read_password"><pre><span class="TYPEread_password"><span class="keyword">class</span> <a href="?package=lambda-term&amp;module=LTerm_read_line&amp;class=read_password">read_password</a></span> : <code class="type">unit -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Read-line engine for reading a password. The <code class="code">stylise</code> method
+    default to replacing all characters by <code class="code">'*'</code>. You can also for
+    example completely disable displaying the password by doing:<br/>    <pre class="codepre"><code class="code">
+      method stylise = ([||], 0)
+    </code></pre><br/>    Also showing completion is disabled.</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=lambda-term&amp;module=LTerm_read_line&amp;class=engine"> <pre><span class="keyword">inherit</span> <code class="type"/><code class="type">[<a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a>] </code><a href="?package=lambda-term&amp;module=LTerm_read_line&amp;class=engine">engine</a></pre></div>
+
+<pre><span class="METHODeval"><span class="keyword">method</span> eval</span> : <code class="code"><a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a></code></pre>
+<div class="info"><div class="info">Returns the result as a UTF-8 encoded string.</div></div></div></div>
+<pre><code><span class="TYPEread_keyword_result"><span class="keyword">type</span> <code class="type">'a </code>read_keyword_result</span> = </code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTread_keyword_result.Rk_value"><span class="constructor">Rk_value</span></span> <span class="keyword">of</span> <code class="type">'a</code></code></td><td class="typefieldcomment" align="left"><div class="info">The user typed a correct keyword and this is its associated
+          value.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTread_keyword_result.Rk_error"><span class="constructor">Rk_error</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a></code></code></td><td class="typefieldcomment" align="left"><div class="info">The user did not enter a correct keyword and this is what he
+          typed instead.</div></td></tr></table><div class="info"><div class="info">The result of reading a keyword.</div></div>
+<div class="ocaml_class sig" name="read_keyword"><pre><span class="TYPEread_keyword"><span class="keyword">class</span> <code class="type">['a] </code><a href="?package=lambda-term&amp;module=LTerm_read_line&amp;class=read_keyword">read_keyword</a></span> : <code class="type">unit -&gt; <a href="?package=lambda-term&amp;module=LTerm_read_line&amp;type=history">history</a> option -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Read a keyword.</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=lambda-term&amp;module=LTerm_read_line&amp;class=engine"> <pre><span class="keyword">inherit</span> <code class="type"/><code class="type">['a <a href="?package=lambda-term&amp;module=LTerm_read_line&amp;type=read_keyword_result">read_keyword_result</a>] </code><a href="?package=lambda-term&amp;module=LTerm_read_line&amp;class=engine">engine</a></pre></div>
+
+<pre><span class="METHODeval"><span class="keyword">method</span> eval</span> : <code class="code">'a <a href="?package=lambda-term&amp;module=LTerm_read_line&amp;type=read_keyword_result">read_keyword_result</a></code></pre>
+<div class="info"><div class="info">If the input correspond to a keyword, returns its associated
+        value. otherwise returns <code class="code">`Error input</code>.</div></div>
+<pre><span class="METHODkeywords"><span class="keyword">method</span> keywords</span> : <code class="code">(string * 'a) list</code></pre>
+<div class="info"><div class="info">List of keywords with their associated values.</div></div></div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Running in a terminal</h6></div></div>
+<div class="ocaml_class sig" name="term"><pre><span class="TYPEterm"><span class="keyword">class</span> <span class="keyword">virtual </span><code class="type">['a] </code><a href="?package=lambda-term&amp;module=LTerm_read_line&amp;class=term">term</a></span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">LTerm.t</a> -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Class for read-line instances running in a terminal.</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=lambda-term&amp;module=LTerm_read_line&amp;class=abstract"> <pre><span class="keyword">inherit</span> <code class="type"/><code class="type">['a] </code><a href="?package=lambda-term&amp;module=LTerm_read_line&amp;class=abstract">abstract</a></pre></div>
+
+<pre><span class="METHODrun"><span class="keyword">method</span> run</span> : <code class="code">'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<div class="info"><div class="info">Run this read-line instance.</div></div>
+<pre><span class="METHODexec"><span class="keyword">method</span> <span class="keyword">private</span> exec</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_read_line&amp;type=action">action</a> list -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<div class="info"><div class="info">Executes a list of actions. Rememver to call <code class="code">Zed_macro.add
+        self#macro action</code> if you overload this method.</div></div>
+<pre><span class="METHODdraw_update"><span class="keyword">method</span> draw_update</span> : <code class="code">unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<div class="info"><div class="info">Updates current display and put the cursor at current edition
+        position.</div></div>
+<pre><span class="METHODdraw_success"><span class="keyword">method</span> draw_success</span> : <code class="code">unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<div class="info"><div class="info">Draws after accepting current input.</div></div>
+<pre><span class="METHODdraw_failure"><span class="keyword">method</span> draw_failure</span> : <code class="code">unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<div class="info"><div class="info">Draws after an exception has been raised.</div></div>
+<pre><span class="METHODprompt"><span class="keyword">method</span> prompt</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_read_line&amp;type=prompt">prompt</a> <a href="?package=react&amp;module=React&amp;type=signal">React.signal</a></code></pre>
+<div class="info"><div class="info">The signal holding the prompt.</div></div>
+<pre><span class="METHODset_prompt"><span class="keyword">method</span> set_prompt</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_read_line&amp;type=prompt">prompt</a> <a href="?package=react&amp;module=React&amp;type=signal">React.signal</a> -&gt; unit</code></pre>
+<div class="info"><div class="info">Sets the prompt signal.</div></div>
+<pre><span class="METHODsize"><span class="keyword">method</span> size</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_geom&amp;type=size">LTerm_geom.size</a> <a href="?package=react&amp;module=React&amp;type=signal">React.signal</a></code></pre>
+<div class="info"><div class="info">The size of the terminal. This can be used for computing the
+        prompt.</div></div>
+<pre><span class="METHODkey_sequence"><span class="keyword">method</span> key_sequence</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_key&amp;type=t">LTerm_key.t</a> list <a href="?package=react&amp;module=React&amp;type=signal">React.signal</a></code></pre>
+<div class="info"><div class="info">The currently typed key sequence.</div></div>
+<pre><span class="METHODcompletion_start"><span class="keyword">method</span> completion_start</span> : <code class="code">int <a href="?package=react&amp;module=React&amp;type=signal">React.signal</a></code></pre>
+<div class="info"><div class="info">Index of the first displayed word in the completion bar.</div></div>
+<pre><span class="METHODhide"><span class="keyword">method</span> hide</span> : <code class="code">unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<div class="info"><div class="info">Hide this read-line instance. It remains invisible until
+         <a href="#show">show</a> is called.</div></div>
+<pre><span class="METHODshow"><span class="keyword">method</span> show</span> : <code class="code">unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<div class="info"><div class="info">Show this read-line instance if it has been previously
+        hidden.</div></div>
+<pre><span class="VALvisible"><span class="keyword">val</span> <span class="keyword">mutable</span> visible</span> : <code class="code">bool</code></pre>
+<div class="info"><div class="info">Whether the instance is visible.</div></div></div></div>
+</div>

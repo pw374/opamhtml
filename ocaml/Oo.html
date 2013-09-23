@@ -1,0 +1,13 @@
+<div class="ocaml_toplevel_module"><div class="info">Operations on objects</div>
+<pre><span class="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">(&lt; .. &gt; as 'a) -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">Oo.copy o</code> returns a copy of object <code class="code">o</code>, that is a fresh
+   object with the same methods and instance variables as <code class="code">o</code>.</div></div>
+<pre><span class="VALid"><span class="keyword">val</span> id</span> : <code class="type">&lt; .. &gt; -&gt; int</code></pre><div class="info"><div class="info">Return an integer identifying this object, unique for
+    the current execution of the program. The generic comparison
+    and hashing functions are based on this integer. When an object
+    is obtained by unmarshaling, the id is refreshed, and thus
+    different from the original object. As a consequence, the internal
+    invariants of data structures such as hash table or sets containing
+    objects are broken after unmarshaling the data structures.</div></div>
+<pre><span class="VALnew_method"><span class="keyword">val</span> new_method</span> : <code class="type">string -&gt; <a href="?package=ocaml&amp;module=CamlinternalOO&amp;type=tag">CamlinternalOO.tag</a></code></pre><div class="info"><div class="info">For internal use (CamlIDL)</div></div>
+<pre><span class="VALpublic_method_label"><span class="keyword">val</span> public_method_label</span> : <code class="type">string -&gt; <a href="?package=ocaml&amp;module=CamlinternalOO&amp;type=tag">CamlinternalOO.tag</a></code></pre>
+</div>

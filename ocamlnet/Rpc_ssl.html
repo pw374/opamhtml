@@ -1,0 +1,19 @@
+<div class="ocaml_toplevel_module"><div class="info">Securing RPC by SSL<br/> The following configuration objects allow it to encapsulate a
+ stream with SSL. Note that this is only possible with stream
+ sockets.</div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Clients</h1><br/> SSL is only supported for the new <code class="code">Rpc_client.create2</code> interface.
+ If you are using <code class="code">ocamlrpcgen</code> look for the generated 
+ <code class="code">create_client2</code> functions.<br/> Use <code class="code">`Socket(Rpc.Tcp, connector, (Rpc_ssl.ssl_client_socket_config ctx))</code>
+ as <code class="code">mode2</code> argument for the <code class="code">create2</code> function. The <code class="code">connector</code> can
+ be any supported connector. Pass the SSL context as <code class="code">ctx</code>.</div></div>
+<div class="ocaml_class ident" name="ssl_client_socket_config" path="?package=ocamlnet&amp;module=Rpc_client&amp;class=socket_config"><pre><span class="TYPEssl_client_socket_config"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Rpc_ssl&amp;class=ssl_client_socket_config">ssl_client_socket_config</a></span> : <code class="type"><a href="?package=ssl&amp;module=Ssl&amp;type=context">Ssl.context</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Rpc_client&amp;class=socket_config">Rpc_client.socket_config</a></pre><div class="info"><div class="info">SSL configuration class for clients</div></div></div>
+<pre><span class="VALssl_client_socket_config"><span class="keyword">val</span> ssl_client_socket_config</span> : <code class="type"><a href="?package=ssl&amp;module=Ssl&amp;type=context">Ssl.context</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=socket_config">Rpc_client.socket_config</a></code></pre><div class="info"><div class="info">SSL configuration object for clients</div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Servers</h1><br/> SSL is only supported for the new <code class="code">Rpc_server.create2</code> interface.
+ If you are using <code class="code">ocamlrpcgen</code> new-style functions are generated
+ when you pass the -srv2 argument.<br/> Use <code class="code">`Socket(Rpc.Tcp, connector, (Rpc_ssl.ssl_server_socket_config ctx))</code>
+ as <code class="code">mode2</code> argument for the <code class="code">create2</code> function. The <code class="code">connector</code> can
+ be any supported connector. Pass the SSL context as <code class="code">ctx</code>.</div></div>
+<div class="ocaml_class ident" name="ssl_server_socket_config" path="?package=ocamlnet&amp;module=Rpc_server&amp;class=socket_config"><pre><span class="TYPEssl_server_socket_config"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Rpc_ssl&amp;class=ssl_server_socket_config">ssl_server_socket_config</a></span> : <code class="type">(<a href="?package=ssl&amp;module=Ssl&amp;type=context">Ssl.context</a> -&gt; <a href="?package=ssl&amp;module=Ssl&amp;type=socket">Ssl.socket</a> -&gt; string option) option -&gt; <a href="?package=ssl&amp;module=Ssl&amp;type=context">Ssl.context</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Rpc_server&amp;class=socket_config">Rpc_server.socket_config</a></pre><div class="info"><div class="info">SSL configuration class for servers</div></div></div>
+<pre><span class="VALssl_server_socket_config"><span class="keyword">val</span> ssl_server_socket_config</span> : <code class="type">?get_peer_user_name:(<a href="?package=ssl&amp;module=Ssl&amp;type=context">Ssl.context</a> -&gt; <a href="?package=ssl&amp;module=Ssl&amp;type=socket">Ssl.socket</a> -&gt; string option) -&gt;
+<a href="?package=ssl&amp;module=Ssl&amp;type=context">Ssl.context</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=socket_config">Rpc_server.socket_config</a></code></pre><div class="info"><div class="info">SSL configuration object for servers</div></div>
+</div>

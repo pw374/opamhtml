@@ -1,0 +1,59 @@
+<div class="ocaml_toplevel_module"><div class="info">This is an interface for the Post Office Protocol - Version 3
+ (POP3) as specifed by RFC 1939. The protocol is intended to permit
+ a workstation to dynamically access a maildrop on a server host in
+ a useful fashion.</div>
+<pre><span class="TYPEstate"><span class="keyword">type</span> state</span> = <code class="type">[ `Authorization | `Transaction | `Update ]</code></pre>
+<pre><span class="EXCEPTIONProtocol_error"><span class="keyword">exception</span> Protocol_error</span></pre>
+<pre><span class="EXCEPTIONErr_status"><span class="keyword">exception</span> Err_status</span> <span class="keyword">of</span> <code class="type">string</code></pre>
+<pre><span class="EXCEPTIONBad_state"><span class="keyword">exception</span> Bad_state</span></pre>
+<pre><span class="VALtcp_port"><span class="keyword">val</span> tcp_port</span> : <code class="type">int</code></pre><div class="info"><div class="info">Default TCP port for POP version 3</div></div>
+<div class="ocaml_class sig" name="client"><pre><span class="TYPEclient"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netpop&amp;class=client">client</a></span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netchannels&amp;type=out_obj_channel">Netchannels.out_obj_channel</a> -&gt; <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=in_obj_channel">Netchannels.in_obj_channel</a> -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">The class <code class="code">client</code> implements the POP3 protocol. Client objects
+ are created by
+ <pre class="codepre"><code class="code"> new client in_ch out_ch </code></pre>
+ where <code class="code">in_ch</code> is an input channel representing the input direction of
+ the TCP stream, and where <code class="code">out_ch</code> is an output channel representing
+ the output direction of the TCP stream.</div></div><div class="ocaml_class_content"><pre><span class="METHODstate"><span class="keyword">method</span> state</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netpop&amp;type=state">state</a></code></pre>
+<div class="info"><div class="info">Current state of this session.</div></div>
+<pre><span class="METHODquit"><span class="keyword">method</span> quit</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Requests the server to end this session. If the session is 
+ currently in the <code class="code">`Transaction</code> state, the server will attempt
+ to remove all messages marked as deleted before closing its 
+ side of the connection.</div></div>
+<pre><span class="METHODuser"><span class="keyword">method</span> user</span> : <code class="code">user:string -&gt; unit</code></pre>
+<div class="info"><div class="info">Specifies the name of the mailbox the client would like to open
+       using plain-text authentication. Normal completion of this function
+       should be followed by the <code class="code">pass</code> command.</div></div>
+<pre><span class="METHODpass"><span class="keyword">method</span> pass</span> : <code class="code">pass:string -&gt; unit</code></pre>
+<div class="info"><div class="info">Authenticates a user with the plain-text password <code class="code">pass</code>.</div></div>
+<pre><span class="METHODapop"><span class="keyword">method</span> apop</span> : <code class="code">user:string -&gt; pass:string -&gt; unit</code></pre>
+<div class="info"><div class="info">Specifies the user and password using APOP authentication.
+ APOP is a more secure method of authentication than what is
+ provided by the <code class="code">user</code>/<code class="code">pass</code> command sequence.</div></div>
+<pre><span class="METHODstat"><span class="keyword">method</span> stat</span> : <code class="code">unit -&gt; int * int * string</code></pre>
+<div class="info"><div class="info">Returns information about the current mailbox as tuple
+ <code class="code">(count,size,ext)</code> where <code class="code">count</code> is the number of messages in 
+ the mailbox, <code class="code">size</code> is the size of the mailbox in octets, 
+ and <code class="code">ext</code> is any server extension data.</div></div>
+<pre><span class="METHODlist"><span class="keyword">method</span> list</span> : <code class="code">?msgno:int -&gt; unit -&gt; (int, int * string) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">Hashtbl.t</a></code></pre>
+<div class="info"><div class="info">Returns the scan listing for an optional message number or
+ for all messages in the current mailbox. The result is a hash
+ table that maps a message number to a tuple <code class="code">(size,ext)</code> where
+ <code class="code">size</code> is the size of the message in octets, and <code class="code">ext</code> is any 
+ server extension data.</div></div>
+<pre><span class="METHODretr"><span class="keyword">method</span> retr</span> : <code class="code">msgno:int -&gt; <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=in_obj_channel">Netchannels.in_obj_channel</a></code></pre>
+<div class="info"><div class="info">Retrieves a message from the server.</div></div>
+<pre><span class="METHODdele"><span class="keyword">method</span> dele</span> : <code class="code">msgno:int -&gt; unit</code></pre>
+<div class="info"><div class="info">Marks the message number of the current mailbox for deletion.</div></div>
+<pre><span class="METHODnoop"><span class="keyword">method</span> noop</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Pings the server to keep the session alive.</div></div>
+<pre><span class="METHODrset"><span class="keyword">method</span> rset</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Unmarks any messages that have previously been marked as
+ deleted.</div></div>
+<pre><span class="METHODtop"><span class="keyword">method</span> top</span> : <code class="code">?lines:int -&gt; msgno:int -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=in_obj_channel">Netchannels.in_obj_channel</a></code></pre>
+<div class="info"><div class="info">Returns the message header plus a limited number of lines
+ of the message body. The default body length is 0 lines.</div></div>
+<pre><span class="METHODuidl"><span class="keyword">method</span> uidl</span> : <code class="code">?msgno:int -&gt; unit -&gt; (int, string) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">Hashtbl.t</a></code></pre>
+<div class="info"><div class="info">Returns the unique identifier(s) for an optional message number
+ or for all messages in the current mailbox. The result is a
+ hash table that maps a message number to its unique id.</div></div></div></div>
+</div>

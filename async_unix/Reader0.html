@@ -1,0 +1,1065 @@
+<div class="ocaml_toplevel_module">
+<div class="ocaml_module ident" name="Read_ml" path="?package=core&amp;module=Std.Bin_prot.Read_ml"><pre><span class="keyword">module</span> <a href="?package=async_unix&amp;module=Reader0.Read_ml">Read_ml</a> : <code class="type"><code class="code"><a href="?package=core&amp;module=Std.Bin_prot.Read_ml">Core.Std.Bin_prot.Read_ml</a></code></code></pre></div>
+<div class="ocaml_module ident" name="Type_class" path="?package=core&amp;module=Std.Bin_prot.Type_class"><pre><span class="keyword">module</span> <a href="?package=async_unix&amp;module=Reader0.Type_class">Type_class</a> : <code class="type"><code class="code"><a href="?package=core&amp;module=Std.Bin_prot.Type_class">Core.Std.Bin_prot.Type_class</a></code></code></pre></div>
+<div class="ocaml_module ident" name="Unix" path="?package=async_unix&amp;module=Unix_syscalls"><pre><span class="keyword">module</span> <a href="?package=async_unix&amp;module=Reader0.Unix">Unix</a> : <code class="type"><code class="code"><a href="?package=async_unix&amp;module=Unix_syscalls">Unix_syscalls</a></code></code></pre></div>
+<div class="ocaml_module ident" name="Id" path="?package=core&amp;module=Std.Unique_id.Int63"><pre><span class="keyword">module</span> <a href="?package=async_unix&amp;module=Reader0.Id">Id</a> : <code class="type"><code class="code"><a href="?package=core&amp;module=Std.Unique_id.Int63">Core.Std.Unique_id.Int63</a></code>(<code class="code">sig</code> .. <code class="code">end</code>)</code></pre></div>
+<div class="ocaml_module sig" name="Read_result"><pre><span class="keyword">module</span> <a href="?package=async_unix&amp;module=Reader0.Read_result">Read_result</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<div class="ocaml_module sig" name="Z"><pre><span class="keyword">module</span> <a href="?package=async_unix&amp;module=Reader0.Read_result.Z">Z</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> = <code class="type">[ `Eof | `Ok of 'a ]</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">'a <a href="?package=async_unix&amp;module=Reader0.Read_result.Z&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VAL__t_of_sexp__"><span class="keyword">val</span> __t_of_sexp__</span> : <code class="type">'a. (<a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; 'a) -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; 'a <a href="?package=async_unix&amp;module=Reader0.Read_result.Z&amp;type=t">t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">(<a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; 'a) -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; 'a <a href="?package=async_unix&amp;module=Reader0.Read_result.Z&amp;type=t">t</a></code></pre>
+<pre><span class="VALt_of_sexp"><span class="keyword">val</span> t_of_sexp</span> : <code class="type">'a. (<a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; 'a) -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; 'a <a href="?package=async_unix&amp;module=Reader0.Read_result.Z&amp;type=t">t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">(<a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; 'a) -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; 'a <a href="?package=async_unix&amp;module=Reader0.Read_result.Z&amp;type=t">t</a></code></pre>
+<pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type">'a. ('a -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a>) -&gt; 'a <a href="?package=async_unix&amp;module=Reader0.Read_result.Z&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">('a -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a>) -&gt; 'a <a href="?package=async_unix&amp;module=Reader0.Read_result.Z&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<pre><span class="VALbin_size_t"><span class="keyword">val</span> bin_size_t</span> : <code class="type">('a -&gt; int) -&gt; [&gt; `Ok of 'a ] -&gt; int</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">('a -&gt; int) -&gt; [&gt; `Ok of 'a ] -&gt; int</code></pre>
+<pre><span class="VALbin_write_t_"><span class="keyword">val</span> bin_write_t_</span> : <code class="type">(<a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=sptr">Core.Std.Bin_prot.Unsafe_common.sptr</a> -&gt;
+ <a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=eptr">Core.Std.Bin_prot.Unsafe_common.eptr</a> -&gt;
+ 'a -&gt; <a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=sptr">Core.Std.Bin_prot.Unsafe_common.sptr</a>) -&gt;
+<a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=sptr">Core.Std.Bin_prot.Unsafe_common.sptr</a> -&gt;
+<a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=eptr">Core.Std.Bin_prot.Unsafe_common.eptr</a> -&gt;
+[&lt; `Eof | `Ok of 'a ] -&gt; <a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=sptr">Core.Std.Bin_prot.Unsafe_common.sptr</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">(<a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=sptr">Core.Std.Bin_prot.Unsafe_common.sptr</a> -&gt;
+ <a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=eptr">Core.Std.Bin_prot.Unsafe_common.eptr</a> -&gt;
+ 'a -&gt; <a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=sptr">Core.Std.Bin_prot.Unsafe_common.sptr</a>) -&gt;
+<a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=sptr">Core.Std.Bin_prot.Unsafe_common.sptr</a> -&gt;
+<a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=eptr">Core.Std.Bin_prot.Unsafe_common.eptr</a> -&gt;
+[&lt; `Eof | `Ok of 'a ] -&gt; <a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=sptr">Core.Std.Bin_prot.Unsafe_common.sptr</a></code></pre>
+<pre><span class="VALbin_write_t"><span class="keyword">val</span> bin_write_t</span> : <code class="type">(<a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=sptr">Core.Std.Bin_prot.Unsafe_common.sptr</a> -&gt;
+ <a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=eptr">Core.Std.Bin_prot.Unsafe_common.eptr</a> -&gt;
+ 'a -&gt; <a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=sptr">Core.Std.Bin_prot.Unsafe_common.sptr</a>) -&gt;
+<a href="?package=core&amp;module=Std.Bin_prot.Common&amp;type=buf">Core.Std.Bin_prot.Common.buf</a> -&gt;
+pos:<a href="?package=core&amp;module=Std.Bin_prot.Common&amp;type=pos">Core.Std.Bin_prot.Common.pos</a> -&gt;
+[&lt; `Eof | `Ok of 'a ] -&gt; <a href="?package=core&amp;module=Std.Bin_prot.Common&amp;type=pos">Core.Std.Bin_prot.Common.pos</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">(<a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=sptr">Core.Std.Bin_prot.Unsafe_common.sptr</a> -&gt;
+ <a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=eptr">Core.Std.Bin_prot.Unsafe_common.eptr</a> -&gt;
+ 'a -&gt; <a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=sptr">Core.Std.Bin_prot.Unsafe_common.sptr</a>) -&gt;
+<a href="?package=core&amp;module=Std.Bin_prot.Common&amp;type=buf">Core.Std.Bin_prot.Common.buf</a> -&gt;
+pos:<a href="?package=core&amp;module=Std.Bin_prot.Common&amp;type=pos">Core.Std.Bin_prot.Common.pos</a> -&gt;
+[&lt; `Eof | `Ok of 'a ] -&gt; <a href="?package=core&amp;module=Std.Bin_prot.Common&amp;type=pos">Core.Std.Bin_prot.Common.pos</a></code></pre>
+<pre><span class="VALbin_writer_t"><span class="keyword">val</span> bin_writer_t</span> : <code class="type">'a <a href="?package=core&amp;module=Std.Bin_prot.Type_class&amp;type=writer">Core.Std.Bin_prot.Type_class.writer</a> -&gt;
+[&lt; `Eof | `Ok of 'a &gt; `Ok ] <a href="?package=core&amp;module=Std.Bin_prot.Type_class&amp;type=writer">Core.Std.Bin_prot.Type_class.writer</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">'a <a href="?package=core&amp;module=Std.Bin_prot.Type_class&amp;type=writer">Core.Std.Bin_prot.Type_class.writer</a> -&gt;
+[&lt; `Eof | `Ok of 'a &gt; `Ok ] <a href="?package=core&amp;module=Std.Bin_prot.Type_class&amp;type=writer">Core.Std.Bin_prot.Type_class.writer</a></code></pre>
+<pre><span class="VALbin_read_t__"><span class="keyword">val</span> bin_read_t__</span> : <code class="type">('a -&gt; 'b -&gt; 'c) -&gt; 'a -&gt; 'b -&gt; int -&gt; [&gt; `Eof | `Ok of 'c ]</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">('a -&gt; 'b -&gt; 'c) -&gt; 'a -&gt; 'b -&gt; int -&gt; [&gt; `Eof | `Ok of 'c ]</code></pre>
+<pre><span class="VALbin_read_t_"><span class="keyword">val</span> bin_read_t_</span> : <code class="type">(<a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=sptr_ptr">Core.Std.Bin_prot.Unsafe_common.sptr_ptr</a> -&gt;
+ <a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=eptr">Core.Std.Bin_prot.Unsafe_common.eptr</a> -&gt; 'a) -&gt;
+<a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=sptr_ptr">Core.Std.Bin_prot.Unsafe_common.sptr_ptr</a> -&gt;
+<a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=eptr">Core.Std.Bin_prot.Unsafe_common.eptr</a> -&gt; [&gt; `Eof | `Ok of 'a ]</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">(<a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=sptr_ptr">Core.Std.Bin_prot.Unsafe_common.sptr_ptr</a> -&gt;
+ <a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=eptr">Core.Std.Bin_prot.Unsafe_common.eptr</a> -&gt; 'a) -&gt;
+<a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=sptr_ptr">Core.Std.Bin_prot.Unsafe_common.sptr_ptr</a> -&gt;
+<a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=eptr">Core.Std.Bin_prot.Unsafe_common.eptr</a> -&gt; [&gt; `Eof | `Ok of 'a ]</code></pre>
+<pre><span class="VALbin_read_t"><span class="keyword">val</span> bin_read_t</span> : <code class="type">(<a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=sptr_ptr">Core.Std.Bin_prot.Unsafe_common.sptr_ptr</a> -&gt;
+ <a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=eptr">Core.Std.Bin_prot.Unsafe_common.eptr</a> -&gt; 'a) -&gt;
+<a href="?package=core&amp;module=Std.Bin_prot.Common&amp;type=buf">Core.Std.Bin_prot.Common.buf</a> -&gt;
+pos_ref:<a href="?package=core&amp;module=Std.Bin_prot.Common&amp;type=pos">Core.Std.Bin_prot.Common.pos</a> <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a> -&gt; 'a <a href="?package=async_unix&amp;module=Reader0.Read_result.Z&amp;type=t">t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">(<a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=sptr_ptr">Core.Std.Bin_prot.Unsafe_common.sptr_ptr</a> -&gt;
+ <a href="?package=core&amp;module=Std.Bin_prot.Unsafe_common&amp;type=eptr">Core.Std.Bin_prot.Unsafe_common.eptr</a> -&gt; 'a) -&gt;
+<a href="?package=core&amp;module=Std.Bin_prot.Common&amp;type=buf">Core.Std.Bin_prot.Common.buf</a> -&gt;
+pos_ref:<a href="?package=core&amp;module=Std.Bin_prot.Common&amp;type=pos">Core.Std.Bin_prot.Common.pos</a> <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a> -&gt; 'a <a href="?package=async_unix&amp;module=Reader0.Read_result.Z&amp;type=t">t</a></code></pre>
+<pre><span class="VALbin_reader_t"><span class="keyword">val</span> bin_reader_t</span> : <code class="type">'a <a href="?package=core&amp;module=Std.Bin_prot.Type_class&amp;type=reader">Core.Std.Bin_prot.Type_class.reader</a> -&gt;
+'a <a href="?package=async_unix&amp;module=Reader0.Read_result.Z&amp;type=t">t</a> <a href="?package=core&amp;module=Std.Bin_prot.Type_class&amp;type=reader">Core.Std.Bin_prot.Type_class.reader</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">'a <a href="?package=core&amp;module=Std.Bin_prot.Type_class&amp;type=reader">Core.Std.Bin_prot.Type_class.reader</a> -&gt;
+'a <a href="?package=async_unix&amp;module=Reader0.Read_result.Z&amp;type=t">t</a> <a href="?package=core&amp;module=Std.Bin_prot.Type_class&amp;type=reader">Core.Std.Bin_prot.Type_class.reader</a></code></pre>
+<pre><span class="VALbin_t"><span class="keyword">val</span> bin_t</span> : <code class="type">'a <a href="?package=core&amp;module=Std.Bin_prot.Type_class&amp;type=t">Core.Std.Bin_prot.Type_class.t</a> -&gt; 'a <a href="?package=async_unix&amp;module=Reader0.Read_result.Z&amp;type=t">t</a> <a href="?package=core&amp;module=Std.Bin_prot.Type_class&amp;type=t">Core.Std.Bin_prot.Type_class.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">'a <a href="?package=core&amp;module=Std.Bin_prot.Type_class&amp;type=t">Core.Std.Bin_prot.Type_class.t</a> -&gt; 'a <a href="?package=async_unix&amp;module=Reader0.Read_result.Z&amp;type=t">t</a> <a href="?package=core&amp;module=Std.Bin_prot.Type_class&amp;type=t">Core.Std.Bin_prot.Type_class.t</a></code></pre>
+<pre><span class="VALbind"><span class="keyword">val</span> bind</span> : <code class="type">[&lt; `Eof | `Ok of 'a ] -&gt; ('a -&gt; ([&gt; `Eof ] as 'b)) -&gt; 'b</code></pre>
+<pre><span class="VALreturn"><span class="keyword">val</span> return</span> : <code class="type">'a -&gt; [&gt; `Ok of 'a ]</code></pre></div></div>
+<div class="ocaml_include ident" path="?package=async_unix&amp;module=Reader0.Read_result.Z" items="[]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=async_unix&amp;module=Reader0.Read_result.Z">Z</a></code></code></pre></div>
+<div class="ocaml_include ident" path="?package=core&amp;module=Std.Monad.S" items="[&quot;Monad_infix&quot;]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core&amp;module=Std.Monad.S">Core.Std.Monad.S</a></code> with type t := 'a <a href="?package=async_unix&amp;module=Reader0.Read_result&amp;type=t">t</a></code></pre></div></div></div>
+<div class="ocaml_module sig" name="Internal"><pre><span class="keyword">module</span> <a href="?package=async_unix&amp;module=Reader0.Internal">Internal</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<div class="ocaml_module sig" name="State"><pre><span class="keyword">module</span> <a href="?package=async_unix&amp;module=Reader0.Internal.State">State</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type">[ `Closed | `In_use | `Not_in_use ]</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VAL__t_of_sexp__"><span class="keyword">val</span> __t_of_sexp__</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; [&gt; `Closed | `In_use | `Not_in_use ]</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; [&gt; `Closed | `In_use | `Not_in_use ]</code></pre>
+<pre><span class="VALt_of_sexp"><span class="keyword">val</span> t_of_sexp</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; [&gt; `Closed | `In_use | `Not_in_use ]</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; [&gt; `Closed | `In_use | `Not_in_use ]</code></pre>
+<pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type">[&lt; `Closed | `In_use | `Not_in_use ] -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">[&lt; `Closed | `In_use | `Not_in_use ] -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre></div></div>
+<div class="ocaml_module ident" name="Open_flags" path="?package=async_unix&amp;module=Reader0.Unix&amp;type=Open_flags"><pre><span class="keyword">module</span> <a href="?package=async_unix&amp;module=Reader0.Internal.Open_flags">Open_flags</a> : <code class="type"><code class="code"><a href="?package=async_unix&amp;module=Reader0.Unix&amp;type=Open_flags">Unix.Open_flags</a></code></code></pre></div>
+<pre><span class="TYPEopen_flags"><span class="keyword">type</span> open_flags</span> = <code class="type">(<a href="?package=async_unix&amp;module=Reader0.Internal.Open_flags&amp;type=t">Open_flags.t</a>, exn) <a href="?package=core&amp;module=Std.Result&amp;type=t">Core.Std.Result.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> -&gt; unit</code></pre>
+<pre><span class="VALsexp_of_open_flags"><span class="keyword">val</span> sexp_of_open_flags</span> : <code class="type">(<a href="?package=async_unix&amp;module=Reader0.Internal.Open_flags&amp;type=t">Open_flags.t</a>, <a href="?package=core_kernel&amp;module=Exn&amp;type=t">Core_kernel.Exn.t</a>) <a href="?package=core&amp;module=Std.Result&amp;type=t">Core.Std.Result.t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">(<a href="?package=async_unix&amp;module=Reader0.Internal.Open_flags&amp;type=t">Open_flags.t</a>, <a href="?package=core_kernel&amp;module=Exn&amp;type=t">Core_kernel.Exn.t</a>) <a href="?package=core&amp;module=Std.Result&amp;type=t">Core.Std.Result.t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<pre><code><span class="TYPEt"><span class="keyword">type</span> t</span> = {</code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTt.fd">fd</span> : <code class="type"><a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTt.id">id</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.buf">buf</span> : <code class="type"><a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.close_may_destroy_buf">close_may_destroy_buf</span> : <code class="type">[ `Not_ever | `Not_now | `Yes ]</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.pos">pos</span> : <code class="type">int</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.available">available</span> : <code class="type">int</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.bin_prot_len_buf">bin_prot_len_buf</span> : <code class="type"><a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.bin_prot_buf">bin_prot_buf</span> : <code class="type"><a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.state">state</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTt.close_finished">close_finished</span> : <code class="type">unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTt.last_read_time">last_read_time</span> : <code class="type"><a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTt.open_flags">open_flags</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code>;</code></td></tr><tr><td>}</td></tr></table>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<pre><span class="VALopen_flags"><span class="keyword">val</span> open_flags</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALlast_read_time"><span class="keyword">val</span> last_read_time</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a></code></pre>
+<pre><span class="VALset_last_read_time"><span class="keyword">val</span> set_last_read_time</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a> -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a> -&gt; unit</code></pre>
+<pre><span class="VALclose_finished"><span class="keyword">val</span> close_finished</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a></code></pre>
+<pre><span class="VALstate"><span class="keyword">val</span> state</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a></code></pre>
+<pre><span class="VALset_state"><span class="keyword">val</span> set_state</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a> -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a> -&gt; unit</code></pre>
+<pre><span class="VALbin_prot_buf"><span class="keyword">val</span> bin_prot_buf</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a></code></pre>
+<pre><span class="VALset_bin_prot_buf"><span class="keyword">val</span> set_bin_prot_buf</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt; unit</code></pre>
+<pre><span class="VALbin_prot_len_buf"><span class="keyword">val</span> bin_prot_len_buf</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a></code></pre>
+<pre><span class="VALset_bin_prot_len_buf"><span class="keyword">val</span> set_bin_prot_len_buf</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt; unit</code></pre>
+<pre><span class="VALavailable"><span class="keyword">val</span> available</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALset_available"><span class="keyword">val</span> set_available</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALpos"><span class="keyword">val</span> pos</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; int</code></pre>
+<pre><span class="VALset_pos"><span class="keyword">val</span> set_pos</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="VALclose_may_destroy_buf"><span class="keyword">val</span> close_may_destroy_buf</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; [ `Not_ever | `Not_now | `Yes ]</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; [ `Not_ever | `Not_now | `Yes ]</code></pre>
+<pre><span class="VALset_close_may_destroy_buf"><span class="keyword">val</span> set_close_may_destroy_buf</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; [ `Not_ever | `Not_now | `Yes ] -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; [ `Not_ever | `Not_now | `Yes ] -&gt; unit</code></pre>
+<pre><span class="VALbuf"><span class="keyword">val</span> buf</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a></code></pre>
+<pre><span class="VALset_buf"><span class="keyword">val</span> set_buf</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt; unit</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt; unit</code></pre>
+<pre><span class="VALid"><span class="keyword">val</span> id</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a></code></pre>
+<pre><span class="VALfd"><span class="keyword">val</span> fd</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a></code></pre>
+<div class="ocaml_module sig" name="Fields"><pre><span class="keyword">module</span> <a href="?package=async_unix&amp;module=Reader0.Internal.Fields">Fields</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALnames"><span class="keyword">val</span> names</span> : <code class="type">string list</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">string list</code></pre>
+<pre><span class="VALopen_flags"><span class="keyword">val</span> open_flags</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALlast_read_time"><span class="keyword">val</span> last_read_time</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALclose_finished"><span class="keyword">val</span> close_finished</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALstate"><span class="keyword">val</span> state</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALbin_prot_buf"><span class="keyword">val</span> bin_prot_buf</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALbin_prot_len_buf"><span class="keyword">val</span> bin_prot_len_buf</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALavailable"><span class="keyword">val</span> available</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALpos"><span class="keyword">val</span> pos</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALclose_may_destroy_buf"><span class="keyword">val</span> close_may_destroy_buf</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, [ `Not_ever | `Not_now | `Yes ])
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, [ `Not_ever | `Not_now | `Yes ])
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALbuf"><span class="keyword">val</span> buf</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+<a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALid"><span class="keyword">val</span> id</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALfd"><span class="keyword">val</span> fd</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a></code></pre>
+<pre><span class="VALmake_creator"><span class="keyword">val</span> make_creator</span> : <code class="type">fd:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+    'a -&gt; ('b -&gt; <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a>) * 'c) -&gt;
+id:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+    'c -&gt; ('b -&gt; <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a>) * 'd) -&gt;
+buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+      <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     'd -&gt; ('b -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>) * 'e) -&gt;
+close_may_destroy_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                        [ `Not_ever | `Not_now | `Yes ])
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                       'e -&gt; ('b -&gt; [ `Not_ever | `Not_now | `Yes ]) * 'f) -&gt;
+pos:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     'f -&gt; ('b -&gt; int) * 'g) -&gt;
+available:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+           'g -&gt; ('b -&gt; int) * 'h) -&gt;
+bin_prot_len_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                   <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                  'h -&gt;
+                  ('b -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>) * 'i) -&gt;
+bin_prot_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+               <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+              'i -&gt; ('b -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>) * 'j) -&gt;
+state:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       'j -&gt; ('b -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a>) * 'k) -&gt;
+close_finished:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                'k -&gt; ('b -&gt; unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a>) * 'l) -&gt;
+last_read_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                'l -&gt; ('b -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>) * 'm) -&gt;
+open_flags:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>)
+            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+            'm -&gt; ('b -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>) * 'n) -&gt;
+'a -&gt; ('b -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>) * 'n</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">fd:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+    'a -&gt; ('b -&gt; <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a>) * 'c) -&gt;
+id:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+    'c -&gt; ('b -&gt; <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a>) * 'd) -&gt;
+buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+      <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     'd -&gt; ('b -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>) * 'e) -&gt;
+close_may_destroy_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                        [ `Not_ever | `Not_now | `Yes ])
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                       'e -&gt; ('b -&gt; [ `Not_ever | `Not_now | `Yes ]) * 'f) -&gt;
+pos:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     'f -&gt; ('b -&gt; int) * 'g) -&gt;
+available:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+           'g -&gt; ('b -&gt; int) * 'h) -&gt;
+bin_prot_len_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                   <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                  'h -&gt;
+                  ('b -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>) * 'i) -&gt;
+bin_prot_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+               <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+              'i -&gt; ('b -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>) * 'j) -&gt;
+state:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       'j -&gt; ('b -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a>) * 'k) -&gt;
+close_finished:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                'k -&gt; ('b -&gt; unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a>) * 'l) -&gt;
+last_read_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                'l -&gt; ('b -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>) * 'm) -&gt;
+open_flags:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>)
+            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+            'm -&gt; ('b -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>) * 'n) -&gt;
+'a -&gt; ('b -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>) * 'n</code></pre>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">fd:<a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a> -&gt;
+id:<a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a> -&gt;
+buf:<a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt;
+close_may_destroy_buf:[ `Not_ever | `Not_now | `Yes ] -&gt;
+pos:int -&gt;
+available:int -&gt;
+bin_prot_len_buf:<a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt;
+bin_prot_buf:<a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt;
+state:<a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a> -&gt;
+close_finished:unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a> -&gt;
+last_read_time:<a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a> -&gt;
+open_flags:<a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">fd:<a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a> -&gt;
+id:<a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a> -&gt;
+buf:<a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt;
+close_may_destroy_buf:[ `Not_ever | `Not_now | `Yes ] -&gt;
+pos:int -&gt;
+available:int -&gt;
+bin_prot_len_buf:<a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt;
+bin_prot_buf:<a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt;
+state:<a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a> -&gt;
+close_finished:unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a> -&gt;
+last_read_time:<a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a> -&gt;
+open_flags:<a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a></code></pre>
+<pre><span class="VALmap"><span class="keyword">val</span> map</span> : <code class="type">fd:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+    <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a>) -&gt;
+id:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+    <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a>) -&gt;
+buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+      <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>) -&gt;
+close_may_destroy_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                        [ `Not_ever | `Not_now | `Yes ])
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                       [ `Not_ever | `Not_now | `Yes ]) -&gt;
+pos:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     int) -&gt;
+available:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+           int) -&gt;
+bin_prot_len_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                   <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                  <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>) -&gt;
+bin_prot_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+               <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+              <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>) -&gt;
+state:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a>) -&gt;
+close_finished:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a>) -&gt;
+last_read_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>) -&gt;
+open_flags:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>)
+            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>) -&gt;
+<a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">fd:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+    <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a>) -&gt;
+id:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+    <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a>) -&gt;
+buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+      <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>) -&gt;
+close_may_destroy_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                        [ `Not_ever | `Not_now | `Yes ])
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                       [ `Not_ever | `Not_now | `Yes ]) -&gt;
+pos:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     int) -&gt;
+available:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+           int) -&gt;
+bin_prot_len_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                   <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                  <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>) -&gt;
+bin_prot_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+               <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+              <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>) -&gt;
+state:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a>) -&gt;
+close_finished:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a>) -&gt;
+last_read_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>) -&gt;
+open_flags:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>)
+            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>) -&gt;
+<a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a></code></pre>
+<pre><span class="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">fd:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+id:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'b) -&gt;
+buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+      <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'c) -&gt;
+close_may_destroy_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                        [ `Not_ever | `Not_now | `Yes ])
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'd) -&gt;
+pos:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'e) -&gt;
+available:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+           'f) -&gt;
+bin_prot_len_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                   <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'g) -&gt;
+bin_prot_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+               <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'h) -&gt;
+state:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       'i) -&gt;
+close_finished:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'j) -&gt;
+last_read_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'k) -&gt;
+open_flags:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>)
+            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'l) -&gt;
+'l</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">fd:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+id:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'b) -&gt;
+buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+      <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'c) -&gt;
+close_may_destroy_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                        [ `Not_ever | `Not_now | `Yes ])
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'd) -&gt;
+pos:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'e) -&gt;
+available:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+           'f) -&gt;
+bin_prot_len_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                   <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'g) -&gt;
+bin_prot_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+               <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'h) -&gt;
+state:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       'i) -&gt;
+close_finished:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'j) -&gt;
+last_read_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'k) -&gt;
+open_flags:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>)
+            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'l) -&gt;
+'l</code></pre>
+<pre><span class="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">init:'a -&gt;
+fd:('a -&gt;
+    ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'b) -&gt;
+id:('b -&gt;
+    ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'c) -&gt;
+buf:('c -&gt;
+     ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+      <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'd) -&gt;
+close_may_destroy_buf:('d -&gt;
+                       ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                        [ `Not_ever | `Not_now | `Yes ])
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'e) -&gt;
+pos:('e -&gt;
+     ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'f) -&gt;
+available:('f -&gt;
+           ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+           'g) -&gt;
+bin_prot_len_buf:('g -&gt;
+                  ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                   <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'h) -&gt;
+bin_prot_buf:('h -&gt;
+              ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+               <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'i) -&gt;
+state:('i -&gt;
+       ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       'j) -&gt;
+close_finished:('j -&gt;
+                ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'k) -&gt;
+last_read_time:('k -&gt;
+                ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'l) -&gt;
+open_flags:('l -&gt;
+            ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>)
+            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'm) -&gt;
+'m</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">init:'a -&gt;
+fd:('a -&gt;
+    ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'b) -&gt;
+id:('b -&gt;
+    ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'c) -&gt;
+buf:('c -&gt;
+     ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+      <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'd) -&gt;
+close_may_destroy_buf:('d -&gt;
+                       ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                        [ `Not_ever | `Not_now | `Yes ])
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'e) -&gt;
+pos:('e -&gt;
+     ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'f) -&gt;
+available:('f -&gt;
+           ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+           'g) -&gt;
+bin_prot_len_buf:('g -&gt;
+                  ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                   <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'h) -&gt;
+bin_prot_buf:('h -&gt;
+              ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+               <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'i) -&gt;
+state:('i -&gt;
+       ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       'j) -&gt;
+close_finished:('j -&gt;
+                ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'k) -&gt;
+last_read_time:('k -&gt;
+                ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'l) -&gt;
+open_flags:('l -&gt;
+            ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>)
+            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'm) -&gt;
+'m</code></pre>
+<pre><span class="VALmap_poly"><span class="keyword">val</span> map_poly</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, 'a) <a href="?package=fieldslib&amp;module=Field&amp;type=user">Fieldslib.Field.user</a> -&gt; 'a list</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, 'a) <a href="?package=fieldslib&amp;module=Field&amp;type=user">Fieldslib.Field.user</a> -&gt; 'a list</code></pre>
+<pre><span class="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">fd:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+    bool) -&gt;
+id:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+    bool) -&gt;
+buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+      <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+close_may_destroy_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                        [ `Not_ever | `Not_now | `Yes ])
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+pos:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     bool) -&gt;
+available:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+           bool) -&gt;
+bin_prot_len_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                   <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+bin_prot_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+               <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+state:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       bool) -&gt;
+close_finished:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+last_read_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+open_flags:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>)
+            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+bool</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">fd:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+    bool) -&gt;
+id:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+    bool) -&gt;
+buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+      <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+close_may_destroy_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                        [ `Not_ever | `Not_now | `Yes ])
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+pos:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     bool) -&gt;
+available:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+           bool) -&gt;
+bin_prot_len_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                   <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+bin_prot_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+               <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+state:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       bool) -&gt;
+close_finished:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+last_read_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+open_flags:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>)
+            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+bool</code></pre>
+<pre><span class="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">fd:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+    bool) -&gt;
+id:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+    bool) -&gt;
+buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+      <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+close_may_destroy_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                        [ `Not_ever | `Not_now | `Yes ])
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+pos:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     bool) -&gt;
+available:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+           bool) -&gt;
+bin_prot_len_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                   <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+bin_prot_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+               <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+state:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       bool) -&gt;
+close_finished:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+last_read_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+open_flags:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>)
+            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+bool</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">fd:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+    bool) -&gt;
+id:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+    bool) -&gt;
+buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+      <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+close_may_destroy_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                        [ `Not_ever | `Not_now | `Yes ])
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+pos:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     bool) -&gt;
+available:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+           bool) -&gt;
+bin_prot_len_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                   <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+bin_prot_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+               <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+state:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       bool) -&gt;
+close_finished:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+last_read_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+open_flags:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>)
+            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; bool) -&gt;
+bool</code></pre>
+<pre><span class="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type">fd:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+id:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+      <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+close_may_destroy_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                        [ `Not_ever | `Not_now | `Yes ])
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+pos:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+available:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+           'a) -&gt;
+bin_prot_len_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                   <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+bin_prot_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+               <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+state:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       'a) -&gt;
+close_finished:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+last_read_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+open_flags:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>)
+            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+'a list</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">fd:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+id:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+      <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+close_may_destroy_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                        [ `Not_ever | `Not_now | `Yes ])
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+pos:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+available:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+           'a) -&gt;
+bin_prot_len_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                   <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+bin_prot_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+               <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+state:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       'a) -&gt;
+close_finished:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+last_read_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+open_flags:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>)
+            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; 'a) -&gt;
+'a list</code></pre>
+<div class="ocaml_module sig" name="Direct"><pre><span class="keyword">module</span> <a href="?package=async_unix&amp;module=Reader0.Internal.Fields.Direct">Direct</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALiter"><span class="keyword">val</span> iter</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt;
+fd:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+    <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a> -&gt; 'a) -&gt;
+id:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+    <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a> -&gt; 'b) -&gt;
+buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+      <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt; 'c) -&gt;
+close_may_destroy_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                        [ `Not_ever | `Not_now | `Yes ])
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                       <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; [ `Not_ever | `Not_now | `Yes ] -&gt; 'd) -&gt;
+pos:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; int -&gt; 'e) -&gt;
+available:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+           <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; int -&gt; 'f) -&gt;
+bin_prot_len_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                   <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                  <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt; 'g) -&gt;
+bin_prot_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+               <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+              <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt; 'h) -&gt;
+state:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a> -&gt; 'i) -&gt;
+close_finished:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a> -&gt; 'j) -&gt;
+last_read_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a> -&gt; 'k) -&gt;
+open_flags:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>)
+            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+            <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a> -&gt; 'l) -&gt;
+'l</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt;
+fd:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+    <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a> -&gt; 'a) -&gt;
+id:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+    <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a> -&gt; 'b) -&gt;
+buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+      <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt; 'c) -&gt;
+close_may_destroy_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                        [ `Not_ever | `Not_now | `Yes ])
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                       <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; [ `Not_ever | `Not_now | `Yes ] -&gt; 'd) -&gt;
+pos:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; int -&gt; 'e) -&gt;
+available:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+           <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; int -&gt; 'f) -&gt;
+bin_prot_len_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                   <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                  <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt; 'g) -&gt;
+bin_prot_buf:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+               <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+              <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt; 'h) -&gt;
+state:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a> -&gt; 'i) -&gt;
+close_finished:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a> -&gt; 'j) -&gt;
+last_read_time:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a> -&gt; 'k) -&gt;
+open_flags:(([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>)
+            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+            <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a> -&gt; 'l) -&gt;
+'l</code></pre>
+<pre><span class="VALfold"><span class="keyword">val</span> fold</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt;
+init:'a -&gt;
+fd:('a -&gt;
+    ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+    <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a> -&gt; 'b) -&gt;
+id:('b -&gt;
+    ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+    <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a> -&gt; 'c) -&gt;
+buf:('c -&gt;
+     ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+      <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt; 'd) -&gt;
+close_may_destroy_buf:('d -&gt;
+                       ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                        [ `Not_ever | `Not_now | `Yes ])
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                       <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; [ `Not_ever | `Not_now | `Yes ] -&gt; 'e) -&gt;
+pos:('e -&gt;
+     ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; int -&gt; 'f) -&gt;
+available:('f -&gt;
+           ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+           <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; int -&gt; 'g) -&gt;
+bin_prot_len_buf:('g -&gt;
+                  ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                   <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                  <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt; 'h) -&gt;
+bin_prot_buf:('h -&gt;
+              ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+               <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+              <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt; 'i) -&gt;
+state:('i -&gt;
+       ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a> -&gt; 'j) -&gt;
+close_finished:('j -&gt;
+                ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a> -&gt; 'k) -&gt;
+last_read_time:('k -&gt;
+                ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a> -&gt; 'l) -&gt;
+open_flags:('l -&gt;
+            ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>)
+            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+            <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a> -&gt; 'm) -&gt;
+'m</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt;
+init:'a -&gt;
+fd:('a -&gt;
+    ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+    <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a> -&gt; 'b) -&gt;
+id:('b -&gt;
+    ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+    <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a> -&gt; 'c) -&gt;
+buf:('c -&gt;
+     ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+      <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+     <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt; 'd) -&gt;
+close_may_destroy_buf:('d -&gt;
+                       ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                        [ `Not_ever | `Not_now | `Yes ])
+                       <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                       <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; [ `Not_ever | `Not_now | `Yes ] -&gt; 'e) -&gt;
+pos:('e -&gt;
+     ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+     <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; int -&gt; 'f) -&gt;
+available:('f -&gt;
+           ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, int) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+           <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; int -&gt; 'g) -&gt;
+bin_prot_len_buf:('g -&gt;
+                  ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+                   <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+                  <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+                  <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt; 'h) -&gt;
+bin_prot_buf:('h -&gt;
+              ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>,
+               <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a>)
+              <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+              <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt; 'i) -&gt;
+state:('i -&gt;
+       ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a>) <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+       <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal.State&amp;type=t">State.t</a> -&gt; 'j) -&gt;
+close_finished:('j -&gt;
+                ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; unit <a href="?package=async_unix&amp;module=Import.Ivar&amp;type=t">Import.Ivar.t</a> -&gt; 'k) -&gt;
+last_read_time:('k -&gt;
+                ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a>)
+                <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a> -&gt; 'l) -&gt;
+open_flags:('l -&gt;
+            ([&lt; `Read | `Set_and_create ], <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a>, <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>)
+            <a href="?package=fieldslib&amp;module=Field&amp;type=t_with_perm">Fieldslib.Field.t_with_perm</a> -&gt;
+            <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=open_flags">open_flags</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a> -&gt; 'm) -&gt;
+'m</code></pre></div></div></div></div>
+<pre><span class="VALio_stats"><span class="keyword">val</span> io_stats</span> : <code class="type"><a href="?package=async_unix&amp;module=Io_stats&amp;type=t">Io_stats.t</a></code></pre>
+<pre><span class="VALinvariant"><span class="keyword">val</span> invariant</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">?buf_len:int -&gt; <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a></code></pre>
+<pre><span class="VALof_in_channel"><span class="keyword">val</span> of_in_channel</span> : <code class="type"><a href="?package=core&amp;module=Std.In_channel&amp;type=t">Core.Std.In_channel.t</a> -&gt; <a href="?package=async_unix&amp;module=Fd.Kind&amp;type=t">Fd.Kind.t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a></code></pre>
+<pre><span class="VALopen_file"><span class="keyword">val</span> open_file</span> : <code class="type">?close_on_exec:bool -&gt; ?buf_len:int -&gt; string -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALstdin"><span class="keyword">val</span> stdin</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> lazy_t</code></pre>
+<pre><span class="VALclose_finished"><span class="keyword">val</span> close_finished</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; unit <a href="?package=async_unix&amp;module=Import.Ivar.Deferred&amp;type=t">Import.Ivar.Deferred.t</a></code></pre>
+<pre><span class="VALis_closed"><span class="keyword">val</span> is_closed</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; bool</code></pre>
+<pre><span class="VALempty_buf"><span class="keyword">val</span> empty_buf</span> : <code class="type"><a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a></code></pre>
+<pre><span class="VALdestroy"><span class="keyword">val</span> destroy</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VALclose"><span class="keyword">val</span> close</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; unit <a href="?package=async_unix&amp;module=Import.Ivar.Deferred&amp;type=t">Import.Ivar.Deferred.t</a></code></pre>
+<pre><span class="VALwith_close"><span class="keyword">val</span> with_close</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; f:(unit -&gt; 'a <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a>) -&gt; 'a <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALwith_reader_exclusive"><span class="keyword">val</span> with_reader_exclusive</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; (unit -&gt; 'a <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a>) -&gt; 'a <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALwith_file"><span class="keyword">val</span> with_file</span> : <code class="type">?buf_len:int -&gt;
+?exclusive:bool -&gt;
+string -&gt; f:(<a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; 'a <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a>) -&gt; 'a <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALget_data"><span class="keyword">val</span> get_data</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; [ `Eof | `Ok ] <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALwith_nonempty_buffer"><span class="keyword">val</span> with_nonempty_buffer</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; ([ `Eof | `Ok ] -&gt; 'a) -&gt; 'a <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALwith_nonempty_buffer'"><span class="keyword">val</span> with_nonempty_buffer'</span> : <code class="type">?force_refill:bool -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; ([ `Eof | `Ok ] -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALconsume"><span class="keyword">val</span> consume</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre>
+<pre><span class="TYPEread_one_chunk_at_a_time_result"><span class="keyword">type</span> <code class="type">'a </code>read_one_chunk_at_a_time_result</span> = <code class="type">[ `Eof | `Eof_with_unconsumed_data of string | `Stopped of 'a ]</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">'a <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=read_one_chunk_at_a_time_result">read_one_chunk_at_a_time_result</a> -&gt; unit</code></pre>
+<pre><span class="VALsexp_of_read_one_chunk_at_a_time_result"><span class="keyword">val</span> sexp_of_read_one_chunk_at_a_time_result</span> : <code class="type">'a.
+  ('a -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a>) -&gt;
+  'a <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=read_one_chunk_at_a_time_result">read_one_chunk_at_a_time_result</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">('a -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a>) -&gt;
+'a <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=read_one_chunk_at_a_time_result">read_one_chunk_at_a_time_result</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<pre><span class="TYPEconsumed"><span class="keyword">type</span> consumed</span> = <code class="type">[ `Consumed of int * [ `Need of int | `Need_unknown ] ]</code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=consumed">consumed</a> -&gt; unit</code></pre>
+<pre><span class="VALsexp_of_consumed"><span class="keyword">val</span> sexp_of_consumed</span> : <code class="type">[&lt; `Consumed of int * [&lt; `Need of int | `Need_unknown ] ] -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">[&lt; `Consumed of int * [&lt; `Need of int | `Need_unknown ] ] -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<pre><span class="VALread_one_chunk_at_a_time"><span class="keyword">val</span> read_one_chunk_at_a_time</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt;
+handle_chunk:(<a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt;
+              pos:int -&gt;
+              len:int -&gt;
+              [&lt; `Consumed of
+                   int * [&lt; `Need of int | `Need_unknown ] &amp;
+                   int * [&lt; `Need of int | `Need_unknown ]
+               | `Continue
+               | `Stop of 'a
+               | `Stop_consumed of 'a * int ]
+              <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>) -&gt;
+[&gt; `Eof | `Eof_with_unconsumed_data of string | `Stopped of 'a ]
+<a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<div class="ocaml_module sig" name="Read"><pre><span class="keyword">module</span> <a href="?package=async_unix&amp;module=Reader0.Internal.Read">Read</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">S</code><code class="code"> : </code><code class="code"><a href="?package=core&amp;module=Std.Substring_intf.S">Core.Std.Substring_intf.S</a></code><code class="code">) -&gt; </code><div class="sig_block"><code class="code">functor (</code><code class="code">Name</code><code class="code"> : </code><code class="code">sig</code> .. <code class="code">end</code><code class="code">) -&gt; </code><code class="code">sig</code> .. <code class="code">end</code></div></div></code></pre><div class="ocaml_module_content">
+<pre><span class="VALread_available"><span class="keyword">val</span> read_available</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; S.t -&gt; [&gt; `Ok of <a href="?package=core&amp;module=Std.Int&amp;type=t">Core.Std.Int.t</a> ]</code></pre>
+<pre><span class="VALread"><span class="keyword">val</span> read</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; S.t -&gt; [&gt; `Eof | `Ok of <a href="?package=core&amp;module=Std.Int&amp;type=t">Core.Std.Int.t</a> ] <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALreally_read"><span class="keyword">val</span> really_read</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; S.t -&gt; [&gt; `Eof of int | `Ok ] <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre></div></div>
+<div class="ocaml_module ident" name="Read_substring" path="?package=async_unix&amp;module=Reader0.Internal.Read"><pre><span class="keyword">module</span> <a href="?package=async_unix&amp;module=Reader0.Internal.Read_substring">Read_substring</a> : <code class="type"><code class="code"><a href="?package=async_unix&amp;module=Reader0.Internal.Read">Read</a></code>(<code class="code"><a href="?package=core&amp;module=Std.Substring">Core.Std.Substring</a></code>)(<code class="code">sig</code> .. <code class="code">end</code>)</code></pre></div>
+<pre><span class="VALread_substring"><span class="keyword">val</span> read_substring</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt;
+<a href="?package=core&amp;module=Std.Substring&amp;type=t">Core.Std.Substring.t</a> -&gt; [&gt; `Eof | `Ok of <a href="?package=core&amp;module=Std.Int&amp;type=t">Core.Std.Int.t</a> ] <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALreally_read_substring"><span class="keyword">val</span> really_read_substring</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Substring&amp;type=t">Core.Std.Substring.t</a> -&gt; [&gt; `Eof of int | `Ok ] <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<div class="ocaml_module ident" name="Read_bigsubstring" path="?package=async_unix&amp;module=Reader0.Internal.Read"><pre><span class="keyword">module</span> <a href="?package=async_unix&amp;module=Reader0.Internal.Read_bigsubstring">Read_bigsubstring</a> : <code class="type"><code class="code"><a href="?package=async_unix&amp;module=Reader0.Internal.Read">Read</a></code>(<code class="code"><a href="?package=core&amp;module=Std.Bigsubstring">Core.Std.Bigsubstring</a></code>)(<code class="code">sig</code> .. <code class="code">end</code>)</code></pre></div>
+<pre><span class="VALread_bigsubstring"><span class="keyword">val</span> read_bigsubstring</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt;
+<a href="?package=core&amp;module=Std.Bigsubstring&amp;type=t">Core.Std.Bigsubstring.t</a> -&gt;
+[&gt; `Eof | `Ok of <a href="?package=core&amp;module=Std.Int&amp;type=t">Core.Std.Int.t</a> ] <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALreally_read_bigsubstring"><span class="keyword">val</span> really_read_bigsubstring</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Bigsubstring&amp;type=t">Core.Std.Bigsubstring.t</a> -&gt; [&gt; `Eof of int | `Ok ] <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALreally_read_bigstring"><span class="keyword">val</span> really_read_bigstring</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core_kernel&amp;module=Bigstring&amp;type=t">Core_kernel.Bigstring.t</a> -&gt; [&gt; `Eof of int | `Ok ] <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALread"><span class="keyword">val</span> read</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt;
+?pos:int -&gt;
+?len:int -&gt;
+<a href="?package=core&amp;module=Std.Substring&amp;type=base">Core.Std.Substring.base</a> -&gt;
+[&gt; `Eof | `Ok of <a href="?package=core&amp;module=Std.Int&amp;type=t">Core.Std.Int.t</a> ] <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALreally_read"><span class="keyword">val</span> really_read</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt;
+?pos:int -&gt;
+?len:int -&gt;
+<a href="?package=core&amp;module=Std.Substring&amp;type=base">Core.Std.Substring.base</a> -&gt; [&gt; `Eof of int | `Ok ] <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALread_char"><span class="keyword">val</span> read_char</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; [&gt; `Eof | `Ok of char ] <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALfirst_char"><span class="keyword">val</span> first_char</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt;
+[&lt; `Char of char | `Pred of char -&gt; bool ] -&gt; int option <a href="?package=core&amp;module=Std.Or_error&amp;type=t">Core.Std.Or_error.t</a></code></pre>
+<pre><span class="VALread_until_gen"><span class="keyword">val</span> read_until_gen</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt;
+[&lt; `Char of char | `Pred of char -&gt; bool ] -&gt;
+keep_delim:bool -&gt;
+max:int option -&gt;
+(([&gt; `Eof
+   | `Eof_without_delim of string
+   | `Max_exceeded of string
+   | `Ok of string ],
+  <a href="?package=core_kernel&amp;module=Error&amp;type=t">Core_kernel.Error.t</a>)
+ <a href="?package=core&amp;module=Std&amp;type=_result">Core.Std._result</a> -&gt; unit) -&gt;
+unit</code></pre>
+<pre><span class="VALread_until"><span class="keyword">val</span> read_until</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt;
+[&lt; `Char of char | `Pred of char -&gt; bool ] -&gt;
+keep_delim:bool -&gt;
+(([&gt; `Eof | `Eof_without_delim of string | `Ok of string ],
+  <a href="?package=core_kernel&amp;module=Error&amp;type=t">Core_kernel.Error.t</a>)
+ <a href="?package=core&amp;module=Std&amp;type=_result">Core.Std._result</a> -&gt; unit) -&gt;
+unit</code></pre>
+<pre><span class="VALline_delimiter_pred"><span class="keyword">val</span> line_delimiter_pred</span> : <code class="type">[&gt; `Char of char ]</code></pre>
+<pre><span class="VALread_line_gen"><span class="keyword">val</span> read_line_gen</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt;
+([&gt; `Eof | `Eof_without_delim of string | `Ok of <a href="?package=core&amp;module=Std.String&amp;type=t">Core.Std.String.t</a> ] -&gt; unit) -&gt;
+unit</code></pre>
+<pre><span class="VALread_line"><span class="keyword">val</span> read_line</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; [&gt; `Eof | `Ok of <a href="?package=core&amp;module=Std.String&amp;type=t">Core.Std.String.t</a> ] <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALreally_read_line"><span class="keyword">val</span> really_read_line</span> : <code class="type">wait_time:<a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a> -&gt;
+<a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.String&amp;type=t">Core.Std.String.t</a> option <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALspace"><span class="keyword">val</span> space</span> : <code class="type"><a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a></code></pre>
+<pre><span class="VALgen_read_sexp"><span class="keyword">val</span> gen_read_sexp</span> : <code class="type">?parse_pos:<a href="?package=core&amp;module=Std.Sexp.Parse_pos&amp;type=t">Core.Std.Sexp.Parse_pos.t</a> -&gt;
+<a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt;
+(?parse_pos:<a href="?package=core&amp;module=Std.Sexp.Parse_pos&amp;type=t">Core.Std.Sexp.Parse_pos.t</a> -&gt;
+ ?len:int -&gt;
+ <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> -&gt;
+ (<a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a>, 'a) <a href="?package=core&amp;module=Std.Sexp&amp;type=parse_result">Core.Std.Sexp.parse_result</a>) -&gt;
+(([&gt; `Eof | `Ok of 'a * <a href="?package=core&amp;module=Std.Sexp.Parse_pos&amp;type=t">Core.Std.Sexp.Parse_pos.t</a> ], <a href="?package=core_kernel&amp;module=Error&amp;type=t">Core_kernel.Error.t</a>)
+ <a href="?package=core&amp;module=Std&amp;type=_result">Core.Std._result</a> -&gt; unit) -&gt;
+unit</code></pre>
+<pre><span class="TYPEread"><span class="keyword">type</span> <code class="type">'a </code>read</span> = <code class="type">?parse_pos:<a href="?package=core&amp;module=Std.Sexp.Parse_pos&amp;type=t">Core.Std.Sexp.Parse_pos.t</a> -&gt; 'a</code></pre>
+<pre><span class="VALgen_read_sexps"><span class="keyword">val</span> gen_read_sexps</span> : <code class="type">?parse_pos:<a href="?package=core&amp;module=Std.Sexp.Parse_pos&amp;type=t">Core.Std.Sexp.Parse_pos.t</a> -&gt;
+<a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt;
+(?parse_pos:<a href="?package=core&amp;module=Std.Sexp.Parse_pos&amp;type=t">Core.Std.Sexp.Parse_pos.t</a> -&gt;
+ ?len:int -&gt;
+ <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> -&gt;
+ (<a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a>, 'a) <a href="?package=core&amp;module=Std.Sexp&amp;type=parse_result">Core.Std.Sexp.parse_result</a>) -&gt;
+'a <a href="?package=async_unix&amp;module=Import.Pipe.Reader&amp;type=t">Import.Pipe.Reader.t</a></code></pre>
+<pre><span class="VALread_sexps"><span class="keyword">val</span> read_sexps</span> : <code class="type">?parse_pos:<a href="?package=core&amp;module=Std.Sexp.Parse_pos&amp;type=t">Core.Std.Sexp.Parse_pos.t</a> -&gt;
+<a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Sexp&amp;type=t">Core.Std.Sexp.t</a> <a href="?package=async_unix&amp;module=Import.Pipe.Reader&amp;type=t">Import.Pipe.Reader.t</a></code></pre>
+<pre><span class="VALread_bin_prot"><span class="keyword">val</span> read_bin_prot</span> : <code class="type">?max_len:<a href="?package=core&amp;module=Std.Int&amp;type=t">Core.Std.Int.t</a> -&gt;
+<a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt;
+'a <a href="?package=async_unix&amp;module=Reader0.Type_class&amp;type=reader">Type_class.reader</a> -&gt;
+([&gt; `Eof | `Ok of 'a ] <a href="?package=core&amp;module=Std.Or_error&amp;type=t">Core.Std.Or_error.t</a> -&gt; unit) -&gt; unit</code></pre>
+<pre><span class="VALread_marshal_raw"><span class="keyword">val</span> read_marshal_raw</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; [&gt; `Eof | `Ok of <a href="?package=core&amp;module=Std.String&amp;type=t">Core.Std.String.t</a> ] <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALread_marshal"><span class="keyword">val</span> read_marshal</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; [&gt; `Eof | `Ok of 'a ] <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALread_all"><span class="keyword">val</span> read_all</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt;
+(<a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; [&lt; `Eof | `Ok of 'a ] <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a>) -&gt; 'a <a href="?package=async_unix&amp;module=Import.Pipe.Reader&amp;type=t">Import.Pipe.Reader.t</a></code></pre>
+<pre><span class="VALlines"><span class="keyword">val</span> lines</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.String&amp;type=t">Core.Std.String.t</a> <a href="?package=async_unix&amp;module=Import.Pipe.Reader&amp;type=t">Import.Pipe.Reader.t</a></code></pre>
+<pre><span class="VALcontents"><span class="keyword">val</span> contents</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; string <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALrecv"><span class="keyword">val</span> recv</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt; [&gt; `Eof | `Ok of <a href="?package=core&amp;module=Std.String&amp;type=t">Core.Std.String.t</a> ] <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALtransfer"><span class="keyword">val</span> transfer</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">t</a> -&gt;
+(string, <a href="?package=async_unix&amp;module=Import.Pipe.Writer&amp;type=phantom">Import.Pipe.Writer.phantom</a>) <a href="?package=async_unix&amp;module=Import.Pipe&amp;type=t">Import.Pipe.t</a> -&gt; unit <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre></div></div>
+<div class="ocaml_include sig" items="[]"><pre><span class="keyword">include</span> <code class="type"><code class="code">sig</code> .. <code class="code">end</code> with type <a href="?package=async_unix&amp;module=Reader0&amp;type=__pa_nonrec_0">__pa_nonrec_0</a> := <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPE__pa_nonrec_0"><span class="keyword">type</span> __pa_nonrec_0</span> = <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a></code></pre>
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type"><a href="?package=async_unix&amp;module=Reader0&amp;type=__pa_nonrec_0">__pa_nonrec_0</a></code></pre></div></div>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<div class="ocaml_include sig" items="[]"><pre><span class="keyword">include</span> <code class="type"><code class="code">sig</code> .. <code class="code">end</code> with type <a href="?package=async_unix&amp;module=Reader0&amp;type=__pa_nonrec_1">__pa_nonrec_1</a> := 'a0 <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=read_one_chunk_at_a_time_result">Internal.read_one_chunk_at_a_time_result</a></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPE__pa_nonrec_1"><span class="keyword">type</span> <code class="type">'a0 </code>__pa_nonrec_1</span> = <code class="type">'a0 <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=read_one_chunk_at_a_time_result">Internal.read_one_chunk_at_a_time_result</a></code></pre>
+<pre><span class="TYPEread_one_chunk_at_a_time_result"><span class="keyword">type</span> <code class="type">'a </code>read_one_chunk_at_a_time_result</span> = <code class="type">'a <a href="?package=async_unix&amp;module=Reader0&amp;type=__pa_nonrec_1">__pa_nonrec_1</a></code></pre></div></div>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">'a <a href="?package=async_unix&amp;module=Reader0&amp;type=read_one_chunk_at_a_time_result">read_one_chunk_at_a_time_result</a> -&gt; unit</code></pre>
+<pre><span class="VALsexp_of_read_one_chunk_at_a_time_result"><span class="keyword">val</span> sexp_of_read_one_chunk_at_a_time_result</span> : <code class="type">'a.
+  ('a -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a>) -&gt;
+  'a <a href="?package=async_unix&amp;module=Reader0&amp;type=read_one_chunk_at_a_time_result">read_one_chunk_at_a_time_result</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<pre><span class="VALUnknown name"><span class="keyword">val</span> Unknown name</span> : <code class="type">('a -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a>) -&gt;
+'a <a href="?package=async_unix&amp;module=Reader0&amp;type=read_one_chunk_at_a_time_result">read_one_chunk_at_a_time_result</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
+<div class="ocaml_include sig" items="[]"><pre><span class="keyword">include</span> <code class="type"><code class="code">sig</code> .. <code class="code">end</code> with type <a href="?package=async_unix&amp;module=Reader0&amp;type=__pa_nonrec_2">__pa_nonrec_2</a> := 'a0 <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=read">Internal.read</a></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPE__pa_nonrec_2"><span class="keyword">type</span> <code class="type">'a0 </code>__pa_nonrec_2</span> = <code class="type">'a0 <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=read">Internal.read</a></code></pre>
+<pre><span class="TYPEread"><span class="keyword">type</span> <code class="type">'a </code>read</span> = <code class="type">'a <a href="?package=async_unix&amp;module=Reader0&amp;type=__pa_nonrec_2">__pa_nonrec_2</a></code></pre></div></div>
+<pre><span class="VALclose"><span class="keyword">val</span> close</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; unit <a href="?package=async_unix&amp;module=Import.Ivar.Deferred&amp;type=t">Import.Ivar.Deferred.t</a></code></pre>
+<pre><span class="VALclose_finished"><span class="keyword">val</span> close_finished</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; unit <a href="?package=async_unix&amp;module=Import.Ivar.Deferred&amp;type=t">Import.Ivar.Deferred.t</a></code></pre>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">?buf_len:int -&gt; <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a></code></pre>
+<pre><span class="VALfd"><span class="keyword">val</span> fd</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a></code></pre>
+<pre><span class="VALid"><span class="keyword">val</span> id</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Id&amp;type=t">Id.t</a></code></pre>
+<pre><span class="VALinvariant"><span class="keyword">val</span> invariant</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; unit</code></pre>
+<pre><span class="VALio_stats"><span class="keyword">val</span> io_stats</span> : <code class="type"><a href="?package=async_unix&amp;module=Io_stats&amp;type=t">Io_stats.t</a></code></pre>
+<pre><span class="VALis_closed"><span class="keyword">val</span> is_closed</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; bool</code></pre>
+<pre><span class="VALlast_read_time"><span class="keyword">val</span> last_read_time</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a></code></pre>
+<pre><span class="VALof_in_channel"><span class="keyword">val</span> of_in_channel</span> : <code class="type"><a href="?package=core&amp;module=Std.In_channel&amp;type=t">Core.Std.In_channel.t</a> -&gt; <a href="?package=async_unix&amp;module=Fd.Kind&amp;type=t">Fd.Kind.t</a> -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a></code></pre>
+<pre><span class="VALopen_file"><span class="keyword">val</span> open_file</span> : <code class="type">?close_on_exec:bool -&gt;
+?buf_len:int -&gt; string -&gt; <a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALstdin"><span class="keyword">val</span> stdin</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> lazy_t</code></pre>
+<pre><span class="VALwith_close"><span class="keyword">val</span> with_close</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt;
+f:(unit -&gt; 'a <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a>) -&gt; 'a <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALwith_file"><span class="keyword">val</span> with_file</span> : <code class="type">?buf_len:int -&gt;
+?exclusive:bool -&gt;
+string -&gt;
+f:(<a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; 'a <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a>) -&gt; 'a <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALuse"><span class="keyword">val</span> use</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; unit</code></pre>
+<pre><span class="VALfinished_read"><span class="keyword">val</span> finished_read</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; unit</code></pre>
+<pre><span class="VALdo_read"><span class="keyword">val</span> do_read</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; (unit -&gt; 'a <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a>) -&gt; 'a <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALread"><span class="keyword">val</span> read</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt;
+?pos:int -&gt;
+?len:int -&gt;
+<a href="?package=core&amp;module=Std.Substring&amp;type=base">Core.Std.Substring.base</a> -&gt;
+[&gt; `Eof | `Ok of <a href="?package=core&amp;module=Std.Int&amp;type=t">Core.Std.Int.t</a> ] <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALread_char"><span class="keyword">val</span> read_char</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; [&gt; `Eof | `Ok of char ] <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALread_substring"><span class="keyword">val</span> read_substring</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt;
+<a href="?package=core&amp;module=Std.Substring&amp;type=t">Core.Std.Substring.t</a> -&gt;
+[&gt; `Eof | `Ok of <a href="?package=core&amp;module=Std.Int&amp;type=t">Core.Std.Int.t</a> ] <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALread_bigsubstring"><span class="keyword">val</span> read_bigsubstring</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt;
+<a href="?package=core&amp;module=Std.Bigsubstring&amp;type=t">Core.Std.Bigsubstring.t</a> -&gt;
+[&gt; `Eof | `Ok of <a href="?package=core&amp;module=Std.Int&amp;type=t">Core.Std.Int.t</a> ] <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALread_one_chunk_at_a_time"><span class="keyword">val</span> read_one_chunk_at_a_time</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt;
+handle_chunk:(<a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> <a href="?package=core&amp;module=Std&amp;type=sexp_opaque">Core.Std.sexp_opaque</a> -&gt;
+              pos:int -&gt;
+              len:int -&gt;
+              [&lt; `Consumed of
+                   int * [&lt; `Need of int | `Need_unknown ] &amp;
+                   int * [&lt; `Need of int | `Need_unknown ]
+               | `Continue
+               | `Stop of 'a
+               | `Stop_consumed of 'a * int ]
+              <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>) -&gt;
+[&gt; `Eof | `Eof_with_unconsumed_data of string | `Stopped of 'a ]
+<a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALreally_read"><span class="keyword">val</span> really_read</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt;
+?pos:int -&gt;
+?len:int -&gt;
+<a href="?package=core&amp;module=Std.Substring&amp;type=base">Core.Std.Substring.base</a> -&gt; [&gt; `Eof of int | `Ok ] <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALreally_read_substring"><span class="keyword">val</span> really_read_substring</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt;
+<a href="?package=core&amp;module=Std.Substring&amp;type=t">Core.Std.Substring.t</a> -&gt; [&gt; `Eof of int | `Ok ] <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALreally_read_bigsubstring"><span class="keyword">val</span> really_read_bigsubstring</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt;
+<a href="?package=core&amp;module=Std.Bigsubstring&amp;type=t">Core.Std.Bigsubstring.t</a> -&gt; [&gt; `Eof of int | `Ok ] <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALread_line"><span class="keyword">val</span> read_line</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; [&gt; `Eof | `Ok of <a href="?package=core&amp;module=Std.String&amp;type=t">Core.Std.String.t</a> ] <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALreally_read_line"><span class="keyword">val</span> really_read_line</span> : <code class="type">wait_time:<a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a> -&gt;
+<a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; <a href="?package=core&amp;module=Std.String&amp;type=t">Core.Std.String.t</a> option <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALdo_read_k"><span class="keyword">val</span> do_read_k</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt;
+(('a <a href="?package=core&amp;module=Std.Or_error&amp;type=t">Core.Std.Or_error.t</a> -&gt; unit) -&gt; unit) -&gt;
+('a -&gt; 'b) -&gt; 'b <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALread_until"><span class="keyword">val</span> read_until</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt;
+[&lt; `Char of char | `Pred of char -&gt; bool ] -&gt;
+keep_delim:bool -&gt;
+[&gt; `Eof | `Eof_without_delim of string | `Ok of string ] <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALread_until_max"><span class="keyword">val</span> read_until_max</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt;
+[&lt; `Char of char | `Pred of char -&gt; bool ] -&gt;
+keep_delim:bool -&gt;
+max:int -&gt;
+[&gt; `Eof
+ | `Eof_without_delim of string
+ | `Max_exceeded of string
+ | `Ok of string ]
+<a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALread_sexp"><span class="keyword">val</span> read_sexp</span> : <code class="type">?parse_pos:<a href="?package=core&amp;module=Std.Sexp.Parse_pos&amp;type=t">Core.Std.Sexp.Parse_pos.t</a> -&gt;
+<a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; [&gt; `Eof | `Ok of <a href="?package=core&amp;module=Std.Sexp&amp;type=t">Core.Std.Sexp.t</a> ] <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALread_sexps"><span class="keyword">val</span> read_sexps</span> : <code class="type">?parse_pos:<a href="?package=core&amp;module=Std.Sexp.Parse_pos&amp;type=t">Core.Std.Sexp.Parse_pos.t</a> -&gt;
+<a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; <a href="?package=core&amp;module=Std.Sexp&amp;type=t">Core.Std.Sexp.t</a> <a href="?package=async_unix&amp;module=Import.Pipe.Reader&amp;type=t">Import.Pipe.Reader.t</a></code></pre>
+<pre><span class="VALread_bin_prot"><span class="keyword">val</span> read_bin_prot</span> : <code class="type">?max_len:<a href="?package=core&amp;module=Std.Int&amp;type=t">Core.Std.Int.t</a> -&gt;
+<a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; 'a <a href="?package=async_unix&amp;module=Reader0.Type_class&amp;type=reader">Type_class.reader</a> -&gt; [&gt; `Eof | `Ok of 'a ] <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALread_marshal_raw"><span class="keyword">val</span> read_marshal_raw</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; [&gt; `Eof | `Ok of <a href="?package=core&amp;module=Std.String&amp;type=t">Core.Std.String.t</a> ] <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALread_marshal"><span class="keyword">val</span> read_marshal</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; [&gt; `Eof | `Ok of 'a ] <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALrecv"><span class="keyword">val</span> recv</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; [&gt; `Eof | `Ok of <a href="?package=core&amp;module=Std.String&amp;type=t">Core.Std.String.t</a> ] <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALread_all"><span class="keyword">val</span> read_all</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt;
+(<a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; [&lt; `Eof | `Ok of 'a ] <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a>) -&gt;
+'a <a href="?package=async_unix&amp;module=Import.Pipe.Reader&amp;type=t">Import.Pipe.Reader.t</a></code></pre>
+<pre><span class="VALlines"><span class="keyword">val</span> lines</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; <a href="?package=core&amp;module=Std.String&amp;type=t">Core.Std.String.t</a> <a href="?package=async_unix&amp;module=Import.Pipe.Reader&amp;type=t">Import.Pipe.Reader.t</a></code></pre>
+<pre><span class="VALcontents"><span class="keyword">val</span> contents</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; string <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALfile_contents"><span class="keyword">val</span> file_contents</span> : <code class="type">string -&gt; string <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALfile_lines"><span class="keyword">val</span> file_lines</span> : <code class="type">string -&gt; <a href="?package=core&amp;module=Std.String&amp;type=t">Core.Std.String.t</a> list <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALtransfer"><span class="keyword">val</span> transfer</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt;
+(string, <a href="?package=async_unix&amp;module=Import.Pipe.Writer&amp;type=phantom">Import.Pipe.Writer.phantom</a>) <a href="?package=async_unix&amp;module=Import.Pipe&amp;type=t">Import.Pipe.t</a> -&gt; unit <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALlseek"><span class="keyword">val</span> lseek</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt;
+int64 -&gt; mode:[&lt; `Cur | `End | `Set ] -&gt; int64 <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALconvert"><span class="keyword">val</span> convert</span> : <code class="type">string -&gt;
+(<a href="?package=sexplib&amp;module=Type&amp;type=t">Sexplib.Type.t</a> -&gt; 'a) -&gt;
+<a href="?package=core&amp;module=Std.Sexp.Annotated&amp;type=t">Core.Std.Sexp.Annotated.t</a> -&gt; ('a, <a href="?package=core&amp;module=Std.Error&amp;type=t">Core.Std.Error.t</a>) <a href="?package=core&amp;module=Std&amp;type=_result">Core.Std._result</a></code></pre>
+<pre><span class="VALgen_load"><span class="keyword">val</span> gen_load</span> : <code class="type">?exclusive:bool -&gt;
+string -&gt;
+(<a href="?package=core&amp;module=Std.Sexp&amp;type=t">Core.Std.Sexp.t</a> list -&gt; 'a <a href="?package=core&amp;module=Std.Or_error&amp;type=t">Core.Std.Or_error.t</a>) -&gt;
+(<a href="?package=core&amp;module=Std.Sexp.Annotated&amp;type=t">Core.Std.Sexp.Annotated.t</a> list -&gt; 'a <a href="?package=core&amp;module=Std.Or_error&amp;type=t">Core.Std.Or_error.t</a>) -&gt;
+'a <a href="?package=core_kernel&amp;module=Or_error&amp;type=t">Core_kernel.Or_error.t</a> <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALload_sexp"><span class="keyword">val</span> load_sexp</span> : <code class="type">?exclusive:bool -&gt;
+string -&gt;
+(<a href="?package=core&amp;module=Std.Sexp&amp;type=t">Core.Std.Sexp.t</a> -&gt; 'a) -&gt; 'a <a href="?package=core_kernel&amp;module=Or_error&amp;type=t">Core_kernel.Or_error.t</a> <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALload_sexp_exn"><span class="keyword">val</span> load_sexp_exn</span> : <code class="type">?exclusive:bool -&gt;
+string -&gt; (<a href="?package=core&amp;module=Std.Sexp&amp;type=t">Core.Std.Sexp.t</a> -&gt; 'a) -&gt; 'a <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALload_sexps"><span class="keyword">val</span> load_sexps</span> : <code class="type">?exclusive:bool -&gt;
+string -&gt;
+(<a href="?package=core&amp;module=Std.Sexp&amp;type=t">Core.Std.Sexp.t</a> -&gt; 'a) -&gt;
+'a <a href="?package=core&amp;module=Std.List&amp;type=t">Core.Std.List.t</a> <a href="?package=core_kernel&amp;module=Or_error&amp;type=t">Core_kernel.Or_error.t</a> <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALload_sexps_exn"><span class="keyword">val</span> load_sexps_exn</span> : <code class="type">?exclusive:bool -&gt;
+string -&gt; (<a href="?package=core&amp;module=Std.Sexp&amp;type=t">Core.Std.Sexp.t</a> -&gt; 'a) -&gt; 'a <a href="?package=core&amp;module=Std.List&amp;type=t">Core.Std.List.t</a> <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre>
+<pre><span class="VALpipe"><span class="keyword">val</span> pipe</span> : <code class="type"><a href="?package=async_unix&amp;module=Reader0.Internal&amp;type=t">Internal.t</a> -&gt; string <a href="?package=async_unix&amp;module=Import.Pipe.Reader&amp;type=t">Import.Pipe.Reader.t</a></code></pre>
+
+</div>

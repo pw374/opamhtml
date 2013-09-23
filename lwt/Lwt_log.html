@@ -1,0 +1,250 @@
+<div class="ocaml_toplevel_module"><div class="info">Logging facility</div>
+<div class="info"><div class="info">This module provides functions to deal with logging.
+    It support:<br/>    - logging to the syslog daemon<ul><li>logging to a channel (stderr, stdout, ...)</li><li>logging to a file</li><li>logging to multiple destination at the same time
+</li></ul></div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Types</h6></div></div>
+<pre><code><span class="TYPElevel"><span class="keyword">type</span> level</span> = </code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTlevel.Debug"><span class="constructor">Debug</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Debugging message. They can be automatically removed by the
+          syntax extension.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTlevel.Info"><span class="constructor">Info</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Informational message. Suitable to be displayed when the
+          program is in verbose mode.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTlevel.Notice"><span class="constructor">Notice</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Same as  <a href="#Info">Info</a>, but is displayed by default.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTlevel.Warning"><span class="constructor">Warning</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Something strange happend</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTlevel.Error"><span class="constructor">Error</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">An error message, which should not means the end of the
+          program.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTlevel.Fatal"><span class="constructor">Fatal</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">A fatal error happened, in most cases the program will end
+          after a fatal error.</div></td></tr></table><div class="info"><div class="info">Type of log levels. A level determines the importance of a
+    message</div></div>
+<pre><span class="TYPElogger"><span class="keyword">type</span> logger</span> </pre><div class="info"><div class="info">Type of a logger. A logger is responsible for dispatching messages
+      and storing them somewhere.<br/>      Lwt provides loggers sending log messages to a file, syslog,
+      ... but you can also create you own logger.</div></div>
+<pre><span class="TYPEsection"><span class="keyword">type</span> section</span> </pre><div class="info"><div class="info">Each logging message has a section. Sections can be used to
+      structure your logs. For example you can choose different
+      loggers according to the section.<br/>      Each section carries a level, and messages with a lower log
+      level than than the section level will be dropped.<br/>      Section levels are initialised using the <code class="code">LWT_LOG</code> environment
+      variable, which must contains one or more rules of the form
+      <code class="code">pattern -&gt; level</code> separated by &quot;;&quot;. Where <code class="code">pattern</code> is a string
+      that may contain <code class="code">*</code>.<br/>      For example, if <code class="code">LWT_LOG</code> contains:
+      <pre class="codepre"><code class="code">
+        access -&gt; warning;
+        foo[*] -&gt; error
+      </code></pre>
+      then the level of the section <code class="code">&quot;access&quot;</code> is  <a href="#Warning">Warning</a> and the
+      level of any section matching <code class="code">&quot;foo[*]&quot;</code> is  <a href="#Error">Error</a>.<br/>      If the pattern is omited in a rule then the pattern <code class="code">&quot;*&quot;</code> is
+      used instead, so <code class="code">LWT_LOG</code> may just contains <code class="code">&quot;debug&quot;</code> for
+      instance.<br/>      If <code class="code">LWT_LOG</code> is not defined then the rule <code class="code">&quot;* -&gt; notice&quot;</code> is
+      used instead.</div></div>
+<pre><span class="VALadd_rule"><span class="keyword">val</span> add_rule</span> : <code class="type">string -&gt; <a href="?package=lwt&amp;module=Lwt_log&amp;type=level">level</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">add_rule pattern level</code> adds a rule for sections logging
+      levels. The rule is added before all other rules. It takes
+      effect immediatly and affect all sections for which the level
+      has not been set explicitly with  <a href="#Section.set_level">Section.set_level</a>. <code class="code">pattern</code>
+      may contains <code class="code">*</code>. For example:<br/>      <pre class="codepre"><code class="code">
+        Lwt_log.add_rule &quot;lwt*&quot; Lwt_log.Info
+      </code></pre></div></div>
+<pre><span class="VALappend_rule"><span class="keyword">val</span> append_rule</span> : <code class="type">string -&gt; <a href="?package=lwt&amp;module=Lwt_log&amp;type=level">level</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">append_rule pattern level</code> adds the given rule after all other
+      rules. For example to set the default fallback rule:<br/>      <pre class="codepre"><code class="code">
+        Lwt_log.append_rule &quot;*&quot; Lwt_log.Info
+      </code></pre></div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Logging functions</h6></div></div>
+<pre><span class="VALlog"><span class="keyword">val</span> log</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt;
+?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; level:<a href="?package=lwt&amp;module=Lwt_log&amp;type=level">level</a> -&gt; string -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">log ?section ?logger ~level message</code> logs a message.<br/>      <code class="code">section</code> defaults to  <a href="#Section.main">Section.main</a>. If <code class="code">logger</code> is not
+      specified, then the default one is used instead (see
+       <a href="#default">default</a>).<br/>      If <code class="code">exn</code> is provided, then its string representation
+      (= <code class="code">Printexc.to_string exn</code>) will be append to the message, and if
+      possible the backtrace will also be logged.<br/>      <code class="code">location</code> contains the location of the logging directive, it is
+      of the form <code class="code">(file_name, line, column)</code>.</div></div>
+<pre><span class="VALlog_f"><span class="keyword">val</span> log_f</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt;
+?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt;
+level:<a href="?package=lwt&amp;module=Lwt_log&amp;type=level">level</a> -&gt; ('a, unit, string, unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format4">Pervasives.format4</a> -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">log_f</code> is the same as <code class="code">log</code> except that it takes a format
+      string</div></div>
+<pre><span class="VALign_log"><span class="keyword">val</span> ign_log</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt;
+?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; level:<a href="?package=lwt&amp;module=Lwt_log&amp;type=level">level</a> -&gt; string -&gt; unit</code></pre><div class="info"><div class="info">Same as  <a href="#log">log</a> but ignore the resulting thread.</div></div>
+<pre><span class="VALign_log_f"><span class="keyword">val</span> ign_log_f</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt;
+?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt;
+level:<a href="?package=lwt&amp;module=Lwt_log&amp;type=level">level</a> -&gt; ('a, unit, string, unit) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format4">Pervasives.format4</a> -&gt; 'a</code></pre><div class="info"><div class="info">Same as  <a href="#log_f">log_f</a> but ignore the resulting thread.</div></div>
+<div class="info"><div class="info">The following functions are the same as  <a href="#log">log</a> except that their
+    name determines which level is used.<br/>    For example  <a href="#info msg">info msg</a> is the same as  <a href="#log ~level:Info msg">log ~level:Info msg</a>.</div></div>
+<pre><span class="VALdebug"><span class="keyword">val</span> debug</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt; ?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; string -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<pre><span class="VALdebug_f"><span class="keyword">val</span> debug_f</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt;
+?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; ('a, unit, string, unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format4">Pervasives.format4</a> -&gt; 'a</code></pre>
+<pre><span class="VALign_debug"><span class="keyword">val</span> ign_debug</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt; ?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; string -&gt; unit</code></pre>
+<pre><span class="VALign_debug_f"><span class="keyword">val</span> ign_debug_f</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt;
+?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; ('a, unit, string, unit) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format4">Pervasives.format4</a> -&gt; 'a</code></pre>
+<pre><span class="VALinfo"><span class="keyword">val</span> info</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt; ?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; string -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<pre><span class="VALinfo_f"><span class="keyword">val</span> info_f</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt;
+?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; ('a, unit, string, unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format4">Pervasives.format4</a> -&gt; 'a</code></pre>
+<pre><span class="VALign_info"><span class="keyword">val</span> ign_info</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt; ?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; string -&gt; unit</code></pre>
+<pre><span class="VALign_info_f"><span class="keyword">val</span> ign_info_f</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt;
+?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; ('a, unit, string, unit) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format4">Pervasives.format4</a> -&gt; 'a</code></pre>
+<pre><span class="VALnotice"><span class="keyword">val</span> notice</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt; ?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; string -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<pre><span class="VALnotice_f"><span class="keyword">val</span> notice_f</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt;
+?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; ('a, unit, string, unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format4">Pervasives.format4</a> -&gt; 'a</code></pre>
+<pre><span class="VALign_notice"><span class="keyword">val</span> ign_notice</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt; ?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; string -&gt; unit</code></pre>
+<pre><span class="VALign_notice_f"><span class="keyword">val</span> ign_notice_f</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt;
+?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; ('a, unit, string, unit) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format4">Pervasives.format4</a> -&gt; 'a</code></pre>
+<pre><span class="VALwarning"><span class="keyword">val</span> warning</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt; ?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; string -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<pre><span class="VALwarning_f"><span class="keyword">val</span> warning_f</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt;
+?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; ('a, unit, string, unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format4">Pervasives.format4</a> -&gt; 'a</code></pre>
+<pre><span class="VALign_warning"><span class="keyword">val</span> ign_warning</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt; ?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; string -&gt; unit</code></pre>
+<pre><span class="VALign_warning_f"><span class="keyword">val</span> ign_warning_f</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt;
+?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; ('a, unit, string, unit) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format4">Pervasives.format4</a> -&gt; 'a</code></pre>
+<pre><span class="VALerror"><span class="keyword">val</span> error</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt; ?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; string -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<pre><span class="VALerror_f"><span class="keyword">val</span> error_f</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt;
+?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; ('a, unit, string, unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format4">Pervasives.format4</a> -&gt; 'a</code></pre>
+<pre><span class="VALign_error"><span class="keyword">val</span> ign_error</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt; ?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; string -&gt; unit</code></pre>
+<pre><span class="VALign_error_f"><span class="keyword">val</span> ign_error_f</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt;
+?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; ('a, unit, string, unit) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format4">Pervasives.format4</a> -&gt; 'a</code></pre>
+<pre><span class="VALfatal"><span class="keyword">val</span> fatal</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt; ?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; string -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
+<pre><span class="VALfatal_f"><span class="keyword">val</span> fatal_f</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt;
+?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; ('a, unit, string, unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format4">Pervasives.format4</a> -&gt; 'a</code></pre>
+<pre><span class="VALign_fatal"><span class="keyword">val</span> ign_fatal</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt; ?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; string -&gt; unit</code></pre>
+<pre><span class="VALign_fatal_f"><span class="keyword">val</span> ign_fatal_f</span> : <code class="type">?exn:exn -&gt;
+?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
+?location:string * int * int -&gt;
+?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; ('a, unit, string, unit) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format4">Pervasives.format4</a> -&gt; 'a</code></pre>
+<div class="ocaml_module sig" name="Section"><pre><span class="keyword">module</span> <a href="?package=lwt&amp;module=Lwt_log.Section">Section</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Sections</div></div><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type"><a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a></code></pre>
+<pre><span class="VALmake"><span class="keyword">val</span> make</span> : <code class="type">string -&gt; <a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a></code></pre><div class="info"><div class="info"><code class="code">make name</code> creates a section with the given name. Two calls
+        to  <a href="#make">make</a> with the same name will return the same section
+        object.</div></div>
+<pre><span class="VALname"><span class="keyword">val</span> name</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt; string</code></pre><div class="info"><div class="info"><code class="code">name section</code> returns the name of <code class="code">section</code>.</div></div>
+<pre><span class="VALmain"><span class="keyword">val</span> main</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a></code></pre><div class="info"><div class="info">The main section. It is the section used by default when no
+        one is provided.</div></div>
+<pre><span class="VALlevel"><span class="keyword">val</span> level</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt; <a href="?package=lwt&amp;module=Lwt_log&amp;type=level">level</a></code></pre><div class="info"><div class="info"><code class="code">level section</code> returns the logging level of <code class="code">section</code>.</div></div>
+<pre><span class="VALset_level"><span class="keyword">val</span> set_level</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt; <a href="?package=lwt&amp;module=Lwt_log&amp;type=level">level</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">set_level section</code> sets the logging level of the given
+        section. Modifications of rules using  <a href="#add_rule">add_rule</a> won't affect
+        the level of this section after this operation.</div></div>
+<pre><span class="VALreset_level"><span class="keyword">val</span> reset_level</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">reset_level section</code> resets the level of <code class="code">section</code> to its
+        default value, i.e. to the value obtained by applying
+        rules.</div></div></div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Log templates</h6></div></div>
+<pre><span class="TYPEtemplate"><span class="keyword">type</span> template</span> = <code class="type">string</code></pre><div class="info"><div class="info">A template is for generating log messages.<br/>        It is a string which may contains variables of the form
+        <code class="code">$(var)</code>, where <code class="code">var</code> is one of:<br/>        - <code class="code">date</code> which will be replaced with the current date<ul><li><code class="code">milliseconds</code> which will be replaced by the fractionnal part
+          of the current unix time</li><li><code class="code">name</code> which will be replaced by the program name</li><li><code class="code">pid</code> which will be replaced by the pid of the program</li><li><code class="code">message</code> which will be replaced by the message emited</li><li><code class="code">level</code> which will be replaced by a string representation of
+          the level</li><li><code class="code">section</code> which will be replaced by the name of the
+          message's section</li><li><code class="code">loc-file</code> which will be replaced by the file name of the
+          calling logging function</li><li><code class="code">loc-line</code> which will be replaced by the line number of the
+          calling logging function</li><li><code class="code">loc-column</code> which will be replaced by the column number of
+           the calling logging function</li></ul>        For example:<ul><li><code class="code">&quot;$(name): $(message)&quot;</code></li><li><code class="code">&quot;$(date) $(name)[$(pid)]: $(message)&quot;</code></li><li><code class="code">&quot;$(date).$(milliseconds) $(name)[$(pid)]: $(message)&quot;</code></li><li><code class="code">&quot;$(date): $(loc-file): $(loc-line): $(loc-column): $(message)&quot;</code>
+    </li></ul></div></div>
+<pre><span class="VALrender"><span class="keyword">val</span> render</span> : <code class="type">buffer:<a href="?package=ocaml&amp;module=Buffer&amp;type=t">Buffer.t</a> -&gt;
+template:<a href="?package=lwt&amp;module=Lwt_log&amp;type=template">template</a> -&gt; section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt; level:<a href="?package=lwt&amp;module=Lwt_log&amp;type=level">level</a> -&gt; message:string -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">render ~buffer ~template ~section ~level ~message</code> instantiate
+      all variables of <code class="code">template</code>, and store the result in
+      <code class="code">buffer</code>. The location is obtained from threads local
+      storage.</div></div>
+<pre><span class="VALlocation_key"><span class="keyword">val</span> location_key</span> : <code class="type">(string * int * int) <a href="?package=lwt&amp;module=Lwt&amp;type=key">Lwt.key</a></code></pre><div class="info"><div class="info">The key for storing current location.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Loggers</h6></div></div>
+<pre><span class="EXCEPTIONLogger_closed"><span class="keyword">exception</span> Logger_closed</span></pre><div class="info"><div class="info">Exception raised when trying to use a closed logger</div></div>
+<pre><span class="VALmake"><span class="keyword">val</span> make</span> : <code class="type">output:(<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt; <a href="?package=lwt&amp;module=Lwt_log&amp;type=level">level</a> -&gt; string list -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt;
+close:(unit -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; <a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a></code></pre><div class="info"><div class="info"><code class="code">make ~output ~close</code> creates a new logger.<div class="parameters"><div class="param_info"><code class="code">output</code> : is used to write logs. It is a function which
+      receive a section, a level and a list lines that must be logged
+      together.</div><div class="param_info"><code class="code">close</code> : is used to close the logger.</div></div></div></div>
+<pre><span class="VALclose"><span class="keyword">val</span> close</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Close the given logger</div></div>
+<pre><span class="VALdefault"><span class="keyword">val</span> default</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">The default logger. It is used as default when no one is
+      specified. Initially, it sends messages to the standard output
+      for error messages.</div></div>
+<pre><span class="VALbroadcast"><span class="keyword">val</span> broadcast</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> list -&gt; <a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a></code></pre><div class="info"><div class="info"><code class="code">broadcast loggers</code> is a logger which send messages to all the
+      given loggers.<br/>      Note: closing a broadcast logger does not close its
+      components.</div></div>
+<pre><span class="VALdispatch"><span class="keyword">val</span> dispatch</span> : <code class="type">(<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt; <a href="?package=lwt&amp;module=Lwt_log&amp;type=level">level</a> -&gt; <a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a>) -&gt; <a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a></code></pre><div class="info"><div class="info"><code class="code">dispatch f</code> is a logger which dispatch logging instructions to
+      different logger according to their level and/or section.<br/>      Here is an example:<br/>      <pre class="codepre"><code class="code">
+        let access_logger = Lwt_log.file &quot;access.log&quot;
+        and error_logger = Lwt_log.file &quot;error.log&quot; in
+
+        Lwt_log.dispatch
+          (fun section level -&gt;
+            match Lwt_log.Section.name section, level with
+              | &quot;access&quot;, _ -&gt; access_logger
+              | _, Lwt_log.Error -&gt; error_logger)
+      </code></pre></div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Predefined loggers</h6></div></div>
+<pre><span class="VALnull"><span class="keyword">val</span> null</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a></code></pre><div class="info"><div class="info">Logger which drops everything</div></div>
+<pre><span class="TYPEsyslog_facility"><span class="keyword">type</span> syslog_facility</span> = <code class="type">[ `Auth
+| `Authpriv
+| `Console
+| `Cron
+| `Daemon
+| `FTP
+| `Kernel
+| `LPR
+| `Local0
+| `Local1
+| `Local2
+| `Local3
+| `Local4
+| `Local5
+| `Local6
+| `Local7
+| `Mail
+| `NTP
+| `News
+| `Security
+| `Syslog
+| `UUCP
+| `User ]</code></pre><div class="info"><div class="info">Syslog facility. Look at the SYSLOG(3) man page for a description
+    of syslog facilities</div></div>
+<pre><span class="VALsyslog"><span class="keyword">val</span> syslog</span> : <code class="type">?template:<a href="?package=lwt&amp;module=Lwt_log&amp;type=template">template</a> -&gt;
+?paths:string list -&gt; facility:<a href="?package=lwt&amp;module=Lwt_log&amp;type=syslog_facility">syslog_facility</a> -&gt; unit -&gt; <a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a></code></pre><div class="info"><div class="info"><code class="code">syslog ?template ?paths ~facility ()</code> creates an logger
+      which send message to the system logger.<div class="parameters"><div class="param_info"><code class="code">paths</code> : is a list of path to try for the syslogd socket. It
+             default to <code class="code">[&quot;/dev/log&quot;; &quot;/var/run/log&quot;]</code>.</div><div class="param_info"><code class="code">template</code> : defaults to <code class="code">&quot;$(date) $(name)[$(pid)]: $(section): $(message)&quot;</code></div></div></div></div>
+<pre><span class="VALfile"><span class="keyword">val</span> file</span> : <code class="type">?template:<a href="?package=lwt&amp;module=Lwt_log&amp;type=template">template</a> -&gt;
+?mode:[ `Append | `Truncate ] -&gt;
+?perm:<a href="?package=ocaml&amp;module=Unix&amp;type=file_perm">Unix.file_perm</a> -&gt; file_name:string -&gt; unit -&gt; <a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">desf_file ?template ?mode ?perm ~file_name ()</code> creates an
+      logger which will write messages to <code class="code">file_name</code>.<br/>      - if <code class="code">mode = `Truncate</code> then the file is truncated and previous
+      contents will be lost.<br/>      - if <code class="code">mode = `Append</code>, new messages will be appended at the end
+      of the file<div class="parameters"><div class="param_info"><code class="code">mode</code> : defaults to <code class="code">`Append</code></div><div class="param_info"><code class="code">template</code> : defaults to <code class="code">&quot;$(date): $(section): $(message)&quot;</code></div></div></div></div>
+<pre><span class="VALchannel"><span class="keyword">val</span> channel</span> : <code class="type">?template:<a href="?package=lwt&amp;module=Lwt_log&amp;type=template">template</a> -&gt;
+close_mode:[ `Close | `Keep ] -&gt;
+channel:<a href="?package=lwt&amp;module=Lwt_io&amp;type=output_channel">Lwt_io.output_channel</a> -&gt; unit -&gt; <a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a></code></pre><div class="info"><div class="info"><code class="code">channel ?template ~close_mode ~channel ()</code> creates a logger
+      from a channel.<br/>      If <code class="code">close_mode = `Close</code> then <code class="code">channel</code> is closed when the
+      logger is closed, otherwise it is left open.<div class="parameters"><div class="param_info"><code class="code">template</code> : defaults to <code class="code">&quot;$(name): $(section): $(message)&quot;</code></div></div></div></div>
+</div>

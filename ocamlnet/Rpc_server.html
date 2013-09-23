@@ -1,0 +1,272 @@
+<div class="ocaml_toplevel_module"><div class="info">RPC servers</div>
+<div class="info"><div class="info">Like the client, the RPC server module is programmed on top of the
+ Unixqueue event system. It pushes itself on an existing Unixqueue
+ as a new service that accepts RPC calls, forwards them to configurable
+ functions, and sends the replies back.<br/> The server module can manage two kinds of RPC functions: synchronous
+ and asynchronous. Synchronous functions compute their result immediately
+ and thus the result can be sent back just after the evaluation of the
+ function has finished. In contrast to this, asynchronous functions only
+ get noticed about the call and need not to know immediately what should
+ be answered. Typically, an asynchronous function initiates a second
+ communication channel and its result depends on what happens on the
+ second channel. The communication on this channel is done in an
+ asynchronous way, too, and can be managed by the same event system that
+ carries out the RPC service. After several input or output events,
+ the result has somehow been computed, and the answer can be sent
+ back to the original caller. To do so, the asynchronous RPC function
+ invokes 'reply' together with the necessary session IDs that identify
+ the answer among all answers.</div></div>
+<pre><span class="EXCEPTIONConnection_lost"><span class="keyword">exception</span> Connection_lost</span></pre><div class="info"><div class="info">raised by the 'reply' function if the connection to the original caller
+ has been lost in the meantime.</div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">represents a server for an RPC program</div></div>
+<pre><span class="TYPEsession"><span class="keyword">type</span> session</span> </pre><div class="info"><div class="info">identifies a pair of a call and a reply</div></div>
+<pre><span class="TYPEconnection_id"><span class="keyword">type</span> connection_id</span> </pre><div class="info"><div class="info">identifies the connection of a session. For connectionless servers,
+ every session gets a new connection_id.
+ You can compare connection_ids to find out whether two sessions
+ belong to the same connection. Use &quot;=&quot; for equality.</div></div>
+<pre><code><span class="TYPEconnector"><span class="keyword">type</span> connector</span> = </code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTconnector.Localhost"><span class="constructor">Localhost</span></span> <span class="keyword">of</span> <code class="type">int</code></code></td><td class="typefieldcomment" align="left"><div class="info">The service is installed on 'localhost' and listens on the
+ given port number. A number of 0 means that the port is
+ chosen by the operating system.
+ Note: The service is only locally reachable.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTconnector.Portmapped"><span class="constructor">Portmapped</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">The service is installed on every network interface; the port is
+ chosen by the operating system; the program is registered with the
+ portmapper</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTconnector.Internet"><span class="constructor">Internet</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a> * int</code></code></td><td class="typefieldcomment" align="left"><div class="info">The service is installed on the passed interface/port combination.
+ Use Unix.inet_addr_any to listen on all network interfaces.
+ Use port 0 to automatically choose the port number.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTconnector.Unix"><span class="constructor">Unix</span></span> <span class="keyword">of</span> <code class="type">string</code></code></td><td class="typefieldcomment" align="left"><div class="info">The service is installed on a Unix domain socket.
+ Note: the socket path must not exist when the server is started,
+ and the socket must be unlinked when the server terminates.
+ Note Win32: Unix domain sockets are emulated by writing the
+ inet4 port number into a one-line file.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTconnector.W32_pipe"><span class="constructor">W32_pipe</span></span> <span class="keyword">of</span> <code class="type">string</code></code></td><td class="typefieldcomment" align="left"><div class="info">The service is installed for a named pipe. (Only for Win32.)</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTconnector.Descriptor"><span class="constructor">Descriptor</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></code></td><td class="typefieldcomment" align="left"><div class="info">The service listens on the given file descriptor.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTconnector.Dynamic_descriptor"><span class="constructor">Dynamic_descriptor</span></span> <span class="keyword">of</span> <code class="type">unit -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></code></td><td class="typefieldcomment" align="left"><div class="info">The service listens on the returned file descriptor.</div></td></tr></table>
+<pre><code><span class="TYPEbinding_sync"><span class="keyword">type</span> binding_sync</span> = {</code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTbinding_sync.sync_name">sync_name</span> : <code class="type">string</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">procedure name</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTbinding_sync.sync_proc">sync_proc</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_value">Xdr.xdr_value</a> -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_value">Xdr.xdr_value</a></code>;</code></td><td class="typefieldcomment" align="left"><div class="info">the function that implements the
+ procedure</div></td></tr><tr><td>}</td></tr></table>
+<pre><code><span class="TYPEbinding_async"><span class="keyword">type</span> binding_async</span> = {</code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTbinding_async.async_name">async_name</span> : <code class="type">string</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">procedure name</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTbinding_async.async_invoke">async_invoke</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=session">session</a> -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_value">Xdr.xdr_value</a> -&gt; unit</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">A function that is called when the procedure is called</div></td></tr><tr><td>}</td></tr></table>
+<pre><code><span class="TYPEbinding"><span class="keyword">type</span> binding</span> = </code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTbinding.Sync"><span class="constructor">Sync</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=binding_sync">binding_sync</a></code></code></td><td class="typefieldcomment" align="left"><div class="info">bind a synchonous procedure</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTbinding.Async"><span class="constructor">Async</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=binding_async">binding_async</a></code></code></td><td class="typefieldcomment" align="left"><div class="info">bind an asynchonous procedure</div></td></tr></table>
+<pre><span class="VALconnector_of_sockaddr"><span class="keyword">val</span> connector_of_sockaddr</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=connector">connector</a></code></pre><div class="info"><div class="info">Converts the socket address into a connector</div></div>
+<pre><span class="VALconnector_of_socksymbol"><span class="keyword">val</span> connector_of_socksymbol</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsockaddr&amp;type=socksymbol">Netsockaddr.socksymbol</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=connector">connector</a></code></pre><div class="info"><div class="info">Converts the  <a href="#Netsockaddr.socksymbol">Netsockaddr.socksymbol</a> into a connector</div></div>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">?program_number:<a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a> -&gt;
+?version_number:<a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=connector">connector</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc&amp;type=mode">Rpc.mode</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_program&amp;type=t">Rpc_program.t</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=binding">binding</a> list -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">t</a></code></pre><div class="info"><div class="info">Deprecated creation of an RPC server. For new programs, use <code class="code">create2</code>
+ or one of its variants.<br/> Creates a new server that is pushed onto the event queue.
+ The <code class="code">connector</code>, <code class="code">protocol</code> and <code class="code">mode</code> values control the network
+ type of the server. Note that not all combinations are valid; the
+ following can be used:<ul><li>any <code class="code">connector</code>, <code class="code">protocol=Tcp</code>, <code class="code">mode=Socket</code>:
+     creates a classic TCP server socket that allows multiple
+     stream connections at the same time</li><li><code class="code">connector=Descriptor s</code>, <code class="code">protocol=Tcp</code>, <code class="code">mode=BiPipe</code>:
+     (where <code class="code">s</code> is one half of a socketpair)
+     creates a stream socket that is the endpoint of a point-to-point
+     stream connection (bidirectional pipe)</li><li>any Internet namespace connector, <code class="code">protocol=Udp</code>, <code class="code">mode=Socket</code>:
+     creates a UDP server socket that allows serving multiple datagrams</li></ul> Note: If <code class="code">connector = Descriptor _</code> the file descriptor is not opened by
+ this module and not closed. The other <code class="code">connector</code>s work automatically
+ regarding this point, i.e. descriptors are opened and closed as
+ necessary.<br/> <code class="code">connector = Dynamic_descriptor</code>: The open descriptor is closed after use.<br/> The <code class="code">Rpc_program.t</code> specifies the procedures that are available and
+ their signatures. The <code class="code">binding list</code> should contain for every procedure
+ name the function that handles calls of the procedures.<br/> The remaining integer is the maximum number of waiting connections
+ if a classic Tcp server socket is used; other connection types ignore
+ this number.<br/> The optional arguments <code class="code">?program_number</code> and <code class="code">?version_number</code> override
+ the numbers specified in the passed program.<br/> <b>Notes on servers:</b><ul><li>servers that allow multiple connections never terminate by themselves</li><li>servers for only one connection (endpoint of a bidirectional pipe)
+   terminate if they see an EOF on the stream; in this case the stream
+   is closed by the server</li><li>the <code class="code">create</code> function may block if the connector is Portmapped</li></ul> <b>Note for UDP servers:</b> Due to limitations of the ocaml runtime
+ there is a limit of 16K per message.</div></div>
+<div class="ocaml_class sig" name="socket_config"><pre><span class="TYPEsocket_config"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Rpc_server&amp;class=socket_config">socket_config</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><pre><span class="METHODlisten_options"><span class="keyword">method</span> listen_options</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=listen_options">Uq_engines.listen_options</a></code></pre>
+
+<pre><span class="METHODmultiplexing"><span class="keyword">method</span> multiplexing</span> : <code class="code">close_inactive_descr:bool -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> -&gt;
+<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Rpc_transport&amp;type=rpc_multiplex_controller">Rpc_transport.rpc_multiplex_controller</a> <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">Uq_engines.engine</a></code></pre>
+</div></div>
+<pre><span class="VALdefault_socket_config"><span class="keyword">val</span> default_socket_config</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=socket_config">socket_config</a></code></pre>
+<div class="ocaml_class ident" name="default_socket_config" path="?package=ocamlnet&amp;module=Rpc_server&amp;class=socket_config"><pre><span class="TYPEdefault_socket_config"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Rpc_server&amp;class=default_socket_config">default_socket_config</a></span> : <code class="type"/><a href="?package=ocamlnet&amp;module=Rpc_server&amp;class=socket_config">socket_config</a></pre></div>
+<pre><span class="TYPEmode2"><span class="keyword">type</span> mode2</span> = <code class="type">[ `Dummy of <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a>
+| `Multiplexer_endpoint of <a href="?package=ocamlnet&amp;module=Rpc_transport&amp;type=rpc_multiplex_controller">Rpc_transport.rpc_multiplex_controller</a>
+| `Socket of <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> * <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=connector">connector</a> * <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=socket_config">socket_config</a>
+| `Socket_endpoint of <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> ]</code></pre><div class="info"><div class="info">Determines the type of the server for <code class="code">create2</code>:<br/> - <code class="code">`Socket_endpoint(proto,fd)</code>: Socket <code class="code">fd</code> is a connected socket
+   descriptor used for communication. <code class="code">proto</code> determines the 
+   encapsulation; should be <code class="code">Tcp</code> for stream sockets and <code class="code">Udp</code> for
+   datagram sockets.<br/> - <code class="code">`Multiplexer_endpoint m</code>: <code class="code">m</code> is an RPC multiplex controller.<br/> - <code class="code">`Socket(proto, conn, config)</code>: Opens or uses a server socket 
+   according to <code class="code">conn</code>. <code class="code">proto</code> determines the 
+   encapsulation; should be <code class="code">Tcp</code> for stream sockets and <code class="code">Udp</code> for
+   datagram sockets. <code class="code">config</code> specifies configuration details.<br/> Despite their names, <code class="code">`Socket_endpoint</code> and <code class="code">`Socket</code> also support
+ Win32 named pipes.</div></div>
+<pre><span class="VALcreate2"><span class="keyword">val</span> create2</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=mode2">mode2</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">t</a></code></pre><div class="info"><div class="info">Creates a server according to the <code class="code">mode2</code> argument. This kind of server
+ does initially not have any bindings.</div></div>
+<pre><span class="VALbind"><span class="keyword">val</span> bind</span> : <code class="type">?program_number:<a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a> -&gt;
+?version_number:<a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_program&amp;type=t">Rpc_program.t</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=binding">binding</a> list -&gt; <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Binds the program as specified by the <code class="code">binding list</code>. If the portmapper
+ must be informed, this action is started (and continued in the
+ background). One can bind several programs in several versions to the
+ same server.</div></div>
+<pre><span class="VALunbind"><span class="keyword">val</span> unbind</span> : <code class="type">?program_number:<a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a> -&gt;
+?version_number:<a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_program&amp;type=t">Rpc_program.t</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Unbinds the program if it is bound by the server</div></div>
+<pre><span class="VALbound_programs"><span class="keyword">val</span> bound_programs</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_program&amp;type=t">Rpc_program.t</a> list</code></pre><div class="info"><div class="info">Returns the bound programs</div></div>
+<pre><span class="VALget_event_system"><span class="keyword">val</span> get_event_system</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=session">session</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a></code></pre><div class="info"><div class="info">Find out the event system that contains the 'session'</div></div>
+<pre><span class="VALget_connection_id"><span class="keyword">val</span> get_connection_id</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=session">session</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=connection_id">connection_id</a></code></pre><div class="info"><div class="info">Get the connection_id</div></div>
+<pre><span class="VALget_xid"><span class="keyword">val</span> get_xid</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=session">session</a> -&gt; <a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a></code></pre><div class="info"><div class="info">Returns the session ID.
+ Important note: This number identifies the session from the caller's
+ view, not from the server's view!</div></div>
+<pre><span class="VALget_socket_name"><span class="keyword">val</span> get_socket_name</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=session">session</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a></code></pre>
+<pre><span class="VALget_peer_name"><span class="keyword">val</span> get_peer_name</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=session">session</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a></code></pre><div class="info"><div class="info">Return the address of the socket serving the session, and the client
+ socket, resp. These functions fail if the server is not running on
+ a socket.</div></div>
+<pre><span class="VALget_conn_socket_name"><span class="keyword">val</span> get_conn_socket_name</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=connection_id">connection_id</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a></code></pre>
+<pre><span class="VALget_conn_peer_name"><span class="keyword">val</span> get_conn_peer_name</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=connection_id">connection_id</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a></code></pre><div class="info"><div class="info">Return the address of the socket serving the connection, and the client
+ socket, resp. These functions fail if the server is not running on
+ a socket.</div></div>
+<pre><span class="VALget_server"><span class="keyword">val</span> get_server</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=session">session</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">t</a></code></pre><div class="info"><div class="info">Returns the server instance of the session</div></div>
+<pre><span class="VALget_main_socket_name"><span class="keyword">val</span> get_main_socket_name</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a></code></pre><div class="info"><div class="info">Returns the address of the server socket, or the address of the
+ bidirectional pipe.
+ This function fails if the main file descriptor is not a socket.</div></div>
+<pre><span class="VALget_protocol"><span class="keyword">val</span> get_protocol</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a></code></pre><div class="info"><div class="info">Return whether Tcp or Udp</div></div>
+<pre><span class="VALget_srv_event_system"><span class="keyword">val</span> get_srv_event_system</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=unix_event_system">Unixqueue.unix_event_system</a></code></pre><div class="info"><div class="info">Returns the event system</div></div>
+<pre><span class="VALget_last_proc_info"><span class="keyword">val</span> get_last_proc_info</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">t</a> -&gt; string</code></pre><div class="info"><div class="info">Get a debug string describing the last invoked procedure</div></div>
+<pre><span class="VALis_dummy"><span class="keyword">val</span> is_dummy</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">t</a> -&gt; bool</code></pre><div class="info"><div class="info">Whether this is a server in <code class="code">`Dummy</code> mode. These servers cannot be
+      used for communication</div></div>
+<pre><span class="TYPErule"><span class="keyword">type</span> rule</span> = <code class="type">[ `Accept
+| `Accept_limit_length of int * <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=rule">rule</a>
+| `Deny
+| `Drop
+| `Reject
+| `Reject_with of <a href="?package=ocamlnet&amp;module=Rpc&amp;type=server_error">Rpc.server_error</a> ]</code></pre>
+<pre><span class="VALset_session_filter"><span class="keyword">val</span> set_session_filter</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">t</a> -&gt; (<a href="?package=ocamlnet&amp;module=Rpc_transport&amp;type=sockaddr">Rpc_transport.sockaddr</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=rule">rule</a>) -&gt; unit</code></pre><div class="info"><div class="info">If set, the filter function is invoked every time the beginning of a new
+ RPC call is received, and the result of the filter function determines
+ what to do with the call:<br/> `Deny: TCP connections are immediately closed; UDP packets are dropped
+ `Drop: The call is dropped (it does not allocate memory)
+ `Reject_with: A response is sent back that the call is rejected. The
+   parameter specified the error code
+ `Reject: The same as <code class="code">`Reject_with Rpc.Auth_too_weak</code>
+ `Accept: The call is accepted without limitation (the default if no
+   filter is installed)
+ `Accept_limit_length(n,r): If the call is longer than n bytes, the rule
+   r will be applied<br/> The parameter of the filter function is the socket address of the
+ client.<br/> The intention of filters is to prevent denial of service attacks.
+ A simple but good filter for TCP servers is
+   set_filter srv (fun _ -&gt; (`Accept_limit_length(n,`Deny))
+ which accepts messages up to n bytes without limit, and denies longer
+ messages. n is the length of the longest sensible message.<br/> For UDP servers, there is an implicit limit of 16K, so it is
+ not necessary to care about this.<br/> Another application is to restrict which systems can contact this
+ server, based on the IP address of the client.<br/> Note that this is not a protection against distributed denial of service
+ attacks.</div></div>
+<pre><span class="VALset_session_filter_2"><span class="keyword">val</span> set_session_filter_2</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">t</a> -&gt; (<a href="?package=ocamlnet&amp;module=Rpc_transport&amp;type=sockaddr">Rpc_transport.sockaddr</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=connection_id">connection_id</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=rule">rule</a>) -&gt; unit</code></pre><div class="info"><div class="info">Same as <code class="code">set_session_filter</code>, but the filter gets as second argument the
+ connection ID.</div></div>
+<pre><span class="VALset_mstring_factories"><span class="keyword">val</span> set_mstring_factories</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=named_mstring_factories">Xdr_mstring.named_mstring_factories</a> -&gt; unit</code></pre><div class="info"><div class="info">Sets the mstring factories to use for decoding requests containing
+      managed strings</div></div>
+<pre><span class="VALreply"><span class="keyword">val</span> reply</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=session">session</a> -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_value">Xdr.xdr_value</a> -&gt; unit</code></pre><div class="info"><div class="info">Asynchronous procedures can reply their results with this function.<br/> NOTES:<ul><li>As with synchronous procedures, the transfer is not reliable since
+   the connection may be broken at any time</li><li>If it is already known that the connection is down, a Connection_lost
+   exception is raised.</li><li>If you don't want to reply to a certain call, just don't <code class="code">reply</code>.
+   Unreplied calls do not allocate memory.</li><li>It is possible to reply several times (&quot;batch mode&quot;), but the client
+   must support it, too. Just call <code class="code">reply</code> several times for the same
+   session.
+   </li></ul></div></div>
+<pre><span class="VALreply_error"><span class="keyword">val</span> reply_error</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=session">session</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc&amp;type=server_error">Rpc.server_error</a> -&gt; unit</code></pre><div class="info"><div class="info">Like <code class="code">reply</code>, but an error condition is sent back to the caller.</div></div>
+<pre><span class="VALset_exception_handler"><span class="keyword">val</span> set_exception_handler</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">t</a> -&gt; (exn -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info">Sets the exception handler for the server.
+ The exception handler gets most exceptions raised by the functions that
+ are bound to procedures. The exception handler does not get Abort
+ exceptions and any exceptions resulting from I/O problems.<br/> NOTES ABOUT EXCEPTIONS:<ul><li>The default exception handler logs a <code class="code">`Crit</code> message using  <a href="#Netlog">Netlog</a>.</li><li>I/O problems usually lead to an 'Abort' of the whole server.
+   </li></ul></div></div>
+<pre><span class="VALset_onclose_action"><span class="keyword">val</span> set_onclose_action</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">t</a> -&gt; (<a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=connection_id">connection_id</a> -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info">Every time a connection is closed, the onclose function is called
+ with the closed connection.
+ The default onclose action is to do nothing. The function is also
+ called for <code class="code">Descriptor</code> connectors when the socket should be closed
+ (for these connectors the socket is not closed by this module).<br/> Note that this action only applies to closed connections. It will
+ not be executed for closed sockets in general (closed master socket,
+ closed datagram socket).<br/> If several onclose actions are set, they will be executed in reverse
+ order.</div></div>
+<pre><span class="VALset_timeout"><span class="keyword">val</span> set_timeout</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">t</a> -&gt; float -&gt; unit</code></pre><div class="info"><div class="info">Sets the timeout for the transport.</div></div>
+<pre><span class="VALstop_server"><span class="keyword">val</span> stop_server</span> : <code class="type">?graceful:bool -&gt; <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Stops the server: If a TCP server socket is listening, it is immediately
+ closed. The shutdown procedure for the connections is initiated.
+ Pending result messages are dropped.<br/> <code class="code">graceful</code>: If true, the shutdown procedure is deferred until all
+ responses have been transferred back to the caller. This includes
+ any responses added to the message queue in the current callback.
+ New calls are not accepted.</div></div>
+<pre><span class="VALstop_connection"><span class="keyword">val</span> stop_connection</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=connection_id">connection_id</a> -&gt; unit</code></pre><div class="info"><div class="info">Schedules a special event that causes the connection to be stopped in the
+ very near future. The function has only an effect for stream-oriented
+ servers (mode = Tcp). The connection socket will be closed (unless it
+ was passed using <code class="code">Descriptor</code>). Nothing happens for datagram-oriented
+ servers (mode = Udp).</div></div>
+<pre><code><span class="TYPEauth_result"><span class="keyword">type</span> auth_result</span> = </code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTauth_result.Auth_positive"><span class="constructor">Auth_positive</span></span> <span class="keyword">of</span> <code class="type">string * string * string * <a href="?package=ocamlnet&amp;module=Xdr&amp;type=encoder">Xdr.encoder</a> option * <a href="?package=ocamlnet&amp;module=Xdr&amp;type=decoder">Xdr.decoder</a> option</code></code></td><td class="typefieldcomment" align="left"><div class="info">Successful authentication:
+          <code class="code">(username, returned_verifier_flavour, returned_verifier_data, 
+	    enc_opt, dec_opt
+	  )</code><br/>	  Encoders and decoders are allowed to raise the exceptions
+	   <a href="#Rpc_server.Late_drop">Rpc_server.Late_drop</a> and  <a href="#Rpc.Rpc_server">Rpc.Rpc_server</a>.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTauth_result.Auth_negative"><span class="constructor">Auth_negative</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Rpc&amp;type=server_error">Rpc.server_error</a></code></code></td><td class="typefieldcomment" align="left"><div class="info">Failed authentication</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTauth_result.Auth_reply"><span class="constructor">Auth_reply</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring">Xdr_mstring.mstring</a> list * string * string</code></code></td><td class="typefieldcomment" align="left"><div class="info">The authentication method generates the positive response
+	  of this RPC call:
+	  <code class="code">(data, verf_flavor, verf_data)</code>
+	  (new in Ocamlnet-3.3)</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTauth_result.Auth_drop"><span class="constructor">Auth_drop</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Authentication demands to drop the message</div></td></tr></table>
+<pre><span class="EXCEPTIONLate_drop"><span class="keyword">exception</span> Late_drop</span></pre><div class="info"><div class="info">This can be raised in encryption/decryption functions to prevent
+      that a response is sent.</div></div>
+<pre><span class="TYPEauth_peeker"><span class="keyword">type</span> auth_peeker</span> = <code class="type">[ `None
+| `Peek_descriptor of <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; string option
+| `Peek_multiplexer of
+    <a href="?package=ocamlnet&amp;module=Rpc_transport&amp;type=rpc_multiplex_controller">Rpc_transport.rpc_multiplex_controller</a> -&gt; string option ]</code></pre>
+<div class="ocaml_class sig" name="auth_details"><pre><span class="TYPEauth_details"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Rpc_server&amp;class=auth_details">auth_details</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><pre><span class="METHODserver_addr"><span class="keyword">method</span> server_addr</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a> option</code></pre>
+
+<pre><span class="METHODclient_addr"><span class="keyword">method</span> client_addr</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a> option</code></pre>
+
+<pre><span class="METHODprogram"><span class="keyword">method</span> program</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a></code></pre>
+
+<pre><span class="METHODversion"><span class="keyword">method</span> version</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a></code></pre>
+
+<pre><span class="METHODprocedure"><span class="keyword">method</span> procedure</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a></code></pre>
+
+<pre><span class="METHODxid"><span class="keyword">method</span> xid</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a></code></pre>
+
+<pre><span class="METHODcredential"><span class="keyword">method</span> credential</span> : <code class="code">string * string</code></pre>
+
+<pre><span class="METHODverifier"><span class="keyword">method</span> verifier</span> : <code class="code">string * string</code></pre>
+
+<pre><span class="METHODframe_len"><span class="keyword">method</span> frame_len</span> : <code class="code">int</code></pre>
+
+<pre><span class="METHODmessage"><span class="keyword">method</span> message</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Rpc_packer&amp;type=packed_value">Rpc_packer.packed_value</a></code></pre>
+</div></div>
+<div class="ocaml_class sig" name="auth_method"><pre><span class="TYPEauth_method"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Rpc_server&amp;class=auth_method">auth_method</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><pre><span class="METHODname"><span class="keyword">method</span> name</span> : <code class="code">string</code></pre>
+<div class="info"><div class="info">The name of the authentication method</div></div>
+<pre><span class="METHODflavors"><span class="keyword">method</span> flavors</span> : <code class="code">string list</code></pre>
+<div class="info"><div class="info">Which credential flavors are handled by this method</div></div>
+<pre><span class="METHODpeek"><span class="keyword">method</span> peek</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=auth_peeker">auth_peeker</a></code></pre>
+<div class="info"><div class="info">If available, this function is called for every accepted connection.
+ It may return the user name.
+ Notes:<ul><li>peeked user names override <code class="code">authenticate</code></li><li><code class="code">peek</code> is only called once after the stream connection has been
+   accepted
+     </li></ul></div></div>
+<pre><span class="METHODauthenticate"><span class="keyword">method</span> authenticate</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=connection_id">connection_id</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=auth_details">auth_details</a> -&gt; (<a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=auth_result">auth_result</a> -&gt; unit) -&gt; unit</code></pre>
+<div class="info"><div class="info"><code class="code">authenticate srv conn_id details f</code>:
+	This method is called when a remote call has arrived. Its task is
+ to determine the client user and pass the user name (and the verifier)
+ back. If the user cannot be authenticated, the call must be rejected.
+ When the method has done the authentication, it calls the passed
+ function <code class="code">f</code> with the <code class="code">auth_result</code>. This function can be called
+ immediately or asynchronously.<br/> Changed in Ocamlnet-3.3: the arguments <code class="code">program</code>, <code class="code">version</code>,
+ <code class="code">procedure</code>, and <code class="code">xid</code> are new. Added new <code class="code">auth_result</code> of
+ <code class="code">Auth_reply</code>.</div></div></div></div>
+<pre><span class="VALset_auth_methods"><span class="keyword">val</span> set_auth_methods</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=auth_method">auth_method</a> list -&gt; unit</code></pre><div class="info"><div class="info">Sets the available authentication methods.
+ By default, the list is set to <code class="code"> auth_none </code>.
+ If none of the methods apply, the call is rejected (Auth_too_weak).</div></div>
+<pre><span class="VALauth_none"><span class="keyword">val</span> auth_none</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=auth_method">auth_method</a></code></pre><div class="info"><div class="info">The authentication method &quot;AUTH_NONE&quot;, i.e. no user name is passed.
+ The function <code class="code">get_user</code> will return &quot;&quot;.</div></div>
+<pre><span class="VALauth_too_weak"><span class="keyword">val</span> auth_too_weak</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=auth_method">auth_method</a></code></pre><div class="info"><div class="info">The method that always rejects.</div></div>
+<pre><span class="VALauth_transport"><span class="keyword">val</span> auth_transport</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=auth_method">auth_method</a></code></pre><div class="info"><div class="info">Authenticate by trusting the transport layer. The user returned by
+ the multiplexer's method peer_user_name is taken.</div></div>
+<pre><span class="VALget_user"><span class="keyword">val</span> get_user</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=session">session</a> -&gt; string</code></pre><div class="info"><div class="info">Returns the user name as returned by the authentication method. See
+ the description of the method for the format of the user name string.</div></div>
+<pre><span class="VALget_auth_method"><span class="keyword">val</span> get_auth_method</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=session">session</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=auth_method">auth_method</a></code></pre><div class="info"><div class="info">Returns the method that was used to authenticate the user.</div></div>
+<pre><span class="VALverbose"><span class="keyword">val</span> verbose</span> : <code class="type">bool -&gt; unit</code></pre><div class="info"><div class="info"><b>Deprecated.</b>
+      Set whether you want debug messages to stderr or not</div></div>
+<pre><span class="VALdetach"><span class="keyword">val</span> detach</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><b>Internal function.</b> Cancels all pending I/O operations, and
+      deallocates buffers. This function has only one purpose: The
+      RPC servers inherited by a Netplex child process return memory.
+      The RPC server is unusable after this.</div></div>
+<div class="ocaml_module sig" name="Debug"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Rpc_server.Debug">Debug</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALenable"><span class="keyword">val</span> enable</span> : <code class="type">bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">Whether debug messages of general kind are enabled. 
+        See  <a href="#Netlog.Debug">Netlog.Debug</a> for more information.</div></div>
+<pre><span class="VALenable_ctrace"><span class="keyword">val</span> enable_ctrace</span> : <code class="type">bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">Whether debug messages are enabled that trace connection events.
+        See  <a href="#Netlog.Debug">Netlog.Debug</a> for more information.<br/>        The &quot;module name&quot; for these messages is &quot;Rpc_server.Ctrace&quot;.</div></div>
+<pre><span class="VALenable_ptrace"><span class="keyword">val</span> enable_ptrace</span> : <code class="type">bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">Whether the procedure trace is enabled.
+        The procedure trace outputs for every RPC call and response
+        a debug message. <code class="code">ptrace_verbosity</code> says how verbose.</div></div>
+<pre><span class="VALptrace_verbosity"><span class="keyword">val</span> ptrace_verbosity</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_util&amp;type=verbosity">Rpc_util.verbosity</a> <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">How verbose the ptrace is. Defaults to <code class="code">`Name_abbrev_args</code></div></div>
+<pre><span class="VALdisable_for_server"><span class="keyword">val</span> disable_for_server</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Disables logging for this server</div></div></div></div>
+</div>

@@ -1,0 +1,38 @@
+<div class="ocaml_toplevel_module"><div class="info">In_channel collects all of the pervasive functions that work on in_channels.
+ It adds some new functions (like <code class="code">input_all</code> and <code class="code">input_lines</code>).
+ It names things using the fact that there is no worry about toplevel name
+      conflicts (since we are in a module).
+ It uses labelled arguments.
+ It returns an option rather than raising End_of_file.</div>
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a></code></pre>
+<pre><span class="VALstdin"><span class="keyword">val</span> stdin</span> : <code class="type"><a href="?package=core_kernel&amp;module=In_channel&amp;type=t">t</a></code></pre>
+<div class="info"><div class="info">Channels are opened in binary mode iff <code class="code">binary</code> is true.  This only has an effect on
+    Windows.</div></div>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">?binary:bool -&gt; string -&gt; <a href="?package=core_kernel&amp;module=In_channel&amp;type=t">t</a></code></pre>
+<pre><span class="VALwith_file"><span class="keyword">val</span> with_file</span> : <code class="type">?binary:bool -&gt; string -&gt; f:(<a href="?package=core_kernel&amp;module=In_channel&amp;type=t">t</a> -&gt; 'a) -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">with_file ~f fname</code> executes <code class="code">~f</code> on the open channel from
+    <code class="code">fname</code>, and closes it afterwards.</div></div>
+<pre><span class="VALclose"><span class="keyword">val</span> close</span> : <code class="type"><a href="?package=core_kernel&amp;module=In_channel&amp;type=t">t</a> -&gt; unit</code></pre>
+<pre><span class="VALinput"><span class="keyword">val</span> input</span> : <code class="type"><a href="?package=core_kernel&amp;module=In_channel&amp;type=t">t</a> -&gt; buf:string -&gt; pos:int -&gt; len:int -&gt; int</code></pre>
+<pre><span class="VALreally_input"><span class="keyword">val</span> really_input</span> : <code class="type"><a href="?package=core_kernel&amp;module=In_channel&amp;type=t">t</a> -&gt; buf:string -&gt; pos:int -&gt; len:int -&gt; unit option</code></pre>
+<pre><span class="VALinput_byte"><span class="keyword">val</span> input_byte</span> : <code class="type"><a href="?package=core_kernel&amp;module=In_channel&amp;type=t">t</a> -&gt; int option</code></pre>
+<pre><span class="VALinput_char"><span class="keyword">val</span> input_char</span> : <code class="type"><a href="?package=core_kernel&amp;module=In_channel&amp;type=t">t</a> -&gt; char option</code></pre>
+<pre><span class="VALinput_binary_int"><span class="keyword">val</span> input_binary_int</span> : <code class="type"><a href="?package=core_kernel&amp;module=In_channel&amp;type=t">t</a> -&gt; int option</code></pre>
+<pre><span class="VALunsafe_input_value"><span class="keyword">val</span> unsafe_input_value</span> : <code class="type"><a href="?package=core_kernel&amp;module=In_channel&amp;type=t">t</a> -&gt; 'a option</code></pre>
+<pre><span class="VALinput_all"><span class="keyword">val</span> input_all</span> : <code class="type"><a href="?package=core_kernel&amp;module=In_channel&amp;type=t">t</a> -&gt; string</code></pre>
+<pre><span class="VALinput_line"><span class="keyword">val</span> input_line</span> : <code class="type">?fix_win_eol:bool -&gt; <a href="?package=core_kernel&amp;module=In_channel&amp;type=t">t</a> -&gt; string option</code></pre><div class="info"><div class="info"><code class="code">input_line ?fix_win_eol t</code> reads a line from <code class="code">t</code> and returns it, without
+    the newline (&quot;\n&quot;) character at the end, and, if <code class="code">fix_win_eol</code> the trailing
+    &quot;\r\n&quot; is dropped.</div></div>
+<pre><span class="VALfold_lines"><span class="keyword">val</span> fold_lines</span> : <code class="type">?fix_win_eol:bool -&gt; <a href="?package=core_kernel&amp;module=In_channel&amp;type=t">t</a> -&gt; init:'a -&gt; f:('a -&gt; string -&gt; 'a) -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">fold_lines ?fix_win_eol t ~init ~f</code> folds over the lines read from <code class="code">t</code>
+    using <code class="code">input_line</code>.  Lines are provided to <code class="code">f</code> in the order they are
+    found in the file.</div></div>
+<pre><span class="VALinput_lines"><span class="keyword">val</span> input_lines</span> : <code class="type">?fix_win_eol:bool -&gt; <a href="?package=core_kernel&amp;module=In_channel&amp;type=t">t</a> -&gt; string list</code></pre><div class="info"><div class="info">Completely reads an input channel and returns the results as a list of
+    strings. Each line in one string.</div></div>
+<pre><span class="VALiter_lines"><span class="keyword">val</span> iter_lines</span> : <code class="type">?fix_win_eol:bool -&gt; <a href="?package=core_kernel&amp;module=In_channel&amp;type=t">t</a> -&gt; f:(string -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">iter_lines ?fix_win_eol t ~f</code> applies <code class="code">f</code> to each line read from <code class="code">t</code> using
+    <code class="code">input_line</code>.</div></div>
+<pre><span class="VALseek"><span class="keyword">val</span> seek</span> : <code class="type"><a href="?package=core_kernel&amp;module=In_channel&amp;type=t">t</a> -&gt; int64 -&gt; unit</code></pre>
+<pre><span class="VALpos"><span class="keyword">val</span> pos</span> : <code class="type"><a href="?package=core_kernel&amp;module=In_channel&amp;type=t">t</a> -&gt; int64</code></pre>
+<pre><span class="VALlength"><span class="keyword">val</span> length</span> : <code class="type"><a href="?package=core_kernel&amp;module=In_channel&amp;type=t">t</a> -&gt; int64</code></pre>
+<pre><span class="VALset_binary_mode"><span class="keyword">val</span> set_binary_mode</span> : <code class="type"><a href="?package=core_kernel&amp;module=In_channel&amp;type=t">t</a> -&gt; bool -&gt; unit</code></pre>
+<pre><span class="VALread_lines"><span class="keyword">val</span> read_lines</span> : <code class="type">string -&gt; string list</code></pre><div class="info"><div class="info"><code class="code">read_lines filename</code> Opens filename, reads all lines, and closes the file.</div></div>
+<pre><span class="VALread_all"><span class="keyword">val</span> read_all</span> : <code class="type">string -&gt; string</code></pre><div class="info"><div class="info"><code class="code">read_all filename</code> Opens filename, reads all input, and closes the file.</div></div>
+</div>

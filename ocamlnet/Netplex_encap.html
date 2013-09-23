@@ -1,0 +1,24 @@
+<div class="ocaml_toplevel_module"><div class="info">Type-safe marshalling between processes of the same executable</div>
+<div class="info"><div class="info">This is a pragmatic approach to type-safe marshalling. We define
+    <code class="code">type encap</code> as an arbitrary value that carries a type identifier with it.
+    The type identifier is generated when the functor
+     <a href="#Netplex_encap.Make_encap">Netplex_encap.Make_encap</a> is applied. Every instantiation of this
+    functor generates a new type identifier.<br/>    The idea is then that an <code class="code">encap</code> value can be marshalled to another
+    process using <code class="code">Marshal</code>, and when it is unwrapped the type identifier
+    is checked. Unwrapping is only successful when the <code class="code">unwrap</code> function
+    from the same functor instantiation is used as the <code class="code">wrap</code>
+    function.<br/>    This module is incompatible with:<ul><li>Marshalling to processes running a different executable</li><li>Marshalling to processes that are dynamically loading 
+       modules</li><li>The functor must be instantiated at program initialization time.
+       Especially this must not happen in <code class="code">let module</code> expressions.</li></ul>    Only some of these assumptions can be checked at runtime by this
+    implementation.</div></div>
+<pre><span class="EXCEPTIONType_mismatch"><span class="keyword">exception</span> Type_mismatch</span></pre><div class="info"><div class="info">Raised when an encapulated type is tried to be unwrapped by the
+      wrong encapsulation module</div></div>
+<pre><span class="TYPEencap"><span class="keyword">type</span> encap</span> </pre><div class="info"><div class="info">An encapsulated value with a type identifier</div></div>
+<div class="ocaml_module sig" name="TYPE"><pre><span class="keyword">module type</span> <a href="?package=ocamlnet&amp;module=Netplex_encap.TYPE">TYPE</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Just a (monomorphic) type <code class="code">t</code></div></div><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre></div></div>
+<div class="ocaml_module sig" name="ENCAP"><pre><span class="keyword">module type</span> <a href="?package=ocamlnet&amp;module=Netplex_encap.ENCAP">ENCAP</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre>
+<pre><span class="VALwrap"><span class="keyword">val</span> wrap</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netplex_encap.ENCAP&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Netplex_encap&amp;type=encap">encap</a></code></pre>
+<pre><span class="VALunwrap"><span class="keyword">val</span> unwrap</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netplex_encap&amp;type=encap">encap</a> -&gt; <a href="?package=ocamlnet&amp;module=Netplex_encap.ENCAP&amp;type=t">t</a></code></pre><div class="info"><div class="info">Raises  <a href="#Netplex_encap.Type_mismatch">Netplex_encap.Type_mismatch</a> if the value does not fit</div></div></div></div>
+<div class="ocaml_module ident" name="Make_encap" path="?package=ocamlnet&amp;module=Netplex_encap.ENCAP"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netplex_encap.Make_encap">Make_encap</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">T</code><code class="code"> : </code><code class="code"><a href="?package=ocamlnet&amp;module=Netplex_encap.TYPE">TYPE</a></code><code class="code">) -&gt; </code><code class="code"><a href="?package=ocamlnet&amp;module=Netplex_encap.ENCAP">ENCAP</a></code> with type <a href="?package=ocamlnet&amp;module=Netplex_encap.ENCAP&amp;type=t">t</a> = T.t</div></code></pre><div class="info"><div class="info">Create an encapsulation module</div></div></div>
+</div>

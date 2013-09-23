@@ -1,0 +1,30 @@
+<div class="ocaml_toplevel_module"><div class="info"><code class="code">Async.Lock_file</code> is a wrapper that provides async equivalents for
+    <code class="code">Core.Lock_file</code>.</div>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">?message:string -&gt;
+?close_on_exec:bool -&gt;
+?unlink_on_exit:bool -&gt; string -&gt; bool <a href="?package=async_extra&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre><div class="info"><div class="info"><code class="code">create ?message path</code> tries to create a file at <code class="code">path</code> containing the text <code class="code">message</code>,
+    pid if none provided.  It returns true on success, false on failure.  Note: there is
+    no way to release the lock or the fd created inside!  It will only be released when
+    the process dies.</div></div>
+<pre><span class="VALcreate_exn"><span class="keyword">val</span> create_exn</span> : <code class="type">?message:string -&gt;
+?close_on_exec:bool -&gt;
+?unlink_on_exit:bool -&gt; string -&gt; unit <a href="?package=async_extra&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre><div class="info"><div class="info"><code class="code">create_exn ?message path</code> is like <code class="code">create</code> except that it throws an exception on
+    failure instead of returning a boolean value</div></div>
+<pre><span class="VALwaiting_create"><span class="keyword">val</span> waiting_create</span> : <code class="type">?message:string -&gt;
+?close_on_exec:bool -&gt;
+?unlink_on_exit:bool -&gt; string -&gt; unit <a href="?package=async_extra&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre><div class="info"><div class="info"><code class="code">wait_create ~path ~message</code> becomes determined when the file at <code class="code">path</code> gets locked.
+    Equivalent to <code class="code">Core.Std.Lock_file.blocking_create</code>.</div></div>
+<pre><span class="VALis_locked"><span class="keyword">val</span> is_locked</span> : <code class="type">string -&gt; bool <a href="?package=async_extra&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre><div class="info"><div class="info"><code class="code">is_locked path</code> returns true when the file at <code class="code">path</code> exists and is locked, false
+    otherwise.</div></div>
+<div class="ocaml_module sig" name="Nfs"><pre><span class="keyword">module</span> <a href="?package=async_extra&amp;module=Lock_file.Nfs">Nfs</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info"><code class="code">Nfs</code> has analogs of functions in  <a href="#Core.Lock_file.Nfs">Core.Lock_file.Nfs</a>; see there for documentation.
+    In addition to adding <code class="code">Deferred</code>'s, <code class="code">blocking_create</code> was renamed <code class="code">waiting_create</code> to
+    avoid the impression that it blocks async.</div></div><div class="ocaml_module_content">
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">?message:string -&gt; string -&gt; bool <a href="?package=async_extra&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALcreate_exn"><span class="keyword">val</span> create_exn</span> : <code class="type">?message:string -&gt; string -&gt; unit <a href="?package=async_extra&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALwaiting_create"><span class="keyword">val</span> waiting_create</span> : <code class="type">?message:string -&gt; string -&gt; unit <a href="?package=async_extra&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALunlock_safely"><span class="keyword">val</span> unlock_safely</span> : <code class="type">string -&gt; unit <a href="?package=async_extra&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALcritical_section"><span class="keyword">val</span> critical_section</span> : <code class="type">?message:string -&gt;
+string -&gt; f:(unit -&gt; 'a <a href="?package=async_extra&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>) -&gt; 'a <a href="?package=async_extra&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALget_hostname_and_pid"><span class="keyword">val</span> get_hostname_and_pid</span> : <code class="type">string -&gt; (string * <a href="?package=core&amp;module=Std.Pid&amp;type=t">Core.Std.Pid.t</a>) option <a href="?package=async_extra&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
+<pre><span class="VALget_message"><span class="keyword">val</span> get_message</span> : <code class="type">string -&gt; string option <a href="?package=async_extra&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre></div></div>
+</div>

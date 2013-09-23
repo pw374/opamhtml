@@ -1,0 +1,8 @@
+<div class="ocaml_toplevel_module"><div class="info">OCaml completion.</div>
+<pre><span class="VALcomplete"><span class="keyword">val</span> complete</span> : <code class="type">syntax:<a href="?package=utop&amp;module=UTop&amp;type=syntax">UTop.syntax</a> -&gt;
+phrase_terminator:string -&gt; input:string -&gt; int * (string * string) list</code></pre><div class="info"><div class="info"><code class="code">complete ~syntax ~phrase_terminator ~input</code> returns the start
+      of the completed word in <code class="code">input</code> and the list of possible
+      completions with their suffixes.</div></div>
+<pre><span class="VALreset"><span class="keyword">val</span> reset</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info">Reset global cache. It must be called before each interactive
+      read line.</div></div>
+</div>

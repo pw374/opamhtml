@@ -1,0 +1,116 @@
+<div class="ocaml_toplevel_module"><div class="info">Loggers</div>
+<div class="info"><div class="info">A logger is usually configured in the config file. The <code class="code">logging</code>
+    section is inside <code class="code">controller</code>, e.g.<br/>    <pre class="codepre"><code class="code"> netplex {
+         ...
+         controller {
+           ...
+           logging { ... };
+           ...
+         }
+         ...
+       }
+    </code></pre><br/>    The possible types of <code class="code">logging</code> sections are explained below.
+    If there are several <code class="code">logging</code> sections, the messages are sent to
+    all configured loggers.<br/>    Instead of configuring loggers in the config file, one can also
+    create loggers from config objects like <code class="code">generic_config</code>.<br/>    See also  <a href="#Netplex_intro.logging">Netplex_intro.logging</a> for more documentation.</div></div>
+<div class="ocaml_class sig" name="generic_config"><pre><span class="TYPEgeneric_config"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netplex_log&amp;class=generic_config">generic_config</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><pre><span class="METHODlog_format"><span class="keyword">method</span> log_format</span> : <code class="code">string</code></pre>
+
+<pre><span class="METHODlog_component"><span class="keyword">method</span> log_component</span> : <code class="code">string</code></pre>
+
+<pre><span class="METHODlog_subchannel"><span class="keyword">method</span> log_subchannel</span> : <code class="code">string</code></pre>
+
+<pre><span class="METHODlog_max_level"><span class="keyword">method</span> log_max_level</span> : <code class="code">Netplex_types.level</code></pre>
+</div></div>
+<pre><span class="VALchannel_logger"><span class="keyword">val</span> channel_logger</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a> -&gt; Netplex_types.logger</code></pre><div class="info"><div class="info">Outputs messages to the channel</div></div>
+<pre><span class="VALchannel_logger_from_obj"><span class="keyword">val</span> channel_logger_from_obj</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netplex_log&amp;type=generic_config">generic_config</a> -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a> -&gt; Netplex_types.logger</code></pre><div class="info"><div class="info">Outputs messages to the channel</div></div>
+<pre><span class="VALstderr_logger_factory"><span class="keyword">val</span> stderr_logger_factory</span> : <code class="type">Netplex_types.logger_factory</code></pre><div class="info"><div class="info">Reads a logging section like<br/> <pre class="codepre"><code class="code"> logging {
+       type = &quot;stderr&quot;;
+       format = &quot;&lt;format string&gt;&quot;;
+       component = &quot;&lt;name_of_component&gt;&quot;;
+       subchannel = &quot;&lt;name_of_subchannel&gt;&quot;;
+       max_level = &quot;&lt;max_level&gt;&quot;;
+    }
+ </code></pre><br/> - <code class="code">format</code>: Optional format string. See below.<ul><li><code class="code">component</code>: Optional component selector. See below.</li><li><code class="code">subchannel</code>: Optional subchannel selector. See below.</li><li><code class="code">max_level</code>: Optional maximum log level. See below.
+   </li></ul></div></div>
+<pre><span class="VALfile_logger"><span class="keyword">val</span> file_logger</span> : <code class="type">string -&gt; Netplex_types.logger</code></pre><div class="info"><div class="info">Writes messages to this file</div></div>
+<pre><span class="VALfile_logger_from_obj"><span class="keyword">val</span> file_logger_from_obj</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netplex_log&amp;type=generic_config">generic_config</a> -&gt; string -&gt; Netplex_types.logger</code></pre><div class="info"><div class="info">Writes messages to this file</div></div>
+<pre><span class="VALfile_logger_factory"><span class="keyword">val</span> file_logger_factory</span> : <code class="type">Netplex_types.logger_factory</code></pre><div class="info"><div class="info">Reads a logging section like<br/> <pre class="codepre"><code class="code"> logging {
+       type = &quot;file&quot;;
+       file = &quot;/path/to/logfile&quot;;
+       format = &quot;&lt;format string&gt;&quot;;
+       component = &quot;&lt;name_of_component&gt;&quot;;
+       subchannel = &quot;&lt;name_of_subchannel&gt;&quot;;
+       max_level = &quot;&lt;max_level&gt;&quot;;
+    }
+ </code></pre><br/> - <code class="code">file</code>: Log messages are appended to this file.<ul><li><code class="code">format</code>: Optional format string. See below.</li><li><code class="code">component</code>: Optional component selector. See below.</li><li><code class="code">subchannel</code>: Optional subchannel selector. See below.</li><li><code class="code">max_level</code>: Optional maximum log level. See below.
+   </li></ul></div></div>
+<div class="ocaml_class sig" name="multi_file_config"><pre><span class="TYPEmulti_file_config"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netplex_log&amp;class=multi_file_config">multi_file_config</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Netplex_log&amp;class=generic_config"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Netplex_log&amp;class=generic_config">generic_config</a></pre></div>
+
+<pre><span class="METHODlog_directory"><span class="keyword">method</span> log_directory</span> : <code class="code">string</code></pre>
+
+<pre><span class="METHODlog_files"><span class="keyword">method</span> log_files</span> : <code class="code">(string * string *
+ [ `Alert
+ | `All
+ | `Crit
+ | `Debug
+ | `Emerg
+ | `Err
+ | `Info
+ | `Notice
+ | `Warning ] * string * string)
+list</code></pre>
+<div class="info"><div class="info">Triples <code class="code"> (component, subchannel, max_level, file, format) </code>. Use <code class="code">*</code> as 
+        wildcard in <code class="code">component</code> and <code class="code">subchannel</code>.<br/>        Currently, <code class="code">`All</code> is a synonym for the <code class="code">`Debug</code> level.</div></div></div></div>
+<pre><span class="VALmulti_file_logger"><span class="keyword">val</span> multi_file_logger</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netplex_log&amp;type=multi_file_config">multi_file_config</a> -&gt; Netplex_types.logger</code></pre>
+<pre><span class="VALmulti_file_logger_factory"><span class="keyword">val</span> multi_file_logger_factory</span> : <code class="type">Netplex_types.logger_factory</code></pre><div class="info"><div class="info">Reads a logging section like<br/> <pre class="codepre"><code class="code"> logging {
+       type = &quot;multi_file&quot;;
+       directory = &quot;/path/to/logdir&quot;;
+       format = &quot;&lt;format string&gt;&quot;;
+       file {
+           component = &quot;&lt;name_of_component&gt;&quot;;
+           subchannel = &quot;&lt;name_of_subchannel&gt;&quot;;
+           max_level = &quot;&lt;max_level&gt;&quot;;
+           file = &quot;&lt;logfile&gt;&quot;;
+           format = &quot;&lt;format string&gt;&quot;;
+       };
+       file { ... }; ...
+    }
+ </code></pre><br/> - <code class="code">format</code>: Optional format string. See below.<ul><li><code class="code">component</code>: Optional component selector. See below.</li><li><code class="code">subchannel</code>: Optional subchannel selector. See below.</li><li><code class="code">max_level</code>: Optional maximum log level. See below.
+   </li></ul></div></div>
+<div class="ocaml_class sig" name="syslog_config"><pre><span class="TYPEsyslog_config"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netplex_log&amp;class=syslog_config">syslog_config</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Netplex_log&amp;class=generic_config"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Netplex_log&amp;class=generic_config">generic_config</a></pre></div>
+
+<pre><span class="METHODlog_identifier"><span class="keyword">method</span> log_identifier</span> : <code class="code">string</code></pre>
+
+<pre><span class="METHODlog_facility"><span class="keyword">method</span> log_facility</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=syslog_facility">Netsys_posix.syslog_facility</a></code></pre>
+</div></div>
+<pre><span class="VALsyslog_logger"><span class="keyword">val</span> syslog_logger</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netplex_log&amp;type=syslog_config">syslog_config</a> -&gt; Netplex_types.logger</code></pre><div class="info"><div class="info">Creates a logger writing to syslog</div></div>
+<pre><span class="VALsyslog_logger_factory"><span class="keyword">val</span> syslog_logger_factory</span> : <code class="type">Netplex_types.logger_factory</code></pre><div class="info"><div class="info">Reads a logging section like<br/> <pre class="codepre"><code class="code"> logging {
+       type = &quot;syslog&quot;;
+       format = &quot;&lt;format string&gt;&quot;;
+       identifier = &quot;&lt;identifier&gt;&quot;;
+       facility = &quot;&lt;facility name&gt;&quot;;
+       component = &quot;&lt;name_of_component&gt;&quot;;
+       subchannel = &quot;&lt;name_of_subchannel&gt;&quot;;
+       max_level = &quot;&lt;max_level&gt;&quot;;
+    }
+ </code></pre><br/> All parameters except <code class="code">type</code> are optional:<ul><li><code class="code">facility</code>: The faciltiy like <code class="code">LOCAL0</code>, <code class="code">USER</code>, ...</li><li><code class="code">identifier</code>: An identifier prefixing every message</li><li><code class="code">format</code>: Optional format string. See below.</li><li><code class="code">component</code>: Optional component selector. See below.</li><li><code class="code">subchannel</code>: Optional subchannel selector. See below.</li><li><code class="code">max_level</code>: Optional maximum log level. See below.
+   </li></ul></div></div>
+<pre><span class="VALlogger_factories"><span class="keyword">val</span> logger_factories</span> : <code class="type">Netplex_types.logger_factory list</code></pre><div class="info"><div class="info">All built-in logger factories</div></div>
+<pre><span class="VALlevel_weight"><span class="keyword">val</span> level_weight</span> : <code class="type">Netplex_types.level -&gt; int</code></pre><div class="info"><div class="info">An integer corresponding to the level</div></div>
+<pre><span class="VALlevel_of_string"><span class="keyword">val</span> level_of_string</span> : <code class="type">string -&gt; Netplex_types.level</code></pre><div class="info"><div class="info">Convert a string to a level</div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Common parameters</h2></div></div>
+<div class="info"><div class="info">Logging parameters that can occur in all logging configurations:</div></div>
+<div class="info"><div class="info"><h3 id="3_TITLE">format</h3><br/> The format string may include variable
+ parts in the syntax <code class="code">$name</code> or <code class="code">${name}</code>. The following variable
+ specifications are defined:<ul><li><code class="code">timestamp</code>: the time in standard format (as set in
+       <a href="#Netlog.current_formatter">Netlog.current_formatter</a>)</li><li><code class="code">timestamp:&lt;format&gt;</code> the time in custom format where <code class="code">&lt;format&gt;</code> is a
+    <a href="#Netdate">Netdate</a> format string</li><li><code class="code">timestamp:unix</code>: the time in seconds since the epoch</li><li><code class="code">component</code>: the name of the component emitting the log message</li><li><code class="code">subchannel</code>: the name of the subchannel</li><li><code class="code">level</code>: the log level</li><li><code class="code">message</code>: the log message
+ </li></ul></div></div>
+<div class="info"><div class="info"><h3 id="3_TITLE">component</h3> <br/> The <code class="code">component</code> name restricts logging to the given Netplex component.
+ One can use the wildcard &quot;*&quot;.</div></div>
+<div class="info"><div class="info"><h3 id="3_TITLE">subchannel</h3> <br/> The <code class="code">subchannel</code> name restricts logging to this subchannel.
+ One can use the wildcard &quot;*&quot;.</div></div>
+<div class="info"><div class="info"><h3 id="3_TITLE">max_level</h3><br/> The <code class="code">max_level</code> specifier restricts logging to messages with at most
+ this level. Levels are &quot;emerg&quot;, &quot;alert&quot;, &quot;crit&quot;, &quot;err&quot;, &quot;warning&quot;,
+ &quot;notice&quot;, &quot;info&quot;, &quot;debug&quot; (in order of increasing level).</div></div>
+</div>

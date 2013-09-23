@@ -1,0 +1,135 @@
+<h1>Modules</h1>
+<table class="indextable">
+    <tr><td class="module"><a href="?package=async_core&amp;module=Async_condition">Async_condition</a></td><td><div class="info"><code class="code">Async.Condition</code> is async's implementation of the standard notion of a &quot;condition&quot;
+    variable, and is analogous to OCaml's <code class="code">Condition</code> module.  The main guarantee that a
+    condition variable provides is that a call to <code class="code">signal</code> (or <code class="code">broadcast</code>) after a call
+    to <code class="code">wait</code> will be seen by the waiter.<br/>    Unlike the use of condition variables in ordinary threaded programs, async condition
+    variables do not require a mutex, since async programs are cooperatively threaded.</div></td></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Async_gc">Async_gc</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Async_or_error">Async_or_error</a></td><td><div class="info">This module is the deferred analog of <code class="code">Core.Or_error</code>. It is exposed in std.ml as
+    <code class="code">Deferred.Or_error</code>.<br/>    The mental model for a function returning an <code class="code">'a Deferred.Or_error.t</code> is that the
+    function never raises.  All error cases are caught and expressed as an <code class="code">Error _</code>
+    result.  This module preserves that property.<br/>    Unfortunately, there is no way to enforce this property using the type system, so it
+    is more like a convention, or idiom.  A function whose type ends with <code class="code">... -&gt; 'a
+    Deferred.Or_error.t</code> and still raises should be considered broken, and be fixed.  With
+    that property in mind, <code class="code">Deferred.Or_error.List.iter</code>, for example, does not wrap the
+    execution of the given iter function <code class="code">f</code> inside a monitor.  If one of these
+    application raises, the whole function <code class="code">Deferred.Or_error.List.iter</code> will raise as a
+    way to try to alert the developer that one the function is broken and needs attention
+    and fixing, rather than silently catching the error and converting it to
+    <code class="code">Or_error.Error</code>.<br/>    This behavior is consistent with <code class="code">Core.Or_error</code>'s treatment of user-supplied
+    functions.<br/>    If you have to deal with a function that does not respect this idiom, you can use
+    <code class="code">Deferred.Or_error.try_with_join</code> to wrap its execution and enforce this property.</div></td></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Async_stream">Async_stream</a></td><td><div class="info">For most applications one should use <code class="code">Pipe</code> instead of Stream.<br/>    A stream is an immutable sequence of values, with a possibly incomplete tail that may
+    be extended asynchronously.<br/>    The basic primitive operation for getting the next element out of stream is
+    Stream.next, which (asynchronously) returns the element and the rest of the stream.</div></td></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Backpatched">Backpatched</a></td><td><div class="info">A <code class="code">Backpatched</code> value is either a simple value or a &quot;hole&quot;, which may or may not have
+    been filled.  One can first define a hole and pass it around, and then later fill it
+    in (i.e. backpatch it).  This is useful when there is a cycle in the definitions of
+    some entities, but the cycle can be resolved (by backpatching) before the value in
+    the hole needs to be accessed dynamically.</div></td></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Clock">Clock</a></td><td><div class="info">Schedule jobs to run at a time in the future.<br/>    The underlying implementation uses a heap of events, one for each job that needs to
+    run in the future.  The async scheduler is responsible for waking up at the right time
+    to run the jobs.</div></td></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Config">Config</a></td><td><div class="info">Settings that globally affect the behavior of async.<br/>    These can be set by setting an environment variable, <code class="code">ASYNC_CONFIG</code>, to a sexp
+    representation of the config.  Also, setting <code class="code">ASYNC_CONFIG</code> to an invalid sexp
+    (e.g. the empty string), will cause your program to print to stderr a usage message
+    describing how to configure <code class="code">ASYNC_CONFIG</code>, and exit nonzero.  For example, the
+    following shell command should print the usage message:<br/>    <span class="verbatim">      ASYNC_CONFIG= foo.exe
+    </span></div></td></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Debug">Debug</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Deferred">Deferred</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Deferred_intf">Deferred_intf</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Deferred_std">Deferred_std</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Execution_context">Execution_context</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Handler">Handler</a></td><td><div class="info">A handler is a continuation that captures the current async execution context.  It can
+    be scheduled for future invocation by installing it in a deferred.</div></td></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Import">Import</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Ivar">Ivar</a></td><td><div class="info">An ivar is a write-once cell that can be empty or full (i.e. hold a single value) that
+    one can <code class="code">read</code> and to obtain a deferred that becomes determined when the ivar is
+    filled.  An ivar is similar to an <code class="code">'a option ref</code>, except it is an error to fill an
+    already full ivar.</div></td></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Job">Job</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Jobs">Jobs</a></td><td><div class="info">Queues of jobs to run, one at each priority level.</div></td></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Kill_index">Kill_index</a></td><td><div class="info">A timestamp used to implement <code class="code">Monitor.kill</code>.<br/>    A monitor is dead if it has an ancestor whose kill index is <code class="code">dead</code>.<br/>    Kill indices are used so that we can efficiently check whether a monitor is dead or
+    alive, given that a monitor has a pointer to its parent, but not its children.  So,
+    there is no way when killing a monitor to visit all of its descendants.  Instead, we
+    rely on lazily checking descendants when they are used.<br/>    Each monitor has a <code class="code">kill_index : Kill_index.t</code>, and the scheduler has a single
+    <code class="code">global_kill_index : Kill_index.t</code>.  We maintain an invariant on the monitor tree that
+    if a monitor's kill index equals <code class="code">global_kill_index</code>, then all of its ancestors kill
+    indices also equal <code class="code">global_kill_index</code>.  This ensures that any monitor whose kill
+    index equals <code class="code">global_kill_index</code> is alive.<br/>    All kill indices initially start with value <code class="code">Kill_index.initial</code>.  To kill a monitor,
+    we set that monitor's kill index to <code class="code">Kill_index.dead</code> and increment the scheduler's
+    <code class="code">global_kill_index</code>.  A monitor can be in one of three situations:<br/>    - <code class="code">kill_index = global_kill_index</code>.  The monitor is alive.<ul><li><code class="code">kill_index = dead</code>.  The monitor is dead.  A dead monitor is never revived.</li><li>Otherwise, some monitor has been killed since the monitor was last known to be
+      alive.  We must check the monitor's ancestors to see if an ancestor is dead.  If so,
+      we will set its <code class="code">kill_index</code> to <code class="code">dead</code>.  If not, we will set its <code class="code">kill_index</code> to
+      <code class="code">global_kill_index</code>.
+</li></ul></div></td></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Lazy_deferred">Lazy_deferred</a></td><td><div class="info">A <code class="code">Lazy_deferred.t</code> is a delayed computation that can produce a deferred.  Nothing
+    happens with a lazy deferred unless one <code class="code">force</code>s it.  Forcing a lazy deferred starts
+    the computation, which will eventually cause the deferred to become determined.  As
+    usual with laziness, multiply forcing a lazy deferred is no different than forcing it
+    a single time.<br/>    Exceptions (both synchronous and asynchronous) raised by a delayed computation are
+    returned by <code class="code">force</code> (<code class="code">wait</code>, <code class="code">peek</code>, etc.), or will be raised to the monitor in effect
+    when <code class="code">force_exn</code> (<code class="code">wait_exn</code>, <code class="code">peek_exn</code>, etc.) was called.</div></td></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Monitor">Monitor</a></td><td><div class="info">A monitor is a context that determines what to do when there is an unhandled
+    exception.  Every Async computation runs within the context of some monitor, which,
+    when the computation is running, is referred to as the &quot;current&quot; monitor.  Monitors
+    are arranged in a tree -- when a new monitor is created, it is a child of the current
+    monitor.<br/>    One can listen to a monitor using Monitor.errors to learn when the monitor sees an
+    error.<br/>    If a computation raises an unhandled exception, the current monitor does one of two
+    things.  If anyone is listening to the monitor (i.e. Monitor.errors has been called on
+    the monitor), then the error stream is extended, and the listeners are responsible for
+    doing something.  If no one is &quot;listening&quot; to the monitor, then the exception is
+    raised to monitor's parent.  The initial monitor, i.e. the root of the monitor tree,
+    prints an unhandled-exception message and calls exit 1.<br/>*************** NOTE ABOUT THE TOPLEVEL MONITOR ****************<br/>    It is important to note that in the toplevel monitor, exceptions will only be caught
+    in the async part of a computation.  For example, in:<br/>    <pre class="codepre"><code class="code">
+      upon (f ()) g
+    </code></pre><br/>    if <code class="code">f</code> raises, the exception will not go to a monitor; it will go to the next caml
+    exception handler on the stack.  Any exceptions raised by <code class="code">g</code> will be caught by the
+    scheduler and propagated to the toplevel monitor.  Because of this it is advised to
+    always use <code class="code">Scheduler.schedule</code> or <code class="code">Scheduler.within</code>.  For example:<br/>    <pre class="codepre"><code class="code">
+      Scheduler.within (fun () -&gt; upon (f ()) g)
+    </code></pre><br/>    This code will catch an exception in either <code class="code">f</code> or <code class="code">g</code>, and propagate it to the
+    monitor.<br/>    This is only relevant to the toplevel monitor because if you create another monitor
+    and you wish to run code within it you have no choice but to use <code class="code">Scheduler.within</code>.
+    <code class="code">try_with</code> creates its own monitor and uses <code class="code">Scheduler.within</code>, so it does not have
+    this problem.</div></td></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Pipe">Pipe</a></td><td><div class="info">A pipe is a buffered FIFO communication channel.<br/>    A pipe has a &quot;writer&quot; end and a &quot;reader&quot; end.  The intent is that a writer feeds
+    values into the pipe and then waits until it is notified that it should put more data
+    in (referred to as &quot;pushback&quot;).<br/>    Each pipe contains a buffer that is a queue of values that have been written to the
+    pipe but not yet read from the pipe.  The length of the queue is not bounded; whenever
+    the pipe is written to, values are immediately enqueued.  However, writers are
+    supposed to respect pushback from readers, either via the <code class="code">unit Deferred.t</code> returned
+    by <code class="code">write</code> calls or by explicitly calling <code class="code">pushback</code>.<br/>    If a pipe is empty, then readers queue up, waiting for values to be written.  As soon
+    as values are written, if a reader is available to consume them, the values will be
+    handed to the reader.<br/>    One can use <code class="code">downstream_flushed</code> to get notified by a pipe when all prior writes have
+    been consumed by a reader.<br/>    There are distinct <code class="code">Reader</code> and <code class="code">Writer</code> modules and types, but all of the operations
+    on readers and writers are available directly from the <code class="code">Pipe</code> module.</div></td></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Priority">Priority</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Raw_deferred">Raw_deferred</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Raw_handler">Raw_handler</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Raw_ivar">Raw_ivar</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Raw_monitor">Raw_monitor</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Raw_scheduler">Raw_scheduler</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Raw_stream">Raw_stream</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Scheduler">Scheduler</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Std">Std</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Tail">Tail</a></td><td><div class="info">A tail is a pointer to the end of a stream that can be used to extend the stream.</div></td></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Test">Test</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Throttle">Throttle</a></td><td><div class="info">Throttles to limit the number of concurrent computations.<br/>    A throttle is essentially a pipe to which one can feed jobs.<br/>    A throttle schedules asynchronous jobs so that at any point in time no more than
+    <code class="code">max_concurrent_jobs</code> jobs are running.  A job <code class="code">f</code> is considered to be running from
+    the time <code class="code">f ()</code> is executed until the deferred returned by <code class="code">f ()</code> becomes determined,
+    or <code class="code">f ()</code> raises.  The throttle intiates jobs first-come first-served.<br/>    One can use <code class="code">create_with</code> to create a throttle with &quot;resources&quot; that one would
+    like to make available to concurrent jobs and to guarantee that different jobs
+    access different resources.<br/>    A throttle is killed if one of its jobs throws an exception, and the throttle has
+    <code class="code">continue_on_error = false</code>.  A throttle can also be explicitly <code class="code">kill</code>ed.  If a
+    throttle is killed, then all jobs in it that haven't yet started are aborted,
+    i.e. they will not start and will become determined with <code class="code">`Aborted</code>.  Jobs that had
+    already started will continue, and return <code class="code">`Ok</code> or <code class="code">`Raised</code> as usual when they
+    finish.  Jobs enqueued into a killed throttle will be immediately aborted.</div></td></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Throttle_debug">Throttle_debug</a></td><td/></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Throttle_unit_tests">Throttle_unit_tests</a></td><td><div class="info">This signature is here to remind us to update the unit tests whenever we change
+    <code class="code">Throttle</code>.</div></td></tr>
+<tr><td class="module"><a href="?package=async_core&amp;module=Unregister">Unregister</a></td><td/></tr>
+</table>

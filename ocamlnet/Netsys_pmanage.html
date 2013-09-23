@@ -1,0 +1,37 @@
+<div class="ocaml_toplevel_module"><div class="info">Manage persistent objects</div>
+<div class="info"><div class="info">This module allows you to keep a list of all objects with
+    kernel persistency in an external file.</div></div>
+<pre><span class="TYPEpm_obj"><span class="keyword">type</span> pm_obj</span> = <code class="type">[ `File of string
+| `Posix_sem of string
+| `Posix_shm of string
+| `Sem_cont of string ]</code></pre>
+<div class="ocaml_class sig" name="pmanage"><pre><span class="TYPEpmanage"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netsys_pmanage&amp;class=pmanage">pmanage</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><pre><span class="METHODregister_file"><span class="keyword">method</span> register_file</span> : <code class="code">string -&gt; unit</code></pre>
+<div class="info"><div class="info">Register a temporary file</div></div>
+<pre><span class="METHODunregister_file"><span class="keyword">method</span> unregister_file</span> : <code class="code">string -&gt; unit</code></pre>
+<div class="info"><div class="info">Unregister a temporary file</div></div>
+<pre><span class="METHODregister_posix_shm"><span class="keyword">method</span> register_posix_shm</span> : <code class="code">string -&gt; unit</code></pre>
+<div class="info"><div class="info">Register a POSIX shared memory object identified by this path</div></div>
+<pre><span class="METHODunregister_posix_shm"><span class="keyword">method</span> unregister_posix_shm</span> : <code class="code">string -&gt; unit</code></pre>
+<div class="info"><div class="info">Unregister a POSIX shared memory object identified by this path</div></div>
+<pre><span class="METHODregister_posix_sem"><span class="keyword">method</span> register_posix_sem</span> : <code class="code">string -&gt; unit</code></pre>
+<div class="info"><div class="info">Register a POSIX named semaphore identified by this path</div></div>
+<pre><span class="METHODunregister_posix_sem"><span class="keyword">method</span> unregister_posix_sem</span> : <code class="code">string -&gt; unit</code></pre>
+<div class="info"><div class="info">Unregister a POSIX named semaphore identified by this path</div></div>
+<pre><span class="METHODregister_sem_cont"><span class="keyword">method</span> register_sem_cont</span> : <code class="code">string -&gt; unit</code></pre>
+<div class="info"><div class="info">Register a semaphore container (see  <a href="#Netsys_sem">Netsys_sem</a>)</div></div>
+<pre><span class="METHODunregister_sem_cont"><span class="keyword">method</span> unregister_sem_cont</span> : <code class="code">string -&gt; unit</code></pre>
+<div class="info"><div class="info">Unregister a semaphore container (see  <a href="#Netsys_sem">Netsys_sem</a>)</div></div>
+<pre><span class="METHODregistered"><span class="keyword">method</span> registered</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netsys_pmanage&amp;type=pm_obj">pm_obj</a> list</code></pre>
+<div class="info"><div class="info">Return the registered objects</div></div>
+<pre><span class="METHODregister"><span class="keyword">method</span> register</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netsys_pmanage&amp;type=pm_obj">pm_obj</a> list -&gt; unit</code></pre>
+<div class="info"><div class="info">Mass-register a list of objects</div></div>
+<pre><span class="METHODunlink"><span class="keyword">method</span> unlink</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Delete all registered objects</div></div></div></div>
+<pre><span class="VALpmanage"><span class="keyword">val</span> pmanage</span> : <code class="type">string -&gt; <a href="?package=ocamlnet&amp;module=Netsys_pmanage&amp;type=pmanage">pmanage</a></code></pre><div class="info"><div class="info">Create a new manager for persistent kernel objects. The data is stored
+      in a text file whose path is passed to this function. If the file already
+      exists, it is opened and used. If the file does not exist yet, an
+      empty manager will be created.<br/>      This function can be safely used from several threads and several
+      processes.</div></div>
+<pre><span class="VALfake_pmanage"><span class="keyword">val</span> fake_pmanage</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Netsys_pmanage&amp;type=pmanage">pmanage</a></code></pre><div class="info"><div class="info">A pseudo manager that does not save anything to a text file</div></div>
+<pre><span class="VALunlink_this"><span class="keyword">val</span> unlink_this</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_pmanage&amp;type=pm_obj">pm_obj</a> -&gt; unit</code></pre><div class="info"><div class="info">Unlinks this object</div></div>
+</div>

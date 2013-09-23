@@ -1,0 +1,65 @@
+<div class="ocaml_toplevel_module"><pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre>
+<pre><span class="TYPEre"><span class="keyword">type</span> re</span> </pre>
+<pre><span class="TYPEsubstrings"><span class="keyword">type</span> substrings</span> </pre>
+<pre><span class="VALcompile"><span class="keyword">val</span> compile</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a> -&gt; <a href="?package=re&amp;module=Re&amp;type=re">re</a></code></pre>
+<pre><span class="VALexec"><span class="keyword">val</span> exec</span> : <code class="type">?pos:int -&gt; ?len:int -&gt; <a href="?package=re&amp;module=Re&amp;type=re">re</a> -&gt; string -&gt; <a href="?package=re&amp;module=Re&amp;type=substrings">substrings</a></code></pre>
+<pre><span class="VALexecp"><span class="keyword">val</span> execp</span> : <code class="type">?pos:int -&gt; ?len:int -&gt; <a href="?package=re&amp;module=Re&amp;type=re">re</a> -&gt; string -&gt; bool</code></pre>
+<pre><span class="VALexec_partial"><span class="keyword">val</span> exec_partial</span> : <code class="type">?pos:int -&gt; ?len:int -&gt; <a href="?package=re&amp;module=Re&amp;type=re">re</a> -&gt; string -&gt; [ `Full | `Mismatch | `Partial ]</code></pre>
+<pre><span class="VALget"><span class="keyword">val</span> get</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=substrings">substrings</a> -&gt; int -&gt; string</code></pre>
+<pre><span class="VALget_ofs"><span class="keyword">val</span> get_ofs</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=substrings">substrings</a> -&gt; int -&gt; int * int</code></pre>
+<pre><span class="VALget_all"><span class="keyword">val</span> get_all</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=substrings">substrings</a> -&gt; string array</code></pre>
+<pre><span class="VALget_all_ofs"><span class="keyword">val</span> get_all_ofs</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=substrings">substrings</a> -&gt; (int * int) array</code></pre>
+<pre><span class="VALtest"><span class="keyword">val</span> test</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=substrings">substrings</a> -&gt; int -&gt; bool</code></pre>
+<pre><span class="VALstr"><span class="keyword">val</span> str</span> : <code class="type">string -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALchar"><span class="keyword">val</span> char</span> : <code class="type">char -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALalt"><span class="keyword">val</span> alt</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a> list -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALseq"><span class="keyword">val</span> seq</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a> list -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALempty"><span class="keyword">val</span> empty</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALepsilon"><span class="keyword">val</span> epsilon</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALrep"><span class="keyword">val</span> rep</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a> -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALrep1"><span class="keyword">val</span> rep1</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a> -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALrepn"><span class="keyword">val</span> repn</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a> -&gt; int -&gt; int option -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALopt"><span class="keyword">val</span> opt</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a> -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALbol"><span class="keyword">val</span> bol</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALeol"><span class="keyword">val</span> eol</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALbow"><span class="keyword">val</span> bow</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALeow"><span class="keyword">val</span> eow</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALbos"><span class="keyword">val</span> bos</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALeos"><span class="keyword">val</span> eos</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALleol"><span class="keyword">val</span> leol</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALstart"><span class="keyword">val</span> start</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALstop"><span class="keyword">val</span> stop</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALword"><span class="keyword">val</span> word</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a> -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALnot_boundary"><span class="keyword">val</span> not_boundary</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALlongest"><span class="keyword">val</span> longest</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a> -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALshortest"><span class="keyword">val</span> shortest</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a> -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALfirst"><span class="keyword">val</span> first</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a> -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALgreedy"><span class="keyword">val</span> greedy</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a> -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALnon_greedy"><span class="keyword">val</span> non_greedy</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a> -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALgroup"><span class="keyword">val</span> group</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a> -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALno_group"><span class="keyword">val</span> no_group</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a> -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALnest"><span class="keyword">val</span> nest</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a> -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALset"><span class="keyword">val</span> set</span> : <code class="type">string -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALrg"><span class="keyword">val</span> rg</span> : <code class="type">char -&gt; char -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALinter"><span class="keyword">val</span> inter</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a> list -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALdiff"><span class="keyword">val</span> diff</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a> -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a> -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALcompl"><span class="keyword">val</span> compl</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a> list -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALany"><span class="keyword">val</span> any</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALnotnl"><span class="keyword">val</span> notnl</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALalnum"><span class="keyword">val</span> alnum</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALalpha"><span class="keyword">val</span> alpha</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALascii"><span class="keyword">val</span> ascii</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALblank"><span class="keyword">val</span> blank</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALcntrl"><span class="keyword">val</span> cntrl</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALdigit"><span class="keyword">val</span> digit</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALgraph"><span class="keyword">val</span> graph</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALlower"><span class="keyword">val</span> lower</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALprint"><span class="keyword">val</span> print</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALpunct"><span class="keyword">val</span> punct</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALspace"><span class="keyword">val</span> space</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALupper"><span class="keyword">val</span> upper</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALxdigit"><span class="keyword">val</span> xdigit</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALcase"><span class="keyword">val</span> case</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a> -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALno_case"><span class="keyword">val</span> no_case</span> : <code class="type"><a href="?package=re&amp;module=Re&amp;type=t">t</a> -&gt; <a href="?package=re&amp;module=Re&amp;type=t">t</a></code></pre>
+<pre><span class="VALprint_re"><span class="keyword">val</span> print_re</span> : <code class="type"><a href="?package=ocaml&amp;module=Format&amp;type=formatter">Format.formatter</a> -&gt; <a href="?package=re&amp;module=Re&amp;type=re">re</a> -&gt; unit</code></pre>
+</div>

@@ -1,0 +1,41 @@
+<div class="ocaml_toplevel_module"><div class="info">This is an interface for the Simple Mail Tranfer Protocol (SMTP)
+ as specified by RFC 2821.</div>
+<pre><span class="EXCEPTIONProtocol_error"><span class="keyword">exception</span> Protocol_error</span></pre>
+<pre><span class="EXCEPTIONTransient_error"><span class="keyword">exception</span> Transient_error</span> <span class="keyword">of</span> <code class="type">int * string</code></pre>
+<pre><span class="EXCEPTIONPermanent_error"><span class="keyword">exception</span> Permanent_error</span> <span class="keyword">of</span> <code class="type">int * string</code></pre>
+<pre><span class="VALtcp_port"><span class="keyword">val</span> tcp_port</span> : <code class="type">int</code></pre><div class="info"><div class="info">default TCP port for SMTP</div></div>
+<div class="info"><div class="info">The class <code class="code">client</code> implements the SMTP protocol.  Client objects are created
+ by
+ <pre class="codepre"><code class="code"> new client in_ch out_ch</code></pre>
+ where <code class="code">in_ch</code> is an input channel representing the input direction of the
+ TCP stream, and where <code class="code">out_ch</code> is an output channel representing the output
+ direction of the TCP stream.</div></div>
+<div class="ocaml_class sig" name="client"><pre><span class="TYPEclient"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netsmtp&amp;class=client">client</a></span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netchannels&amp;type=out_obj_channel">Netchannels.out_obj_channel</a> -&gt; <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=in_obj_channel">Netchannels.in_obj_channel</a> -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><pre><span class="METHODhelo"><span class="keyword">method</span> helo</span> : <code class="code">?host:string -&gt; unit -&gt; string list</code></pre>
+<div class="info"><div class="info">Sends an HELLO command to the server.  the optionnal argument <code class="code">?host</code>
+ defaults to the default hostname of the machine.  This function returns
+ the ESMTP lines returned by the server.</div></div>
+<pre><span class="METHODmail"><span class="keyword">method</span> mail</span> : <code class="code">string -&gt; unit</code></pre>
+<div class="info"><div class="info">Performs a MAIL FROM command.  the <code class="code">string</code> argument is the mail address
+ (without &lt; &gt;) that sends the mail.</div></div>
+<pre><span class="METHODrcpt"><span class="keyword">method</span> rcpt</span> : <code class="code">string -&gt; unit</code></pre>
+<div class="info"><div class="info">Performs a RCPT TO command.  the <code class="code">string</code> argument is one of the mail
+ address the mail has to be sent to.  You have to use that function for
+ each recipient of the mail.<br/> If the server returns a 551 error (user relocated, see RFC 2821, section
+ 3.4), the relocated adress is silently used, and the error is not raised</div></div>
+<pre><span class="METHODdata"><span class="keyword">method</span> data</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netchannels&amp;type=in_obj_channel">Netchannels.in_obj_channel</a> -&gt; unit</code></pre>
+<div class="info"><div class="info">This method really send the mail.
+ Do not issue that command without having used <code class="code">mail</code> once, and at least
+ <code class="code">rcpt</code> once too</div></div>
+<pre><span class="METHODrset"><span class="keyword">method</span> rset</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Reset the current transaction</div></div>
+<pre><span class="METHODexpn"><span class="keyword">method</span> expn</span> : <code class="code">string -&gt; string list option</code></pre>
+<div class="info"><div class="info">Expand command : <code class="code">expn list</code> will try to expand the Mailing list
+ <code class="code">list</code>.  If the list cannot be Expanded (reply 252) then <code class="code">None</code> is
+ returned.</div></div>
+<pre><span class="METHODhelp"><span class="keyword">method</span> help</span> : <code class="code">unit -&gt; string list</code></pre>
+<div class="info"><div class="info">Performs the Help command.  Returns the server multiline answer.</div></div>
+<pre><span class="METHODnoop"><span class="keyword">method</span> noop</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">NOOP : does nothing, keeps the connection alive.</div></div>
+<pre><span class="METHODquit"><span class="keyword">method</span> quit</span> : <code class="code">unit -&gt; unit</code></pre>
+<div class="info"><div class="info">Requests the server to end this session.</div></div></div></div>
+</div>

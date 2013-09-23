@@ -1,0 +1,47 @@
+<div class="ocaml_toplevel_module"><div class="info">GSS-API for RPC authentication</div>
+<pre><span class="TYPEuser_name_format"><span class="keyword">type</span> user_name_format</span> = <code class="type">[ `Exported_name | `Plain_name | `Prefixed_name ]</code></pre><div class="info"><div class="info">What to return as user name:<ul><li><code class="code">`Exported_name</code>: the exported name in binary format (as described
+        in RFC 2078, section 3.2). This format can only be read back by
+        the <code class="code">gss_api</code> object generating the name.</li><li><code class="code">`Prefixed_name</code>: the display name in a text format
+        &quot;<code class="code">{&lt;oid&gt;}&lt;namestring&gt;</code>&quot;.</li><li><code class="code">`Plain_name</code>: the string part of the display name
+   </li></ul></div></div>
+<pre><span class="VALserver_auth_method"><span class="keyword">val</span> server_auth_method</span> : <code class="type">?require_privacy:bool -&gt;
+?require_integrity:bool -&gt;
+?shared_context:bool -&gt;
+?acceptor_cred:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=credential">Netgssapi.credential</a> -&gt;
+?user_name_format:<a href="?package=ocamlnet&amp;module=Rpc_auth_gssapi&amp;type=user_name_format">user_name_format</a> -&gt;
+?seq_number_window:int -&gt;
+<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=gss_api">Netgssapi.gss_api</a> -&gt; <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">Netgssapi.oid</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=auth_method">Rpc_server.auth_method</a></code></pre><div class="info"><div class="info">Creates an authentication method from a GSS-API interface.
+      The OID selects the desired authentication method.<br/>      Options:<ul><li><code class="code">require_privacy</code>: Whether the messages must be
+        encrypted. If not enabled, the server also accepts non-encrypted
+        messages that are authenticated via GSS-API.</li><li><code class="code">require_integrity</code>: Whether integrity checksums must be
+        included. If not enabled, the server also accepts non-signed
+        messages that are authenticated via GSS-API.</li><li><code class="code">shared_context</code>: Whether this method maintains only one
+        security context for all connections. By default,
+        each connection has a security context of its own. For UDP,
+        this option needs to be set, because each UDP request is
+        considered as creating a new connection.</li><li><code class="code">acceptor_cred</code>: Overrides the credentials of the server. By
+        default, it is left to <code class="code">gss_api</code> which credential is
+        assumed.</li><li><code class="code">user_name_format</code>: Defaults to <code class="code">`Prefixed_name</code>.</li><li><code class="code">seq_number_window</code>: If set, the server checks for replayed
+        requests. The integer is the length of the check window (see
+        RFC 2203 section 5.3.3.1). If omitted, no such checks are
+        performed (the default). 
+   </li></ul></div></div>
+<pre><span class="TYPEsupport_level"><span class="keyword">type</span> support_level</span> = <code class="type">[ `If_possible | `None | `Required ]</code></pre>
+<pre><span class="TYPEuser_name_interpretation"><span class="keyword">type</span> user_name_interpretation</span> = <code class="type">[ `Exported_name | `Plain_name of <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">Netgssapi.oid</a> | `Prefixed_name ]</code></pre>
+<pre><span class="VALclient_auth_method"><span class="keyword">val</span> client_auth_method</span> : <code class="type">?privacy:<a href="?package=ocamlnet&amp;module=Rpc_auth_gssapi&amp;type=support_level">support_level</a> -&gt;
+?integrity:<a href="?package=ocamlnet&amp;module=Rpc_auth_gssapi&amp;type=support_level">support_level</a> -&gt;
+?user_name_interpretation:<a href="?package=ocamlnet&amp;module=Rpc_auth_gssapi&amp;type=user_name_interpretation">user_name_interpretation</a> -&gt;
+<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=gss_api">Netgssapi.gss_api</a> -&gt; <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">Netgssapi.oid</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=auth_method">Rpc_client.auth_method</a></code></pre><div class="info"><div class="info">Creates an authentication method from a GSS-API interface.
+      The OID selects the desired authentication method.<br/>      Options:<ul><li><code class="code">privacy</code>: Selects whether messages are encrypted. If <code class="code">`Required</code>,
+        the authentication method fails if the GSS-API does not support
+        encryption, and it enables encryption if GSS-API supports it.
+        If <code class="code">`If_possible</code> encryption is enabled if GSS-API supports it
+        (the default). If <code class="code">`None</code>, the messages are not encrypted.</li><li><code class="code">integrity</code>: Selects whether messages are signed. If <code class="code">`Required</code>,
+        the authentication method fails if the GSS-API does not support
+        integrity protection, and it enables this feature if GSS-API supports
+        it. If <code class="code">`If_possible</code> integrity protection is enabled if GSS-API
+        supports it (the default). If <code class="code">`None</code>, the messages are not signed.</li><li><code class="code">user_name_format</code>: Defaults to <code class="code">`Prefixed_name</code>.
+   </li></ul></div></div>
+<div class="ocaml_module sig" name="Debug"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Rpc_auth_gssapi.Debug">Debug</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="VALenable"><span class="keyword">val</span> enable</span> : <code class="type">bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre></div></div>
+</div>

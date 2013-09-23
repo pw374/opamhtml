@@ -1,0 +1,192 @@
+<div class="ocaml_toplevel_module"><div class="info"><h1 id="1_TITLE">Netplex support</h1></div>
+<div class="info"><div class="info">The important function is <code class="code">nethttpd_factory</code>, see below. The
+    other functions are only needed for special effects.<br/>    An example is explained here:  <a href="#Netplex_intro.webserver">Netplex_intro.webserver</a></div></div>
+<pre><span class="TYPEconfig_log_error"><span class="keyword">type</span> config_log_error</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;type=request_info">Nethttpd_types.request_info</a> -&gt; string -&gt; unit</code></pre>
+<pre><span class="TYPEconfig_log_access"><span class="keyword">type</span> config_log_access</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;type=full_info">Nethttpd_types.full_info</a> -&gt; unit</code></pre>
+<pre><span class="TYPEconfig_error_response"><span class="keyword">type</span> config_error_response</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;type=error_response_params">Nethttpd_types.error_response_params</a> -&gt; string</code></pre><div class="info"><div class="info">Three type abbreviations for logging functions</div></div>
+<pre><span class="VALstd_log_error"><span class="keyword">val</span> std_log_error</span> : <code class="type">Netplex_types.container -&gt; <a href="?package=ocamlnet&amp;module=Nethttpd_plex&amp;type=config_log_error">config_log_error</a></code></pre><div class="info"><div class="info">Returns a function that logs errors using the <code class="code">log_subch</code> method of
+      the passed container</div></div>
+<pre><span class="VALstd_log_access"><span class="keyword">val</span> std_log_access</span> : <code class="type">?debug:bool -&gt; Netplex_types.container -&gt; <a href="?package=ocamlnet&amp;module=Nethttpd_plex&amp;type=config_log_access">config_log_access</a></code></pre><div class="info"><div class="info">Returns a function that logs accesses using the <code class="code">log_subch</code> method of
+      the passed container<br/>      If <code class="code">debug</code> is set, additional debug log messages are printed that
+      dump the whole access (incl. header and all available information)</div></div>
+<pre><span class="VALstd_error_response"><span class="keyword">val</span> std_error_response</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Nethttpd_plex&amp;type=config_error_response">config_error_response</a></code></pre><div class="info"><div class="info">A sample error response function</div></div>
+<pre><span class="VALrestrict_file_service_config"><span class="keyword">val</span> restrict_file_service_config</span> : <code class="type">Netplex_types.config_file -&gt; Netplex_types.address -&gt; unit</code></pre><div class="info"><div class="info">Restricts the subsections and paremeters in the <code class="code">service</code>
+      configuration section of type &quot;file&quot; to the allowed ones.</div></div>
+<pre><span class="VALread_file_service_config"><span class="keyword">val</span> read_file_service_config</span> : <code class="type">Netplex_types.config_file -&gt;
+Netplex_types.address -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Nethttpd_services&amp;type=file_service">Nethttpd_services.file_service</a></code></pre><div class="info"><div class="info"><code class="code">read_file_service_config cfg addr uri_path</code>: Reads the
+      <code class="code">service</code> configuration section of type &quot;file&quot; from config file
+      <code class="code">cfg</code> at address <code class="code">addr</code>.  <code class="code">uri_path</code> is the default value put
+      into the <code class="code">file_uri</code> component of the returned record if no &quot;uri&quot;
+      configuration parameter exists. (In other words, this is the
+      path of the enclosing &quot;uri&quot; section, or &quot;/&quot; if there is only
+      a &quot;host&quot; section.) All other parameters are only
+      taken from the configuration section. <br/>      See below at <code class="code">nethttpd_factory</code> how a file service needs to
+      be configured.</div></div>
+<pre><span class="VALrestrict_dynamic_service_config"><span class="keyword">val</span> restrict_dynamic_service_config</span> : <code class="type">Netplex_types.config_file -&gt; Netplex_types.address -&gt; unit</code></pre><div class="info"><div class="info">Restricts the subsections and paremeters in the <code class="code">service</code>
+      configuration section of type &quot;dynamic&quot; to the allowed ones.</div></div>
+<pre><span class="VALread_dynamic_service_config"><span class="keyword">val</span> read_dynamic_service_config</span> : <code class="type">(string *
+ (Netplex_types.config_file -&gt;
+  Netplex_types.address -&gt;
+  string -&gt; (#<a href="?package=ocamlnet&amp;module=Netcgi&amp;class=cgi_activation">Netcgi.cgi_activation</a> as 'a) <a href="?package=ocamlnet&amp;module=Nethttpd_services&amp;type=dynamic_service">Nethttpd_services.dynamic_service</a>))
+list -&gt;
+Netplex_types.config_file -&gt;
+Netplex_types.address -&gt; string -&gt; 'a <a href="?package=ocamlnet&amp;module=Nethttpd_services&amp;type=dynamic_service">Nethttpd_services.dynamic_service</a></code></pre><div class="info"><div class="info"><code class="code">read_dynamic_service_config handlers cfg addr uri_path</code>:
+      Reads the <code class="code">service</code> configuration section of type &quot;dynamic&quot; from config 
+      file <code class="code">cfg</code> at address <code class="code">addr</code>. The alist <code class="code">handlers</code> defines the
+      available handlers. Every handler <code class="code">h</code> is called like
+      <code class="code">h cfg addr uri_path</code>. <code class="code">uri_path</code> is like in <code class="code">read_file_service_config</code>,
+      i.e. the path of the enclosing &quot;uri&quot; section, or &quot;/&quot; by default.<br/>      The <code class="code">h</code> function has to return the dynamic service to use, which
+      is also returned by <code class="code">read_dynamic_service_config</code>.<br/>      See below at <code class="code">nethttpd_factory</code> how a dynamic service needs to
+      be configured.</div></div>
+<pre><span class="TYPEencap"><span class="keyword">type</span> encap</span> = <code class="type">[ `Engine | `Reactor ]</code></pre>
+<pre><span class="VALnethttpd_processor"><span class="keyword">val</span> nethttpd_processor</span> : <code class="type">?hooks:Netplex_types.processor_hooks -&gt;
+?encap:<a href="?package=ocamlnet&amp;module=Nethttpd_plex&amp;type=encap">encap</a> -&gt;
+(Netplex_types.container -&gt; #<a href="?package=ocamlnet&amp;module=Nethttpd_reactor&amp;class=http_reactor_config">Nethttpd_reactor.http_reactor_config</a>) -&gt;
+'a <a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;type=http_service">Nethttpd_types.http_service</a> -&gt; Netplex_types.processor</code></pre><div class="info"><div class="info"><code class="code">netplex_processor mk_config http_service</code>: Creates a Netplex processor
+ for Nethttpd.<br/> <code class="code">mk_config</code> determines the nethttpd config for a container.
+ This is especially useful for setting the logging functions.<br/> The resulting processor must be turned into a full Netplex service
+ by <code class="code">Netplex_sockserv.create_socket_service</code> which can then be added
+ by calling the controller's method <code class="code">add_service</code>.<br/> <code class="code">hooks</code>: One can pass a Netplex hook object to set the hooks of the
+ processor.<br/> <code class="code">encap</code>: Selects the encapsulation, <code class="code">`Reactor</code> or <code class="code">`Engine</code>. 
+ The default is <code class="code">`Reactor</code>. Each encapsulation has specific strengths
+ and weaknesses:<ul><li><code class="code">`Reactor</code> is simpler code. Also, the request and response bodies
+   need not to be buffered up, and are directly connected with the 
+   underlying socket (low memory requirement). The disadvantage is
+   that a reactor processes TCP connections serially (important to know
+   when there is only a single Unix process)</li><li><code class="code">`Engine</code>: The request body needs to be completely buffered up.
+   If pipelining is enabled, the response bodies are also buffered
+   (FIXME).
+   The advantage of this encapsulation is that the engine can
+   process multiple TCP connections simultaneously, even in a 
+   single process/thread.
+     </li></ul></div></div>
+<pre><span class="TYPEservice_factory"><span class="keyword">type</span> <code class="type">('a, 'b) </code>service_factory</span> = <code class="type">(string * (#<a href="?package=ocamlnet&amp;module=Netcgi&amp;class=cgi_activation">Netcgi.cgi_activation</a> as 'a) <a href="?package=ocamlnet&amp;module=Nethttpd_services&amp;type=dynamic_service">Nethttpd_services.dynamic_service</a>)
+list -&gt;
+Netplex_types.config_file -&gt;
+Netplex_types.address -&gt;
+string -&gt;
+[ `Dynamic_service of 'a <a href="?package=ocamlnet&amp;module=Nethttpd_services&amp;type=dynamic_service">Nethttpd_services.dynamic_service</a>
+| `File_service of <a href="?package=ocamlnet&amp;module=Nethttpd_services&amp;type=file_service">Nethttpd_services.file_service</a> ]
+<a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;type=http_service">Nethttpd_types.http_service</a></code></pre><div class="info"><div class="info">The service factory function is called when a <code class="code">service</code> configuration
+      section of a certain type needs to be read. The function has args
+      <code class="code">handlers</code>, <code class="code">cfg</code>, <code class="code">addr</code>, and <code class="code">uri_path</code>. It needs to return the
+      <code class="code">http_service</code>.<br/>      Such a function is usually <code class="code">read_file_service_config</code>, or
+      <code class="code">read_dynamic_service_config</code>, or a derivative, whose return
+      value is turned into a <code class="code">http_service</code>. This can be done with
+       <a href="#Nethttpd_services.file_service">Nethttpd_services.file_service</a> and
+       <a href="#Nethttpd_services.dynamic_service">Nethttpd_services.dynamic_service</a>.</div></div>
+<pre><span class="VALdefault_services"><span class="keyword">val</span> default_services</span> : <code class="type">(string *
+ (#<a href="?package=ocamlnet&amp;module=Netcgi&amp;class=cgi_activation">Netcgi.cgi_activation</a> as 'a,
+  [ `Dynamic_service of 'a <a href="?package=ocamlnet&amp;module=Nethttpd_services&amp;type=dynamic_service">Nethttpd_services.dynamic_service</a>
+  | `File_service of <a href="?package=ocamlnet&amp;module=Nethttpd_services&amp;type=file_service">Nethttpd_services.file_service</a> ])
+ <a href="?package=ocamlnet&amp;module=Nethttpd_plex&amp;type=service_factory">service_factory</a>)
+list</code></pre><div class="info"><div class="info">The default services</div></div>
+<pre><code><span class="TYPEhttpd_factory"><span class="keyword">type</span> httpd_factory</span> = {</code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELThttpd_factory.httpd_factory">httpd_factory</span> : <code class="type">'a.
+  (Netplex_types.container -&gt; <a href="?package=ocamlnet&amp;module=Nethttpd_reactor&amp;type=http_reactor_config">Nethttpd_reactor.http_reactor_config</a>) -&gt;
+  'a <a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;type=http_service">Nethttpd_types.http_service</a> -&gt; Netplex_types.processor</code>;</code></td></tr><tr><td>}</td></tr></table><div class="info"><div class="info">The type of the <code class="code">nethttpd_processor</code> function</div></div>
+<pre><span class="VALnethttpd_factory"><span class="keyword">val</span> nethttpd_factory</span> : <code class="type">?name:string -&gt;
+?hooks:Netplex_types.processor_hooks -&gt;
+?encap:<a href="?package=ocamlnet&amp;module=Nethttpd_plex&amp;type=encap">encap</a> -&gt;
+?config_cgi:<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=config">Netcgi.config</a> -&gt;
+?handlers:(string *
+           (#<a href="?package=ocamlnet&amp;module=Netcgi&amp;class=cgi_activation">Netcgi.cgi_activation</a> as 'a) <a href="?package=ocamlnet&amp;module=Nethttpd_services&amp;type=dynamic_service">Nethttpd_services.dynamic_service</a>)
+          list -&gt;
+?services:(string *
+           ('a,
+            [ `Dynamic_service of 'a <a href="?package=ocamlnet&amp;module=Nethttpd_services&amp;type=dynamic_service">Nethttpd_services.dynamic_service</a>
+            | `File_service of <a href="?package=ocamlnet&amp;module=Nethttpd_services&amp;type=file_service">Nethttpd_services.file_service</a> ])
+           <a href="?package=ocamlnet&amp;module=Nethttpd_plex&amp;type=service_factory">service_factory</a>)
+          list -&gt;
+?log_error:(Netplex_types.container -&gt; <a href="?package=ocamlnet&amp;module=Nethttpd_plex&amp;type=config_log_error">config_log_error</a>) -&gt;
+?log_access:(?debug:bool -&gt; Netplex_types.container -&gt; <a href="?package=ocamlnet&amp;module=Nethttpd_plex&amp;type=config_log_access">config_log_access</a>) -&gt;
+?error_response:<a href="?package=ocamlnet&amp;module=Nethttpd_plex&amp;type=config_error_response">config_error_response</a> -&gt;
+?processor_factory:<a href="?package=ocamlnet&amp;module=Nethttpd_plex&amp;type=httpd_factory">httpd_factory</a> -&gt; unit -&gt; Netplex_types.processor_factory</code></pre><div class="info"><div class="info">Factory for a web server component.<br/> <b>Configuration file.</b> Reads a configuration section like
+ <pre class="codepre"><code class="code">
+    processor {
+      type = &quot;nethttpd&quot;;          (* or what is passed as &quot;name&quot; arg *)
+      timeout = 300.0;
+      timeout_next_request = 15.0;
+      access_log = &quot;enabled&quot;;
+      suppress_broken_pipe = true;
+      host {
+        pref_name = &quot;myhost&quot;;     (* optional *)
+        pref_port = 80;           (* optional *)
+        names = &quot;myhost:80 yourhost:81&quot;;  (* use *:0 for any name *)
+        uri {
+          path = &quot;/the/path&quot;;
+          method {
+            allow = &quot;GET POST&quot;;
+            (* or: deny = &quot;...&quot; *)
+            service {
+              type = &quot;...&quot;;
+              ...
+            }
+          }
+        }
+        uri {
+          ...
+        }
+      }
+      host {
+        ...
+      }
+    }
+ </code></pre><br/> The <code class="code">access_log</code> parameter can be set to <code class="code">off</code>, <code class="code">enabled</code>, or <code class="code">debug</code>.
+ The default is <code class="code">off</code>. Access messages go to the &quot;access&quot; subchannel
+ of the component logger. If <code class="code">enabled</code>, one line is printed with the
+ most important data. If <code class="code">debug</code> is set, all access data are printed.<br/> If <code class="code">suppress_broken_pipe</code> the error &quot;Broken pipe&quot; is not logged
+ in the error log. This error occurs frequently, and may be regarded
+ as a normal condition.<br/> The sections <code class="code">host</code>, <code class="code">uri</code> and <code class="code">method</code> can be nested to any depth.
+ However, on every nesting level only one of these section types must be
+ used. For example, if a <code class="code">host</code> section already contains <code class="code">uri</code>
+ subsections, it is not allowed to add <code class="code">method</code> subsections.
+ Furthermore, the outermost section must be <code class="code">host</code>.<br/> The <code class="code">service</code> section may be one of (at least if the <code class="code">services</code>
+ parameter is not overridden):<br/> <pre class="codepre"><code class="code">
+    service {
+      type = &quot;file&quot;;
+      docroot = &quot;/a/path/in/the/filesystem&quot;;
+      uri = &quot;/the/uri/prefix/corresponding/to/docroot&quot;;
+      media_types_file = &quot;/etc/mime.types&quot;;
+      media_type {
+        type = &quot;application/foo&quot;;
+        suffix = &quot;foo&quot;
+      }
+      default_media_type = &quot;text/plain&quot;;
+      enable_gzip = true;   (* see doc in nethttpd_services.mli *)
+      index_files = &quot;index.html&quot;;
+      enable_listings = true;
+      hide_from_listings = &quot;README&quot;;   (* list of PCRE regexps *)
+    }
+ </code></pre><br/> Note that <code class="code">uri</code> is taken from the surrounding <code class="code">uri</code> section (or
+ assumed to be &quot;/&quot; if there is none) if omitted.<br/> <pre class="codepre"><code class="code">
+    service {
+      type = &quot;dynamic&quot;;
+      handler = &quot;name_of_handler&quot;;
+    }
+ </code></pre><br/> Binds the passed handler here.<br/> Any of <code class="code">host</code>, <code class="code">uri</code>, and <code class="code">method</code> sections may contain one or several
+ <code class="code">access</code> sections (which are AND-connected):<br/> <pre class="codepre"><code class="code">
+    access {
+      type = &quot;host&quot;;
+      allow = &quot;host1 host2 ...&quot;;
+      (* or deny = &quot;host1 host2 ...&quot;; *)
+    }
+ </code></pre><br/> Other access control methods are not yet available.<br/> The <code class="code">services</code> optional argument can be used to change the service
+ types understood. If not passed, it defaults to <code class="code">default_services</code>.
+ The default includes &quot;file&quot; and &quot;dynamic&quot;.<br/> <b>Arguments.</b><br/> - <code class="code">name</code>: The processor name. Defaults to &quot;nethttpd&quot;. This name can
+   be referenced by the &quot;type&quot; parameters in the <code class="code">processor</code> section
+   of the config file.<ul><li><code class="code">hooks</code>: One can pass a Netplex hook object to set the hooks of the
+   processor. (This argument is ignored if a <code class="code">processor_factory</code> is
+   passed to this function.)</li><li><code class="code">encap</code>: See  <a href="#Nethttpd_plex.nethttpd_processor">Nethttpd_plex.nethttpd_processor</a>. (This argument is
+   ignored if a <code class="code">processor_factory</code> is
+   passed to this function.)</li><li><code class="code">config_cgi</code>: The CGI configuration to use</li><li><code class="code">handlers</code>: a list of handler function. These functions can be
+   referenced from a <code class="code">service</code> section in the config file where
+   <code class="code">type=&quot;dynamic&quot;</code> (see example above). Defaults to the empty list.</li><li><code class="code">services</code>: A list of service handlers that can be used 
+   by <code class="code">service</code> sections in the config files. Defaults to
+    <a href="#Nethttpd_plex.default_services">Nethttpd_plex.default_services</a> which defines &quot;file&quot; and &quot;dynamic&quot;.</li><li><code class="code">log_error</code>: The error logger. Defaults to
+    <a href="#Nethttpd_plex.std_log_error">Nethttpd_plex.std_log_error</a>.</li><li><code class="code">log_access</code>: The access logger. Defaults to
+    <a href="#Nethttpd_plex.std_log_access">Nethttpd_plex.std_log_access</a>.</li><li><code class="code">error_response</code>: a handler which is invoked to generate error
+   responses. Defaults to  <a href="#Nethttpd_plex.std_error_response">Nethttpd_plex.std_error_response</a>.</li><li><code class="code">processor_factory</code>: the function creating the processor.
+   Default is <code class="code">nethttpd_processor</code>.
+   </li></ul></div></div>
+</div>

@@ -1,0 +1,69 @@
+<div class="ocaml_toplevel_module"><div class="info">Uniform Resource Identifier handling that is RFC3986-compliant.</div>
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">A single URI that is a compact sequence of characters that identifies
+    an abstract or physical resource.</div></div>
+<pre><span class="TYPEcomponent"><span class="keyword">type</span> component</span> = <code class="type">[ `Authority
+| `Fragment
+| `Host
+| `Path
+| `Query
+| `Query_key
+| `Query_value
+| `Scheme
+| `Userinfo ]</code></pre>
+<pre><span class="VALpct_encode"><span class="keyword">val</span> pct_encode</span> : <code class="type">?scheme:string -&gt; ?component:<a href="?package=uri&amp;module=Uri&amp;type=component">component</a> -&gt; string -&gt; string</code></pre><div class="info"><div class="info">Percent-encode a string. The <code class="code">scheme</code> argument defaults to 'http' and
+    the <code class="code">component</code> argument defaults to `Path</div></div>
+<pre><span class="VALpct_decode"><span class="keyword">val</span> pct_decode</span> : <code class="type">string -&gt; string</code></pre><div class="info"><div class="info">Percent-decode a percent-encoded string</div></div>
+<pre><span class="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -&gt; <a href="?package=uri&amp;module=Uri&amp;type=t">t</a></code></pre><div class="info"><div class="info">Convert a percent-encoded string into a URI structure</div></div>
+<pre><span class="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; string</code></pre><div class="info"><div class="info">Convert a URI structure into a percent-encoded URI string</div></div>
+<pre><span class="VALresolve"><span class="keyword">val</span> resolve</span> : <code class="type">string -&gt; <a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; <a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; <a href="?package=uri&amp;module=Uri&amp;type=t">t</a></code></pre><div class="info"><div class="info">Resolve a URI against a default scheme and base URI</div></div>
+<pre><span class="VALquery"><span class="keyword">val</span> query</span> : <code class="type"><a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; (string * string list) list</code></pre><div class="info"><div class="info">Get a query string from a URI</div></div>
+<pre><span class="VALencoded_of_query"><span class="keyword">val</span> encoded_of_query</span> : <code class="type">(string * string list) list -&gt; string</code></pre><div class="info"><div class="info">Make a percent-encoded query string from percent-decoded query tuple</div></div>
+<pre><span class="VALquery_of_encoded"><span class="keyword">val</span> query_of_encoded</span> : <code class="type">string -&gt; (string * string list) list</code></pre><div class="info"><div class="info">Parse a percent-encoded query string into a percent-decoded query tuple</div></div>
+<pre><span class="VALwith_query"><span class="keyword">val</span> with_query</span> : <code class="type"><a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; (string * string list) list -&gt; <a href="?package=uri&amp;module=Uri&amp;type=t">t</a></code></pre><div class="info"><div class="info">Replace the query URI with the supplied list.
+    Input URI is not modified</div></div>
+<pre><span class="VALwith_query'"><span class="keyword">val</span> with_query'</span> : <code class="type"><a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; (string * string) list -&gt; <a href="?package=uri&amp;module=Uri&amp;type=t">t</a></code></pre><div class="info"><div class="info">Replace the query URI with the supplied singleton query list.
+    Input URI is not modified</div></div>
+<pre><span class="VALget_query_param'"><span class="keyword">val</span> get_query_param'</span> : <code class="type"><a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; string -&gt; string list option</code></pre><div class="info"><div class="info"><code class="code">get_query_param' q key</code> returns the list of values for the
+    <code class="code">key</code> parameter in query <code class="code">q</code>.  Note that an empty list is not the
+    same as a <code class="code">None</code> return value.  For a query <code class="code">foo</code>, the mapping is:<ul><li><code class="code">/</code> returns None</li><li><code class="code">/?foo</code> returns Some []</li><li><code class="code">/?foo=</code> returns <code class="code">Some [&quot;&quot;]</code></li><li><code class="code">/?foo=bar</code> returns <code class="code">Some [&quot;bar&quot;]</code></li><li><code class="code">/?foo=bar,chi</code> returns <code class="code">Some [&quot;bar&quot;,&quot;chi&quot;]</code></li></ul>    Query keys can be duplicated in the URI, in which case the first
+    one is returned.  If you want to resolve duplicate keys, obtain
+    the full result set with  <a href="#query ">query </a> instead.</div></div>
+<pre><span class="VALget_query_param"><span class="keyword">val</span> get_query_param</span> : <code class="type"><a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; string -&gt; string option</code></pre><div class="info"><div class="info"><code class="code">get_query_param q key</code> returns the value found for a <code class="code">key</code> in
+     query <code class="code">q</code>.  If there are multiple values for the key, then the
+     first one is returned/</div></div>
+<pre><span class="VALadd_query_param"><span class="keyword">val</span> add_query_param</span> : <code class="type"><a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; string * string list -&gt; <a href="?package=uri&amp;module=Uri&amp;type=t">t</a></code></pre><div class="info"><div class="info">Add a query parameter to the input query URI.
+    Input URI is not modified</div></div>
+<pre><span class="VALadd_query_param'"><span class="keyword">val</span> add_query_param'</span> : <code class="type"><a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; string * string -&gt; <a href="?package=uri&amp;module=Uri&amp;type=t">t</a></code></pre><div class="info"><div class="info">Add a query parameter to the input singleton query URI.
+    Input URI is not modified</div></div>
+<pre><span class="VALadd_query_params"><span class="keyword">val</span> add_query_params</span> : <code class="type"><a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; (string * string list) list -&gt; <a href="?package=uri&amp;module=Uri&amp;type=t">t</a></code></pre><div class="info"><div class="info">Add a query parameter list to the input query URI.
+    Input URI is not modified</div></div>
+<pre><span class="VALadd_query_params'"><span class="keyword">val</span> add_query_params'</span> : <code class="type"><a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; (string * string) list -&gt; <a href="?package=uri&amp;module=Uri&amp;type=t">t</a></code></pre><div class="info"><div class="info">Add a query singleton parameter list to the input query URI.
+    Input URI is not modified</div></div>
+<pre><span class="VALremove_query_param"><span class="keyword">val</span> remove_query_param</span> : <code class="type"><a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; string -&gt; <a href="?package=uri&amp;module=Uri&amp;type=t">t</a></code></pre><div class="info"><div class="info">Remove a query key from the input query URI.
+    Input URI is not modified, and no error is generated if the
+    key does not already exist in the URI.</div></div>
+<pre><span class="VALmake"><span class="keyword">val</span> make</span> : <code class="type">?scheme:string -&gt;
+?userinfo:string -&gt;
+?host:string -&gt;
+?port:int -&gt;
+?path:string -&gt;
+?query:(string * string list) list -&gt; ?fragment:string -&gt; unit -&gt; <a href="?package=uri&amp;module=Uri&amp;type=t">t</a></code></pre>
+<pre><span class="VALpath"><span class="keyword">val</span> path</span> : <code class="type"><a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; string</code></pre><div class="info"><div class="info">Get the path component of a URI</div></div>
+<pre><span class="VALpath_and_query"><span class="keyword">val</span> path_and_query</span> : <code class="type"><a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; string</code></pre><div class="info"><div class="info">Get the path and query components of a URI</div></div>
+<pre><span class="VALwith_path"><span class="keyword">val</span> with_path</span> : <code class="type"><a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; string -&gt; <a href="?package=uri&amp;module=Uri&amp;type=t">t</a></code></pre><div class="info"><div class="info">Replace the path URI with the supplied path.
+ Input URI is not modified</div></div>
+<pre><span class="VALscheme"><span class="keyword">val</span> scheme</span> : <code class="type"><a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; string option</code></pre><div class="info"><div class="info">Get the scheme component of a URI</div></div>
+<pre><span class="VALuserinfo"><span class="keyword">val</span> userinfo</span> : <code class="type"><a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; string option</code></pre><div class="info"><div class="info">Get the userinfo component of a URI</div></div>
+<pre><span class="VALhost"><span class="keyword">val</span> host</span> : <code class="type"><a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; string option</code></pre><div class="info"><div class="info">Get the host component of a URI</div></div>
+<pre><span class="VALwith_host"><span class="keyword">val</span> with_host</span> : <code class="type"><a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; string option -&gt; <a href="?package=uri&amp;module=Uri&amp;type=t">t</a></code></pre><div class="info"><div class="info">Replace the host component of the URI.
+    Input URI is not modified.</div></div>
+<pre><span class="VALhost_with_default"><span class="keyword">val</span> host_with_default</span> : <code class="type">?default:string -&gt; <a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; string</code></pre><div class="info"><div class="info">Get the host component of a URI, with a default
+ supplied if one is not present</div></div>
+<pre><span class="VALport"><span class="keyword">val</span> port</span> : <code class="type"><a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; int option</code></pre><div class="info"><div class="info">Get the port component of a URI</div></div>
+<pre><span class="VALwith_port"><span class="keyword">val</span> with_port</span> : <code class="type"><a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; int option -&gt; <a href="?package=uri&amp;module=Uri&amp;type=t">t</a></code></pre><div class="info"><div class="info">Replace the port component of the URI with the supplied port.
+    Input URI is not modified</div></div>
+<pre><span class="VALfragment"><span class="keyword">val</span> fragment</span> : <code class="type"><a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; string option</code></pre><div class="info"><div class="info">Get the fragment component of a URI</div></div>
+<pre><span class="VALwith_fragment"><span class="keyword">val</span> with_fragment</span> : <code class="type"><a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; string option -&gt; <a href="?package=uri&amp;module=Uri&amp;type=t">t</a></code></pre><div class="info"><div class="info">Replace the fragment component of a URI with the supplied fragment.
+    Input URI is not modified</div></div>
+<pre><span class="VALpp_hum"><span class="keyword">val</span> pp_hum</span> : <code class="type"><a href="?package=ocaml&amp;module=Format&amp;type=formatter">Format.formatter</a> -&gt; <a href="?package=uri&amp;module=Uri&amp;type=t">t</a> -&gt; unit</code></pre>
+</div>

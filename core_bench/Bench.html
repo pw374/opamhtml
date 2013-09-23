@@ -1,0 +1,78 @@
+<div class="ocaml_toplevel_module"><div class="info"><div class="info">Simple example of using bench:
+    <code class="code">{
+      open Core.Std
+      open Core_bench.Std
+
+      let main () =
+        let t1 =
+          Bench.Test.create ~name:&quot;ArrayCreateInt1&quot; (fun () -&gt;
+            ignore (Array.create ~len:200 0))
+        in
+        let t2 =
+          Bench.Test.create ~name:&quot;ArrayCreateInt2&quot; (fun () -&gt;
+            ignore (Array.create ~len:300 0))
+        in
+        Command.run (Bench.make_command [t1; t2;])
+
+      let () = main ()
+    }</code><br/>    For default values of all the optional arguments, see the module called <code class="code">Defaults</code> in
+    bench_main.ml.<br/>    For some notes on the design space of bench and TODO items, see:
+    http://docs/programming/performance/benchmarking.html</div></div>
+<div class="ocaml_module sig" name="Test"><pre><span class="keyword">module</span> <a href="?package=core_bench&amp;module=Bench.Test">Test</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">name:string -&gt; (unit -&gt; unit) -&gt; <a href="?package=core_bench&amp;module=Bench.Test&amp;type=t">t</a></code></pre>
+<pre><span class="VALcreate_indexed"><span class="keyword">val</span> create_indexed</span> : <code class="type">name:string -&gt;
+args:int list -&gt; (int -&gt; (unit -&gt; unit) <a href="?package=core&amp;module=Std.Staged&amp;type=t">Core.Std.Staged.t</a>) -&gt; <a href="?package=core_bench&amp;module=Bench.Test&amp;type=t">t</a></code></pre></div></div>
+<div class="ocaml_module sig" name="Column"><pre><span class="keyword">module</span> <a href="?package=core_bench&amp;module=Bench.Column">Column</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type">[ `Allocated
+| `Confidence
+| `Cycles
+| `GC
+| `Name
+| `Nanos
+| `Percentage
+| `Samples
+| `Speedup ]</code></pre><div class="info"><div class="info">The documentation for this type is in the implementation, as documentation for the
+      command line flags created by <code class="code">make_command</code>.</div></div>
+<pre><span class="VALt_of_sexp"><span class="keyword">val</span> t_of_sexp</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; <a href="?package=core_bench&amp;module=Bench.Column&amp;type=t">t</a></code></pre>
+<pre><span class="VAL__t_of_sexp__"><span class="keyword">val</span> __t_of_sexp__</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; <a href="?package=core_bench&amp;module=Bench.Column&amp;type=t">t</a></code></pre>
+<pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type"><a href="?package=core_bench&amp;module=Bench.Column&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre></div></div>
+<div class="ocaml_module sig" name="Variable"><pre><span class="keyword">module</span> <a href="?package=core_bench&amp;module=Bench.Variable">Variable</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type">[ `Compactions
+| `Cycles
+| `Major_allocated
+| `Major_collections
+| `Minor_allocated
+| `Minor_collections
+| `Nanos
+| `One
+| `Promoted
+| `Runs ]</code></pre>
+<pre><span class="VALt_of_sexp"><span class="keyword">val</span> t_of_sexp</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; <a href="?package=core_bench&amp;module=Bench.Variable&amp;type=t">t</a></code></pre>
+<pre><span class="VAL__t_of_sexp__"><span class="keyword">val</span> __t_of_sexp__</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; <a href="?package=core_bench&amp;module=Bench.Variable&amp;type=t">t</a></code></pre>
+<pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type"><a href="?package=core_bench&amp;module=Bench.Variable&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre></div></div>
+<pre><span class="VALbench"><span class="keyword">val</span> bench</span> : <code class="type">?limit_width_to:int -&gt;
+?columns:[ `Allocated
+         | `Confidence
+         | `Cycles
+         | `GC
+         | `If_not_empty of <a href="?package=core_bench&amp;module=Bench.Column&amp;type=t">Column.t</a>
+         | `Name
+         | `Nanos
+         | `Percentage
+         | `Samples
+         | `Speedup ] list -&gt;
+?display:<a href="?package=textutils&amp;module=Ascii_table.Display&amp;type=t">Textutils.Ascii_table.Display.t</a> -&gt;
+?ascii_table:bool -&gt;
+?ci_absolute:bool -&gt;
+?verbosity:[ `High | `Low ] -&gt;
+?no_compactions:bool -&gt;
+?save_sample_data:bool -&gt;
+?time_quota:<a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a> -&gt;
+?sampling_type:[ `Geometric of float | `Linear of int ] -&gt;
+?stabilize_gc_between_runs:bool -&gt;
+?predictors:<a href="?package=core_bench&amp;module=Bench.Variable&amp;type=t">Variable.t</a> list -&gt;
+?fork_each_benchmark:bool -&gt; <a href="?package=core_bench&amp;module=Bench.Test&amp;type=t">Test.t</a> list -&gt; unit</code></pre><div class="info"><div class="info">The documentation for all of these arguments is in the implementation, as
+    documentation for the command line flags created by <code class="code">make_command</code>.</div></div>
+<pre><span class="VALmake_command"><span class="keyword">val</span> make_command</span> : <code class="type"><a href="?package=core_bench&amp;module=Bench.Test&amp;type=t">Test.t</a> list -&gt; <a href="?package=core&amp;module=Std.Command&amp;type=t">Core.Std.Command.t</a></code></pre>
+</div>

@@ -1,0 +1,89 @@
+<div class="ocaml_toplevel_module"><div class="info">System interface.</div>
+<pre><span class="VALargv"><span class="keyword">val</span> argv</span> : <code class="type">string array</code></pre><div class="info"><div class="info">The command line arguments given to the process.
+   The first element is the command name used to invoke the program.
+   The following elements are the command-line arguments
+   given to the program.</div></div>
+<pre><span class="VALexecutable_name"><span class="keyword">val</span> executable_name</span> : <code class="type">string</code></pre><div class="info"><div class="info">The name of the file containing the executable currently running.</div></div>
+<pre><span class="VALfile_exists"><span class="keyword">val</span> file_exists</span> : <code class="type">string -&gt; bool</code></pre><div class="info"><div class="info">Test if a file with the given name exists.</div></div>
+<pre><span class="VALis_directory"><span class="keyword">val</span> is_directory</span> : <code class="type">string -&gt; bool</code></pre><div class="info"><div class="info">Returns <code class="code">true</code> if the given name refers to a directory,
+    <code class="code">false</code> if it refers to another kind of file.
+    Raise <code class="code">Sys_error</code> if no file exists with the given name. <b>Since</b> 3.10.0</div></div>
+<pre><span class="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">string -&gt; unit</code></pre><div class="info"><div class="info">Remove the given file name from the file system.</div></div>
+<pre><span class="VALrename"><span class="keyword">val</span> rename</span> : <code class="type">string -&gt; string -&gt; unit</code></pre><div class="info"><div class="info">Rename a file. The first argument is the old name and the
+   second is the new name. If there is already another file
+   under the new name, <code class="code">rename</code> may replace it, or raise an
+   exception, depending on your operating system.</div></div>
+<pre><span class="VALgetenv"><span class="keyword">val</span> getenv</span> : <code class="type">string -&gt; string</code></pre><div class="info"><div class="info">Return the value associated to a variable in the process
+   environment. Raise <code class="code">Not_found</code> if the variable is unbound.</div></div>
+<pre><span class="VALcommand"><span class="keyword">val</span> command</span> : <code class="type">string -&gt; int</code></pre><div class="info"><div class="info">Execute the given shell command and return its exit code.</div></div>
+<pre><span class="VALtime"><span class="keyword">val</span> time</span> : <code class="type">unit -&gt; float</code></pre><div class="info"><div class="info">Return the processor time, in seconds, used by the program
+   since the beginning of execution.</div></div>
+<pre><span class="VALchdir"><span class="keyword">val</span> chdir</span> : <code class="type">string -&gt; unit</code></pre><div class="info"><div class="info">Change the current working directory of the process.</div></div>
+<pre><span class="VALgetcwd"><span class="keyword">val</span> getcwd</span> : <code class="type">unit -&gt; string</code></pre><div class="info"><div class="info">Return the current working directory of the process.</div></div>
+<pre><span class="VALreaddir"><span class="keyword">val</span> readdir</span> : <code class="type">string -&gt; string array</code></pre><div class="info"><div class="info">Return the names of all files present in the given directory.
+   Names denoting the current directory and the parent directory
+   (<code class="code">&quot;.&quot;</code> and <code class="code">&quot;..&quot;</code> in Unix) are not returned.  Each string in the
+   result is a file name rather than a complete path.  There is no
+   guarantee that the name strings in the resulting array will appear
+   in any specific order; they are not, in particular, guaranteed to
+   appear in alphabetical order.</div></div>
+<pre><span class="VALinteractive"><span class="keyword">val</span> interactive</span> : <code class="type">bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">This reference is initially set to <code class="code">false</code> in standalone
+   programs and to <code class="code">true</code> if the code is being executed under
+   the interactive toplevel system <code class="code">ocaml</code>.</div></div>
+<pre><span class="VALos_type"><span class="keyword">val</span> os_type</span> : <code class="type">string</code></pre><div class="info"><div class="info">Operating system currently executing the OCaml program. One of<ul><li> <code class="code">&quot;Unix&quot;</code> (for all Unix versions, including Linux and Mac OS X),</li><li> <code class="code">&quot;Win32&quot;</code> (for MS-Windows, OCaml compiled with MSVC++ or Mingw),</li><li> <code class="code">&quot;Cygwin&quot;</code> (for MS-Windows, OCaml compiled with Cygwin). </li></ul></div></div>
+<pre><span class="VALunix"><span class="keyword">val</span> unix</span> : <code class="type">bool</code></pre><div class="info"><div class="info">True if <code class="code">Sys.os_type = &quot;Unix&quot;</code>. <b>Since</b> 4.01.0</div></div>
+<pre><span class="VALwin32"><span class="keyword">val</span> win32</span> : <code class="type">bool</code></pre><div class="info"><div class="info">True if <code class="code">Sys.os_type = &quot;Win32&quot;</code>. <b>Since</b> 4.01.0</div></div>
+<pre><span class="VALcygwin"><span class="keyword">val</span> cygwin</span> : <code class="type">bool</code></pre><div class="info"><div class="info">True if <code class="code">Sys.os_type = &quot;Cygwin&quot;</code>. <b>Since</b> 4.01.0</div></div>
+<pre><span class="VALword_size"><span class="keyword">val</span> word_size</span> : <code class="type">int</code></pre><div class="info"><div class="info">Size of one word on the machine currently executing the OCaml
+   program, in bits: 32 or 64.</div></div>
+<pre><span class="VALbig_endian"><span class="keyword">val</span> big_endian</span> : <code class="type">bool</code></pre><div class="info"><div class="info">Whether the machine currently executing the Caml program is big-endian. <b>Since</b> 4.00.0</div></div>
+<pre><span class="VALmax_string_length"><span class="keyword">val</span> max_string_length</span> : <code class="type">int</code></pre><div class="info"><div class="info">Maximum length of a string.</div></div>
+<pre><span class="VALmax_array_length"><span class="keyword">val</span> max_array_length</span> : <code class="type">int</code></pre><div class="info"><div class="info">Maximum length of a normal array.  The maximum length of a float
+    array is <code class="code">max_array_length/2</code> on 32-bit machines and
+    <code class="code">max_array_length</code> on 64-bit machines.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Signal handling</h6></div></div>
+<pre><code><span class="TYPEsignal_behavior"><span class="keyword">type</span> signal_behavior</span> = </code></pre><table class="typetable">
+		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsignal_behavior.Signal_default"><span class="constructor">Signal_default</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsignal_behavior.Signal_ignore"><span class="constructor">Signal_ignore</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsignal_behavior.Signal_handle"><span class="constructor">Signal_handle</span></span> <span class="keyword">of</span> <code class="type">int -&gt; unit</code></code></td><td class="typefieldcomment" align="left"/></tr></table><div class="info"><div class="info">What to do when receiving a signal:<ul><li><code class="code">Signal_default</code>: take the default behavior
+     (usually: abort the program)</li><li><code class="code">Signal_ignore</code>: ignore the signal</li><li><code class="code">Signal_handle f</code>: call function <code class="code">f</code>, giving it the signal
+   number as argument. </li></ul></div></div>
+<pre><span class="VALsignal"><span class="keyword">val</span> signal</span> : <code class="type">int -&gt; <a href="?package=ocaml&amp;module=Sys&amp;type=signal_behavior">signal_behavior</a> -&gt; <a href="?package=ocaml&amp;module=Sys&amp;type=signal_behavior">signal_behavior</a></code></pre><div class="info"><div class="info">Set the behavior of the system on receipt of a given signal.  The
+   first argument is the signal number.  Return the behavior
+   previously associated with the signal. If the signal number is
+   invalid (or not available on your system), an <code class="code">Invalid_argument</code>
+   exception is raised.</div></div>
+<pre><span class="VALset_signal"><span class="keyword">val</span> set_signal</span> : <code class="type">int -&gt; <a href="?package=ocaml&amp;module=Sys&amp;type=signal_behavior">signal_behavior</a> -&gt; unit</code></pre><div class="info"><div class="info">Same as  <a href="#Sys.signal">Sys.signal</a> but return value is ignored.</div></div>
+<div class="info"><div class="info"><div class="h7">Signal numbers for the standard POSIX signals.</div></div></div>
+<pre><span class="VALsigabrt"><span class="keyword">val</span> sigabrt</span> : <code class="type">int</code></pre><div class="info"><div class="info">Abnormal termination</div></div>
+<pre><span class="VALsigalrm"><span class="keyword">val</span> sigalrm</span> : <code class="type">int</code></pre><div class="info"><div class="info">Timeout</div></div>
+<pre><span class="VALsigfpe"><span class="keyword">val</span> sigfpe</span> : <code class="type">int</code></pre><div class="info"><div class="info">Arithmetic exception</div></div>
+<pre><span class="VALsighup"><span class="keyword">val</span> sighup</span> : <code class="type">int</code></pre><div class="info"><div class="info">Hangup on controlling terminal</div></div>
+<pre><span class="VALsigill"><span class="keyword">val</span> sigill</span> : <code class="type">int</code></pre><div class="info"><div class="info">Invalid hardware instruction</div></div>
+<pre><span class="VALsigint"><span class="keyword">val</span> sigint</span> : <code class="type">int</code></pre><div class="info"><div class="info">Interactive interrupt (ctrl-C)</div></div>
+<pre><span class="VALsigkill"><span class="keyword">val</span> sigkill</span> : <code class="type">int</code></pre><div class="info"><div class="info">Termination (cannot be ignored)</div></div>
+<pre><span class="VALsigpipe"><span class="keyword">val</span> sigpipe</span> : <code class="type">int</code></pre><div class="info"><div class="info">Broken pipe</div></div>
+<pre><span class="VALsigquit"><span class="keyword">val</span> sigquit</span> : <code class="type">int</code></pre><div class="info"><div class="info">Interactive termination</div></div>
+<pre><span class="VALsigsegv"><span class="keyword">val</span> sigsegv</span> : <code class="type">int</code></pre><div class="info"><div class="info">Invalid memory reference</div></div>
+<pre><span class="VALsigterm"><span class="keyword">val</span> sigterm</span> : <code class="type">int</code></pre><div class="info"><div class="info">Termination</div></div>
+<pre><span class="VALsigusr1"><span class="keyword">val</span> sigusr1</span> : <code class="type">int</code></pre><div class="info"><div class="info">Application-defined signal 1</div></div>
+<pre><span class="VALsigusr2"><span class="keyword">val</span> sigusr2</span> : <code class="type">int</code></pre><div class="info"><div class="info">Application-defined signal 2</div></div>
+<pre><span class="VALsigchld"><span class="keyword">val</span> sigchld</span> : <code class="type">int</code></pre><div class="info"><div class="info">Child process terminated</div></div>
+<pre><span class="VALsigcont"><span class="keyword">val</span> sigcont</span> : <code class="type">int</code></pre><div class="info"><div class="info">Continue</div></div>
+<pre><span class="VALsigstop"><span class="keyword">val</span> sigstop</span> : <code class="type">int</code></pre><div class="info"><div class="info">Stop</div></div>
+<pre><span class="VALsigtstp"><span class="keyword">val</span> sigtstp</span> : <code class="type">int</code></pre><div class="info"><div class="info">Interactive stop</div></div>
+<pre><span class="VALsigttin"><span class="keyword">val</span> sigttin</span> : <code class="type">int</code></pre><div class="info"><div class="info">Terminal read from background process</div></div>
+<pre><span class="VALsigttou"><span class="keyword">val</span> sigttou</span> : <code class="type">int</code></pre><div class="info"><div class="info">Terminal write from background process</div></div>
+<pre><span class="VALsigvtalrm"><span class="keyword">val</span> sigvtalrm</span> : <code class="type">int</code></pre><div class="info"><div class="info">Timeout in virtual time</div></div>
+<pre><span class="VALsigprof"><span class="keyword">val</span> sigprof</span> : <code class="type">int</code></pre><div class="info"><div class="info">Profiling interrupt</div></div>
+<pre><span class="EXCEPTIONBreak"><span class="keyword">exception</span> Break</span></pre><div class="info"><div class="info">Exception raised on interactive interrupt if  <a href="#Sys.catch_break">Sys.catch_break</a>
+   is on.</div></div>
+<pre><span class="VALcatch_break"><span class="keyword">val</span> catch_break</span> : <code class="type">bool -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">catch_break</code> governs whether interactive interrupt (ctrl-C)
+   terminates the program or raises the <code class="code">Break</code> exception.
+   Call <code class="code">catch_break true</code> to enable raising <code class="code">Break</code>,
+   and <code class="code">catch_break false</code> to let the system
+   terminate the program on user interrupt.</div></div>
+<pre><span class="VALocaml_version"><span class="keyword">val</span> ocaml_version</span> : <code class="type">string</code></pre><div class="info"><div class="info"><code class="code">ocaml_version</code> is the version of OCaml.
+    It is a string of the form <code class="code">&quot;major.minor[.patchlevel][+additional-info]&quot;</code>,
+    where <code class="code">major</code>, <code class="code">minor</code>, and <code class="code">patchlevel</code> are integers, and
+    <code class="code">additional-info</code> is an arbitrary string. The <code class="code">[.patchlevel]</code> and
+    <code class="code">[+additional-info]</code> parts may be absent.</div></div>
+</div>

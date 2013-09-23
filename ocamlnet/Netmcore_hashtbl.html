@@ -1,0 +1,62 @@
+<div class="ocaml_toplevel_module"><div class="info">Shared hashtables</div>
+<div class="info"><div class="info">This is a shared memory version of <code class="code">Hashtbl</code>. Note that the degree
+    of parallelization is quite restricted - practically all operations
+    need to be serialized (with the exception of the &quot;ro&quot; variants).</div></div>
+<pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b, 'h) </code>t</span> </pre><div class="info"><div class="info">The type of hash tables from type <code class="code">'a</code> to type <code class="code">'b</code> and a
+    header of type <code class="code">'h</code></div></div>
+<pre><span class="TYPEt_descr"><span class="keyword">type</span> <code class="type">('a, 'b, 'h) </code>t_descr</span> </pre><div class="info"><div class="info">The marshallable descriptor of a shared hash table</div></div>
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; 'h -&gt; ('a, 'b, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_hashtbl&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">Hashtbl.create pool h</code> creates a new, empty hash table in <code class="code">pool</code>
+    with a header <code class="code">h</code>.</div></div>
+<pre><span class="VALclear"><span class="keyword">val</span> clear</span> : <code class="type">('a, 'b, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_hashtbl&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Empty a hash table.</div></div>
+<pre><span class="VALadd"><span class="keyword">val</span> add</span> : <code class="type">('a, 'b, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_hashtbl&amp;type=t">t</a> -&gt; 'a -&gt; 'b -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">add tbl x y</code> adds a binding of <code class="code">x</code> to <code class="code">y</code> in table <code class="code">tbl</code>.
+   Previous bindings for <code class="code">x</code> are not removed, but simply
+   hidden. That is, after performing  <a href="#Netmcore_hashtbl.remove">Netmcore_hashtbl.remove</a><code class="code"> tbl x</code>,
+   the previous binding for <code class="code">x</code>, if any, is restored.
+   (Same behavior as with association lists.)</div></div>
+<pre><span class="VALfind_ro"><span class="keyword">val</span> find_ro</span> : <code class="type">('a, 'b, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_hashtbl&amp;type=t">t</a> -&gt; 'a -&gt; 'b</code></pre><div class="info"><div class="info"><code class="code">find_ro tbl x</code> returns the current binding of <code class="code">x</code> in <code class="code">tbl</code>,
+   or raises <code class="code">Not_found</code> if no such binding exists. If it is possible
+    that the table is being modified at the same time, this function
+    can crash. (Suffix &quot;_ro&quot; = for &quot;read-only&quot; hashtables.)</div></div>
+<pre><span class="VALfind_p"><span class="keyword">val</span> find_p</span> : <code class="type">('a, 'b, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_hashtbl&amp;type=t">t</a> -&gt; 'a -&gt; ('b -&gt; 'r) -&gt; 'r</code></pre><div class="info"><div class="info"><code class="code">find_p tbl x f</code> looks up the current binding of <code class="code">x</code> in <code class="code">tbl</code>,
+      and calls <code class="code">f</code> with this binding as argument. During the execution
+      of <code class="code">f</code> the binding is pinned and cannot be garbage-collected.
+      Raises <code class="code">Not_found</code> if there is no such binding.</div></div>
+<pre><span class="VALfind_c"><span class="keyword">val</span> find_c</span> : <code class="type">('a, 'b, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_hashtbl&amp;type=t">t</a> -&gt; 'a -&gt; 'b</code></pre><div class="info"><div class="info">Like <code class="code">find</code> but returns a copy of the binding in normal RAM</div></div>
+<pre><span class="VALfind_all_ro"><span class="keyword">val</span> find_all_ro</span> : <code class="type">('a, 'b, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_hashtbl&amp;type=t">t</a> -&gt; 'a -&gt; 'b list</code></pre><div class="info"><div class="info"><code class="code">Hashtbl.find_all tbl x</code> returns the list of all data
+   associated with <code class="code">x</code> in <code class="code">tbl</code>.
+   The current binding is returned first, then the previous
+   bindings, in reverse order of introduction in the table.
+    If it is possible
+    that the table is being modified at the same time, this function
+    can crash. (Suffix &quot;_ro&quot; = for &quot;read-only&quot; hashtables.)</div></div>
+<pre><span class="VALfind_all_p"><span class="keyword">val</span> find_all_p</span> : <code class="type">('a, 'b, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_hashtbl&amp;type=t">t</a> -&gt; 'a -&gt; ('b list -&gt; 'r) -&gt; 'r</code></pre><div class="info"><div class="info">Version of <code class="code">find_all</code> with pinned result</div></div>
+<pre><span class="VALfind_all_c"><span class="keyword">val</span> find_all_c</span> : <code class="type">('a, 'b, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_hashtbl&amp;type=t">t</a> -&gt; 'a -&gt; 'b list</code></pre><div class="info"><div class="info">Version of <code class="code">find_all</code> with copied result</div></div>
+<pre><span class="VALmem_ro"><span class="keyword">val</span> mem_ro</span> : <code class="type">('a, 'b, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_hashtbl&amp;type=t">t</a> -&gt; 'a -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">Hashtbl.mem tbl x</code> checks if <code class="code">x</code> is bound in <code class="code">tbl</code>. If it is possible
+    that the table is being modified at the same time, this function
+    can crash. (Suffix &quot;_ro&quot; = for &quot;read-only&quot; hashtables.)</div></div>
+<pre><span class="VALmem"><span class="keyword">val</span> mem</span> : <code class="type">('a, 'b, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_hashtbl&amp;type=t">t</a> -&gt; 'a -&gt; bool</code></pre><div class="info"><div class="info">Safe version of <code class="code">mem_ro</code> in the presence of parallel modifications.
+      It is a bit slower, though.</div></div>
+<pre><span class="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">('a, 'b, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_hashtbl&amp;type=t">t</a> -&gt; 'a -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">Hashtbl.remove tbl x</code> removes the current binding of <code class="code">x</code> in <code class="code">tbl</code>,
+   restoring the previous binding if it exists.
+   It does nothing if <code class="code">x</code> is not bound in <code class="code">tbl</code>.</div></div>
+<pre><span class="VALreplace"><span class="keyword">val</span> replace</span> : <code class="type">('a, 'b, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_hashtbl&amp;type=t">t</a> -&gt; 'a -&gt; 'b -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">Hashtbl.replace tbl x y</code> replaces the current binding of <code class="code">x</code>
+   in <code class="code">tbl</code> by a binding of <code class="code">x</code> to <code class="code">y</code>.  If <code class="code">x</code> is unbound in <code class="code">tbl</code>,
+   a binding of <code class="code">x</code> to <code class="code">y</code> is added to <code class="code">tbl</code>.
+   This is functionally equivalent to  <a href="#Hashtbl.remove">Hashtbl.remove</a><code class="code"> tbl x</code>
+   followed by  <a href="#Hashtbl.add">Hashtbl.add</a><code class="code"> tbl x y</code>.</div></div>
+<pre><span class="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -&gt; 'b -&gt; unit) -&gt; ('a, 'b, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_hashtbl&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">Hashtbl.iter f tbl</code> applies <code class="code">f</code> to all bindings in table <code class="code">tbl</code>.
+   <code class="code">f</code> receives the key as first argument, and the associated value
+   as second argument. Each binding is presented exactly once to <code class="code">f</code>.
+   The order in which the bindings are passed to <code class="code">f</code> is unspecified.
+   However, if the table contains several bindings for the same key,
+   they are passed to <code class="code">f</code> in reverse order of introduction, that is,
+   the most recent binding is passed first.<br/>    The table cannot be modified while <code class="code">iter</code> is running. Any attempt
+    will result in a deadlock.</div></div>
+<pre><span class="VALlength"><span class="keyword">val</span> length</span> : <code class="type">('a, 'b, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_hashtbl&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info"><code class="code">Hashtbl.length tbl</code> returns the number of bindings in <code class="code">tbl</code>.
+   Multiple bindings are counted multiply, so <code class="code">Hashtbl.length</code>
+   gives the number of times <code class="code">Hashtbl.iter</code> calls its first argument.</div></div>
+<pre><span class="VALheader"><span class="keyword">val</span> header</span> : <code class="type">('a, 'b, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_hashtbl&amp;type=t">t</a> -&gt; 'h</code></pre><div class="info"><div class="info">Returns the header</div></div>
+<pre><span class="VALheap"><span class="keyword">val</span> heap</span> : <code class="type">('a, 'b, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_hashtbl&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Obj&amp;type=t">Obj.t</a> <a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=heap">Netmcore_heap.heap</a></code></pre><div class="info"><div class="info">Returns the heap backing this data structure</div></div>
+<pre><span class="VALdescr_of_hashtbl"><span class="keyword">val</span> descr_of_hashtbl</span> : <code class="type">('a, 'b, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_hashtbl&amp;type=t">t</a> -&gt; ('a, 'b, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_hashtbl&amp;type=t_descr">t_descr</a></code></pre><div class="info"><div class="info">Returns the descriptor</div></div>
+<pre><span class="VALhashtbl_of_descr"><span class="keyword">val</span> hashtbl_of_descr</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; ('a, 'b, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_hashtbl&amp;type=t_descr">t_descr</a> -&gt; ('a, 'b, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_hashtbl&amp;type=t">t</a></code></pre><div class="info"><div class="info">Look up the hash table for this descriptor</div></div>
+</div>

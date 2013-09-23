@@ -1,0 +1,11 @@
+<div class="ocaml_toplevel_module"><div class="info">Logging facility<br/>    It replaces expression of the form:<br/>    <pre class="codepre"><code class="code">
+      Lwt_log.info_f ~section &quot;x = %d&quot; x
+    </code></pre><br/>    by<br/>    <pre class="codepre"><code class="code">
+      if Lwt_log.Section.level section &lt;= Lwt_log.Info then
+        Lwt_log.info_f ~section &quot;x = %d&quot; x
+      else
+        return ()
+    </code></pre><br/>    Note:<br/>    - the application must be complete. For example: <code class="code">Log.info &quot;%d&quot;</code>
+      will make compilation to fail<br/>    - it also add the command line flags &quot;-lwt-debug&quot; to keep all debug
+      messages. By default debug messages are removed.</div>
+</div>

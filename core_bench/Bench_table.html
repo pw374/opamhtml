@@ -1,0 +1,116 @@
+<div class="ocaml_toplevel_module">
+<div class="ocaml_module ident" name="Ascii_table" path="?package=textutils&amp;module=Ascii_table"><pre><span class="keyword">module</span> <a href="?package=core_bench&amp;module=Bench_table.Ascii_table">Ascii_table</a> : <code class="type"><code class="code"><a href="?package=textutils&amp;module=Ascii_table">Textutils.Ascii_table</a></code></code></pre></div>
+<div class="ocaml_module ident" name="Variable" path="?package=core_bench&amp;module=Test_metrics.Variable"><pre><span class="keyword">module</span> <a href="?package=core_bench&amp;module=Bench_table.Variable">Variable</a> : <code class="type"><code class="code"><a href="?package=core_bench&amp;module=Test_metrics.Variable">Test_metrics.Variable</a></code></code></pre></div>
+<pre><span class="VALmemoize_by_test_id"><span class="keyword">val</span> memoize_by_test_id</span> : <code class="type">(<a href="?package=core_bench&amp;module=Test.Basic_test&amp;type=t">Test.Basic_test.t</a> * 'a * 'b -&gt; 'c) -&gt; <a href="?package=core_bench&amp;module=Test.Basic_test&amp;type=t">Test.Basic_test.t</a> * 'a * 'b -&gt; 'c</code></pre>
+<pre><span class="VALget_mv_regr"><span class="keyword">val</span> get_mv_regr</span> : <code class="type">predictors:<a href="?package=core_bench&amp;module=Mv_regression.Variable&amp;type=t">Mv_regression.Variable.t</a> list -&gt;
+?bootstrap_trials:<a href="?package=core&amp;module=Std.Int&amp;type=t">Core.Std.Int.t</a> -&gt;
+responder:[&lt; `Compactions
+           | `Cycles
+           | `Major_allocated
+           | `Major_collections
+           | `Minor_allocated
+           | `Minor_collections
+           | `Nanos
+           | `One
+           | `Promoted
+           | `Runs ] -&gt;
+<a href="?package=core_bench&amp;module=Test.Basic_test&amp;type=t">Test.Basic_test.t</a> * <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">Test_metrics.t</a> array * int -&gt;
+<a href="?package=core_bench&amp;module=Mv_regression&amp;type=mv_coefficients_and_rsquare">Mv_regression.mv_coefficients_and_rsquare</a></code></pre>
+<pre><span class="VALget_mv_coefficient"><span class="keyword">val</span> get_mv_coefficient</span> : <code class="type">predictors:<a href="?package=core_bench&amp;module=Mv_regression.Variable&amp;type=t">Mv_regression.Variable.t</a> list -&gt;
+responder:[&lt; `Compactions
+           | `Cycles
+           | `Major_allocated
+           | `Major_collections
+           | `Minor_allocated
+           | `Minor_collections
+           | `Nanos
+           | `One
+           | `Promoted
+           | `Runs ] -&gt;
+?bootstrap_trials:<a href="?package=core&amp;module=Std.Int&amp;type=t">Core.Std.Int.t</a> -&gt;
+<a href="?package=core_bench&amp;module=Mv_regression.Variable&amp;type=t">Mv_regression.Variable.t</a> -&gt;
+<a href="?package=core_bench&amp;module=Test.Basic_test&amp;type=t">Test.Basic_test.t</a> * <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">Test_metrics.t</a> array * int -&gt;
+<a href="?package=core_bench&amp;module=Mv_regression.Coefficient&amp;type=t">Mv_regression.Coefficient.t</a> option</code></pre>
+<pre><span class="VALmake_name"><span class="keyword">val</span> make_name</span> : <code class="type"><a href="?package=core_bench&amp;module=Test.Basic_test&amp;type=t">Test.Basic_test.t</a> * 'a * 'b -&gt; string</code></pre>
+<pre><span class="VALmake_samples"><span class="keyword">val</span> make_samples</span> : <code class="type"><a href="?package=core_bench&amp;module=Test.Basic_test&amp;type=t">Test.Basic_test.t</a> * <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">Test_metrics.t</a> <a href="?package=core&amp;module=Std.Array&amp;type=t">Core.Std.Array.t</a> * <a href="?package=core&amp;module=Std.Int&amp;type=t">Core.Std.Int.t</a> -&gt;
+string</code></pre>
+<pre><span class="VALmake_allocated"><span class="keyword">val</span> make_allocated</span> : <code class="type">responder:[&lt; `Compactions
+           | `Cycles
+           | `Major_allocated
+           | `Major_collections
+           | `Minor_allocated
+           | `Minor_collections
+           | `Nanos
+           | `One
+           | `Promoted
+           | `Runs ] -&gt;
+<a href="?package=core_bench&amp;module=Test.Basic_test&amp;type=t">Test.Basic_test.t</a> * <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">Test_metrics.t</a> array * int -&gt; string</code></pre>
+<pre><span class="VALmake_collections_per_k"><span class="keyword">val</span> make_collections_per_k</span> : <code class="type">responder:[&lt; `Compactions
+           | `Cycles
+           | `Major_allocated
+           | `Major_collections
+           | `Minor_allocated
+           | `Minor_collections
+           | `Nanos
+           | `One
+           | `Promoted
+           | `Runs ] -&gt;
+<a href="?package=core_bench&amp;module=Test.Basic_test&amp;type=t">Test.Basic_test.t</a> * <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">Test_metrics.t</a> array * int -&gt; string</code></pre>
+<pre><span class="VALmake_mv_coefficient"><span class="keyword">val</span> make_mv_coefficient</span> : <code class="type">predictors:<a href="?package=core_bench&amp;module=Mv_regression.Variable&amp;type=t">Mv_regression.Variable.t</a> list -&gt;
+responder:[&lt; `Cycles | `Nanos ] -&gt;
+?bootstrap_trials:<a href="?package=core&amp;module=Std.Int&amp;type=t">Core.Std.Int.t</a> -&gt;
+<a href="?package=core_bench&amp;module=Mv_regression.Variable&amp;type=t">Mv_regression.Variable.t</a> -&gt;
+<a href="?package=core_bench&amp;module=Test.Basic_test&amp;type=t">Test.Basic_test.t</a> * <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">Test_metrics.t</a> array * int -&gt; string</code></pre>
+<pre><span class="VALmake_95ci"><span class="keyword">val</span> make_95ci</span> : <code class="type">[ `Absolute | `Percentage ] -&gt;
+predictors:<a href="?package=core_bench&amp;module=Mv_regression.Variable&amp;type=t">Mv_regression.Variable.t</a> list -&gt;
+responder:[&lt; `Compactions
+           | `Cycles
+           | `Major_allocated
+           | `Major_collections
+           | `Minor_allocated
+           | `Minor_collections
+           | `Nanos
+           | `One
+           | `Promoted
+           | `Runs
+           &gt; `Cycles `Nanos ] -&gt;
+<a href="?package=core_bench&amp;module=Mv_regression.Variable&amp;type=t">Mv_regression.Variable.t</a> -&gt;
+<a href="?package=core_bench&amp;module=Test.Basic_test&amp;type=t">Test.Basic_test.t</a> * <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">Test_metrics.t</a> array * int -&gt; string</code></pre>
+<pre><span class="VALmake_rsquare"><span class="keyword">val</span> make_rsquare</span> : <code class="type">predictors:<a href="?package=core_bench&amp;module=Mv_regression.Variable&amp;type=t">Mv_regression.Variable.t</a> list -&gt;
+responder:[&lt; `Compactions
+           | `Cycles
+           | `Major_allocated
+           | `Major_collections
+           | `Minor_allocated
+           | `Minor_collections
+           | `Nanos
+           | `One
+           | `Promoted
+           | `Runs ] -&gt;
+<a href="?package=core_bench&amp;module=Test.Basic_test&amp;type=t">Test.Basic_test.t</a> * <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">Test_metrics.t</a> array * int -&gt; string</code></pre>
+<pre><span class="VALget_cycles"><span class="keyword">val</span> get_cycles</span> : <code class="type">predictors:<a href="?package=core_bench&amp;module=Mv_regression.Variable&amp;type=t">Mv_regression.Variable.t</a> list -&gt;
+<a href="?package=core_bench&amp;module=Test.Basic_test&amp;type=t">Test.Basic_test.t</a> * <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">Test_metrics.t</a> array * int -&gt; float</code></pre>
+<pre><span class="VALmake_percentage"><span class="keyword">val</span> make_percentage</span> : <code class="type">predictors:<a href="?package=core_bench&amp;module=Mv_regression.Variable&amp;type=t">Mv_regression.Variable.t</a> list -&gt;
+float -&gt; <a href="?package=core_bench&amp;module=Test.Basic_test&amp;type=t">Test.Basic_test.t</a> * <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">Test_metrics.t</a> array * int -&gt; string</code></pre>
+<pre><span class="VALmake_speedup"><span class="keyword">val</span> make_speedup</span> : <code class="type">predictors:<a href="?package=core_bench&amp;module=Mv_regression.Variable&amp;type=t">Mv_regression.Variable.t</a> list -&gt;
+float -&gt; <a href="?package=core_bench&amp;module=Test.Basic_test&amp;type=t">Test.Basic_test.t</a> * <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">Test_metrics.t</a> array * int -&gt; string</code></pre>
+<pre><span class="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?limit_width_to:int -&gt;
+?display:<a href="?package=core_bench&amp;module=Bench_table.Ascii_table.Display&amp;type=t">Ascii_table.Display.t</a> -&gt;
+?ascii_table:bool -&gt;
+?ci_absolute:bool -&gt;
+columns:[&lt; `Allocated
+         | `Confidence
+         | `Cycles
+         | `GC
+         | `If_not_empty of <a href="?package=core_bench&amp;module=Column.Map.Key&amp;type=t">Column.Map.Key.t</a>
+         | `Name
+         | `Nanos
+         | `Percentage
+         | `Samples
+         | `Speedup ]
+        <a href="?package=core&amp;module=Std.List&amp;type=t">Core.Std.List.t</a> -&gt;
+predictors:<a href="?package=core_bench&amp;module=Mv_regression.Variable&amp;type=t">Mv_regression.Variable.t</a> <a href="?package=core&amp;module=Std.List&amp;type=t">Core.Std.List.t</a> -&gt;
+(<a href="?package=core_bench&amp;module=Test.Basic_test&amp;type=t">Test.Basic_test.t</a> * <a href="?package=core_bench&amp;module=Test_metrics&amp;type=t">Test_metrics.t</a> <a href="?package=core&amp;module=Std.Array&amp;type=t">Core.Std.Array.t</a> * <a href="?package=core&amp;module=Std.Int&amp;type=t">Core.Std.Int.t</a>)
+<a href="?package=core&amp;module=Std.List&amp;type=t">Core.Std.List.t</a> -&gt; unit</code></pre>
+
+</div>
