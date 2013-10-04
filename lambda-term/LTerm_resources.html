@@ -19,9 +19,9 @@
       is encountered in the input.</div></div>
 <pre><span class="VALparse"><span class="keyword">val</span> parse</span> : <code class="type">string -&gt; <a href="?package=lambda-term&amp;module=LTerm_resources&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">parse str</code> parses a string for a list of properties. <code class="code">str</code> must
       follow the format of X resources files. i.e. comments start with a
-      <code class="code">!</code>, empty lines are ignored, and configuration lines looks-like:<br/>      <pre class="codepre"><code class="code">
+      <code class="code">!</code>, empty lines are ignored, and configuration lines looks-like:<p>      </p><code class="code">
         key: value
-      </code></pre></div></div>
+      </code></div></div>
 <pre><span class="VALload"><span class="keyword">val</span> load</span> : <code class="type">string -&gt; <a href="?package=lambda-term&amp;module=LTerm_resources&amp;type=t">t</a> <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Same as  <a href="#parse">parse</a> but parses the contents of a file.</div></div>
 <pre><span class="VALhome"><span class="keyword">val</span> home</span> : <code class="type">string</code></pre><div class="info"><div class="info">The home directory.</div></div>
 </div>

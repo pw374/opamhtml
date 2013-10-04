@@ -136,9 +136,9 @@
 <div class="info"><div class="info">Returns the result as a UTF-8 encoded string.</div></div></div></div>
 <div class="ocaml_class sig" name="read_password"><pre><span class="TYPEread_password"><span class="keyword">class</span> <a href="?package=lambda-term&amp;module=LTerm_read_line&amp;class=read_password">read_password</a></span> : <code class="type">unit -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Read-line engine for reading a password. The <code class="code">stylise</code> method
     default to replacing all characters by <code class="code">'*'</code>. You can also for
-    example completely disable displaying the password by doing:<br/>    <pre class="codepre"><code class="code">
+    example completely disable displaying the password by doing:<p>    </p><code class="code">
       method stylise = ([||], 0)
-    </code></pre><br/>    Also showing completion is disabled.</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=lambda-term&amp;module=LTerm_read_line&amp;class=engine"> <pre><span class="keyword">inherit</span> <code class="type"/><code class="type">[<a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a>] </code><a href="?package=lambda-term&amp;module=LTerm_read_line&amp;class=engine">engine</a></pre></div>
+    </code><p>    Also showing completion is disabled.</p></div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=lambda-term&amp;module=LTerm_read_line&amp;class=engine"> <pre><span class="keyword">inherit</span> <code class="type"/><code class="type">[<a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a>] </code><a href="?package=lambda-term&amp;module=LTerm_read_line&amp;class=engine">engine</a></pre></div>
 
 <pre><span class="METHODeval"><span class="keyword">method</span> eval</span> : <code class="code"><a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a></code></pre>
 <div class="info"><div class="info">Returns the result as a UTF-8 encoded string.</div></div></div></div>

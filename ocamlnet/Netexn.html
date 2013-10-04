@@ -1,10 +1,10 @@
-<div class="ocaml_toplevel_module"><div class="info">Exception registry<br/>    This module allow the user to register exceptions, and to set a
+<div class="ocaml_toplevel_module"><div class="info">Exception registry<p>    This module allow the user to register exceptions, and to set a
     custom exception printing function. This results in nicer exception
-    prints when <code class="code">Netexn.to_string</code> is called instead of <code class="code">Printexc.to_string</code>.<br/>    Generally, <code class="code">Printexc.to_string</code> works well if:<ul><li>the exception does not have arguments, or</li><li>all arguments are int's or string's.</li></ul>    In these cases it is not required to register a custom printer. Arguments
+    prints when <code class="code">Netexn.to_string</code> is called instead of <code class="code">Printexc.to_string</code>.</p><p>    Generally, <code class="code">Printexc.to_string</code> works well if:</p><ul><li>the exception does not have arguments, or</li><li>all arguments are int's or string's.</li></ul>    In these cases it is not required to register a custom printer. Arguments
     that are neither int nor string are printed as &quot;_&quot;, however, so defining
-    a custom printer helps then.<br/>    The printers registered here are intended for helping debugging, so
+    a custom printer helps then.<p>    The printers registered here are intended for helping debugging, so
     the goal is to print all of the exception in an unambiguous way.
-    The syntax &quot;Exception(arg1, arg2, ...)&quot; is preferred.<br/>    <b>Since OCaml 3.11.2 there is a similar feature in <code class="code">Printexc</code>.</b>
+    The syntax &quot;Exception(arg1, arg2, ...)&quot; is preferred.</p><p>    <b>Since OCaml 3.11.2 there is a similar feature in <code class="code">Printexc</code>.</b>
     If Ocamlnet recognizes that <code class="code">Printexc.register_printer</code> is available,
     all functions registered in this module are also registered at
     the central <code class="code">Printexc</code> registry. For users it does not make a difference
@@ -12,10 +12,10 @@
     to print the exception. We recommend, however, to use <code class="code">Netexn</code> as
     primary registry for all code that uses Ocamlnet because this
     mechanism also works for older Ocaml versions, and is slightly more
-    efficient.</div>
+    efficient.</p></div>
 <pre><span class="VALregister_printer"><span class="keyword">val</span> register_printer</span> : <code class="type">exn -&gt; (exn -&gt; string) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">register e f</code>: Register that the exception type of the sample
-      exception <code class="code">e</code> is to be printed by <code class="code">f</code>.<br/>      In multi-threaded programs, this function should no longer be called
-      once threads have been spawned.</div></div>
+      exception <code class="code">e</code> is to be printed by <code class="code">f</code>.<p>      In multi-threaded programs, this function should no longer be called
+      once threads have been spawned.</p></div></div>
 <pre><span class="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">exn -&gt; string</code></pre><div class="info"><div class="info">Prints the exception as string, using the registered printer functions,
       or <code class="code">Printexc.to_string</code> as fallback if there is no better printer</div></div>
 </div>

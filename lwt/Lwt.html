@@ -2,15 +2,15 @@
 <div class="info"><div class="info">This module defines <em>cooperative light-weight threads</em> with
     their primitives. A <em>light-weight thread</em> represent a
     computation that may be not terminated, for example because it is
-    waiting for some event to happen.<br/>    Lwt threads are cooperative in the sense that switching to another
+    waiting for some event to happen.<p>    Lwt threads are cooperative in the sense that switching to another
     thread is awlays explicit (with  <a href="#wakeup">wakeup</a> or  <a href="#wekup_exn">wekup_exn</a>). When a
     thread is running, it executes as much as possible, and then
-    returns (a value or an eror) or sleeps.<br/>    Note that inside a Lwt thread, exceptions must be raised with
+    returns (a value or an eror) or sleeps.</p><p>    Note that inside a Lwt thread, exceptions must be raised with
      <a href="#fail">fail</a> instead of <code class="code">raise</code>. Also the <code class="code">try ... with ...</code>
     construction will not catch Lwt errors. You must use  <a href="#catch">catch</a>
     instead. You can also use  <a href="#wrap">wrap</a> for functions that may raise
-    normal exception.<br/>    Lwt also provides the syntax extension  <a href="#Pa_lwt">Pa_lwt</a> to make code
-    using Lwt more readable.</div></div>
+    normal exception.</p><p>    Lwt also provides the syntax extension  <a href="#Pa_lwt">Pa_lwt</a> to make code
+    using Lwt more readable.</p></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Definitions and basics</h6></div></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">+'a </code>t</span> </pre><div class="info"><div class="info">The type of threads returning a result of type <code class="code">'a</code>.</div></div>
 <pre><span class="VALreturn"><span class="keyword">val</span> return</span> : <code class="type">'a -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">return e</code> is a thread whose return value is the value of the
@@ -20,10 +20,10 @@
       terminate and then, if the thread succeeds, behaves as the
       application of function <code class="code">f</code> to the return value of <code class="code">t</code>.  If the
       thread <code class="code">t</code> fails, <code class="code">bind t f</code> also fails, with the same
-      exception.<br/>      The expression <code class="code">bind t (fun x -&gt; t')</code> can intuitively be read as
+      exception.<p>      The expression <code class="code">bind t (fun x -&gt; t')</code> can intuitively be read as
       <code class="code">let x = t in t'</code>, and if you use the <em>lwt.syntax</em> syntax
-      extension, you can write a bind operation like that: <code class="code">lwt x = t in t'</code>.<br/>      Note that <code class="code">bind</code> is also often used just for synchronization
-      purpose: <code class="code">t'</code> will not execute before <code class="code">t</code> is terminated.<br/>      The result of a thread can be bound several time.</div></div>
+      extension, you can write a bind operation like that: <code class="code">lwt x = t in t'</code>.</p><p>      Note that <code class="code">bind</code> is also often used just for synchronization
+      purpose: <code class="code">t'</code> will not execute before <code class="code">t</code> is terminated.</p><p>      The result of a thread can be bound several time.</p></div></div>
 <pre><span class="VAL(&gt;&gt;=)"><span class="keyword">val</span> (&gt;&gt;=)</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a> -&gt; ('a -&gt; 'b <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a>) -&gt; 'b <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">t &gt;&gt;= f</code> is an alternative notation for <code class="code">bind t f</code>.</div></div>
 <pre><span class="VAL(=&lt;&lt;)"><span class="keyword">val</span> (=&lt;&lt;)</span> : <code class="type">('a -&gt; 'b <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a>) -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a> -&gt; 'b <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">f =&lt;&lt; t</code> is <code class="code">t &gt;&gt;= f</code></div></div>
 <pre><span class="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -&gt; 'b) -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a> -&gt; 'b <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">map f m</code> map the result of a thread. This is the same as <code class="code">bind
@@ -56,20 +56,20 @@
 <pre><span class="VALfinalize"><span class="keyword">val</span> finalize</span> : <code class="type">(unit -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a>) -&gt; (unit -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a>) -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">finalize f g</code> returns the same result as <code class="code">f ()</code> whether it
       fails or not. In both cases, <code class="code">g ()</code> is executed after <code class="code">f</code>.</div></div>
 <pre><span class="VALwrap"><span class="keyword">val</span> wrap</span> : <code class="type">(unit -&gt; 'a) -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">wrap f</code> calls <code class="code">f</code> and transform the result into a monad. If <code class="code">f</code>
-      raise an exception, it is catched by Lwt.<br/>      This is actually the same as:<br/>      <pre class="codepre"><code class="code">
+      raise an exception, it is catched by Lwt.<p>      This is actually the same as:</p><p>      </p><code class="code">
         try
           return (f ())
         with exn -&gt;
           fail exn
-      </code></pre></div></div>
+      </code></div></div>
 <pre><span class="VALwrap1"><span class="keyword">val</span> wrap1</span> : <code class="type">('a -&gt; 'b) -&gt; 'a -&gt; 'b <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">wrap1 f x</code> applies <code class="code">f</code> on <code class="code">x</code> and returns the result as a
       thread. If the application of <code class="code">f</code> to <code class="code">x</code> raise an exception it
-      is catched and a thread is returned.<br/>      Note that you must use  <a href="#wrap">wrap</a> instead of  <a href="#wrap1">wrap1</a> if the
-      evaluation of <code class="code">x</code> may raise an exception.<br/>      for example the following code is not ok:<br/>      <pre class="codepre"><code class="code">
+      is catched and a thread is returned.<p>      Note that you must use  <a href="#wrap">wrap</a> instead of  <a href="#wrap1">wrap1</a> if the
+      evaluation of <code class="code">x</code> may raise an exception.</p><p>      for example the following code is not ok:</p><p>      </p><code class="code">
         wrap1 f (Hashtbl.find table key)
-      </code></pre><br/>      you should write instead:<br/>      <pre class="codepre"><code class="code">
+      </code><p>      you should write instead:</p><p>      </p><code class="code">
         wrap (fun () -&gt; f (Hashtbl.find table key))
-      </code></pre></div></div>
+      </code></div></div>
 <pre><span class="VALwrap2"><span class="keyword">val</span> wrap2</span> : <code class="type">('a -&gt; 'b -&gt; 'c) -&gt; 'a -&gt; 'b -&gt; 'c <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a></code></pre>
 <pre><span class="VALwrap3"><span class="keyword">val</span> wrap3</span> : <code class="type">('a -&gt; 'b -&gt; 'c -&gt; 'd) -&gt; 'a -&gt; 'b -&gt; 'c -&gt; 'd <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a></code></pre>
 <pre><span class="VALwrap4"><span class="keyword">val</span> wrap4</span> : <code class="type">('a -&gt; 'b -&gt; 'c -&gt; 'd -&gt; 'e) -&gt; 'a -&gt; 'b -&gt; 'c -&gt; 'd -&gt; 'e <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a></code></pre>
@@ -81,31 +81,31 @@
 <div class="info"><div class="info"><h6 id="6_TITLE">Multi-threads composition</h6></div></div>
 <pre><span class="VALchoose"><span class="keyword">val</span> choose</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a> list -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">choose l</code> behaves as the first thread in <code class="code">l</code> to terminate.  If
       several threads are already terminated, one is choosen at
-      random.<br/>      Note:  <a href="#choose">choose</a> leaves the local values of the current thread
-      unchanged.</div></div>
+      random.<p>      Note:  <a href="#choose">choose</a> leaves the local values of the current thread
+      unchanged.</p></div></div>
 <pre><span class="VALnchoose"><span class="keyword">val</span> nchoose</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a> list -&gt; 'a list <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">nchoose l</code> returns the value of all that have succcessfully
       terminated. If all threads are sleeping, it waits for at least
       one to terminates. If one the threads of <code class="code">l</code> fails, <code class="code">nchoose</code>
-      fails with the same exception.<br/>      Note:  <a href="#nchoose">nchoose</a> leaves the local values of the current thread
-      unchanged.</div></div>
+      fails with the same exception.<p>      Note:  <a href="#nchoose">nchoose</a> leaves the local values of the current thread
+      unchanged.</p></div></div>
 <pre><span class="VALnchoose_split"><span class="keyword">val</span> nchoose_split</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a> list -&gt; ('a list * 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a> list) <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">nchoose_split l</code> does the same as  <a href="#nchoose">nchoose</a> but also retrurns
       the list of threads that have not yet terminated.</div></div>
 <pre><span class="VALjoin"><span class="keyword">val</span> join</span> : <code class="type">unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a> list -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">join l</code> waits for all threads in <code class="code">l</code> to terminate. If one of
       the threads fails, then <code class="code">join l</code> will fails with the same
-      exception as the first one to terminate.<br/>      Note:  <a href="#join">join</a> leaves the local values of the current thread
-      unchanged.</div></div>
+      exception as the first one to terminate.<p>      Note:  <a href="#join">join</a> leaves the local values of the current thread
+      unchanged.</p></div></div>
 <pre><span class="VAL(&lt;?&gt;)"><span class="keyword">val</span> (&lt;?&gt;)</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a> -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a> -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">t &lt;?&gt; t'</code> is the same as <code class="code">choose [t; t']</code></div></div>
 <pre><span class="VAL(&lt;&amp;&gt;)"><span class="keyword">val</span> (&lt;&amp;&gt;)</span> : <code class="type">unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">t &lt;&amp;&gt; t'</code> is the same as <code class="code">join [t; t']</code></div></div>
 <pre><span class="VALasync"><span class="keyword">val</span> async</span> : <code class="type">(unit -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a>) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">async f</code> starts a thread without waiting for the result. If it
       fails (now or later), the exception is given to
-       <a href="#async_exception_hook">async_exception_hook</a>.<br/>      You should use this function if you want to start a thread that
+       <a href="#async_exception_hook">async_exception_hook</a>.<p>      You should use this function if you want to start a thread that
       might fail and don't care what its return value is, nor when it
-      terminates (for instance, because it is looping).</div></div>
-<pre><span class="VALignore_result"><span class="keyword">val</span> ignore_result</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">ignore_result t</code> is like <code class="code">Pervasives.ignore t</code> except that:<br/>      - if <code class="code">t</code> already failed, it raises the exception now,<ul><li>if <code class="code">t</code> is sleeping and fails later, the exception will be
+      terminates (for instance, because it is looping).</p></div></div>
+<pre><span class="VALignore_result"><span class="keyword">val</span> ignore_result</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">ignore_result t</code> is like <code class="code">Pervasives.ignore t</code> except that:<p>      - if <code class="code">t</code> already failed, it raises the exception now,</p><ul><li>if <code class="code">t</code> is sleeping and fails later, the exception will be
         given to  <a href="#async_exception_hook">async_exception_hook</a>. </li></ul></div></div>
-<pre><span class="VALasync_exception_hook"><span class="keyword">val</span> async_exception_hook</span> : <code class="type">(exn -&gt; unit) <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">Function called when a asynchronous exception is thrown.<br/>      The default behavior is to print an error message with a
-      backtrace if available and to exit the program.<br/>      The behavior is undefined if this function raise an
-      exception.</div></div>
+<pre><span class="VALasync_exception_hook"><span class="keyword">val</span> async_exception_hook</span> : <code class="type">(exn -&gt; unit) <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">Function called when a asynchronous exception is thrown.<p>      The default behavior is to print an error message with a
+      backtrace if available and to exit the program.</p><p>      The behavior is undefined if this function raise an
+      exception.</p></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Sleeping and resuming</h6></div></div>
 <pre><span class="TYPEu"><span class="keyword">type</span> <code class="type">'a </code>u</span> </pre><div class="info"><div class="info">The type of thread wakeners.</div></div>
 <pre><span class="VALwait"><span class="keyword">val</span> wait</span> : <code class="type">unit -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a> * 'a <a href="?package=lwt&amp;module=Lwt&amp;type=u">u</a></code></pre><div class="info"><div class="info"><code class="code">wait ()</code> is a pair of a thread which sleeps forever (unless it
@@ -142,8 +142,8 @@
 <pre><span class="VALtask"><span class="keyword">val</span> task</span> : <code class="type">unit -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a> * 'a <a href="?package=lwt&amp;module=Lwt&amp;type=u">u</a></code></pre><div class="info"><div class="info"><code class="code">task ()</code> is the same as <code class="code">wait ()</code> except that threads created
       with <code class="code">task</code> can be canceled.</div></div>
 <pre><span class="VALon_cancel"><span class="keyword">val</span> on_cancel</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a> -&gt; (unit -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">on_cancel t f</code> executes <code class="code">f</code> when <code class="code">t</code> is canceled. <code class="code">f</code> will be
-      executed before all other threads waiting on <code class="code">t</code>.<br/>      If <code class="code">f</code> raises an exception it is given to
-       <a href="#async_exception_hook">async_exception_hook</a>.</div></div>
+      executed before all other threads waiting on <code class="code">t</code>.<p>      If <code class="code">f</code> raises an exception it is given to
+       <a href="#async_exception_hook">async_exception_hook</a>.</p></div></div>
 <pre><span class="VALadd_task_r"><span class="keyword">val</span> add_task_r</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt&amp;type=u">u</a> <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">Lwt_sequence.t</a> -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">add_task_r seq</code> creates a sleeping thread, adds its wakener to
       the right of <code class="code">seq</code> and returns its waiter. When the thread is
       canceled, it is removed from <code class="code">seq</code>.</div></div>
@@ -152,16 +152,16 @@
       canceled, it is removed from <code class="code">seq</code>.</div></div>
 <pre><span class="VALcancel"><span class="keyword">val</span> cancel</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">cancel t</code> cancels the threads <code class="code">t</code>. This means that the deepest
       sleeping thread created with <code class="code">task</code> and connected to <code class="code">t</code> is
-      woken up with the exception  <a href="#Canceled">Canceled</a>.<br/>      For example, in the following code:<br/>      <pre class="codepre"><code class="code">
+      woken up with the exception  <a href="#Canceled">Canceled</a>.<p>      For example, in the following code:</p><p>      </p><code class="code">
         let waiter, wakener = task () in
         cancel (waiter &gt;&gt; printl &quot;plop&quot;)
-      </code></pre><br/>      <code class="code">waiter</code> will be woken up with  <a href="#Canceled">Canceled</a>.</div></div>
+      </code><p>      <code class="code">waiter</code> will be woken up with  <a href="#Canceled">Canceled</a>.</p></div></div>
 <pre><span class="VALpick"><span class="keyword">val</span> pick</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a> list -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">pick l</code> is the same as  <a href="#choose">choose</a>, except that it cancels all
-      sleeping threads when one terminates.<br/>      Note:  <a href="#pick">pick</a> leaves the local values of the current thread
-      unchanged.</div></div>
+      sleeping threads when one terminates.<p>      Note:  <a href="#pick">pick</a> leaves the local values of the current thread
+      unchanged.</p></div></div>
 <pre><span class="VALnpick"><span class="keyword">val</span> npick</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a> list -&gt; 'a list <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">npick l</code> is the same as  <a href="#nchoose">nchoose</a>, except that it cancels all
-      sleeping threads when one terminates.<br/>      Note:  <a href="#npick">npick</a> leaves the local values of the current thread
-      unchanged.</div></div>
+      sleeping threads when one terminates.<p>      Note:  <a href="#npick">npick</a> leaves the local values of the current thread
+      unchanged.</p></div></div>
 <pre><span class="VALprotected"><span class="keyword">val</span> protected</span> : <code class="type">'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a> -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">protected thread</code> creates a new cancelable thread which behave
       as <code class="code">thread</code> except that cancelling it does not cancel
       <code class="code">thread</code>.</div></div>
@@ -172,10 +172,10 @@
       call to  <a href="#wakeup_paused">wakeup_paused</a>. A thread created with <code class="code">pause</code> can be
       canceled.</div></div>
 <pre><span class="VALwakeup_paused"><span class="keyword">val</span> wakeup_paused</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">wakeup_paused ()</code> wakes up all threads which suspended
-      themselves with  <a href="#pause">pause</a>.<br/>      This function is called by the scheduler, before entering the
+      themselves with  <a href="#pause">pause</a>.<p>      This function is called by the scheduler, before entering the
       main loop. You usually do not have to call it directly, except
-      if you are writing a custom scheduler.<br/>      Note that if a paused thread resumes and pauses again, it will not
-      be woken up at this point.</div></div>
+      if you are writing a custom scheduler.</p><p>      Note that if a paused thread resumes and pauses again, it will not
+      be woken up at this point.</p></div></div>
 <pre><span class="VALpaused_count"><span class="keyword">val</span> paused_count</span> : <code class="type">unit -&gt; int</code></pre><div class="info"><div class="info"><code class="code">paused_count ()</code> returns the number of currently paused
       threads.</div></div>
 <pre><span class="VALregister_pause_notifier"><span class="keyword">val</span> register_pause_notifier</span> : <code class="type">(int -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">register_pause_notifier f</code> register a function <code class="code">f</code> that will be

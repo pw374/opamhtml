@@ -1,12 +1,12 @@
 <div class="ocaml_toplevel_module"><div class="info">A module for organizing validations of data structures.  Allows standardized ways of
     checking for conditions, and keeps track of the location of errors by keeping a path
-    to each error found.  Thus, if you were validating the following datastructure:<br/>    <pre class="codepre"><code class="code">
+    to each error found.  Thus, if you were validating the following datastructure:<p>    </p><code class="code">
       { foo = 3;
         bar = { snoo = 34.5;
                 blue = Snoot -6; }
       }
-    </code></pre><br/>    One might end up with an error with the error path:<br/>    <span class="verbatim">bar.blue.Snoot : value -6 &lt;= bound 0 </span><br/>    By convention, the validations for a type defined in module <code class="code">M</code> appear in module <code class="code">M</code>,
-    and have their name prefixed by <code class="code">validate_</code>.  E.g. <code class="code">Int.validate_positive</code>.<br/>    Here's an example of how you would use validate with a record.<br/>    <pre class="codepre"><code class="code">
+    </code><p>    One might end up with an error with the error path:</p><p>    <span class="verbatim">bar.blue.Snoot : value -6 &lt;= bound 0 </span></p><p>    By convention, the validations for a type defined in module <code class="code">M</code> appear in module <code class="code">M</code>,
+    and have their name prefixed by <code class="code">validate_</code>.  E.g. <code class="code">Int.validate_positive</code>.</p><p>    Here's an example of how you would use validate with a record.</p><p>    </p><code class="code">
      type t =
        { foo: int;
          bar: float;
@@ -21,7 +21,7 @@
             ~foo:(w Int.validate_positive)
             ~bar:(w Float.validate_non_negative)
          )
-    </code></pre><br/>    And here's an example of how you would use it with a variant type:<br/>    <pre class="codepre"><code class="code">
+    </code><p>    And here's an example of how you would use it with a variant type:</p><p>    </p><code class="code">
       type t =
         | Foo of int
         | Bar of (float * int)
@@ -33,7 +33,7 @@
                                    ~fst:Float.validate_positive
                                    ~snd:Int.validate_non_negative)
         | Snoo floogle -&gt; V.name &quot;Snoo&quot; Floogle.validate
-    </code></pre></div>
+    </code></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">The result of a validation.  This effectively contains the list of errors, qualified
     by their location path</div></div>
 <pre><span class="TYPEcheck"><span class="keyword">type</span> <code class="type">'a </code>check</span> = <code class="type">'a -&gt; <a href="?package=core_kernel&amp;module=Validate&amp;type=t">t</a></code></pre><div class="info"><div class="info">to make function signatures easier to read</div></div>

@@ -53,9 +53,9 @@
     if memory-mapped, unmapping the corresponding file, and setting all dimensions to
     zero.  This effectively frees the associated memory or address-space resources
     instantaneously.  This feature helps working around a bug in the current OCaml
-    runtime, which does not correctly estimate how aggressively to reclaim such resources.<br/>    This operation is safe unless you have passed the bigstring to another thread that is
+    runtime, which does not correctly estimate how aggressively to reclaim such resources.<p>    This operation is safe unless you have passed the bigstring to another thread that is
     performing operations on it at the same time.  Access to the bigstring after this
-    operation will yield array bounds exceptions. <b>Raises</b> <code>Failure</code> if the bigstring has already been deallocated (or deemed &quot;external&quot;,
+    operation will yield array bounds exceptions.</p> <b>Raises</b> <code>Failure</code> if the bigstring has already been deallocated (or deemed &quot;external&quot;,
     which is treated equivalently), or if it has proxies, i.e. other bigstrings referring
     to the same data.<br/></div></div>
 <pre><span class="VALunsafe_get_int8"><span class="keyword">val</span> unsafe_get_int8</span> : <code class="type"><a href="?package=core_kernel&amp;module=Bigstring&amp;type=t">t</a> -&gt; pos:int -&gt; int</code></pre>
@@ -152,9 +152,9 @@
     if memory-mapped, unmapping the corresponding file, and setting all dimensions to
     zero.  This effectively frees the associated memory or address-space resources
     instantaneously.  This feature helps working around a bug in the current OCaml
-    runtime, which does not correctly estimate how aggressively to reclaim such resources.<br/>    This operation is safe unless you have passed the bigstring to another thread that is
+    runtime, which does not correctly estimate how aggressively to reclaim such resources.<p>    This operation is safe unless you have passed the bigstring to another thread that is
     performing operations on it at the same time.  Access to the bigstring after this
-    operation will yield array bounds exceptions. <b>Raises</b> <code>Failure</code> if the bigstring has already been deallocated (or deemed &quot;external&quot;,
+    operation will yield array bounds exceptions.</p> <b>Raises</b> <code>Failure</code> if the bigstring has already been deallocated (or deemed &quot;external&quot;,
     which is treated equivalently), or if it has proxies, i.e. other bigstrings referring
     to the same data.<br/></div></div>
 </div>

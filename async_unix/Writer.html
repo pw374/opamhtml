@@ -1,5 +1,5 @@
 <div class="ocaml_toplevel_module"><div class="info"><code class="code">Writer</code> is Async's main API for output to a file descriptor.  It is the analog of
-    <code class="code">Core.Std.Out_channel</code>.<br/>    Each writer has an internal buffer, to which <code class="code">Writer.write*</code> adds data.  Each writer
+    <code class="code">Core.Std.Out_channel</code>.<p>    Each writer has an internal buffer, to which <code class="code">Writer.write*</code> adds data.  Each writer
     uses an async microthread that makes <code class="code">write()</code> system calls to move the data from the
     writer's buffer to an OS buffer via the file descriptor.  There is no guarantee that
     the data sync on the other side of the writer can keep up with the rate at which you
@@ -9,44 +9,44 @@
     solution to this problem is to call <code class="code">Writer.flushed</code> and not continue until that
     becomes determined, which will only happen once the bytes in the writer's buffer have
     been successfully transferred to the OS buffer.  Another solution is to check
-    <code class="code">Writer.bytes_to_write</code> and not produce any more data if that is beyond some bound.<br/>    There are two kinds of errors that one can handle with writers.  First, a writer can
+    <code class="code">Writer.bytes_to_write</code> and not produce any more data if that is beyond some bound.</p><p>    There are two kinds of errors that one can handle with writers.  First, a writer can
     be <code class="code">close</code>d, which will cause future <code class="code">write</code>s (and other operations) to synchronously
     raise an excecption.  Second, the writer's microthread can fail due to a <code class="code">write()</code>
     system call failing.  This will cause an exception to be sent to the writer's monitor,
     which will be a child of the monitor in effect when the writer is created.  One can
     deal with such asynchronous exceptions in the usual way, by handling the stream
-    returned by <code class="code">Monitor.errors (Writer.monitor writer)</code>.</div>
+    returned by <code class="code">Monitor.errors (Writer.monitor writer)</code>.</p></div>
 <div class="ocaml_module ident" name="Id" path="?package=core&amp;module=Std.Unique_id"><pre><span class="keyword">module</span> <a href="?package=async_unix&amp;module=Writer.Id">Id</a> : <code class="type"><code class="code"><a href="?package=core&amp;module=Std.Unique_id">Core.Std.Unique_id</a></code></code></pre></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre>
 <div class="ocaml_include ident" path="?package=core&amp;module=Std.Invariant.S" items="[]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core&amp;module=Std.Invariant.S">Core.Std.Invariant.S</a></code> with type t := <a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a></code></pre></div>
 <pre><span class="VALio_stats"><span class="keyword">val</span> io_stats</span> : <code class="type"><a href="?package=async_unix&amp;module=Io_stats&amp;type=t">Io_stats.t</a></code></pre><div class="info"><div class="info"><code class="code">io_stats</code> Overall IO statistics for all writers</div></div>
 <pre><span class="VALstdout"><span class="keyword">val</span> stdout</span> : <code class="type"><a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a> <a href="?package=core&amp;module=Std.Lazy&amp;type=t">Core.Std.Lazy.t</a></code></pre><div class="info"><div class="info"><code class="code">stdout</code> and <code class="code">stderr</code> are writers for file descriptors 1 and 2.  They are lazy because
-    we don't want to create them in all programs that happen to link with async.<br/>    When either <code class="code">stdout</code> or <code class="code">stderr</code> is created, they both are created.  Furthermore, if
+    we don't want to create them in all programs that happen to link with async.<p>    When either <code class="code">stdout</code> or <code class="code">stderr</code> is created, they both are created.  Furthermore, if
     they point to the same inode, then they will be the same writer to <code class="code">Fd.stdout</code>.  This
     can be confusing, because <code class="code">fd (force stderr)</code> will be <code class="code">Fd.stdout</code>, not <code class="code">Fd.stderr</code>.
-    And subsequent modifications of <code class="code">Fd.stderr</code> will have no effect on <code class="code">Writer.stderr</code>.<br/>    Unfortunately, the sharing is necessary because async uses OS threads to do write()
+    And subsequent modifications of <code class="code">Fd.stderr</code> will have no effect on <code class="code">Writer.stderr</code>.</p><p>    Unfortunately, the sharing is necessary because async uses OS threads to do write()
     syscalls using the writer buffer.  When calling a program that redirects stdout and
-    stderr to the same file, as in:<br/>    <span class="verbatim">      foo.exe &gt;/tmp/z.file 2&gt;&amp;1
-    </span><br/>    if <code class="code">Writer.stdout</code> and <code class="code">Writer.stderr</code> weren't the same writer, then they could have
-    threads simultaneously writing to the same file, which could easily cause data loss.</div></div>
+    stderr to the same file, as in:</p><p>    <span class="verbatim">      foo.exe &gt;/tmp/z.file 2&gt;&amp;1
+    </span></p><p>    if <code class="code">Writer.stdout</code> and <code class="code">Writer.stderr</code> weren't the same writer, then they could have
+    threads simultaneously writing to the same file, which could easily cause data loss.</p></div></div>
 <pre><span class="VALstderr"><span class="keyword">val</span> stderr</span> : <code class="type"><a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a> <a href="?package=core&amp;module=Std.Lazy&amp;type=t">Core.Std.Lazy.t</a></code></pre>
 <pre><span class="TYPEbuffer_age_limit"><span class="keyword">type</span> buffer_age_limit</span> = <code class="type">[ `At_most of <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a> | `Unlimited ]</code></pre>
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">?buf_len:int -&gt;
 ?syscall:[ `Per_cycle | `Periodic of <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a> ] -&gt;
 ?buffer_age_limit:<a href="?package=async_unix&amp;module=Writer&amp;type=buffer_age_limit">buffer_age_limit</a> -&gt;
 ?raise_when_consumer_leaves:bool -&gt; <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a> -&gt; <a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create ?buf_len ?syscall ?buffer_age_limit fd</code> creates a new writer.  The file
-    descriptor fd should not be in use for writing by anything else.<br/>    By default, a write system call occurs at the end of a cycle in which bytes were
+    descriptor fd should not be in use for writing by anything else.<p>    By default, a write system call occurs at the end of a cycle in which bytes were
     written.  One can supply ~syscall:(`Periodic span) to get better performance.  This
     batches writes together, doing the write system call periodically according to the
-    supplied span.<br/>    A writer can asynchronously fail if the underlying write syscall returns an error,
-    e.g. EBADF, EPIPE, ECONNRESET, ....<br/>    <code class="code">buffer_age_limit</code> specifies how backed up you can get before raising an exception.
+    supplied span.</p><p>    A writer can asynchronously fail if the underlying write syscall returns an error,
+    e.g. EBADF, EPIPE, ECONNRESET, ....</p><p>    <code class="code">buffer_age_limit</code> specifies how backed up you can get before raising an exception.
     The default is <code class="code">`Unlimited</code> for files, and 2 minutes for other kinds of file
-    descriptors.  You can supply <code class="code">`Unlimited</code> to turn off buffer-age checks.<br/>    <code class="code">raise_when_consumer_leaves</code> specifies whether the writer should raise an exception
+    descriptors.  You can supply <code class="code">`Unlimited</code> to turn off buffer-age checks.</p><p>    <code class="code">raise_when_consumer_leaves</code> specifies whether the writer should raise an exception
     when the consumer receiving bytes from the writer leaves, i.e. in Unix, the write
     syscall returns EPIPE or ECONNRESET.  If <code class="code">not raise_when_consumer_leaves</code>, then the
     writer will silently drop all writes after the consumer leaves, and the writer will
     eventually fail with a writer-buffer-older-than error if the application remains open
-    long enough.</div></div>
+    long enough.</p></div></div>
 <pre><span class="VALraise_when_consumer_leaves"><span class="keyword">val</span> raise_when_consumer_leaves</span> : <code class="type"><a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a> -&gt; bool</code></pre>
 <pre><span class="VALset_raise_when_consumer_leaves"><span class="keyword">val</span> set_raise_when_consumer_leaves</span> : <code class="type"><a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a> -&gt; bool -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">set_raise_when_consumer_leaves t bool</code> sets the <code class="code">raise_when_consumer_leaves</code> flag of
     <code class="code">t</code>, which determies how <code class="code">t</code> responds to a write system call raising EPIPE and
@@ -65,9 +65,9 @@
 ?exclusive:bool -&gt;
 string -&gt; f:(<a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a> -&gt; 'a <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>) -&gt; 'a <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre><div class="info"><div class="info"><code class="code">with_file ~file f</code> opens <code class="code">file</code> for writing, creates a writer <code class="code">t</code>, and runs <code class="code">f t</code> to
     obtain a deferred <code class="code">d</code>.  When <code class="code">d</code> becomes determined, the writer is closed.  When the
-    close completes, the result of <code class="code">with_file</code> becomes determined with the value of <code class="code">d</code>.<br/>    There is no need to call <code class="code">Writer.flushed</code> to ensure that <code class="code">with_file</code> waits for the
+    close completes, the result of <code class="code">with_file</code> becomes determined with the value of <code class="code">d</code>.<p>    There is no need to call <code class="code">Writer.flushed</code> to ensure that <code class="code">with_file</code> waits for the
     writer to be flushed before closing it.  <code class="code">Writer.close</code> will already wait for the
-    flush.</div></div>
+    flush.</p></div></div>
 <pre><span class="VALid"><span class="keyword">val</span> id</span> : <code class="type"><a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Writer.Id&amp;type=t">Id.t</a></code></pre><div class="info"><div class="info"><code class="code">id t</code> <b>Returns</b> an id for this writer that is unique among all other writers</div></div>
 <pre><span class="VALfd"><span class="keyword">val</span> fd</span> : <code class="type"><a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a></code></pre><div class="info"><div class="info"><code class="code">fd t</code> <b>Returns</b> the Fd.t used to create this writer</div></div>
 <pre><span class="VALset_fd"><span class="keyword">val</span> set_fd</span> : <code class="type"><a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a> -&gt; unit <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre><div class="info"><div class="info"><code class="code">set_fd t fd</code> sets the fd used by <code class="code">t</code> for its underlying system calls.  It first waits
@@ -97,9 +97,9 @@ string -&gt; f:(<a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a>
     flushing or closing of the writer after returning before it is safe to modify the
     bigstrings which were directly or indirectly passed to these functions.  The reason is
     that these bigstrings will be read from directly when writing; their contents is not
-    copied to internal buffers.<br/>    This is important if users need to send the same large data string to a huge number of
+    copied to internal buffers.<p>    This is important if users need to send the same large data string to a huge number of
     clients simultaneously (e.g. on a cluster), because these functions then avoid
-    needlessly exhausting memory by sharing the data.</div></div>
+    needlessly exhausting memory by sharing the data.</p></div></div>
 <pre><span class="VALschedule_bigstring"><span class="keyword">val</span> schedule_bigstring</span> : <code class="type"><a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a> -&gt; ?pos:int -&gt; ?len:int -&gt; <a href="?package=core&amp;module=Std.Bigstring&amp;type=t">Core.Std.Bigstring.t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">schedule_bigstring t bstr</code> schedules a write of bigstring <code class="code">bstr</code>.
     It is not safe to change the bigstring until the writer has been
     successfully flushed or closed after this operation.</div></div>
@@ -114,7 +114,7 @@ string -&gt; f:(<a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a>
     operation.</div></div>
 <pre><span class="VALflushed"><span class="keyword">val</span> flushed</span> : <code class="type"><a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a> -&gt; unit <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre><div class="info"><div class="info"><code class="code">flushed t</code> returns a deferred that will become determined when all prior writes
     complete (i.e. the <code class="code">write()</code> system call returns).  If a prior write fails, then the
-    deferred will never become determined.<br/>    It is OK to call <code class="code">flushed t</code> after <code class="code">t</code> has been closed.</div></div>
+    deferred will never become determined.<p>    It is OK to call <code class="code">flushed t</code> after <code class="code">t</code> has been closed.</p></div></div>
 <pre><span class="VALflushed_time"><span class="keyword">val</span> flushed_time</span> : <code class="type"><a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Std.Time&amp;type=t">Core.Std.Time.t</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
 <pre><span class="VALfsync"><span class="keyword">val</span> fsync</span> : <code class="type"><a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a> -&gt; unit <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
 <pre><span class="VALfdatasync"><span class="keyword">val</span> fdatasync</span> : <code class="type"><a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a> -&gt; unit <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
@@ -126,15 +126,15 @@ string -&gt; f:(<a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a>
     even if the flush hangs.  By default <code class="code">force_close</code> is <code class="code">Deferred.never ()</code> for files
     and <code class="code">after (sec 5)</code> for other types of file descriptors (e.g. sockets).  If the close
     is forced, data in the writer's buffer may not be written to the file descriptor.  You
-    can check this by calling <code class="code">bytes_to_write</code> after <code class="code">close</code> finishes.<br/>    <code class="code">close</code> will raise an exception if the <code class="code">Unix.close</code> on the underlying file descriptor
-    fails.<br/>    It is required to call <code class="code">close</code> on a writer in order to close the underlying file
+    can check this by calling <code class="code">bytes_to_write</code> after <code class="code">close</code> finishes.<p>    <code class="code">close</code> will raise an exception if the <code class="code">Unix.close</code> on the underlying file descriptor
+    fails.</p><p>    It is required to call <code class="code">close</code> on a writer in order to close the underlying file
     descriptor.  Not doing so will cause a file descriptor leak.  It also will cause a
     space leak, because until the writer is closed, it is held on to in order to flush the
-    writer on shutdown.<br/>    It is an error to call other operations on <code class="code">t</code> after <code class="code">close t</code> has been called, except
+    writer on shutdown.</p><p>    It is an error to call other operations on <code class="code">t</code> after <code class="code">close t</code> has been called, except
     that calls of <code class="code">close</code> subsequent to the original call to <code class="code">close</code> will return the same
-    deferred as the original call.<br/>    <code class="code">close_finished t</code> becomes determined after <code class="code">t</code>'s underlying file descriptor has been
+    deferred as the original call.</p><p>    <code class="code">close_finished t</code> becomes determined after <code class="code">t</code>'s underlying file descriptor has been
     closed, i.e. it is the same as the result of <code class="code">close</code>.  <code class="code">close_finished</code> differs from
-    <code class="code">close</code> in that it does not have the side effect of initiating a close.<br/>    <code class="code">is_closed t</code> returns <code class="code">true</code> iff <code class="code">close t</code> has been called.<br/>    <code class="code">is_open t</code> is <code class="code">not (is_closed t)</code></div></div>
+    <code class="code">close</code> in that it does not have the side effect of initiating a close.</p><p>    <code class="code">is_closed t</code> returns <code class="code">true</code> iff <code class="code">close t</code> has been called.</p><p>    <code class="code">is_open t</code> is <code class="code">not (is_closed t)</code></p></div></div>
 <pre><span class="VALclose_finished"><span class="keyword">val</span> close_finished</span> : <code class="type"><a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a> -&gt; unit <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
 <pre><span class="VALis_closed"><span class="keyword">val</span> is_closed</span> : <code class="type"><a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a> -&gt; bool</code></pre>
 <pre><span class="VALis_open"><span class="keyword">val</span> is_open</span> : <code class="type"><a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a> -&gt; bool</code></pre>
@@ -152,15 +152,15 @@ f:(unit -&gt; 'a <a href="?package=async_unix&amp;module=Import.Deferred&amp;typ
     it will be replaced, even if it is read only.  The temp file will be <code class="code">file</code> (or
     <code class="code">temp_file</code> if supplied) suffixed by a unique random sequence of six characters.  The
     temp file may need to be removed in case of a crash so it may be prudent to choose a
-    temp file that can be easily found by cleanup tools.<br/>    If <code class="code">fsync</code> is <code class="code">true</code>, the temp file will be flushed to disk before it takes the place
+    temp file that can be easily found by cleanup tools.<p>    If <code class="code">fsync</code> is <code class="code">true</code>, the temp file will be flushed to disk before it takes the place
     of the target file, thus guaranteeing that the target file will always be in a sound
     state, even after a machine crash.  Since synchronization is extremely slow, this is
     not the default.  Think carefully about the event of machine crashes and whether you
-    may need this option!<br/>    We intend for <code class="code">with_file_atomic</code> to preserve the behavior of the <code class="code">open</code> system call,
+    may need this option!</p><p>    We intend for <code class="code">with_file_atomic</code> to preserve the behavior of the <code class="code">open</code> system call,
     so if <code class="code">file</code> does not exist, we will apply the umask to <code class="code">perm</code>.  If <code class="code">file</code> does exist,
-    <code class="code">perm</code> will default to the file's current permissions rather than 0o666.<br/>    <code class="code">save</code> is a special case of <code class="code">with_file_atomic</code> that atomically writes the given
-    string to the specified file.<br/>    <code class="code">save_sexp</code> is a special case of <code class="code">with_file_atomic</code> that atomically writes the
-    given sexp to the specified file.</div></div>
+    <code class="code">perm</code> will default to the file's current permissions rather than 0o666.</p><p>    <code class="code">save</code> is a special case of <code class="code">with_file_atomic</code> that atomically writes the given
+    string to the specified file.</p><p>    <code class="code">save_sexp</code> is a special case of <code class="code">with_file_atomic</code> that atomically writes the
+    given sexp to the specified file.</p></div></div>
 <pre><span class="VALwith_file_atomic"><span class="keyword">val</span> with_file_atomic</span> : <code class="type">?temp_file:string -&gt;
 ?perm:<a href="?package=core&amp;module=Std.Unix&amp;type=file_perm">Core.Std.Unix.file_perm</a> -&gt;
 ?fsync:bool -&gt;
@@ -182,29 +182,29 @@ string -&gt; f:(<a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a>
 <pre><span class="VALtransfer"><span class="keyword">val</span> transfer</span> : <code class="type">?stop:unit <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a> -&gt;
 <a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a> -&gt; 'a <a href="?package=async_unix&amp;module=Import.Pipe.Reader&amp;type=t">Import.Pipe.Reader.t</a> -&gt; ('a -&gt; unit) -&gt; unit <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre><div class="info"><div class="info"><code class="code">transfer t pipe_r f</code> repeatedly pulls values from <code class="code">pipe_r</code>, and feeds them to <code class="code">f</code>,
     which should in turn write them to <code class="code">t</code>.  It provides pushback to <code class="code">pipe_r</code> by not
-    reading when <code class="code">t</code> cannot keep up with the data being pushed in.<br/>    The <code class="code">transfer</code> stops and the result becomes determined when <code class="code">pipe_r</code> reaches its EOF,
-    when <code class="code">t</code>'s consumer leaves, or when <code class="code">stop</code> becomes determined.<br/>    <code class="code">transfer</code> causes <code class="code">Pipe.flushed</code> on <code class="code">pipe_r</code>'s writer to ensure that the bytes have
+    reading when <code class="code">t</code> cannot keep up with the data being pushed in.<p>    The <code class="code">transfer</code> stops and the result becomes determined when <code class="code">pipe_r</code> reaches its EOF,
+    when <code class="code">t</code>'s consumer leaves, or when <code class="code">stop</code> becomes determined.</p><p>    <code class="code">transfer</code> causes <code class="code">Pipe.flushed</code> on <code class="code">pipe_r</code>'s writer to ensure that the bytes have
     been flushed to <code class="code">t</code> before returning.  It also waits on <code class="code">Pipe.upstream_flushed</code> at
-    shutdown.</div></div>
+    shutdown.</p></div></div>
 <pre><span class="VALpipe"><span class="keyword">val</span> pipe</span> : <code class="type"><a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a> -&gt; string <a href="?package=async_unix&amp;module=Import.Pipe.Writer&amp;type=t">Import.Pipe.Writer.t</a></code></pre><div class="info"><div class="info"><code class="code">pipe t</code> returns the writing end of a pipe attached to <code class="code">t</code> that pushes back when <code class="code">t</code>
     cannot keep up with the data being pushed in.  Closing the pipe will close <code class="code">t</code>.</div></div>
 <pre><span class="VALof_pipe"><span class="keyword">val</span> of_pipe</span> : <code class="type"><a href="?package=core&amp;module=Std.Info&amp;type=t">Core.Std.Info.t</a> -&gt;
 string <a href="?package=async_unix&amp;module=Import.Pipe.Writer&amp;type=t">Import.Pipe.Writer.t</a> -&gt;
 (<a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a> * [ `Closed_and_flushed_downstream of unit <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a> ])
 <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre><div class="info"><div class="info"><code class="code">of_pipe info pipe_w</code> returns a writer <code class="code">t</code> such that data written to <code class="code">t</code> will appear
-    on <code class="code">pipe_w</code>.  If either <code class="code">t</code> or <code class="code">pipe_w</code> are closed, the other is closed as well.<br/>    <code class="code">of_pipe</code> is implemented by attaching <code class="code">t</code> to the write-end of a Unix pipe, and
-    shuttling bytes from the read-end of the Unix pipe to <code class="code">pipe_w</code>.</div></div>
+    on <code class="code">pipe_w</code>.  If either <code class="code">t</code> or <code class="code">pipe_w</code> are closed, the other is closed as well.<p>    <code class="code">of_pipe</code> is implemented by attaching <code class="code">t</code> to the write-end of a Unix pipe, and
+    shuttling bytes from the read-end of the Unix pipe to <code class="code">pipe_w</code>.</p></div></div>
 <pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type"><a href="?package=async_unix&amp;module=Writer&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
 <div class="info"><div class="info"><code class="code">io_stats</code> Overall IO statistics for all writers</div></div>
 <div class="info"><div class="info"><code class="code">stdout</code> and <code class="code">stderr</code> are writers for file descriptors 1 and 2.  They are lazy because
-    we don't want to create them in all programs that happen to link with async.<br/>    When either <code class="code">stdout</code> or <code class="code">stderr</code> is created, they both are created.  Furthermore, if
+    we don't want to create them in all programs that happen to link with async.<p>    When either <code class="code">stdout</code> or <code class="code">stderr</code> is created, they both are created.  Furthermore, if
     they point to the same inode, then they will be the same writer to <code class="code">Fd.stdout</code>.  This
     can be confusing, because <code class="code">fd (force stderr)</code> will be <code class="code">Fd.stdout</code>, not <code class="code">Fd.stderr</code>.
-    And subsequent modifications of <code class="code">Fd.stderr</code> will have no effect on <code class="code">Writer.stderr</code>.<br/>    Unfortunately, the sharing is necessary because async uses OS threads to do write()
+    And subsequent modifications of <code class="code">Fd.stderr</code> will have no effect on <code class="code">Writer.stderr</code>.</p><p>    Unfortunately, the sharing is necessary because async uses OS threads to do write()
     syscalls using the writer buffer.  When calling a program that redirects stdout and
-    stderr to the same file, as in:<br/>    <span class="verbatim">      foo.exe &gt;/tmp/z.file 2&gt;&amp;1
-    </span><br/>    if <code class="code">Writer.stdout</code> and <code class="code">Writer.stderr</code> weren't the same writer, then they could have
-    threads simultaneously writing to the same file, which could easily cause data loss.</div></div>
+    stderr to the same file, as in:</p><p>    <span class="verbatim">      foo.exe &gt;/tmp/z.file 2&gt;&amp;1
+    </span></p><p>    if <code class="code">Writer.stdout</code> and <code class="code">Writer.stderr</code> weren't the same writer, then they could have
+    threads simultaneously writing to the same file, which could easily cause data loss.</p></div></div>
 <pre><span class="VALbuffer_age_limit_of_sexp"><span class="keyword">val</span> buffer_age_limit_of_sexp</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; <a href="?package=async_unix&amp;module=Writer&amp;type=buffer_age_limit">buffer_age_limit</a></code></pre>
 <pre><span class="VAL__buffer_age_limit_of_sexp__"><span class="keyword">val</span> __buffer_age_limit_of_sexp__</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; <a href="?package=async_unix&amp;module=Writer&amp;type=buffer_age_limit">buffer_age_limit</a></code></pre>
 <pre><span class="VALsexp_of_buffer_age_limit"><span class="keyword">val</span> sexp_of_buffer_age_limit</span> : <code class="type"><a href="?package=async_unix&amp;module=Writer&amp;type=buffer_age_limit">buffer_age_limit</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
@@ -218,18 +218,18 @@ string <a href="?package=async_unix&amp;module=Import.Pipe.Writer&amp;type=t">Im
 <pre><span class="VALbin_write_buffer_age_limit_"><span class="keyword">val</span> bin_write_buffer_age_limit_</span> : <code class="type"><a href="?package=async_unix&amp;module=Writer&amp;type=buffer_age_limit">buffer_age_limit</a> <a href="?package=core&amp;module=Std.Bin_prot.Unsafe_write_c&amp;type=writer">Core.Std.Bin_prot.Unsafe_write_c.writer</a></code></pre>
 <pre><span class="VALbin_writer_buffer_age_limit"><span class="keyword">val</span> bin_writer_buffer_age_limit</span> : <code class="type"><a href="?package=async_unix&amp;module=Writer&amp;type=buffer_age_limit">buffer_age_limit</a> <a href="?package=core&amp;module=Std.Bin_prot.Type_class&amp;type=writer">Core.Std.Bin_prot.Type_class.writer</a></code></pre>
 <div class="info"><div class="info"><code class="code">create ?buf_len ?syscall ?buffer_age_limit fd</code> creates a new writer.  The file
-    descriptor fd should not be in use for writing by anything else.<br/>    By default, a write system call occurs at the end of a cycle in which bytes were
+    descriptor fd should not be in use for writing by anything else.<p>    By default, a write system call occurs at the end of a cycle in which bytes were
     written.  One can supply ~syscall:(`Periodic span) to get better performance.  This
     batches writes together, doing the write system call periodically according to the
-    supplied span.<br/>    A writer can asynchronously fail if the underlying write syscall returns an error,
-    e.g. EBADF, EPIPE, ECONNRESET, ....<br/>    <code class="code">buffer_age_limit</code> specifies how backed up you can get before raising an exception.
+    supplied span.</p><p>    A writer can asynchronously fail if the underlying write syscall returns an error,
+    e.g. EBADF, EPIPE, ECONNRESET, ....</p><p>    <code class="code">buffer_age_limit</code> specifies how backed up you can get before raising an exception.
     The default is <code class="code">`Unlimited</code> for files, and 2 minutes for other kinds of file
-    descriptors.  You can supply <code class="code">`Unlimited</code> to turn off buffer-age checks.<br/>    <code class="code">raise_when_consumer_leaves</code> specifies whether the writer should raise an exception
+    descriptors.  You can supply <code class="code">`Unlimited</code> to turn off buffer-age checks.</p><p>    <code class="code">raise_when_consumer_leaves</code> specifies whether the writer should raise an exception
     when the consumer receiving bytes from the writer leaves, i.e. in Unix, the write
     syscall returns EPIPE or ECONNRESET.  If <code class="code">not raise_when_consumer_leaves</code>, then the
     writer will silently drop all writes after the consumer leaves, and the writer will
     eventually fail with a writer-buffer-older-than error if the application remains open
-    long enough.</div></div>
+    long enough.</p></div></div>
 <div class="info"><div class="info">default is <code class="code">true</code></div></div>
 <div class="info"><div class="info"><code class="code">set_raise_when_consumer_leaves t bool</code> sets the <code class="code">raise_when_consumer_leaves</code> flag of
     <code class="code">t</code>, which determies how <code class="code">t</code> responds to a write system call raising EPIPE and
@@ -246,9 +246,9 @@ string <a href="?package=async_unix&amp;module=Import.Pipe.Writer&amp;type=t">Im
 <div class="info"><div class="info">default is <code class="code">0o666</code></div></div>
 <div class="info"><div class="info"><code class="code">with_file ~file f</code> opens <code class="code">file</code> for writing, creates a writer <code class="code">t</code>, and runs <code class="code">f t</code> to
     obtain a deferred <code class="code">d</code>.  When <code class="code">d</code> becomes determined, the writer is closed.  When the
-    close completes, the result of <code class="code">with_file</code> becomes determined with the value of <code class="code">d</code>.<br/>    There is no need to call <code class="code">Writer.flushed</code> to ensure that <code class="code">with_file</code> waits for the
+    close completes, the result of <code class="code">with_file</code> becomes determined with the value of <code class="code">d</code>.<p>    There is no need to call <code class="code">Writer.flushed</code> to ensure that <code class="code">with_file</code> waits for the
     writer to be flushed before closing it.  <code class="code">Writer.close</code> will already wait for the
-    flush.</div></div>
+    flush.</p></div></div>
 <div class="info"><div class="info">default is <code class="code">0o666</code></div></div>
 <div class="info"><div class="info">default is <code class="code">false</code></div></div>
 <div class="info"><div class="info">default is <code class="code">false</code></div></div>
@@ -277,9 +277,9 @@ string <a href="?package=async_unix&amp;module=Import.Pipe.Writer&amp;type=t">Im
     flushing or closing of the writer after returning before it is safe to modify the
     bigstrings which were directly or indirectly passed to these functions.  The reason is
     that these bigstrings will be read from directly when writing; their contents is not
-    copied to internal buffers.<br/>    This is important if users need to send the same large data string to a huge number of
+    copied to internal buffers.<p>    This is important if users need to send the same large data string to a huge number of
     clients simultaneously (e.g. on a cluster), because these functions then avoid
-    needlessly exhausting memory by sharing the data.</div></div>
+    needlessly exhausting memory by sharing the data.</p></div></div>
 <div class="info"><div class="info"><code class="code">schedule_bigstring t bstr</code> schedules a write of bigstring <code class="code">bstr</code>.
     It is not safe to change the bigstring until the writer has been
     successfully flushed or closed after this operation.</div></div>
@@ -293,7 +293,7 @@ string <a href="?package=async_unix&amp;module=Import.Pipe.Writer&amp;type=t">Im
     operation.</div></div>
 <div class="info"><div class="info"><code class="code">flushed t</code> returns a deferred that will become determined when all prior writes
     complete (i.e. the <code class="code">write()</code> system call returns).  If a prior write fails, then the
-    deferred will never become determined.<br/>    It is OK to call <code class="code">flushed t</code> after <code class="code">t</code> has been closed.</div></div>
+    deferred will never become determined.<p>    It is OK to call <code class="code">flushed t</code> after <code class="code">t</code> has been closed.</p></div></div>
 <div class="info"><div class="info"><code class="code">send t s</code> writes a string to the channel that can be read back
     using Reader.recv</div></div>
 <div class="info"><div class="info"><code class="code">monitor t</code> returns the writer's monitor.</div></div>
@@ -302,15 +302,15 @@ string <a href="?package=async_unix&amp;module=Import.Pipe.Writer&amp;type=t">Im
     even if the flush hangs.  By default <code class="code">force_close</code> is <code class="code">Deferred.never ()</code> for files
     and <code class="code">after (sec 5)</code> for other types of file descriptors (e.g. sockets).  If the close
     is forced, data in the writer's buffer may not be written to the file descriptor.  You
-    can check this by calling <code class="code">bytes_to_write</code> after <code class="code">close</code> finishes.<br/>    <code class="code">close</code> will raise an exception if the <code class="code">Unix.close</code> on the underlying file descriptor
-    fails.<br/>    It is required to call <code class="code">close</code> on a writer in order to close the underlying file
+    can check this by calling <code class="code">bytes_to_write</code> after <code class="code">close</code> finishes.<p>    <code class="code">close</code> will raise an exception if the <code class="code">Unix.close</code> on the underlying file descriptor
+    fails.</p><p>    It is required to call <code class="code">close</code> on a writer in order to close the underlying file
     descriptor.  Not doing so will cause a file descriptor leak.  It also will cause a
     space leak, because until the writer is closed, it is held on to in order to flush the
-    writer on shutdown.<br/>    It is an error to call other operations on <code class="code">t</code> after <code class="code">close t</code> has been called, except
+    writer on shutdown.</p><p>    It is an error to call other operations on <code class="code">t</code> after <code class="code">close t</code> has been called, except
     that calls of <code class="code">close</code> subsequent to the original call to <code class="code">close</code> will return the same
-    deferred as the original call.<br/>    <code class="code">close_finished t</code> becomes determined after <code class="code">t</code>'s underlying file descriptor has been
+    deferred as the original call.</p><p>    <code class="code">close_finished t</code> becomes determined after <code class="code">t</code>'s underlying file descriptor has been
     closed, i.e. it is the same as the result of <code class="code">close</code>.  <code class="code">close_finished</code> differs from
-    <code class="code">close</code> in that it does not have the side effect of initiating a close.<br/>    <code class="code">is_closed t</code> returns <code class="code">true</code> iff <code class="code">close t</code> has been called.<br/>    <code class="code">is_open t</code> is <code class="code">not (is_closed t)</code></div></div>
+    <code class="code">close</code> in that it does not have the side effect of initiating a close.</p><p>    <code class="code">is_closed t</code> returns <code class="code">true</code> iff <code class="code">close t</code> has been called.</p><p>    <code class="code">is_open t</code> is <code class="code">not (is_closed t)</code></p></div></div>
 <div class="info"><div class="info"><code class="code">bytes_to_write t</code> returns how many bytes have been requested to write but have not
     yet been written.</div></div>
 <div class="info"><div class="info"><code class="code">bytes_written t</code> returns how many bytes have been written.</div></div>
@@ -322,15 +322,15 @@ string <a href="?package=async_unix&amp;module=Import.Pipe.Writer&amp;type=t">Im
     it will be replaced, even if it is read only.  The temp file will be <code class="code">file</code> (or
     <code class="code">temp_file</code> if supplied) suffixed by a unique random sequence of six characters.  The
     temp file may need to be removed in case of a crash so it may be prudent to choose a
-    temp file that can be easily found by cleanup tools.<br/>    If <code class="code">fsync</code> is <code class="code">true</code>, the temp file will be flushed to disk before it takes the place
+    temp file that can be easily found by cleanup tools.<p>    If <code class="code">fsync</code> is <code class="code">true</code>, the temp file will be flushed to disk before it takes the place
     of the target file, thus guaranteeing that the target file will always be in a sound
     state, even after a machine crash.  Since synchronization is extremely slow, this is
     not the default.  Think carefully about the event of machine crashes and whether you
-    may need this option!<br/>    We intend for <code class="code">with_file_atomic</code> to preserve the behavior of the <code class="code">open</code> system call,
+    may need this option!</p><p>    We intend for <code class="code">with_file_atomic</code> to preserve the behavior of the <code class="code">open</code> system call,
     so if <code class="code">file</code> does not exist, we will apply the umask to <code class="code">perm</code>.  If <code class="code">file</code> does exist,
-    <code class="code">perm</code> will default to the file's current permissions rather than 0o666.<br/>    <code class="code">save</code> is a special case of <code class="code">with_file_atomic</code> that atomically writes the given
-    string to the specified file.<br/>    <code class="code">save_sexp</code> is a special case of <code class="code">with_file_atomic</code> that atomically writes the
-    given sexp to the specified file.</div></div>
+    <code class="code">perm</code> will default to the file's current permissions rather than 0o666.</p><p>    <code class="code">save</code> is a special case of <code class="code">with_file_atomic</code> that atomically writes the given
+    string to the specified file.</p><p>    <code class="code">save_sexp</code> is a special case of <code class="code">with_file_atomic</code> that atomically writes the
+    given sexp to the specified file.</p></div></div>
 <div class="info"><div class="info">default is <code class="code">false</code></div></div>
 <div class="info"><div class="info">default is <code class="code">false</code></div></div>
 <div class="info"><div class="info"><code class="code">save_lines file lines</code> writes all lines in <code class="code">lines</code> to <code class="code">file</code>, with each line followed
@@ -344,13 +344,13 @@ string <a href="?package=async_unix&amp;module=Import.Pipe.Writer&amp;type=t">Im
 <div class="info"><div class="info">default is <code class="code">true</code></div></div>
 <div class="info"><div class="info"><code class="code">transfer t pipe_r f</code> repeatedly pulls values from <code class="code">pipe_r</code>, and feeds them to <code class="code">f</code>,
     which should in turn write them to <code class="code">t</code>.  It provides pushback to <code class="code">pipe_r</code> by not
-    reading when <code class="code">t</code> cannot keep up with the data being pushed in.<br/>    The <code class="code">transfer</code> stops and the result becomes determined when <code class="code">pipe_r</code> reaches its EOF,
-    when <code class="code">t</code>'s consumer leaves, or when <code class="code">stop</code> becomes determined.<br/>    <code class="code">transfer</code> causes <code class="code">Pipe.flushed</code> on <code class="code">pipe_r</code>'s writer to ensure that the bytes have
+    reading when <code class="code">t</code> cannot keep up with the data being pushed in.<p>    The <code class="code">transfer</code> stops and the result becomes determined when <code class="code">pipe_r</code> reaches its EOF,
+    when <code class="code">t</code>'s consumer leaves, or when <code class="code">stop</code> becomes determined.</p><p>    <code class="code">transfer</code> causes <code class="code">Pipe.flushed</code> on <code class="code">pipe_r</code>'s writer to ensure that the bytes have
     been flushed to <code class="code">t</code> before returning.  It also waits on <code class="code">Pipe.upstream_flushed</code> at
-    shutdown.</div></div>
+    shutdown.</p></div></div>
 <div class="info"><div class="info"><code class="code">pipe t</code> returns the writing end of a pipe attached to <code class="code">t</code> that pushes back when <code class="code">t</code>
     cannot keep up with the data being pushed in.  Closing the pipe will close <code class="code">t</code>.</div></div>
 <div class="info"><div class="info"><code class="code">of_pipe info pipe_w</code> returns a writer <code class="code">t</code> such that data written to <code class="code">t</code> will appear
-    on <code class="code">pipe_w</code>.  If either <code class="code">t</code> or <code class="code">pipe_w</code> are closed, the other is closed as well.<br/>    <code class="code">of_pipe</code> is implemented by attaching <code class="code">t</code> to the write-end of a Unix pipe, and
-    shuttling bytes from the read-end of the Unix pipe to <code class="code">pipe_w</code>.</div></div>
+    on <code class="code">pipe_w</code>.  If either <code class="code">t</code> or <code class="code">pipe_w</code> are closed, the other is closed as well.<p>    <code class="code">of_pipe</code> is implemented by attaching <code class="code">t</code> to the write-end of a Unix pipe, and
+    shuttling bytes from the read-end of the Unix pipe to <code class="code">pipe_w</code>.</p></div></div>
 </div>

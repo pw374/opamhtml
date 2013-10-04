@@ -9,9 +9,9 @@
    To create a new stream element, the function <code class="code">f</code> is called with
    the current stream count. The user function <code class="code">f</code> must return either
    <code class="code">Some &lt;value&gt;</code> for a value or <code class="code">None</code> to specify the end of the
-   stream.<br/>   Do note that the indices passed to <code class="code">f</code> may not start at <code class="code">0</code> in the
+   stream.<p>   Do note that the indices passed to <code class="code">f</code> may not start at <code class="code">0</code> in the
    general case. For example, <code class="code">[&lt; '0; '1; Stream.from f &gt;]</code> would call
-   <code class="code">f</code> the first time with count <code class="code">2</code>.</div></div>
+   <code class="code">f</code> the first time with count <code class="code">2</code>.</p></div></div>
 <pre><span class="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">'a list -&gt; 'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a></code></pre><div class="info"><div class="info">Return the stream holding the elements of the list in the same
    order.</div></div>
 <pre><span class="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -&gt; char <a href="?package=ocaml&amp;module=Stream&amp;type=t">t</a></code></pre><div class="info"><div class="info">Return the stream of the characters of the string parameter.</div></div>

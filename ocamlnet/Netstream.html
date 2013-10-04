@@ -1,25 +1,25 @@
 <div class="ocaml_toplevel_module"><div class="info">A netstream is an input channel that is read block by block. The 
  fragment of the channel currently loaded into memory is called the
  current window of the netstream. The window can be thought as
- look-ahead buffer.<br/> <b>Picture:</b><br/> <pre class="codepre"><code class="code">
+ look-ahead buffer.<p> <b>Picture:</b></p><p> </p><code class="code">
  0                pos_in        pos_in + window_length            EOF
  +------------------+-------------------+--------------------------+
                     ====================
                      The current window
- </code></pre><br/> You can use a netstream like an <code class="code">in_obj_channel</code>, and read characters
+ </code><p> You can use a netstream like an <code class="code">in_obj_channel</code>, and read characters
  and strings from the stream. The bytes come first from the look-ahead
  buffer, and if there are not enough bytes, they are loaded from the
  underlying channel. After every read operation it is tried to enlarge
- the window such that it contains at least one block.<br/> If you want that the window becomes larger, you can call <code class="code">want</code> (to
+ the window such that it contains at least one block.</p><p> If you want that the window becomes larger, you can call <code class="code">want</code> (to
  enlarge the window to a certain size) or <code class="code">want_another_block</code> (to load
  just another block from the underlying channel). Note that this affects only
- the current window and not the future size of the window.<br/> Note <code class="code">Buffer_underrun</code>: netstreams can cope with underruns of underlying
+ the current window and not the future size of the window.</p><p> Note <code class="code">Buffer_underrun</code>: netstreams can cope with underruns of underlying
  channels. An underrun happens when it is not possible to ensure the
  minimum window size. However, it is possible that the window size
  sinks under the minimum, but the <code class="code">Buffer_underrun</code> is deferred until the
  next call of an input method. Furthermore, there is a problem in the <code class="code">skip</code>
  method which may only be partially executed, i.e. the method skips some
- bytes and then raises <code class="code">Buffer_underrun</code>.</div>
+ bytes and then raises <code class="code">Buffer_underrun</code>.</p></div>
 <div class="ocaml_class sig" name="in_obj_stream"><pre><span class="TYPEin_obj_stream"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netstream&amp;class=in_obj_stream">in_obj_stream</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">An <code class="code">in_obj_stream</code> extends <code class="code">in_obj_channel</code> by look-ahead methods</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Netchannels&amp;class=in_obj_channel"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=in_obj_channel">Netchannels.in_obj_channel</a></pre></div>
 <div class="info"><div class="info">The normal input operations work as usual. The window is moved after
  every read sequence of bytes by exactly the number of bytes, and 
@@ -48,19 +48,19 @@
 <div class="info"><div class="info">Skip the n bytes of the stream. It is not an error to skip more bytes
  than available in the remaining stream.</div></div></div></div>
 <div class="ocaml_class ident" name="input_stream" path="?package=ocamlnet&amp;module=Netstream&amp;class=in_obj_stream"><pre><span class="TYPEinput_stream"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netstream&amp;class=input_stream">input_stream</a></span> : <code class="type">int option -&gt; int option -&gt; <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=in_obj_channel">Netchannels.in_obj_channel</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Netstream&amp;class=in_obj_stream">in_obj_stream</a></pre><div class="info"><div class="info">Make an <code class="code">in_obj_stream</code> on top of an <code class="code">in_obj_channel</code>. The <code class="code">block_size</code>
- can be specified; it defaults to 4096. <br/> If <code class="code">len</code> is passed, this parameter limits the length of the channel:
+ can be specified; it defaults to 4096. <p> If <code class="code">len</code> is passed, this parameter limits the length of the channel:
  Only the first <code class="code">len</code> bytes are read from the input channel, then an EOF
- is simulated even if the input channel is longer.</div></div></div>
+ is simulated even if the input channel is longer.</p></div></div></div>
 <div class="ocaml_class ident" name="sub_stream" path="?package=ocamlnet&amp;module=Netstream&amp;class=in_obj_stream"><pre><span class="TYPEsub_stream"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netstream&amp;class=sub_stream">sub_stream</a></span> : <code class="type">int option -&gt; string option -&gt; <a href="?package=ocamlnet&amp;module=Netstream&amp;type=in_obj_stream">in_obj_stream</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Netstream&amp;class=in_obj_stream">in_obj_stream</a></pre><div class="info"><div class="info">A sub stream is the part of the whole stream from the current position
  to an arbitrary other position that is determined by <code class="code">len</code> and
  <code class="code">delimiter</code>. <code class="code">len</code> specifies the maximum length of the sub stream.
  <code class="code">delimiter</code> is an arbitrary string that indicates the end of the
  sub stream (the delimiter is not part of the sub stream; i.e. the
- sub stream ends immediately before the delimiter).<br/> While reading from the sub stream, not only the current position of
+ sub stream ends immediately before the delimiter).<p> While reading from the sub stream, not only the current position of
  the sub stream moves, but also the current position of the main
  stream. This means that it must be avoided to read data from the
  main stream while the sub stream is in use. The typical pattern
- is:<ul><li>Read from the main stream until the beginning of a section is
+ is:</p><ul><li>Read from the main stream until the beginning of a section is
    recognized</li><li>Create a sub stream at this point</li><li>Read from the sub stream until EOF</li><li>Continue reading the main stream. The next character of the main
    stream is exactly the character following the EOF of the sub stream
    </li></ul></div></div></div>

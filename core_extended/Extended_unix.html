@@ -9,10 +9,10 @@
    forks a new process that executes the program
    in file <code class="code">prog</code>, with arguments <code class="code">args</code>. The pid of the new
    process is returned immediately; the new process executes
-   concurrently with the current process.<br/>   The function raises EPERM if when using <code class="code">set{gid,uid}</code> and the user id is
-    not 0.<br/>   The standard input and outputs of the new process are connected
-   to the descriptors <code class="code">stdin</code>, <code class="code">stdout</code> and <code class="code">stderr</code>.<br/>   The close_on_exec flag is cleared from <code class="code">stderr</code> <code class="code">stdout</code> and <code class="code">stdin</code> so it's
-   safe to pass in fds with <code class="code">close_on_exec</code> set.<div class="parameters"><div class="param_info"><code class="code">path_lookup</code> : if <code class="code">true</code> than we use PATH to find the process to exec.</div></div></div></div>
+   concurrently with the current process.<p>   The function raises EPERM if when using <code class="code">set{gid,uid}</code> and the user id is
+    not 0.</p><p>   The standard input and outputs of the new process are connected
+   to the descriptors <code class="code">stdin</code>, <code class="code">stdout</code> and <code class="code">stderr</code>.</p><p>   The close_on_exec flag is cleared from <code class="code">stderr</code> <code class="code">stdout</code> and <code class="code">stdin</code> so it's
+   safe to pass in fds with <code class="code">close_on_exec</code> set.</p><div class="parameters"><div class="param_info"><code class="code">path_lookup</code> : if <code class="code">true</code> than we use PATH to find the process to exec.</div></div></div></div>
 <pre><span class="VALseteuid"><span class="keyword">val</span> seteuid</span> : <code class="type">int -&gt; unit</code></pre>
 <pre><span class="VALsetreuid"><span class="keyword">val</span> setreuid</span> : <code class="type">uid:int -&gt; euid:int -&gt; unit</code></pre>
 <pre><span class="VALgettid"><span class="keyword">val</span> gettid</span> : <code class="type">unit -&gt; int</code></pre>

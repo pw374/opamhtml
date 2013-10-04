@@ -28,11 +28,11 @@
     is essential. For example, if you need to take another lock before
     you remove something from the queue for processing, you might
     want to try to take that other lock, and if it fails do something
-    else.<br/>    This function is not dangerous, there is just ONE thing you HAVE
+    else.<p>    This function is not dangerous, there is just ONE thing you HAVE
     to remember if you use it. Just because this function returns
     doesn't mean that pop will succeed, someone might have gotten
     there first, so you have to use transfer_queue_nowait if you don't
-    want to block.</div></div>
+    want to block.</p></div></div>
 <pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type">('a -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a>) -&gt; 'a <a href="?package=core&amp;module=Squeue&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
 <div class="info"><div class="info"><code class="code">create maxsize</code> returns a synchronized queue bounded to have no more than
     <code class="code">maxsize</code> elements.</div></div>
@@ -61,9 +61,9 @@
     is essential. For example, if you need to take another lock before
     you remove something from the queue for processing, you might
     want to try to take that other lock, and if it fails do something
-    else.<br/>    This function is not dangerous, there is just ONE thing you HAVE
+    else.<p>    This function is not dangerous, there is just ONE thing you HAVE
     to remember if you use it. Just because this function returns
     doesn't mean that pop will succeed, someone might have gotten
     there first, so you have to use transfer_queue_nowait if you don't
-    want to block.</div></div>
+    want to block.</p></div></div>
 </div>

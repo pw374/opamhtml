@@ -1841,7 +1841,7 @@ fifteen:('acc__ -&gt; (<a href="?package=core_extended&amp;module=Procfs.Loadavg
 <pre><span class="VALwith_username"><span class="keyword">val</span> with_username</span> : <code class="type">string -&gt; <a href="?package=core_extended&amp;module=Procfs.Process&amp;type=t">Process.t</a> list option</code></pre><div class="info"><div class="info"><code class="code">with_username user</code> calls with_uid after looking up the user's uid</div></div>
 <pre><span class="VALjiffies_per_second_exn"><span class="keyword">val</span> jiffies_per_second_exn</span> : <code class="type">unit -&gt; float</code></pre><div class="info"><div class="info"><code class="code">jiffies_per_second_exn</code>.  A jiffy &quot;is one tick of the system timer interrupt.  It is
     not an absolute time interval unit, since its duration depends on the clock interrupt
-    frequency of the particular hardware platform.&quot;<br/>    Further reading: https://secure.wikimedia.org/wikipedia/en/wiki/Jiffy_(time)</div></div>
+    frequency of the particular hardware platform.&quot;<p>    Further reading: https://secure.wikimedia.org/wikipedia/en/wiki/Jiffy_(time)</p></div></div>
 <pre><span class="VALjiffies_per_second"><span class="keyword">val</span> jiffies_per_second</span> : <code class="type">unit -&gt; float option</code></pre>
 <pre><span class="VALmeminfo_exn"><span class="keyword">val</span> meminfo_exn</span> : <code class="type">unit -&gt; <a href="?package=core_extended&amp;module=Procfs.Meminfo&amp;type=t">Meminfo.t</a></code></pre><div class="info"><div class="info"><code class="code">meminfo_exn</code> queries /proc/meminfo and fills out Meminfo.t.  All values in bytes.</div></div>
 <pre><span class="VALmeminfo"><span class="keyword">val</span> meminfo</span> : <code class="type">unit -&gt; <a href="?package=core_extended&amp;module=Procfs.Meminfo&amp;type=t">Meminfo.t</a> option</code></pre>
@@ -2686,7 +2686,7 @@ passno:('acc__ -&gt; (<a href="?package=core_extended&amp;module=Procfs.Mount&am
 <div class="info"><div class="info"><code class="code">with_username user</code> calls with_uid after looking up the user's uid</div></div>
 <div class="info"><div class="info"><code class="code">jiffies_per_second_exn</code>.  A jiffy &quot;is one tick of the system timer interrupt.  It is
     not an absolute time interval unit, since its duration depends on the clock interrupt
-    frequency of the particular hardware platform.&quot;<br/>    Further reading: https://secure.wikimedia.org/wikipedia/en/wiki/Jiffy_(time)</div></div>
+    frequency of the particular hardware platform.&quot;<p>    Further reading: https://secure.wikimedia.org/wikipedia/en/wiki/Jiffy_(time)</p></div></div>
 <div class="info"><div class="info"><code class="code">meminfo_exn</code> queries /proc/meminfo and fills out Meminfo.t.  All values in bytes.</div></div>
 <div class="info"><div class="info"><code class="code">loadavg_exn</code> parses /proc/loadavg.</div></div>
 <div class="info"><div class="info">/proc/net/tcp, or what netstat or lsof -i parses.</div></div>

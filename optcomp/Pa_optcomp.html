@@ -21,9 +21,9 @@
 Camlp4.PreCast.Token.Filter.token_filter</code></pre><div class="info"><div class="info">The optcomp stream filter. <code class="code">lexer</code> is the lexer to use for
       included files. Its default value is  <a href="#default_lexer">default_lexer</a>.</div></div>
 <pre><span class="VALget_quotation_value"><span class="keyword">val</span> get_quotation_value</span> : <code class="type">string -&gt; <a href="?package=optcomp&amp;module=Pa_optcomp&amp;type=value">value</a></code></pre><div class="info"><div class="info"><code class="code">get_quotation_value id</code> returns the value registered for the
-      given quotation.<br/>      After filtering a token stream, optcomp quotations contents are
+      given quotation.<p>      After filtering a token stream, optcomp quotations contents are
       replaced by identifiers, this function returns the value
-      assocaited to a given quotation identifier.</div></div>
+      assocaited to a given quotation identifier.</p></div></div>
 <pre><span class="VALexpr_of_value"><span class="keyword">val</span> expr_of_value</span> : <code class="type">Camlp4.PreCast.Loc.t -&gt; <a href="?package=optcomp&amp;module=Pa_optcomp&amp;type=value">value</a> -&gt; Camlp4.PreCast.Ast.expr</code></pre><div class="info"><div class="info"><code class="code">expr_of_value loc value</code> converts a value to an expression.</div></div>
 <pre><span class="VALpatt_of_value"><span class="keyword">val</span> patt_of_value</span> : <code class="type">Camlp4.PreCast.Loc.t -&gt; <a href="?package=optcomp&amp;module=Pa_optcomp&amp;type=value">value</a> -&gt; Camlp4.PreCast.Ast.patt</code></pre><div class="info"><div class="info"><code class="code">patt_of_value loc value</code> converts a value to a pattern.</div></div>
 </div>

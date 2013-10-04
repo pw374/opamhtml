@@ -1,6 +1,6 @@
 <div class="ocaml_toplevel_module"><div class="info">This module defines the <code class="code">Set</code> module for <code class="code">Core.Std</code>.  We use &quot;core_set&quot; as the file
-    name rather than &quot;set&quot; to avoid conflicts with OCaml's standard set module.<br/>    This module uses the same organizational approach as <code class="code">Core_map</code>.  See the
-    documentation in core_map.mli for a description of the approach.</div>
+    name rather than &quot;set&quot; to avoid conflicts with OCaml's standard set module.<p>    This module uses the same organizational approach as <code class="code">Core_map</code>.  See the
+    documentation in core_map.mli for a description of the approach.</p></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">('elt, 'cmp) </code>t</span> </pre>
 <div class="ocaml_module sig" name="Tree"><pre><span class="keyword">module</span> <a href="?package=core_kernel&amp;module=Core_set.Tree">Tree</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
 <pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'cmp) </code>t</span> </pre>
@@ -76,13 +76,13 @@ f:([ `Both of 'a * 'a | `Left of 'a | `Right of 'a ] -&gt; unit) -&gt; unit</cod
     less than <code class="code">x</code>, <code class="code">b = mem set x</code>, and <code class="code">t2</code> is the set of elements strictly larger than
     <code class="code">x</code>.</div></div>
 <pre><span class="VALgroup_by"><span class="keyword">val</span> group_by</span> : <code class="type">('a, 'cmp) <a href="?package=core_kernel&amp;module=Core_set&amp;type=t">t</a> -&gt; equiv:('a -&gt; 'a -&gt; bool) -&gt; ('a, 'cmp) <a href="?package=core_kernel&amp;module=Core_set&amp;type=t">t</a> list</code></pre><div class="info"><div class="info">if <code class="code">equiv</code> is an equivalence predicate, then <code class="code">group_by set ~equiv</code> produces a list
-    of equivalence classes (i.e., a set-theoretic quotient).  E.g.,<br/>    <pre class="codepre"><code class="code">
+    of equivalence classes (i.e., a set-theoretic quotient).  E.g.,<p>    </p><code class="code">
       let chars = Set.of_list ['A'; 'a'; 'b'; 'c'] in
       let equiv c c' = Char.equal (Char.uppercase c) (Char.uppercase c') in
       group_by chars ~equiv
-    </code></pre><br/>    produces:<br/>    <pre class="codepre"><code class="code">
+    </code><p>    produces:</p><p>    </p><code class="code">
       Set.of_list['A';'a']; Set.singleton 'b'; Set.singleton 'c']
-    </code></pre><br/>    <code class="code">group_by</code> runs in O(n^2) time.</div></div>
+    </code><p>    <code class="code">group_by</code> runs in O(n^2) time.</p></div></div>
 <div class="ocaml_module sig" name="Poly"><pre><span class="keyword">module</span> <a href="?package=core_kernel&amp;module=Core_set.Poly">Poly</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code> with type <a href="?package=core_kernel&amp;module=Core_set.Poly&amp;type=set">set</a> := ('a, 'b) <a href="?package=core_kernel&amp;module=Core_set&amp;type=t">t</a></code></pre><div class="ocaml_module_content">
 <pre><span class="TYPEset"><span class="keyword">type</span> <code class="type">('a, 'b) </code>set</span> </pre>
 <div class="ocaml_module sig" name="Tree"><pre><span class="keyword">module</span> <a href="?package=core_kernel&amp;module=Core_set.Poly.Tree">Tree</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
@@ -141,11 +141,11 @@ f:([ `Both of 'a * 'a | `Left of 'a | `Right of 'a ] -&gt; unit) -&gt; unit</cod
     less than <code class="code">x</code>, <code class="code">b = mem set x</code>, and <code class="code">t2</code> is the set of elements strictly larger than
     <code class="code">x</code>.</div></div>
 <div class="info"><div class="info">if <code class="code">equiv</code> is an equivalence predicate, then <code class="code">group_by set ~equiv</code> produces a list
-    of equivalence classes (i.e., a set-theoretic quotient).  E.g.,<br/>    <pre class="codepre"><code class="code">
+    of equivalence classes (i.e., a set-theoretic quotient).  E.g.,<p>    </p><code class="code">
       let chars = Set.of_list ['A'; 'a'; 'b'; 'c'] in
       let equiv c c' = Char.equal (Char.uppercase c) (Char.uppercase c') in
       group_by chars ~equiv
-    </code></pre><br/>    produces:<br/>    <pre class="codepre"><code class="code">
+    </code><p>    produces:</p><p>    </p><code class="code">
       Set.of_list['A';'a']; Set.singleton 'b'; Set.singleton 'c']
-    </code></pre><br/>    <code class="code">group_by</code> runs in O(n^2) time.</div></div>
+    </code><p>    <code class="code">group_by</code> runs in O(n^2) time.</p></div></div>
 </div>

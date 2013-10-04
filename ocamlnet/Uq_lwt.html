@@ -1,23 +1,23 @@
 <div class="ocaml_toplevel_module"><div class="info">Compatibility with <code class="code">Lwt</code></div>
 <div class="info"><div class="info">Lwt is another library for event-driven programming. Here are some
-    helpers for running Lwt code on top of Ocamlnet event queues.<br/>    This is for Lwt-2.3 or better.<br/>    See also the comments in  <a href="#Equeue_howto.lwt">Equeue_howto.lwt</a>.</div></div>
-<div class="ocaml_class sig" name="lwt_backend"><pre><span class="TYPElwt_backend"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Uq_lwt&amp;class=lwt_backend">lwt_backend</a></span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Adapter for turning an Ocamlnet <code class="code">event_system</code> into an Lwt <code class="code">Lwt_engine.t</code>.<br/>    Use it like:<br/>    <pre class="codepre"><code class="code">
+    helpers for running Lwt code on top of Ocamlnet event queues.<p>    This is for Lwt-2.3 or better.</p><p>    See also the comments in  <a href="#Equeue_howto.lwt">Equeue_howto.lwt</a>.</p></div></div>
+<div class="ocaml_class sig" name="lwt_backend"><pre><span class="TYPElwt_backend"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Uq_lwt&amp;class=lwt_backend">lwt_backend</a></span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Adapter for turning an Ocamlnet <code class="code">event_system</code> into an Lwt <code class="code">Lwt_engine.t</code>.<p>    Use it like:</p><p>    </p><code class="code">
        class lwt_engine esys =
        object
          inherit Lwt_engine.abstract
          inherit Uq_lwt.lwt_backend esys
        end
-    </code></pre><br/>    (We've intentionally left out <b>this</b> definition to avoid any 
+    </code><p>    (We've intentionally left out <b>this</b> definition to avoid any 
     build dependency on Lwt. Also note that <code class="code">Lwt_engine</code> is in the
-    package <code class="code">lwt.unix</code>.)<br/>    Now, activate this Lwt engine (event loop):<br/>    <pre class="codepre"><code class="code">
+    package <code class="code">lwt.unix</code>.)</p><p>    Now, activate this Lwt engine (event loop):</p><p>    </p><code class="code">
       Lwt_engine.set (new lwt_engine esys)
-    </code></pre><br/>    Note that Lwt can only deal with one event loop at a time, and the
-    new event loop will be used for all Lwt code.<br/>    It is, unfortunately, necessary that you use the Lwt main loop
+    </code><p>    Note that Lwt can only deal with one event loop at a time, and the
+    new event loop will be used for all Lwt code.</p><p>    It is, unfortunately, necessary that you use the Lwt main loop
     (<code class="code">Lwt_main.run</code> or <code class="code">Lwt_unix.run</code>), because otherwise some hook
-    functions are never executed (and execution will hang).<br/>    For an example, see <code class="code">tests/equeue/manual/relay.ml</code> in the distribution
-    tarball.<br/>    Netplex users: If you want to use <code class="code">lwt_engine</code> for driving the
+    functions are never executed (and execution will hang).</p><p>    For an example, see <code class="code">tests/equeue/manual/relay.ml</code> in the distribution
+    tarball.</p><p>    Netplex users: If you want to use <code class="code">lwt_engine</code> for driving the
     event loop of the container, you can do so by overriding the
-    processor hooks <code class="code">container_event_system</code> and <code class="code">container_run</code>, e.g.<br/>    <pre class="codepre"><code class="code">
+    processor hooks <code class="code">container_event_system</code> and <code class="code">container_run</code>, e.g.</p><p>    </p><code class="code">
     method container_event_system () =
       let esys = Unixqueue.create_unix_event_system() in
       Lwt_engine.set (new lwt_engine esys);
@@ -25,9 +25,9 @@
 
     method container_run esys =
       Lwt_main.run &lt;something&gt;
-    </code></pre><br/>    The Lwt thread <code class="code">&lt;something&gt;</code> must at least run until the container is
+    </code><p>    The Lwt thread <code class="code">&lt;something&gt;</code> must at least run until the container is
     shut down. You can catch this moment by also defining the <code class="code">shutdown</code>
-    method.</div></div><div class="ocaml_class_content"><pre><span class="METHODiter"><span class="keyword">method</span> iter</span> : <code class="code">bool -&gt; unit</code></pre>
+    method.</p></div></div><div class="ocaml_class_content"><pre><span class="METHODiter"><span class="keyword">method</span> iter</span> : <code class="code">bool -&gt; unit</code></pre>
 
 <pre><span class="METHODcleanup"><span class="keyword">method</span> <span class="keyword">private</span> cleanup</span> : <code class="code">unit</code></pre>
 

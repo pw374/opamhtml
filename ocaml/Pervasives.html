@@ -1,8 +1,8 @@
-<div class="ocaml_toplevel_module"><div class="info">The initially opened module.<br/>   This module provides the basic operations over the built-in types
+<div class="ocaml_toplevel_module"><div class="info">The initially opened module.<p>   This module provides the basic operations over the built-in types
    (numbers, booleans, strings, exceptions, references, lists, arrays,
-   input-output channels, ...).<br/>   This module is automatically opened at the beginning of each compilation.
+   input-output channels, ...).</p><p>   This module is automatically opened at the beginning of each compilation.
    All components of this module can therefore be referred by their short
-   name, without prefixing them by <code class="code">Pervasives</code>.</div>
+   name, without prefixing them by <code class="code">Pervasives</code>.</p></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Exceptions</h6></div></div>
 <pre><span class="VALraise"><span class="keyword">val</span> raise</span> : <code class="type">exn -&gt; 'a</code></pre><div class="info"><div class="info">Raise the given exception value</div></div>
 <pre><span class="VALinvalid_arg"><span class="keyword">val</span> invalid_arg</span> : <code class="type">string -&gt; 'a</code></pre><div class="info"><div class="info">Raise exception <code class="code">Invalid_argument</code> with the given string.</div></div>
@@ -37,10 +37,10 @@
    as different from any other float value, including itself;
    while <code class="code">compare</code> treats <code class="code">nan</code> as equal to itself and less than any
    other float value.  This treatment of <code class="code">nan</code> ensures that <code class="code">compare</code>
-   defines a total ordering relation.<br/>   <code class="code">compare</code> applied to functional values may raise <code class="code">Invalid_argument</code>.
-   <code class="code">compare</code> applied to cyclic structures may not terminate.<br/>   The <code class="code">compare</code> function can be used as the comparison function
+   defines a total ordering relation.<p>   <code class="code">compare</code> applied to functional values may raise <code class="code">Invalid_argument</code>.
+   <code class="code">compare</code> applied to cyclic structures may not terminate.</p><p>   The <code class="code">compare</code> function can be used as the comparison function
    required by the  <a href="#Set.Make">Set.Make</a> and  <a href="#Map.Make">Map.Make</a> functors, as well as
-   the  <a href="#List.sort">List.sort</a> and  <a href="#Array.sort">Array.sort</a> functions.</div></div>
+   the  <a href="#List.sort">List.sort</a> and  <a href="#Array.sort">Array.sort</a> functions.</p></div></div>
 <pre><span class="VALmin"><span class="keyword">val</span> min</span> : <code class="type">'a -&gt; 'a -&gt; 'a</code></pre><div class="info"><div class="info">Return the smaller of the two arguments.
     The result is unspecified if one of the arguments contains
     the float value <code class="code">nan</code>.</div></div>
@@ -115,7 +115,7 @@
 <pre><span class="VAL(asr)"><span class="keyword">val</span> (asr)</span> : <code class="type">int -&gt; int -&gt; int</code></pre><div class="info"><div class="info"><code class="code">n asr m</code> shifts <code class="code">n</code> to the right by <code class="code">m</code> bits.
    This is an arithmetic shift: the sign bit of <code class="code">n</code> is replicated.
    The result is unspecified if <code class="code">m &lt; 0</code> or <code class="code">m &gt;= bitsize</code>.</div></div>
-<div class="info"><div class="info"><h6 id="6_TITLE">Floating-point arithmetic</h6><br/>   OCaml's floating-point numbers follow the
+<div class="info"><div class="info"><h6 id="6_TITLE">Floating-point arithmetic</h6><p>   OCaml's floating-point numbers follow the
    IEEE 754 standard, using double precision (64 bits) numbers.
    Floating-point operations never raise an exception on overflow,
    underflow, division by zero, etc.  Instead, special IEEE numbers
@@ -124,7 +124,7 @@
    for <code class="code">0.0 /. 0.0</code>.  These special numbers then propagate through
    floating-point computations as expected: for instance,
    <code class="code">1.0 /. infinity</code> is <code class="code">0.0</code>, and any arithmetic operation with <code class="code">nan</code>
-   as argument returns <code class="code">nan</code> as result.</div></div>
+   as argument returns <code class="code">nan</code> as result.</p></div></div>
 <pre><span class="VAL(~-.)"><span class="keyword">val</span> (~-.)</span> : <code class="type">float -&gt; float</code></pre><div class="info"><div class="info">Unary negation. You can also write <code class="code">-. e</code> instead of <code class="code">~-. e</code>.</div></div>
 <pre><span class="VAL(~+.)"><span class="keyword">val</span> (~+.)</span> : <code class="type">float -&gt; float</code></pre><div class="info"><div class="info">Unary addition. You can also write <code class="code">+. e</code> instead of <code class="code">~+. e</code>. <b>Since</b> 3.12.0</div></div>
 <pre><span class="VAL(+.)"><span class="keyword">val</span> (+.)</span> : <code class="type">float -&gt; float -&gt; float</code></pre><div class="info"><div class="info">Floating-point addition</div></div>
@@ -205,9 +205,9 @@
    the  <a href="#Pervasives.classify_float">Pervasives.classify_float</a> function.</div></div>
 <pre><span class="VALclassify_float"><span class="keyword">val</span> classify_float</span> : <code class="type">float -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=fpclass">fpclass</a></code></pre><div class="info"><div class="info">Return the class of the given floating-point number:
    normal, subnormal, zero, infinite, or not a number.</div></div>
-<div class="info"><div class="info"><h6 id="6_TITLE">String operations</h6><br/>   More string operations are provided in module  <a href="#String">String</a>.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">String operations</h6><p>   More string operations are provided in module  <a href="#String">String</a>.</p></div></div>
 <pre><span class="VAL(^)"><span class="keyword">val</span> (^)</span> : <code class="type">string -&gt; string -&gt; string</code></pre><div class="info"><div class="info">String concatenation.</div></div>
-<div class="info"><div class="info"><h6 id="6_TITLE">Character operations</h6><br/>   More character operations are provided in module  <a href="#Char">Char</a>.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Character operations</h6><p>   More character operations are provided in module  <a href="#Char">Char</a>.</p></div></div>
 <pre><span class="VALint_of_char"><span class="keyword">val</span> int_of_char</span> : <code class="type">char -&gt; int</code></pre><div class="info"><div class="info">Return the ASCII code of the argument.</div></div>
 <pre><span class="VALchar_of_int"><span class="keyword">val</span> char_of_int</span> : <code class="type">int -&gt; char</code></pre><div class="info"><div class="info">Return the character with the given ASCII code.
    Raise <code class="code">Invalid_argument &quot;char_of_int&quot;</code> if the argument is
@@ -239,7 +239,7 @@
 <div class="info"><div class="info"><h6 id="6_TITLE">Pair operations</h6></div></div>
 <pre><span class="VALfst"><span class="keyword">val</span> fst</span> : <code class="type">'a * 'b -&gt; 'a</code></pre><div class="info"><div class="info">Return the first component of a pair.</div></div>
 <pre><span class="VALsnd"><span class="keyword">val</span> snd</span> : <code class="type">'a * 'b -&gt; 'b</code></pre><div class="info"><div class="info">Return the second component of a pair.</div></div>
-<div class="info"><div class="info"><h6 id="6_TITLE">List operations</h6><br/>   More list operations are provided in module  <a href="#List">List</a>.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">List operations</h6><p>   More list operations are provided in module  <a href="#List">List</a>.</p></div></div>
 <pre><span class="VAL(@)"><span class="keyword">val</span> (@)</span> : <code class="type">'a list -&gt; 'a list -&gt; 'a list</code></pre><div class="info"><div class="info">List concatenation.</div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Input/output</h6>
     Note: all input/output functions can raise <code class="code">Sys_error</code> when the system
@@ -454,7 +454,7 @@
   that defines the functionality of formatted input/output functions. Format
   strings are used to read data with formatted input functions from module
    <a href="#Scanf">Scanf</a> and to print data with formatted output functions from modules
-   <a href="#Printf">Printf</a> and  <a href="#Format">Format</a>.<br/>  Format strings are made of three kinds of entities:<ul><li><em>conversions specifications</em>, introduced by the special character <code class="code">'%'</code>
+   <a href="#Printf">Printf</a> and  <a href="#Format">Format</a>.<p>  Format strings are made of three kinds of entities:</p><ul><li><em>conversions specifications</em>, introduced by the special character <code class="code">'%'</code>
     followed by one or more characters specifying what kind of argument to
     read or print,</li><li><em>formatting indications</em>, introduced by the special character <code class="code">'@'</code>
     followed by one or more characters specifying how to read or print the
@@ -463,32 +463,32 @@
     input or printed in the output.</li></ul>  There is an additional lexical rule to escape the special characters <code class="code">'%'</code>
   and <code class="code">'@'</code> in format strings: if a special character follows a <code class="code">'%'</code>
   character, it is treated as a plain character. In other words, <code class="code">&quot;%%&quot;</code> is
-  considered as a plain <code class="code">'%'</code> and <code class="code">&quot;%@&quot;</code> as a plain <code class="code">'@'</code>.<br/>  For more information about conversion specifications and formatting
+  considered as a plain <code class="code">'%'</code> and <code class="code">&quot;%@&quot;</code> as a plain <code class="code">'@'</code>.<p>  For more information about conversion specifications and formatting
   indications available, read the documentation of modules  <a href="#Scanf">Scanf</a>,
-   <a href="#Printf">Printf</a> and  <a href="#Format">Format</a>.</div></div>
+   <a href="#Printf">Printf</a> and  <a href="#Format">Format</a>.</p></div></div>
 <pre><span class="TYPEformat4"><span class="keyword">type</span> <code class="type">('a, 'b, 'c, 'd) </code>format4</span> = <code class="type">('a, 'b, 'c, 'c, 'c, 'd) format6</code></pre><div class="info"><div class="info">Format strings have a general and highly polymorphic type
     <code class="code">('a, 'b, 'c, 'd, 'e, 'f) format6</code>. Type <code class="code">format6</code> is built in.
     The two simplified types, <code class="code">format</code> and <code class="code">format4</code> below are
     included for backward compatibility with earlier releases of
-    OCaml.<br/>    The meaning of format string type parameters is as follows:<br/>    - <code class="code">'a</code> is the type of the parameters of the format for formatted output
+    OCaml.<p>    The meaning of format string type parameters is as follows:</p><p>    - <code class="code">'a</code> is the type of the parameters of the format for formatted output
       functions (<code class="code">printf</code>-style functions);
       <code class="code">'a</code> is the type of the values read by the format for formatted input
-      functions (<code class="code">scanf</code>-style functions).<br/>    - <code class="code">'b</code> is the type of input source for formatted input functions and the
+      functions (<code class="code">scanf</code>-style functions).</p><p>    - <code class="code">'b</code> is the type of input source for formatted input functions and the
       type of output target for formatted output functions.
       For <code class="code">printf</code>-style functions from module <code class="code">Printf</code>, <code class="code">'b</code> is typically
       <code class="code">out_channel</code>;
       for <code class="code">printf</code>-style functions from module <code class="code">Format</code>, <code class="code">'b</code> is typically
       <code class="code">Format.formatter</code>;
       for <code class="code">scanf</code>-style functions from module <code class="code">Scanf</code>, <code class="code">'b</code> is typically
-      <code class="code">Scanf.Scanning.in_channel</code>.<br/>      Type argument <code class="code">'b</code> is also the type of the first argument given to
+      <code class="code">Scanf.Scanning.in_channel</code>.</p><p>      Type argument <code class="code">'b</code> is also the type of the first argument given to
       user's defined printing functions for <code class="code">%a</code> and <code class="code">%t</code> conversions,
-      and user's defined reading functions for <code class="code">%r</code> conversion.<br/>    - <code class="code">'c</code> is the type of the result of the <code class="code">%a</code> and <code class="code">%t</code> printing
+      and user's defined reading functions for <code class="code">%r</code> conversion.</p><p>    - <code class="code">'c</code> is the type of the result of the <code class="code">%a</code> and <code class="code">%t</code> printing
       functions, and also the type of the argument transmitted to the
       first argument of <code class="code">kprintf</code>-style functions or to the
-      <code class="code">kscanf</code>-style functions.<br/>    - <code class="code">'d</code> is the type of parameters for the <code class="code">scanf</code>-style functions.<br/>    - <code class="code">'e</code> is the type of the receiver function for the <code class="code">scanf</code>-style functions.<br/>    - <code class="code">'f</code> is the final result type of a formatted input/output function
+      <code class="code">kscanf</code>-style functions.</p><p>    - <code class="code">'d</code> is the type of parameters for the <code class="code">scanf</code>-style functions.</p><p>    - <code class="code">'e</code> is the type of the receiver function for the <code class="code">scanf</code>-style functions.</p><p>    - <code class="code">'f</code> is the final result type of a formatted input/output function
       invocation: for the <code class="code">printf</code>-style functions, it is typically <code class="code">unit</code>;
       for the <code class="code">scanf</code>-style functions, it is typically the result type of the
-      receiver function.</div></div>
+      receiver function.</p></div></div>
 <pre><span class="TYPEformat"><span class="keyword">type</span> <code class="type">('a, 'b, 'c) </code>format</span> = <code class="type">('a, 'b, 'c, 'c) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format4">format4</a></code></pre>
 <pre><span class="VALstring_of_format"><span class="keyword">val</span> string_of_format</span> : <code class="type">('a, 'b, 'c, 'd, 'e, 'f) format6 -&gt; string</code></pre><div class="info"><div class="info">Converts a format string into a string.</div></div>
 <pre><span class="VALformat_of_string"><span class="keyword">val</span> format_of_string</span> : <code class="type">('a, 'b, 'c, 'd, 'e, 'f) format6 -&gt; ('a, 'b, 'c, 'd, 'e, 'f) format6</code></pre><div class="info"><div class="info"><code class="code">format_of_string s</code> returns a format string read from the string

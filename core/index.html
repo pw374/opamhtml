@@ -1,14 +1,13 @@
-<h1>Modules</h1>
+<h2>Modules</h2>
 <table class="indextable">
     <tr><td class="module"><a href="?package=core&amp;module=Array_permute">Array_permute</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Avltree">Avltree</a></td><td/></tr>
-<tr><td class="module"><a href="?package=core&amp;module=Backtrace">Backtrace</a></td><td><div class="info">Dealing with stack backtraces.<br/>    The <code class="code">Backtrace</code> module deals with two different kinds of backtraces:<br/>    1. snapshots of the stack obtained on demand (<code class="code">Backtrace.get</code>)
-    2. the stack frames unwound when an exception is raised (<code class="code">Backtrace.Exn</code>)</div></td></tr>
+<tr><td class="module"><a href="?package=core&amp;module=Backtrace">Backtrace</a></td><td><div class="info">Dealing with stack backtraces.</div></td></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Bag">Bag</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Bigbuffer">Bigbuffer</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Bigbuffer_internal">Bigbuffer_internal</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Bigstring">Bigstring</a></td><td><div class="info">String type based on <code class="code">Bigarray</code>, for use in I/O and C-bindings</div></td></tr>
-<tr><td class="module"><a href="?package=core&amp;module=Bigstring_marshal">Bigstring_marshal</a></td><td><div class="info">Utility functions for marshalling to and from bigstring<div class="authors"><b>Author(s): </b><span class="author">Markus Mottl &lt;mmottl@janestreet.com&gt;</span></div></div></td></tr>
+<tr><td class="module"><a href="?package=core&amp;module=Bigstring_marshal">Bigstring_marshal</a></td><td><div class="info">Utility functions for marshalling to and from bigstring</div></td></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Bigsubstring">Bigsubstring</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Binable">Binable</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Binable0">Binable0</a></td><td/></tr>
@@ -33,8 +32,7 @@
 <tr><td class="module"><a href="?package=core&amp;module=Core_char">Core_char</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Core_condition">Core_condition</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Core_field">Core_field</a></td><td/></tr>
-<tr><td class="module"><a href="?package=core&amp;module=Core_filename">Core_filename</a></td><td><div class="info">Warning! this library assumes we are in a POSIX compliant OS. It will not work
-    properly under windows.</div></td></tr>
+<tr><td class="module"><a href="?package=core&amp;module=Core_filename">Core_filename</a></td><td><div class="info">Warning! this library assumes we are in a POSIX compliant OS.</div></td></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Core_gc">Core_gc</a></td><td><div class="info"> <a href="#Core_kernel.Core_gc">Core_kernel.Core_gc</a>, plus finalizers.</div></td></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Core_hashtbl">Core_hashtbl</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Core_hashtbl_intf">Core_hashtbl_intf</a></td><td/></tr>
@@ -104,56 +102,19 @@
 <tr><td class="module"><a href="?package=core&amp;module=Interval">Interval</a></td><td><div class="info">Module for simple closed intervals over arbitrary types that are ordered
     correctly using polymorphic compare.</div></td></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Invariant">Invariant</a></td><td/></tr>
-<tr><td class="module"><a href="?package=core&amp;module=Iobuf">Iobuf</a></td><td><div class="info">A non-moving (in the gc sense) contiguous range of bytes, useful for I/O operations.<br/>    An iobuf consists of:<br/>    - bigstring<ul><li>limits -- a subrange of the bigstring</li><li>window -- a subrange of the limits</li></ul>    All iobuf operations are restricted to operate within the limits.  Initially, the
-    window of an iobuf is identical to the limits.  A phantom type, &quot;seek&quot; permission,
-    controls whether or not code is allowed to change the limits and window.  With seek
-    permission, the limits can be <code class="code">narrow</code>ed, but can never be widened, and the window can
-    be set to an arbitrary subrange of the limits.<br/>    A phantom type controls whether code can read and write bytes in the bigstring (within
-    the limits) or can only read them.<br/>    To present a restricted view of an iobuf to a client, one can create a sub-iobuf or
-    add a type constraint.</div></td></tr>
+<tr><td class="module"><a href="?package=core&amp;module=Iobuf">Iobuf</a></td><td><div class="info">A non-moving (in the gc sense) contiguous range of bytes, useful for I/O operations.</div></td></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Iobuf_debug">Iobuf_debug</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Iobuf_intf">Iobuf_intf</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Iobuf_tests">Iobuf_tests</a></td><td><div class="info">Intentionally empty.</div></td></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Linux_ext">Linux_ext</a></td><td/></tr>
-<tr><td class="module"><a href="?package=core&amp;module=Lock_file">Lock_file</a></td><td><div class="info">Mutual exclusion between processes using flock and lockf.  A file is
-    considered locked if either of these mechanisms works.<br/>    These locks are OS-level but are Local (will not work across computers
-    even if they mount the same directory).</div></td></tr>
+<tr><td class="module"><a href="?package=core&amp;module=Lock_file">Lock_file</a></td><td><div class="info">Mutual exclusion between processes using flock and lockf.</div></td></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Make_substring">Make_substring</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Memo">Memo</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Monad">Monad</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Month">Month</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Mutex0">Mutex0</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Nano_mutex">Nano_mutex</a></td><td><div class="info">A nano-mutex is a lightweight mutex that can be used only within a single OCaml
-    runtime.<br/>    <h1 id="1_TITLE">Performance</h1>
-    ===============
-    Nano-mutexes are intended to be significantly cheaper than OS-level mutexes.  Creating
-    a nano-mutex allocates a single OCaml record.  Locking and unlocking an uncontested
-    nano-mutex take a handful of instructions.  Only if a nano-mutex is contested will it
-    fall back to using an OS-level mutex.  If a nano-mutex becomes uncontested again, it
-    will switch back to using an OCaml-only lock.<br/>    Nano-mutexes can be faster than using OS-level mutexes because OCaml uses a global
-    lock on the runtime, and requires all running OCaml code to hold the lock.  The OCaml
-    compiler only allows thread switches at certain points, and we can use that fact to get
-    the atomic test-and-set used in the core of our implementaion without needing any
-    primitive locking, essentially because we're protected by the OCaml global lock.<br/>    Here are some benchmarks comparing various mutexes available in OCaml:<br/>    <span class="verbatim">      |-------------------------------------------------------------|
-      |                       Name | Run time | S. dev. | Allocated |
-      |----------------------------+----------+---------+-----------+
-      |          Caml.Mutex create |   247 ns |    0 ns |         3 |
-      |     Caml.Mutex lock/unlock |    49 ns |    0 ns |         0 |
-      |          Core.Mutex create |   698 ns |    0 ns |         3 |
-      |     Core.Mutex lock/unlock |    49 ns |    0 ns |         0 |
-      |          Nano_mutex create |    10 ns |    0 ns |         4 |
-      |     Nano_mutex lock/unlock |    28 ns |    0 ns |         0 |
-      |-------------------------------------------------------------|
-    </span><br/>    The benchmark code is in core/extended/lib_test/bench_nano_mutex.ml.<br/>    <h1 id="1_TITLE">Error handling</h1>
-    ==================
-    For any mutex, there are design choices as to how to behave in certain situations:<br/>    - recursive locking (when a thread locks a mutex it already has)<ul><li>unlocking an unlocked mutex</li><li>unlocking a mutex held by another thread</li></ul>    Here is a table comparing how the various mutexes behave:<br/>    <span class="verbatim">      |--------------------+------------+------------+------------+
-      |                    | Caml.Mutex | Core.Mutex | Nano_mutex |
-      |--------------------+------------+------------+------------+
-      | recursive lock     | undefined  | error      | error      |
-      | unlocking unlocked | undefined  | error      | error      |
-      | t1:lock  t2:unlock | undefined  | error      | error      |
-      |--------------------+------------+------------+------------+
-    </span></div></td></tr>
+    runtime.</div></td></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Never_returns">Never_returns</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core&amp;module=No_polymorphic_compare">No_polymorphic_compare</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Nothing">Nothing</a></td><td/></tr>
@@ -216,7 +177,7 @@
 <tr><td class="module"><a href="?package=core&amp;module=Unpack_buffer">Unpack_buffer</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core&amp;module=User_and_group">User_and_group</a></td><td><div class="info">A pair of unix username and primary unix group.</div></td></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Uuid">Uuid</a></td><td><div class="info">Implements universally unique identifiers based on version 3 of the UUID
-    specification.  Identifier generation is thread safe, and fast.</div></td></tr>
+    specification.</div></td></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Validate">Validate</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core&amp;module=With_return">With_return</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core&amp;module=Word_size">Word_size</a></td><td/></tr>

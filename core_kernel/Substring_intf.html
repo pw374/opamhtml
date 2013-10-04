@@ -6,10 +6,10 @@
 <pre><span class="VALpos"><span class="keyword">val</span> pos</span> : <code class="type"><a href="?package=core_kernel&amp;module=Substring_intf.S&amp;type=t">t</a> -&gt; int</code></pre>
 <pre><span class="VALlength"><span class="keyword">val</span> length</span> : <code class="type"><a href="?package=core_kernel&amp;module=Substring_intf.S&amp;type=t">t</a> -&gt; int</code></pre>
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">?pos:int -&gt; ?len:int -&gt; <a href="?package=core_kernel&amp;module=Substring_intf.S&amp;type=base">base</a> -&gt; <a href="?package=core_kernel&amp;module=Substring_intf.S&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create ?pos ?len base</code> creates a substring of the base sequence of
- length <code class="code">len</code> starting at position <code class="code">pos</code>, i.e.<br/>   base.<code class="code">pos</code>, base.<code class="code">pos + 1</code>, ... base.<code class="code">pos + len - 1</code><br/> It is required that:
+ length <code class="code">len</code> starting at position <code class="code">pos</code>, i.e.<p>   base.<code class="code">pos</code>, base.<code class="code">pos + 1</code>, ... base.<code class="code">pos + len - 1</code></p><p> It is required that:
    0 &lt;= pos
    0 &lt;= len
-   pos + len &lt;= length base<br/> It does not copy the characters.</div></div>
+   pos + len &lt;= length base</p><p> It does not copy the characters.</p></div></div>
 <pre><span class="VALblit_to_string"><span class="keyword">val</span> blit_to_string</span> : <code class="type"><a href="?package=core_kernel&amp;module=Substring_intf.S&amp;type=t">t</a> -&gt; dst:string -&gt; dst_pos:int -&gt; unit</code></pre>
 <pre><span class="VALblit_to_bigstring"><span class="keyword">val</span> blit_to_bigstring</span> : <code class="type"><a href="?package=core_kernel&amp;module=Substring_intf.S&amp;type=t">t</a> -&gt; dst:<a href="?package=core_kernel&amp;module=Bigstring&amp;type=t">Bigstring.t</a> -&gt; dst_pos:int -&gt; unit</code></pre>
 <pre><span class="VALblit_from_string"><span class="keyword">val</span> blit_from_string</span> : <code class="type"><a href="?package=core_kernel&amp;module=Substring_intf.S&amp;type=t">t</a> -&gt; src:string -&gt; src_pos:int -&gt; len:int -&gt; unit</code></pre>
@@ -27,8 +27,8 @@
 <pre><span class="VALsuffix"><span class="keyword">val</span> suffix</span> : <code class="type"><a href="?package=core_kernel&amp;module=Substring_intf.S&amp;type=t">t</a> -&gt; int -&gt; <a href="?package=core_kernel&amp;module=Substring_intf.S&amp;type=t">t</a></code></pre></div></div>
 
 <div class="info"><div class="info"><code class="code">create ?pos ?len base</code> creates a substring of the base sequence of
- length <code class="code">len</code> starting at position <code class="code">pos</code>, i.e.<br/>   base.<code class="code">pos</code>, base.<code class="code">pos + 1</code>, ... base.<code class="code">pos + len - 1</code><br/> It is required that:
+ length <code class="code">len</code> starting at position <code class="code">pos</code>, i.e.<p>   base.<code class="code">pos</code>, base.<code class="code">pos + 1</code>, ... base.<code class="code">pos + len - 1</code></p><p> It is required that:
    0 &lt;= pos
    0 &lt;= len
-   pos + len &lt;= length base<br/> It does not copy the characters.</div></div>
+   pos + len &lt;= length base</p><p> It does not copy the characters.</p></div></div>
 </div>

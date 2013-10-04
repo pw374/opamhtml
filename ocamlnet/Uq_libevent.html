@@ -2,7 +2,7 @@
 <div class="info"><div class="info">This gives (experimental) support for using libevent as event loop.
     To do so, you also need Maas-Maarten Zeeman's bindings for libevent,
     ocaml-event. (N.B. The current name, changed several times, is now
-    liboevent.)<br/>    Restrictions:<br/>    - ocaml-event is not thread-safe<ul><li>There can only be one instance of the event loop at a time</li><li>It is not supported to wait for out of band data</li><li>Signals do not stop the event loop. As a consequence, signals
+    liboevent.)<p>    Restrictions:</p><p>    - ocaml-event is not thread-safe</p><ul><li>There can only be one instance of the event loop at a time</li><li>It is not supported to wait for out of band data</li><li>Signals do not stop the event loop. As a consequence, signals
       are delayed until the next event occurs.
  </li></ul></div></div>
 <div class="ocaml_module sig" name="LIBOEVENT"><pre><span class="keyword">module type</span> <a href="?package=ocamlnet&amp;module=Uq_libevent.LIBOEVENT">LIBOEVENT</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
@@ -21,9 +21,9 @@
 <div class="ocaml_module sig" name="POLLSET"><pre><span class="keyword">module type</span> <a href="?package=ocamlnet&amp;module=Uq_libevent.POLLSET">POLLSET</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
 <pre><span class="VALcreate_pollset"><span class="keyword">val</span> create_pollset</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Netsys_pollset&amp;type=pollset">Netsys_pollset.pollset</a></code></pre>
 <pre><span class="VALcreate_event_system"><span class="keyword">val</span> create_event_system</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a></code></pre></div></div>
-<div class="ocaml_module ident" name="Make" path="?package=ocamlnet&amp;module=Uq_libevent.POLLSET"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Uq_libevent.Make">Make</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">L</code><code class="code"> : </code><code class="code"><a href="?package=ocamlnet&amp;module=Uq_libevent.LIBOEVENT">LIBOEVENT</a></code><code class="code">) -&gt; </code><code class="code"><a href="?package=ocamlnet&amp;module=Uq_libevent.POLLSET">POLLSET</a></code></div></code></pre><div class="info"><div class="info">Instantiate this module. Just do<br/>      <pre class="codepre"><code class="code">
+<div class="ocaml_module ident" name="Make" path="?package=ocamlnet&amp;module=Uq_libevent.POLLSET"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Uq_libevent.Make">Make</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">L</code><code class="code"> : </code><code class="code"><a href="?package=ocamlnet&amp;module=Uq_libevent.LIBOEVENT">LIBOEVENT</a></code><code class="code">) -&gt; </code><code class="code"><a href="?package=ocamlnet&amp;module=Uq_libevent.POLLSET">POLLSET</a></code></div></code></pre><div class="info"><div class="info">Instantiate this module. Just do<p>      </p><code class="code">
   let P = Make(Liboevent)
-      </code></pre><br/>      and then call <code class="code">P.create_pollset()</code> to create a <code class="code">pollset</code>
-      object, or <code class="code">P.create_event_system()</code> to create an <code class="code">event_system</code>.<br/>      (N.B. This functor saves Ocamlnet from being directly dependent
-      on Liboevent.)</div></div></div>
+      </code><p>      and then call <code class="code">P.create_pollset()</code> to create a <code class="code">pollset</code>
+      object, or <code class="code">P.create_event_system()</code> to create an <code class="code">event_system</code>.</p><p>      (N.B. This functor saves Ocamlnet from being directly dependent
+      on Liboevent.)</p></div></div></div>
 </div>

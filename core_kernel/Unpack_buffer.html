@@ -1,17 +1,17 @@
-<div class="ocaml_toplevel_module"><div class="info">A buffer for incremental decoding of an input stream.<br/>    An <code class="code">Unpack_buffer.t</code> is a buffer to which one can <code class="code">feed</code> strings, and then <code class="code">unpack</code>
-    from the buffer to produce a queue of values.</div>
+<div class="ocaml_toplevel_module"><div class="info">A buffer for incremental decoding of an input stream.<p>    An <code class="code">Unpack_buffer.t</code> is a buffer to which one can <code class="code">feed</code> strings, and then <code class="code">unpack</code>
+    from the buffer to produce a queue of values.</p></div>
 <div class="ocaml_module sig" name="Unpack_one"><pre><span class="keyword">module</span> <a href="?package=core_kernel&amp;module=Unpack_buffer.Unpack_one">Unpack_one</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
 <div class="info"><div class="info">If <code class="code">unpack_one : ('value, 'partial_unpack) unpack_one</code>, then <code class="code">unpack_one buf ?pos
       ?len ?partial_unpack</code> must unpack at most one value of type <code class="code">'value</code> from <code class="code">buf</code>
       starting at <code class="code">pos</code>, and not using more than <code class="code">len</code> characters.  <code class="code">unpack_one</code> must
-      returns one the following:<br/>      - <code class="code">`Ok (value, n)</code> -- unpacking succeeded and consumed <code class="code">n</code> bytes, where <code class="code">0 &lt;= n &lt;=
+      returns one the following:<p>      - <code class="code">`Ok (value, n)</code> -- unpacking succeeded and consumed <code class="code">n</code> bytes, where <code class="code">0 &lt;= n &lt;=
       len</code>.  It is possible to have <code class="code">n = 0</code>, e.g. for sexp unpacking, which can only tell
       it has reached the end of an atom when it encounters the following punctuation
-      character, which if it is left paren, is the start of the following sexp.<br/>      - <code class="code">`Not_enough_data (p, n)</code> -- unpacking encountered a valid proper prefix of a
+      character, which if it is left paren, is the start of the following sexp.</p><p>      - <code class="code">`Not_enough_data (p, n)</code> -- unpacking encountered a valid proper prefix of a
       packed value, and consumed <code class="code">n</code> bytes, where <code class="code">0 &lt;= n &lt;= len</code>.  <code class="code">p</code> is a &quot;partial
-      unpack&quot; that can be supplied to a future call to <code class="code">unpack_one</code> to continue unpacking.<br/>      - <code class="code">`Invalid_data</code> -- unpacking encountered an invalidly packed value.<br/>      A naive <code class="code">unpack_one</code> that only succeeds on a fully packed value could lead to
+      unpack&quot; that can be supplied to a future call to <code class="code">unpack_one</code> to continue unpacking.</p><p>      - <code class="code">`Invalid_data</code> -- unpacking encountered an invalidly packed value.</p><p>      A naive <code class="code">unpack_one</code> that only succeeds on a fully packed value could lead to
       quadratic behavior if a packed value's bytes are input using a linear number of
-      calls to <code class="code">feed</code>.</div></div>
+      calls to <code class="code">feed</code>.</p></div></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">('value, 'partial_unpack) </code>t</span> = <code class="type">?partial_unpack:'partial_unpack -&gt;
 ?pos:int -&gt;
 ?len:int -&gt;

@@ -1,14 +1,14 @@
 <div class="ocaml_toplevel_module"><div class="info">Netplex-wide mutexes</div>
 <div class="info"><div class="info">These are mutexes that work in both multi-processing and
     multi-threading netplex environments. They are implemented on top of
-     <a href="#Netplex_semaphore">Netplex_semaphore</a>, and use the same name space for named objects.<br/>    For implementation issues, see  <a href="#Netplex_semaphore">Netplex_semaphore</a>.<br/>    It is not required to create mutexes: A mutex is automatically created
+     <a href="#Netplex_semaphore">Netplex_semaphore</a>, and use the same name space for named objects.<p>    For implementation issues, see  <a href="#Netplex_semaphore">Netplex_semaphore</a>.</p><p>    It is not required to create mutexes: A mutex is automatically created
     when the name is used for the first time. Mutexes are initially always
-    in unlocked state.<br/>    Mutexes do not stack: A container cannot lock a mutex several times.
-    (The second lock attempt would result in a deadlock.)<br/>    There is no deadlock detection.<br/>    If a container holding mutexes terminates the mutexes are automatically
-    unlocked.<br/>    Mutex are not owned by their container. It is allowed that a different
-    container unlocks the mutex.<br/>    Technically, a mutex named <code class="code">n</code> is implemented by a semaphore <code class="code">n</code>.
+    in unlocked state.</p><p>    Mutexes do not stack: A container cannot lock a mutex several times.
+    (The second lock attempt would result in a deadlock.)</p><p>    There is no deadlock detection.</p><p>    If a container holding mutexes terminates the mutexes are automatically
+    unlocked.</p><p>    Mutex are not owned by their container. It is allowed that a different
+    container unlocks the mutex.</p><p>    Technically, a mutex named <code class="code">n</code> is implemented by a semaphore <code class="code">n</code>.
     If the mutex is locked, the semaphore has the value 0, and if it is
-    unlocked, it has value 1.<br/>    <b>Thread safety:</b> Full. The functions can be called from any thread.</div></div>
+    unlocked, it has value 1.</p><p>    <b>Thread safety:</b> Full. The functions can be called from any thread.</p></div></div>
 <pre><span class="VALplugin"><span class="keyword">val</span> plugin</span> : <code class="type">Netplex_types.plugin</code></pre><div class="info"><div class="info">To enable mutexes, call the controller's <code class="code">add_plugin</code> method 
       with this object as argument. This can e.g. be done in the
       <code class="code">post_add_hook</code> of the processor.</div></div>

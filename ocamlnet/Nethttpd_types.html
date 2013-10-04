@@ -1,4 +1,4 @@
-<div class="ocaml_toplevel_module"><div class="info">Type definitions for the HTTP daemon<br/> <b>Contents</b><br/> -  <a href="#Nethttpd_types.exceptions">Nethttpd_types.exceptions</a><ul><li> <a href="#Nethttpd_types.environment">Nethttpd_types.environment</a></li><li> <a href="#Nethttpd_types.service">Nethttpd_types.service</a></li><li> <a href="#Nethttpd_types.helpers">Nethttpd_types.helpers</a>
+<div class="ocaml_toplevel_module"><div class="info">Type definitions for the HTTP daemon<p> <b>Contents</b></p><p> -  <a href="#Nethttpd_types.exceptions">Nethttpd_types.exceptions</a></p><ul><li> <a href="#Nethttpd_types.environment">Nethttpd_types.environment</a></li><li> <a href="#Nethttpd_types.service">Nethttpd_types.service</a></li><li> <a href="#Nethttpd_types.helpers">Nethttpd_types.helpers</a>
  </li></ul></div>
 <div class="info"><div class="info">Many types can also be found in the <code class="code">Nethttp</code> module (part of netstring).
  Furthermore, <code class="code">Netcgi_env</code> and <code class="code">Netcgi_types</code> are of interest (part of cgi).</div></div>
@@ -32,11 +32,11 @@
 <pre><span class="METHODsend_file"><span class="keyword">method</span> send_file</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; int64 -&gt; unit</code></pre>
 <div class="info"><div class="info">Sends the output header with a file as body. The file must already be open,
  and positioned where the transmission begins. The number is the length
- of the transmission.<br/> This method may return immediately when it is possible to open the file, and
+ of the transmission.<p> This method may return immediately when it is possible to open the file, and
  to set the kernel up for file transmission. Otherwise a <code class="code">Unix_error</code> is
  raised. It is also allowed that this method blocks until the file is actually
- transmitted.<br/> It is not allowed to print to the output channel and to call <code class="code">send_file</code>.
- Only one transmission method must be invoked.</div></div>
+ transmitted.</p><p> It is not allowed to print to the output channel and to call <code class="code">send_file</code>.
+ Only one transmission method must be invoked.</p></div></div>
 <pre><span class="METHODoutput_state"><span class="keyword">method</span> <span class="keyword">virtual</span> output_state</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;type=output_state">output_state</a> <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre>
 <div class="info"><div class="info">Reflects the state of the output generation:<ul><li><code class="code">`Start</code>: Nothing is generated yet</li><li><code class="code">`Sending</code>: Output is already being sent</li><li><code class="code">`End</code>: The response (for a single request) has been fully sent
      </li></ul></div></div></div></div>
@@ -69,10 +69,10 @@
 </div></div>
 <div class="ocaml_class ident" name="redirected_environment" path="?package=ocamlnet&amp;module=Nethttpd_types&amp;class=extended_environment"><pre><span class="TYPEredirected_environment"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;class=redirected_environment">redirected_environment</a></span> : <code class="type"><a href="?package=ocamlnet&amp;module=Nethttp&amp;type=http_header">Nethttp.http_header</a> option -&gt; (string * string) list option -&gt; <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=in_obj_channel">Netchannels.in_obj_channel</a> option -&gt; <a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;type=extended_environment">extended_environment</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;class=extended_environment">extended_environment</a></pre><div class="info"><div class="info">This class overlays the input-side containers of an existing environment.
  The output-side containers (<code class="code">out_header</code>, and <code class="code">out_channel</code>)
- are physically identical with the existing environment.<br/> If one of the argument is not passed on class instantiation, the corresponding
+ are physically identical with the existing environment.<p> If one of the argument is not passed on class instantiation, the corresponding
  overlay container is initialized with the current value of the passed
  environment. As exception of this rule, the input channel is initialized with
- an empty input channel.</div></div></div>
+ an empty input channel.</p></div></div></div>
 <div class="info"><div class="info"><h2 id="2_TITLE">Auxiliary Functions for Environments</h2></div></div>
 <pre><span class="VALoutput_static_response"><span class="keyword">val</span> output_static_response</span> : <code class="type">#<a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;class=extended_environment">extended_environment</a> -&gt;
 <a href="?package=ocamlnet&amp;module=Nethttp&amp;type=http_status">Nethttp.http_status</a> -&gt; <a href="?package=ocamlnet&amp;module=Nethttp&amp;type=http_header">Nethttp.http_header</a> option -&gt; string -&gt; unit</code></pre><div class="info"><div class="info">Outputs the string argument as response body, together with the given status and
@@ -84,8 +84,8 @@
  the header (optional). The string is the file name. The first int64 number is
  the position in the file where to start, and the second number is the length
  of the body.  Response header fields are set as follows:<ul><li>The <code class="code">Content-Length</code> is set to the length of the string.</li><li>The <code class="code">Content-Type</code> is set to &quot;text/html&quot; unless given by the header.</li></ul> Note that <code class="code">Content-Range</code> is not set automatically, even if the file is only
- partially transferred.<br/> If the header is not passed, the header of the environment is taken. If the header
- argument exists, however, it overrides the header of the environment.<br/> The function raises <code class="code">Sys_error</code> when the file cannot be read.</div></div>
+ partially transferred.<p> If the header is not passed, the header of the environment is taken. If the header
+ argument exists, however, it overrides the header of the environment.</p><p> The function raises <code class="code">Sys_error</code> when the file cannot be read.</p></div></div>
 <div class="info"><div class="info"><h1 id="1_TITLE">Generating error responses, logging</h1></div></div>
 <div class="ocaml_class sig" name="request_info"><pre><span class="TYPErequest_info"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;class=request_info">request_info</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><pre><span class="METHODserver_socket_addr"><span class="keyword">method</span> server_socket_addr</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a></code></pre>
 <div class="info"><div class="info">The socket address of this server. May raise <code class="code">Not_found</code> if
@@ -129,9 +129,9 @@
 <pre><span class="VALoutput_std_response"><span class="keyword">val</span> output_std_response</span> : <code class="type">#<a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;class=min_config">min_config</a> -&gt;
 #<a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;class=extended_environment">extended_environment</a> -&gt;
 <a href="?package=ocamlnet&amp;module=Nethttp&amp;type=http_status">Nethttp.http_status</a> -&gt; <a href="?package=ocamlnet&amp;module=Nethttp&amp;type=http_header">Nethttp.http_header</a> option -&gt; string option -&gt; unit</code></pre><div class="info"><div class="info">Outputs a &quot;standard response&quot; for the <code class="code">http_status</code>. The string argument
- is an optional entry into the error log.<br/> If the header is not passed, an empty header is taken. If the header argument
- exists, this header is taken. The header of the environment is never taken.</div></div>
-<div class="info"><div class="info"><h1 id="service">Service Providers</h1><br/> Service providers are defined using the three class types:<ul><li><code class="code">http_service</code>: The service provider as such. When a HTTP header has been
+ is an optional entry into the error log.<p> If the header is not passed, an empty header is taken. If the header argument
+ exists, this header is taken. The header of the environment is never taken.</p></div></div>
+<div class="info"><div class="info"><h1 id="service">Service Providers</h1><p> Service providers are defined using the three class types:</p><ul><li><code class="code">http_service</code>: The service provider as such. When a HTTP header has been
    received, and the service provider is invoked, it returns an object
    fitting to the next class type, <code class="code">http_service_receiver</code>. This object
    is tagged with <code class="code">`Accept_body</code>; at this point there are also alternate ways
@@ -139,12 +139,12 @@
    body. When the body has been completely received, the object is notified,
    and returns a third object of type <code class="code">http_service_generator</code>.</li><li><code class="code">http_service_generator</code>: The task of this object is to generate the
    response.</li></ul> An implementor is free to define only one class that satisfies all three
- class types at once. However, this is only an option.<br/> The three objects reflect three stages of HTTP processing. The stages have
+ class types at once. However, this is only an option.<p> The three objects reflect three stages of HTTP processing. The stages have
  made explicit to allow the implementor of services to intercept the points
  in time when the processing of the next stage begins. Furthermore, in multi-threaded
  environments it is allowed that the stages are performed in the contexts of
- different threads.<br/> In addition to the three-stage model there also several faster paths of 
- processing:<ul><li><code class="code">`Reject_body</code> can be used to refuse the acceptance of the request body when
+ different threads.</p><p> In addition to the three-stage model there also several faster paths of 
+ processing:</p><ul><li><code class="code">`Reject_body</code> can be used to refuse the acceptance of the request body when
    it is already clear that an error response is sent back. This path skips
    the stage <code class="code">http_service_receiver</code>.</li><li><code class="code">`Static</code> can be used to send a constant string back (only to be used
    when the string needs not to be computed)</li><li><code class="code">`File</code> can be used to send the contents of a file back (only to be used
@@ -163,19 +163,19 @@
  This method is called when the HTTP request has been completely received,
  and the response is going to be generated. This method can again be called
  from a different thread than the previous stages. It is allowed to spend
- any necessary time to compute the response.<br/> When the method returns, the request processing is finished. No more data
- is allowed to be written to the output channel past this moment.<br/> The method may raise <code class="code">Standard_response</code> to generate one of the
- standard messages.</div></div></div></div>
+ any necessary time to compute the response.<p> When the method returns, the request processing is finished. No more data
+ is allowed to be written to the output channel past this moment.</p><p> The method may raise <code class="code">Standard_response</code> to generate one of the
+ standard messages.</p></div></div></div></div>
 <div class="ocaml_class sig" name="http_service_receiver"><pre><span class="TYPEhttp_service_receiver"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;class=http_service_receiver">http_service_receiver</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><pre><span class="METHODprocess_body"><span class="keyword">method</span> process_body</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;type=extended_environment">extended_environment</a> -&gt; <a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;type=http_service_generator">http_service_generator</a></code></pre>
 <div class="info"><div class="info">Second stage of HTTP processing:
  This method is called when the body is expected to be arriving. Note that
  the main difference to <code class="code">process_header</code> is that this method can be
  called from a different thread. It is allowed (and expected) that this method
  blocks while reading the input. Of course, the input and output
- channels of the environment are unlocked, and can be used.<br/> When the method returns, the request processing continues with stage 3.
- Any body data not read is dropped.<br/> It is allowed that this method generates a response (or part of it),
- although this should be better done in stage 3.<br/> The method may raise <code class="code">Standard_response</code> to generate one of the
- standard messages.<br/> One way of implementing this method is to instantiate <code class="code">Netcgi.std_activation</code>.</div></div></div></div>
+ channels of the environment are unlocked, and can be used.<p> When the method returns, the request processing continues with stage 3.
+ Any body data not read is dropped.</p><p> It is allowed that this method generates a response (or part of it),
+ although this should be better done in stage 3.</p><p> The method may raise <code class="code">Standard_response</code> to generate one of the
+ standard messages.</p><p> One way of implementing this method is to instantiate <code class="code">Netcgi.std_activation</code>.</p></div></div></div></div>
 <pre><span class="TYPEhttp_service_reaction"><span class="keyword">type</span> http_service_reaction</span> = <code class="type">[ `Accept_body of <a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;type=http_service_receiver">http_service_receiver</a>
 | `File of
     <a href="?package=ocamlnet&amp;module=Nethttp&amp;type=http_status">Nethttp.http_status</a> * <a href="?package=ocamlnet&amp;module=Nethttp&amp;type=http_header">Nethttp.http_header</a> option * string * int64 * int64

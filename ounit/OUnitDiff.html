@@ -1,9 +1,9 @@
-<div class="ocaml_toplevel_module"><div class="info">Unit tests for collection of elements<br/>    This module allows to define a more precise way to display differences
+<div class="ocaml_toplevel_module"><div class="info">Unit tests for collection of elements<p>    This module allows to define a more precise way to display differences
     between collection of elements. When collection differ, the tester is 
     interested by what are the missing/extra elements. This module provides
     a <code class="code">diff</code> operation to spot the difference quickly between two sets of
-    elements.<br/>    Example:
-<pre class="codepre"><code class="code">
+    elements.</p><p>    Example:
+</p><code class="code">
 open OUnit;;
 
 module EInt = 
@@ -25,11 +25,11 @@ let test_diff () =
 let _ = 
   run_test_tt_main (&quot;test_diff&quot; &gt;:: test_diff)
 ;;
-</code></pre><br/>when run this test outputs:
-<pre class="codepre"><code class="code">
+</code><p>when run this test outputs:
+</p><code class="code">
 OUnit: expected: 1, 2, 3, 4, 5 but got: 1, 2, 5, 4
 differences: element number 2 differ (3 &lt;&gt; 5)
-</code></pre><div class="authors"><b>Author(s): </b><span class="author">Sylvain Le Gall</span></div> <b>Since</b> 1.1.0</div>
+</code><div class="authors"><b>Author(s): </b><span class="author">Sylvain Le Gall</span></div> <b>Since</b> 1.1.0</div>
 <div class="info"><div class="info"><h2 id="2_TITLE">Signatures</h2></div></div>
 <div class="ocaml_module sig" name="DIFF_ELEMENT"><pre><span class="keyword">module type</span> <a href="?package=ounit&amp;module=OUnitDiff.DIFF_ELEMENT">DIFF_ELEMENT</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Definition of an element</div></div><div class="ocaml_module_content">
 <pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">Type of an element</div></div>

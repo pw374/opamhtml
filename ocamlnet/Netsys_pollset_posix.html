@@ -1,14 +1,14 @@
 <div class="ocaml_toplevel_module"><div class="info">Pollsets for POSIX operating systems</div>
 <pre><span class="VALpoll_based_pollset"><span class="keyword">val</span> poll_based_pollset</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Netsys_pollset&amp;type=pollset">Netsys_pollset.pollset</a></code></pre><div class="info"><div class="info">Returns a poll set whose implementation is based on the <code class="code">poll</code> system
-      call. <br/>      Win32: On Win32 this implementation works, but only for sockets,
+      call. <p>      Win32: On Win32 this implementation works, but only for sockets,
       and is not cancellable in multi-threaded programs. (This is a 
       restriction because we have to map it to the <code class="code">select</code> call of the
-      WinSock layer.)</div></div>
+      WinSock layer.)</p></div></div>
 <pre><span class="VALreset"><span class="keyword">val</span> reset</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info">This module may keep some global state. This function resets this
       state. As the state may contain file descriptors, it is advisable
       to reset after calling <code class="code">fork</code> to free these descriptors.</div></div>
 <pre><span class="VALaccelerated_pollset"><span class="keyword">val</span> accelerated_pollset</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Netsys_pollset&amp;type=pollset">Netsys_pollset.pollset</a></code></pre><div class="info"><div class="info">Returns a pollset using a &quot;fast&quot; poll mechanism, if available.
-      Otherwise this is the same as <code class="code">poll_based_pollset</code>.<br/>      Fast poll mechanisms are:<ul><li><code class="code">epoll</code> on Linux</li></ul>      Generally, these mechanisms are not 100% compatible with the
+      Otherwise this is the same as <code class="code">poll_based_pollset</code>.<p>      Fast poll mechanisms are:</p><ul><li><code class="code">epoll</code> on Linux</li></ul>      Generally, these mechanisms are not 100% compatible with the
       standard <code class="code">poll</code>. In particular, the poll events may be slightly
       differently interpreted. Also, there are many, many reports about
       buggy implementations in the OS.</div></div>

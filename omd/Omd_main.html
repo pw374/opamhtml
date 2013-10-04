@@ -17,9 +17,9 @@
 <pre><span class="VALpatch_html_comments"><span class="keyword">val</span> patch_html_comments</span> : <code class="type"><a href="?package=omd&amp;module=Omd&amp;type=element">Omd.element</a> list -&gt; <a href="?package=omd&amp;module=Omd&amp;type=element">Omd.element</a> list</code></pre><div class="info"><div class="info"><code class="code">patch_html_comments l</code> returns the list <code class="code">l</code> where
     all <code class="code">Html_comments s</code> have been converted to <code class="code">Html_comments s'</code>,
     where <code class="code">s'</code> means <code class="code">s</code> with dashes replaced by &amp;#45; except for
-    single dashes (which are left untouched).<br/>    N.B. It seems that it's not valid to have double dashes inside HTML comments
+    single dashes (which are left untouched).<p>    N.B. It seems that it's not valid to have double dashes inside HTML comments
     (cf. http://validator.w3.org/check). So one way to make life somewhat easier
-    is to patch the comments and transform inner dashed to &amp;#45;.</div></div>
+    is to patch the comments and transform inner dashed to &amp;#45;.</p></div></div>
 <pre><span class="VALtag_toc"><span class="keyword">val</span> tag_toc</span> : <code class="type"><a href="?package=omd&amp;module=Omd&amp;type=tok">Omd.tok</a> list -&gt; <a href="?package=omd&amp;module=Omd&amp;type=tok">Omd.tok</a> list</code></pre><div class="info"><div class="info"><code class="code">tag_toc l</code> returns <code class="code">l</code> where *Table of contents* has been replaced
     by a tag that can generate a table of contents.</div></div>
 <pre><span class="VALmain"><span class="keyword">val</span> main</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info">main function</div></div>

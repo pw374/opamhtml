@@ -1,8 +1,8 @@
 <div class="ocaml_toplevel_module"><div class="info"><code class="code">Unix_syscalls</code> provides an interface to many of the functions in OCaml's standard
     Unix module.  It uses a deferred in the return type of functions that would block.
     The idea is that in an async program one does not use the standard Unix module, since
-    in doing so one could accidentally block the whole program.<br/>    There are also a number of cosmetic changes (e.g. polymorphic variants) and other
-    improvements (e.g. phantom types on sockets) over the standard Unix module.</div>
+    in doing so one could accidentally block the whole program.<p>    There are also a number of cosmetic changes (e.g. polymorphic variants) and other
+    improvements (e.g. phantom types on sockets) over the standard Unix module.</p></div>
 <div class="ocaml_module ident" name="Exit" path="?package=core&amp;module=Std.Unix.Exit"><pre><span class="keyword">module</span> <a href="?package=async_unix&amp;module=Unix_syscalls.Exit">Exit</a> : <code class="type">module type of <code class="code"><a href="?package=core&amp;module=Std.Unix.Exit">Core.Std.Unix.Exit</a></code></code></pre></div>
 <div class="ocaml_module ident" name="Exit_or_signal" path="?package=core&amp;module=Std.Unix.Exit_or_signal"><pre><span class="keyword">module</span> <a href="?package=async_unix&amp;module=Unix_syscalls.Exit_or_signal">Exit_or_signal</a> : <code class="type">module type of <code class="code"><a href="?package=core&amp;module=Std.Unix.Exit_or_signal">Core.Std.Unix.Exit_or_signal</a></code></code></pre></div>
 <div class="ocaml_module ident" name="Exit_or_signal_or_stop" path="?package=core&amp;module=Std.Unix.Exit_or_signal_or_stop"><pre><span class="keyword">module</span> <a href="?package=async_unix&amp;module=Unix_syscalls.Exit_or_signal_or_stop">Exit_or_signal_or_stop</a> : <code class="type">module type of <code class="code"><a href="?package=core&amp;module=Std.Unix.Exit_or_signal_or_stop">Core.Std.Unix.Exit_or_signal_or_stop</a></code></code></pre></div>
@@ -13,8 +13,8 @@
 <pre><span class="VALgetppid_exn"><span class="keyword">val</span> getppid_exn</span> : <code class="type">unit -&gt; <a href="?package=core&amp;module=Std.Pid&amp;type=t">Core.Std.Pid.t</a></code></pre>
 <pre><span class="VALthis_process_became_child_of_init"><span class="keyword">val</span> this_process_became_child_of_init</span> : <code class="type">?poll_delay:<a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a> -&gt; unit -&gt; unit <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre><div class="info"><div class="info"><code class="code">this_process_became_child_of_init</code> returns a deferred that becomes determined when
     the current process becomes a child of init(8).  This is useful to determine if one's
-    parent has died, because in that case init will becomes one's parent.<br/>    See <code class="code">Linux_ext.pr_set_pdeathsig : Signal.t -&gt; unit</code> for related way to get information
-    about parent death.</div></div>
+    parent has died, because in that case init will becomes one's parent.<p>    See <code class="code">Linux_ext.pr_set_pdeathsig : Signal.t -&gt; unit</code> for related way to get information
+    about parent death.</p></div></div>
 <pre><span class="VALnice"><span class="keyword">val</span> nice</span> : <code class="type">int -&gt; int</code></pre>
 <pre><span class="VALcores"><span class="keyword">val</span> cores</span> : <code class="type">(unit -&gt; int <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>) <a href="?package=core&amp;module=Std.Or_error&amp;type=t">Core.Std.Or_error.t</a></code></pre><div class="info"><div class="info"><code class="code">cores ()</code> Returns the number of cores</div></div>
 <pre><span class="TYPEopen_flag"><span class="keyword">type</span> open_flag</span> = <code class="type">[ `Append
@@ -46,10 +46,10 @@ f:(<a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a> -&gt; 'a <a h
     functions in <code class="code">Core.Unix</code> for accessing the open-file-descriptor table.</div></div>
 <pre><span class="VALfcntl_setfl"><span class="keyword">val</span> fcntl_setfl</span> : <code class="type"><a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a> -&gt; <a href="?package=async_unix&amp;module=Unix_syscalls.Open_flags&amp;type=t">Open_flags.t</a> -&gt; unit <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
 <pre><span class="VALclose"><span class="keyword">val</span> close</span> : <code class="type">?should_close_file_descriptor:bool -&gt; <a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a> -&gt; unit <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre><div class="info"><div class="info"><code class="code">close fd</code> closes the file descriptor <code class="code">fd</code>, and raises an exception if <code class="code">fd</code> has
-    already been closed.<br/>    In some situations, one may need to cause async to release an fd that it is managing
+    already been closed.<p>    In some situations, one may need to cause async to release an fd that it is managing
     without closing the underlying file descriptor.  In that case, one should supply
     <code class="code">~should_close_file_descriptor:false</code>, which will skip the underlying close() system
-    call.</div></div>
+    call.</p></div></div>
 <pre><span class="VALlseek"><span class="keyword">val</span> lseek</span> : <code class="type"><a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a> -&gt; int64 -&gt; mode:[&lt; `Cur | `End | `Set ] -&gt; int64 <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
 <pre><span class="VALtruncate"><span class="keyword">val</span> truncate</span> : <code class="type">string -&gt; len:int64 -&gt; unit <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
 <pre><span class="VALftruncate"><span class="keyword">val</span> ftruncate</span> : <code class="type"><a href="?package=async_unix&amp;module=Fd&amp;type=t">Fd.t</a> -&gt; len:int64 -&gt; unit <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
@@ -421,10 +421,10 @@ args:string list -&gt;
       in order to eliminate certain errors in which socket functions are called
       in the wrong order.  Initially, a socket is `Unconnected.  As various
       socket functions are called, they return a socket with a new phantom state.
-      Here is a chart of the allowed state transitions.<br/>      <span class="verbatim">        Unconnected ---connect--&gt; Active
+      Here is a chart of the allowed state transitions.<p>      <span class="verbatim">        Unconnected ---connect--&gt; Active
         |
         | ---bind--&gt; Bound ---listen--&gt; Passive ---accept---&gt; Active
-      </span></div></div>
+      </span></p></div></div>
 <div class="ocaml_module sig" name="Type"><pre><span class="keyword">module</span> <a href="?package=async_unix&amp;module=Unix_syscalls.Socket.Type">Type</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
 <pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> </pre>
 <pre><span class="VALtcp"><span class="keyword">val</span> tcp</span> : <code class="type"><a href="?package=async_unix&amp;module=Unix_syscalls.Socket.Address.Inet&amp;type=t">Address.Inet.t</a> <a href="?package=async_unix&amp;module=Unix_syscalls.Socket.Type&amp;type=t">t</a></code></pre>
@@ -696,8 +696,8 @@ mem:('acc__ -&gt;
 <pre><span class="VALgetbygid_exn"><span class="keyword">val</span> getbygid_exn</span> : <code class="type">int -&gt; <a href="?package=async_unix&amp;module=Unix_syscalls.Group&amp;type=t">t</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
 <pre><span class="VALt_of_sexp"><span class="keyword">val</span> t_of_sexp</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; <a href="?package=async_unix&amp;module=Unix_syscalls.Group&amp;type=t">t</a></code></pre>
 <pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type"><a href="?package=async_unix&amp;module=Unix_syscalls.Group&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre></div></div>
-<pre><span class="VALgetlogin"><span class="keyword">val</span> getlogin</span> : <code class="type">unit -&gt; string <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre><div class="info"><div class="info">Return the login name of the user executing the process.<br/>    This returns a deferred because the username may need to be looked up in what is
-    essentially a database elsewhere on the network (winbound user, or NIS).</div></div>
+<pre><span class="VALgetlogin"><span class="keyword">val</span> getlogin</span> : <code class="type">unit -&gt; string <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre><div class="info"><div class="info">Return the login name of the user executing the process.<p>    This returns a deferred because the username may need to be looked up in what is
+    essentially a database elsewhere on the network (winbound user, or NIS).</p></div></div>
 <pre><span class="VALwordexp"><span class="keyword">val</span> wordexp</span> : <code class="type">(?flags:[ `No_cmd | `Show_err | `Undef ] list -&gt;
  string -&gt; string array <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>)
 <a href="?package=core&amp;module=Std.Or_error&amp;type=t">Core.Std.Or_error.t</a></code></pre>
@@ -719,10 +719,10 @@ mem:('acc__ -&gt;
       in order to eliminate certain errors in which socket functions are called
       in the wrong order.  Initially, a socket is `Unconnected.  As various
       socket functions are called, they return a socket with a new phantom state.
-      Here is a chart of the allowed state transitions.<br/>      <span class="verbatim">        Unconnected ---connect--&gt; Active
+      Here is a chart of the allowed state transitions.<p>      <span class="verbatim">        Unconnected ---connect--&gt; Active
         |
         | ---bind--&gt; Bound ---listen--&gt; Passive ---accept---&gt; Active
-      </span></div></div>
+      </span></p></div></div>
 <div class="info"><div class="info"><code class="code">bind socket addr</code> sets close_on_exec for the fd of <code class="code">socket</code>.</div></div>
 <div class="info"><div class="info">default: 10</div></div>
 <pre><span class="VALerror_of_sexp"><span class="keyword">val</span> error_of_sexp</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; <a href="?package=async_unix&amp;module=Unix_syscalls&amp;type=error">error</a></code></pre>
@@ -769,6 +769,6 @@ mem:('acc__ -&gt;
 <div class="info"><div class="info">Stop character (usually ctrl-S).</div></div>
 <div class="info"><div class="info">Structure of entries in the <code class="code">passwd</code> database.</div></div>
 <div class="info"><div class="info">Structure of entries in the <code class="code">groups</code> database.</div></div>
-<div class="info"><div class="info">Return the login name of the user executing the process.<br/>    This returns a deferred because the username may need to be looked up in what is
-    essentially a database elsewhere on the network (winbound user, or NIS).</div></div>
+<div class="info"><div class="info">Return the login name of the user executing the process.<p>    This returns a deferred because the username may need to be looked up in what is
+    essentially a database elsewhere on the network (winbound user, or NIS).</p></div></div>
 </div>

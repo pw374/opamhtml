@@ -3,14 +3,14 @@
    released under the Copyleft licence for the
     <a href="http://www.cminusminus.org">c--</a> project. The design of this library is
    discussed in the article
-   &quot; <a href=" http://citeseer.ist.psu.edu/lindig00strictly.html">Strictly pretty</a>&quot;.<br/>   The pretty printer provided by the <code class="code">Pp</code> module is intended for tree-like
+   &quot; <a href=" http://citeseer.ist.psu.edu/lindig00strictly.html">Strictly pretty</a>&quot;.<p>   The pretty printer provided by the <code class="code">Pp</code> module is intended for tree-like
    structures.  Documents are represented by an abstract type <code class="code">t</code>. A document
    can be printed to a file or a string and during this process the pretty
    printer decides about the final outcome of the document. The only parameter
    it takes into account is the total line width and the number of characters a
-   sub-document occupies.<br/>   A document of type <code class="code">t</code> can be very small entity like a single word.
+   sub-document occupies.</p><p>   A document of type <code class="code">t</code> can be very small entity like a single word.
    Functions combine small documents to larger ones which then can be pretty
-   printed.<div class="authors"><b>Author(s): </b><span class="author">Christian Lindig</span><span class="author">Till Varoquaux</span></div><div class="see"><b>See also</b> <ul>  <li> <a href="http://legacy.cs.uu.nl/daan/download/pprint/pprint.html">PPrint.</a></li></ul></div></div></div>
+   printed.</p><div class="authors"><b>Author(s): </b><span class="author">Christian Lindig</span><span class="author">Till Varoquaux</span></div><div class="see"><b>See also</b> <ul>  <li> <a href="http://legacy.cs.uu.nl/daan/download/pprint/pprint.html">PPrint.</a></li></ul></div></div></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre>
 <pre><span class="VALempty"><span class="keyword">val</span> empty</span> : <code class="type"><a href="?package=core_extended&amp;module=Pp&amp;type=t">t</a></code></pre><div class="info"><div class="info">The empty document is pretty printed to the empty string. Typically <code class="code">empty</code>
 is used in one branch of an <code class="code">if</code> statement.</div></div>
@@ -79,7 +79,7 @@ The default indentation is 4</div></div>
 <pre><span class="VAL$"><span class="keyword">val</span> $</span> : <code class="type"><a href="?package=core_extended&amp;module=Pp&amp;type=t">t</a> -&gt; <a href="?package=core_extended&amp;module=Pp&amp;type=t">t</a> -&gt; <a href="?package=core_extended&amp;module=Pp&amp;type=t">t</a></code></pre>
 <pre><span class="VAL$/"><span class="keyword">val</span> $/</span> : <code class="type"><a href="?package=core_extended&amp;module=Pp&amp;type=t">t</a> -&gt; <a href="?package=core_extended&amp;module=Pp&amp;type=t">t</a> -&gt; <a href="?package=core_extended&amp;module=Pp&amp;type=t">t</a></code></pre>
 <pre><span class="VAL$//"><span class="keyword">val</span> $//</span> : <code class="type"><a href="?package=core_extended&amp;module=Pp&amp;type=t">t</a> -&gt; <a href="?package=core_extended&amp;module=Pp&amp;type=t">t</a> -&gt; <a href="?package=core_extended&amp;module=Pp&amp;type=t">t</a></code></pre></div></div>
-<pre><span class="VALhlist"><span class="keyword">val</span> hlist</span> : <code class="type"><a href="?package=core_extended&amp;module=Pp&amp;type=t">t</a> list -&gt; <a href="?package=core_extended&amp;module=Pp&amp;type=t">t</a></code></pre><div class="info"><div class="info"><pre class="codepre"><code class="code"> hlist [x1,..,xn] = hgrp [x1; break; x2; ...; break; xn) </code></pre></div></div>
-<pre><span class="VALvlist"><span class="keyword">val</span> vlist</span> : <code class="type"><a href="?package=core_extended&amp;module=Pp&amp;type=t">t</a> list -&gt; <a href="?package=core_extended&amp;module=Pp&amp;type=t">t</a></code></pre><div class="info"><div class="info"><pre class="codepre"><code class="code"> vlist [x1,..,xn] = vgrp [x1; break; x2; ...; break; xn) </code></pre></div></div>
+<pre><span class="VALhlist"><span class="keyword">val</span> hlist</span> : <code class="type"><a href="?package=core_extended&amp;module=Pp&amp;type=t">t</a> list -&gt; <a href="?package=core_extended&amp;module=Pp&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code"> hlist [x1,..,xn] = hgrp [x1; break; x2; ...; break; xn) </code></div></div>
+<pre><span class="VALvlist"><span class="keyword">val</span> vlist</span> : <code class="type"><a href="?package=core_extended&amp;module=Pp&amp;type=t">t</a> list -&gt; <a href="?package=core_extended&amp;module=Pp&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code"> vlist [x1,..,xn] = vgrp [x1; break; x2; ...; break; xn) </code></div></div>
 <pre><span class="VALalist"><span class="keyword">val</span> alist</span> : <code class="type"><a href="?package=core_extended&amp;module=Pp&amp;type=t">t</a> list -&gt; <a href="?package=core_extended&amp;module=Pp&amp;type=t">t</a></code></pre>
 </div>

@@ -1,16 +1,16 @@
 <div class="ocaml_toplevel_module"><div class="info">A heap block is a value that is guaranteed to live on the OCaml heap, and is hence
     guaranteed to be usable with finalization or in a weak pointer.  It is an abstract
     type so we can use the type system to guarantee that the values we put in weak
-    pointers and use with finalizers are heap blocks.<br/>    Some examples of values that are not heap-allocated are integers, constant
+    pointers and use with finalizers are heap blocks.<p>    Some examples of values that are not heap-allocated are integers, constant
     constructors, booleans, the empty array, the empty list, the unit value.  The exact
     list of what is heap-allocated or not is implementation-dependent.  Some constant
     values can be heap-allocated but never deallocated during the lifetime of the program,
     for example a list of integer constants; this is also implementation-dependent.  You
     should also be aware that compiler optimizations may duplicate some immutable values,
     for example floating-point numbers when stored into arrays; thus they can be finalized
-    and collected while another copy is still in use by the program.<br/>    The results of calling  <a href="#String.make">String.make</a>,  <a href="#String.create">String.create</a>,  <a href="#Array.make">Array.make</a>, and
+    and collected while another copy is still in use by the program.</p><p>    The results of calling  <a href="#String.make">String.make</a>,  <a href="#String.create">String.create</a>,  <a href="#Array.make">Array.make</a>, and
      <a href="#Pervasives.ref">Pervasives.ref</a> are guaranteed to be heap-allocated and non-constant except when the
-    length argument is <code class="code">0</code>.</div>
+    length argument is <code class="code">0</code>.</p></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">+'a </code>t</span> = <code class="type">'a</code><span class="keyword">private</span></pre>
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">'a -&gt; 'a <a href="?package=core_kernel&amp;module=Heap_block&amp;type=t">t</a> option</code></pre><div class="info"><div class="info"><code class="code">create v</code> returns <code class="code">Some t</code> if <code class="code">v</code> is a heap block, where <code class="code">t</code> is physically equal
     to <code class="code">v</code></div></div>

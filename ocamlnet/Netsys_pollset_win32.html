@@ -4,7 +4,7 @@
          returned by <code class="code">pipe_descr</code> or <code class="code">pipe_server_descr</code> to the pollset)</li></ul>      The number of descriptors that can be added to the pollset
       has a quite low limit (usually 63 sockets or 31 pipes).
       If the number is exceeded the exception <code class="code">Too_many_descriptors</code>
-      is raised (by <code class="code">add</code>).<br/>      POLLERR, POLLHUP, and POLLNVAL are not detected by this impl.</div></div>
+      is raised (by <code class="code">add</code>).<p>      POLLERR, POLLHUP, and POLLNVAL are not detected by this impl.</p></div></div>
 <pre><span class="VALthreaded_pollset"><span class="keyword">val</span> threaded_pollset</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Netsys_pollset&amp;type=pollset">Netsys_pollset.pollset</a></code></pre><div class="info"><div class="info">This implementation overcomes the limit on the number of descriptors 
       one can add
       to the set. It is, however, only available for multi-threaded

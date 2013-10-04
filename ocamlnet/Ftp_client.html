@@ -1,8 +1,8 @@
-<div class="ocaml_toplevel_module"><div class="info">FTP client<br/> Currently implements:<ul><li>Core FTP (RFC 959), except compressed transfer modes, and except page
-   files</li><li>Negotiation of FTP extensions (RFC 2389)</li><li>Common FTP extensions (RFC 3659)</li><li>IPv6 (RFC 2428)</li><li>Internationalization (RFC 2640)</li><li>Directory walking (NVFS) and direct access (TVFS)</li></ul> The client is written in asynchronous style (using  <a href="#Uq_engines">Uq_engines</a>).<br/> The interface of this module was changed in Ocamlnet-3.3. Before this
+<div class="ocaml_toplevel_module"><div class="info">FTP client<p> Currently implements:</p><ul><li>Core FTP (RFC 959), except compressed transfer modes, and except page
+   files</li><li>Negotiation of FTP extensions (RFC 2389)</li><li>Common FTP extensions (RFC 3659)</li><li>IPv6 (RFC 2428)</li><li>Internationalization (RFC 2640)</li><li>Directory walking (NVFS) and direct access (TVFS)</li></ul> The client is written in asynchronous style (using  <a href="#Uq_engines">Uq_engines</a>).<p> The interface of this module was changed in Ocamlnet-3.3. Before this
  release, the module was marked as &quot;experimental&quot;. This is no longer
  the case, as the interface has been updated, and the missing features
- have been added (e.g. <code class="code">STOR</code> support).</div>
+ have been added (e.g. <code class="code">STOR</code> support).</p></div>
 <pre><span class="EXCEPTIONFTP_error"><span class="keyword">exception</span> FTP_error</span> <span class="keyword">of</span> <code class="type">exn</code></pre><div class="info"><div class="info">Something went wrong, often on socket level</div></div>
 <pre><span class="EXCEPTIONFTP_protocol_violation"><span class="keyword">exception</span> FTP_protocol_violation</span> <span class="keyword">of</span> <code class="type">string</code></pre><div class="info"><div class="info">The server violates the FTP specification</div></div>
 <pre><span class="EXCEPTIONFTP_timeout"><span class="keyword">exception</span> FTP_timeout</span> <span class="keyword">of</span> <code class="type">string</code></pre><div class="info"><div class="info">A timeout on the control or data connection (this is a fatal error)</div></div>
@@ -41,12 +41,12 @@
    ASCII encoding with CR/LF as end-of-line marker. Supported by all
    servers.</li><li><code class="code">`EBCDIC</code>: An EBCDIC variant is used, i.e. the server sends files in
    EBCDIC encoding with NEL as end-of-line marker</li><li><code class="code">`Image</code>: The file is transferred in its original binary
-   representation. Supported by all servers.</li></ul> &quot;Local&quot; representations are not supported.<br/> This FTP client does not recode the files such that they match the
+   representation. Supported by all servers.</li></ul> &quot;Local&quot; representations are not supported.<p> This FTP client does not recode the files such that they match the
  selected representation. When files are downloaded, they are stored
  as they are received. When files are uploaded, they are sent as they
  are. The user of this client must do recodings when necessary
- (the class  <a href="#Ftp_data_endpoint.data_converter">Ftp_data_endpoint.data_converter</a> may be useful for this).<br/> If no representation is selected, FTP servers assume <code class="code">`ASCII None</code>
- as default.</div></div>
+ (the class  <a href="#Ftp_data_endpoint.data_converter">Ftp_data_endpoint.data_converter</a> may be useful for this).</p><p> If no representation is selected, FTP servers assume <code class="code">`ASCII None</code>
+ as default.</p></div></div>
 <pre><span class="TYPEstructure"><span class="keyword">type</span> structure</span> = <code class="type">[ `File_structure | `Record_structure ]</code></pre><div class="info"><div class="info">The client supports two structures:<ul><li><code class="code">`File_structure</code>: Files are simply contiguous streams of bytes</li><li><code class="code">`Record_structure</code>: Files are sequences of records. FTP does
    not make a difference between variable and fixed length records.
    It is not forbidden that the records are themselves structured
@@ -58,8 +58,8 @@
    to use the classes  <a href="#Ftp_data_endpoint.out_record_channel">Ftp_data_endpoint.out_record_channel</a> and
     <a href="#Ftp_data_endpoint.in_record_channel">Ftp_data_endpoint.in_record_channel</a> for the local representation
    of the files, otherwise the records may be incorrectly mapped
-   to the local conventions.</li></ul> Page-structured files (i.e. indexed files) are not supported.<br/> If no structure is selected, FTP servers will assume file structure
- as default.</div></div>
+   to the local conventions.</li></ul> Page-structured files (i.e. indexed files) are not supported.<p> If no structure is selected, FTP servers will assume file structure
+ as default.</p></div></div>
 <pre><span class="TYPEtransmission_mode"><span class="keyword">type</span> transmission_mode</span> = <code class="type">[ `Block_mode | `Stream_mode ]</code></pre><div class="info"><div class="info">The transmission mode selects how the data are encoded in the data
  connection.<ul><li><code class="code">`Stream_mode</code>: This is the simple format that is responsible for
    all the failed FTP downloads. It is supported by all FTP servers,
@@ -140,15 +140,15 @@
 <div class="info"><div class="info">Run another command as engine. The command is first started when
 	the previous command has terminated. The protocol interpreter does 
 	not check whether this command is allowed in the current ftp_state
-	or not.<br/>	When the command is done, the engine transitions to
+	or not.<p>	When the command is done, the engine transitions to
 	<code class="code">`Done(st,r)</code> where <code class="code">st</code> is the state after the command, and <code class="code">r</code>
-	is the final reply of the server.<br/>	Due to the FTP specification there may be several replies for
+	is the final reply of the server.</p><p>	Due to the FTP specification there may be several replies for
 	a command: First, zero or more replies with <code class="code">cmd_state = `Preliminary</code>,
 	and then exactly one reply with a final state. The preliminary replies
-	can be intercepted with the <code class="code">prelim</code> callback.</div></div>
+	can be intercepted with the <code class="code">prelim</code> callback.</p></div></div>
 <pre><span class="METHODsend_abort"><span class="keyword">method</span> send_abort</span> : <code class="code">unit -&gt; unit</code></pre>
 <div class="info"><div class="info">Sends immediately an <code class="code">ABOR</code> command, even when a data transfer is
- in progress.<br/> TODO - not yet implemented</div></div>
+ in progress.<p> TODO - not yet implemented</p></div></div>
 <pre><span class="METHODrun"><span class="keyword">method</span> run</span> : <code class="code">unit -&gt; unit</code></pre>
 <div class="info"><div class="info">Starts the event system; same as <code class="code">Unixqueue.run</code></div></div>
 <pre><span class="METHODftp_state"><span class="keyword">method</span> ftp_state</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_state">ftp_state</a></code></pre>
@@ -172,8 +172,8 @@
 	<code class="code">`PASV</code> and <code class="code">`PORT</code>, respectively. This is first set after
 	connecting to a server (i.e. when the IP address family is known).
 	Before, it is always <code class="code">false</code>.</div></div>
-<div class="info"><div class="info">Feature tests<br/>      The following methods are first set when the <code class="code">`FEAT</code> command is run.
-      Use <code class="code">feat_method</code> to do so. Until then, always <code class="code">false</code> is returned.</div></div>
+<div class="info"><div class="info">Feature tests<p>      The following methods are first set when the <code class="code">`FEAT</code> command is run.
+      Use <code class="code">feat_method</code> to do so. Until then, always <code class="code">false</code> is returned.</p></div></div>
 <pre><span class="METHODsupports_tvfs"><span class="keyword">method</span> supports_tvfs</span> : <code class="code">bool</code></pre>
 <div class="info"><div class="info">Whether TVFS filenames are supported</div></div>
 <pre><span class="METHODsupports_mdtm"><span class="keyword">method</span> supports_mdtm</span> : <code class="code">bool</code></pre>
@@ -206,10 +206,10 @@ get_account:(unit -&gt; string) -&gt; unit -&gt; <a href="?package=ocamlnet&amp;
  the FTP server asks for the password (may be skipped). <code class="code">get_account</code>
  is called when the server asks for the account ID (may be skipped).</div></div>
 <pre><span class="VALquit_method"><span class="keyword">val</span> quit_method</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">Quits and disconnects</div></div>
-<pre><span class="VALwalk_method"><span class="keyword">val</span> walk_method</span> : <code class="type">[ `Dir of string | `File of string | `Stay ] -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">This FTP method walks to the target directory:<br/> - <code class="code">`File name</code>: The <code class="code">name</code> is interpreted as slash-separated path.
+<pre><span class="VALwalk_method"><span class="keyword">val</span> walk_method</span> : <code class="type">[ `Dir of string | `File of string | `Stay ] -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">This FTP method walks to the target directory:<p> - <code class="code">`File name</code>: The <code class="code">name</code> is interpreted as slash-separated path.
    It is always interpreted relative to the home directory of the 
    user (i.e. the directory after login), even if it begins with a
-   slash. The FTP command walks to the directory containing <code class="code">name</code>.<ul><li><code class="code">`Dir name</code>: The FTP command walks to the directory <code class="code">name</code> (same
+   slash. The FTP command walks to the directory containing <code class="code">name</code>.</p><ul><li><code class="code">`Dir name</code>: The FTP command walks to the directory <code class="code">name</code> (same
    syntax as for <code class="code">`File</code>).</li><li><code class="code">`Stay</code>: The FTP command does nothing (stays in the current directory).
  </li></ul></div></div>
 <pre><span class="TYPEfilename"><span class="keyword">type</span> filename</span> = <code class="type">[ `NVFS of string | `TVFS of string | `Verbatim of string ]</code></pre><div class="info"><div class="info">There are several methods how to specify filenames:<ul><li><code class="code">`NVFS name</code>: The &quot;Network Virtual File System&quot; is the normal way
@@ -237,12 +237,12 @@ representation:<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=represe
 store:(<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_state">ftp_state</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=local_sender">Ftp_data_endpoint.local_sender</a>) -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">This FTP method walks to the right directory and puts <code class="code">file</code> to
  the server. The file is taken from the <code class="code">local_sender</code> that can be
  obtained by calling the <code class="code">store</code> function. The selected <code class="code">representation</code>
- remains unchanged.<br/> <code class="code">meth</code> selects the method to use (default <code class="code">`STOR</code>).</div></div>
+ remains unchanged.<p> <code class="code">meth</code> selects the method to use (default <code class="code">`STOR</code>).</p></div></div>
 <pre><span class="VALinvoke_method"><span class="keyword">val</span> invoke_method</span> : <code class="type">command:<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=cmd">cmd</a> -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">This FTP method simply invokes <code class="code">command</code>.</div></div>
 <pre><span class="VALset_structure_method"><span class="keyword">val</span> set_structure_method</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=structure">structure</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">Requests a certain structure for future file transfers</div></div>
 <pre><span class="VALset_mode_method"><span class="keyword">val</span> set_mode_method</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=transmission_mode">transmission_mode</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">Requests a certain mode for future file transfers</div></div>
-<pre><span class="VALrename_method"><span class="keyword">val</span> rename_method</span> : <code class="type">file_from:<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=filename">filename</a> -&gt; file_to:<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=filename">filename</a> -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">Renames the <code class="code">file_from</code> into <code class="code">file_to</code>.<br/> Both file names must be of the same type, either <code class="code">`NVFS</code> or <code class="code">`Verbatim</code>.
- If <code class="code">`NVFS</code>, both names must be in the same directory.</div></div>
+<pre><span class="VALrename_method"><span class="keyword">val</span> rename_method</span> : <code class="type">file_from:<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=filename">filename</a> -&gt; file_to:<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=filename">filename</a> -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">Renames the <code class="code">file_from</code> into <code class="code">file_to</code>.<p> Both file names must be of the same type, either <code class="code">`NVFS</code> or <code class="code">`Verbatim</code>.
+ If <code class="code">`NVFS</code>, both names must be in the same directory.</p></div></div>
 <pre><span class="VALmkdir_method"><span class="keyword">val</span> mkdir_method</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=filename">filename</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">Creates the named directory</div></div>
 <pre><span class="VALrmdir_method"><span class="keyword">val</span> rmdir_method</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=filename">filename</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">Deletes the named directory</div></div>
 <pre><span class="VALdelete_method"><span class="keyword">val</span> delete_method</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=filename">filename</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_method">ftp_method</a></code></pre><div class="info"><div class="info">Deletes the named file</div></div>
@@ -306,8 +306,8 @@ store:(<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_state">ftp_
 	 <a href="#Unixqueue.run">Unixqueue.run</a>.</div></div>
 <pre><span class="METHODpi"><span class="keyword">method</span> pi</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_client_pi">ftp_client_pi</a></code></pre>
 <div class="info"><div class="info">The curerent protocol interpreter. It is allowed that a different <code class="code">pi</code>
-	is created when a new connection is opened.<br/>	The <code class="code">pi</code> is first available after running the first method. The
-	method fails if <code class="code">pi</code> is unavailable.</div></div>
+	is created when a new connection is opened.<p>	The <code class="code">pi</code> is first available after running the first method. The
+	method fails if <code class="code">pi</code> is unavailable.</p></div></div>
 <pre><span class="METHODrun"><span class="keyword">method</span> run</span> : <code class="code">unit -&gt; unit</code></pre>
 <div class="info"><div class="info">Starts the event system; same as  <a href="#Unixqueue.run">Unixqueue.run</a></div></div>
 <pre><span class="METHODconfigure_timeout"><span class="keyword">method</span> configure_timeout</span> : <code class="code">float -&gt; unit</code></pre>
@@ -321,7 +321,7 @@ store:(<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_state">ftp_
 
 <pre><span class="METHODreset"><span class="keyword">method</span> reset</span> : <code class="code">unit -&gt; unit</code></pre>
 <div class="info"><div class="info">Aborts all current activities if any, and re-initializes the client</div></div></div></div>
-<div class="info"><div class="info"><h2 id="2_TITLE">Examples and Discussion</h2><br/> To download a single flat file from a server:<br/> <pre class="codepre"><code class="code"> 
+<div class="info"><div class="info"><h2 id="2_TITLE">Examples and Discussion</h2><p> To download a single flat file from a server:</p><p> </p><code class="code"> 
    let buffer = Buffer.create 1000 in
    let ch = new Netchannels.output_buffer buffer in
    let client = new ftp_client() in
@@ -332,18 +332,18 @@ store:(<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_state">ftp_
    client # exec (get_method ~file:(`NVFS &quot;path/to/file&quot;)
                              ~representation:`Image
                              ~store:(fun _ -&gt; `File_structure ch) ());
- </code></pre><br/> The file is stored in <code class="code">buffer</code>. By using a different netchannel, it
- can be stored whereever wanted.<br/> To download a record-structured text file, use a <code class="code">store</code> like:<br/> <pre class="codepre"><code class="code"> 
+ </code><p> The file is stored in <code class="code">buffer</code>. By using a different netchannel, it
+ can be stored whereever wanted.</p><p> To download a record-structured text file, use a <code class="code">store</code> like:</p><p> </p><code class="code"> 
     let ch = (as above) in
     let rec_ch = new Ftp_data_endpoint.write_out_record_channel
                        ~repr:(`ASCII_unix `Enc_iso88591)
                        ch
     ...
     ... ~store:(fun _ -&gt; `Record_structure rec_ch)
- </code></pre><br/> Here, the end-of-record is transcoded to newline. Note that the ASCII
+ </code><p> Here, the end-of-record is transcoded to newline. Note that the ASCII
  variant (<code class="code">`Enc_iso88591</code>) is ignored by <code class="code">write_out_record_channel</code>.
- <b>Open: How to select record structure using an FTP method.</b><br/> Character conversions: To convert an EBCDIC file to ASCII, use
- something like<br/> <pre class="codepre"><code class="code"> 
+ <b>Open: How to select record structure using an FTP method.</b></p><p> Character conversions: To convert an EBCDIC file to ASCII, use
+ something like</p><p> </p><code class="code"> 
     let ch = (as above) in
     let converter = new Ftp_data_endpoint.data_converter
                          ~fromrepr:(`EBCDIC `Enc_cp1047)
@@ -352,9 +352,9 @@ store:(<a href="?package=ocamlnet&amp;module=Ftp_client&amp;type=ftp_state">ftp_
     ...
     ... ~representation:(`EBCDIC None)
     ... ~store:(fun _ -&gt; `File_structure ch_ebcdic)
- </code></pre><br/> The class <code class="code">data_converter</code> also performs the transformation of the 
+ </code><p> The class <code class="code">data_converter</code> also performs the transformation of the 
  end-of-line convention, unlike the similar class
- <code class="code">Netconversion.conversion_pipe</code>.</div></div>
+ <code class="code">Netconversion.conversion_pipe</code>.</p></div></div>
 <div class="info"><div class="info"><h1 id="1_TITLE">Debugging</h1></div></div>
 <div class="ocaml_module sig" name="Debug"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Ftp_client.Debug">Debug</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
 <pre><span class="VALenable"><span class="keyword">val</span> enable</span> : <code class="type">bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info">Enables  <a href="#Netlog">Netlog</a>-style debugging of this module</div></div></div></div>

@@ -87,9 +87,9 @@
     expression will be studied. If <code class="code">limit</code> is specified, this sets a limit to
     the amount of recursion and backtracking (only lower than the builtin
     default!). If this limit is exceeded, <code class="code">MatchLimit</code> will be raised during
-    matching.<div class="see"><b>See also</b> <ul>  <li> <a href="http://www.perl.com">www.perl.com</a></li></ul></div><div class="parameters"><div class="param_info"><code class="code">study</code> : default = true</div><div class="param_info"><code class="code">limit</code> : default = no extra limit other than default</div><div class="param_info"><code class="code">limit_recursion</code> : default = no extra limit_recursion other than default</div><div class="param_info"><code class="code">iflags</code> : default = no extra flags</div><div class="param_info"><code class="code">flags</code> : default = ignored</div><div class="param_info"><code class="code">chtables</code> : default = builtin char tables</div></div> <b>Returns</b> the regular expression.<br/>    For detailed documentation on how you can specify PERL-style regular
+    matching.<div class="see"><b>See also</b> <ul>  <li> <a href="http://www.perl.com">www.perl.com</a></li></ul></div><div class="parameters"><div class="param_info"><code class="code">study</code> : default = true</div><div class="param_info"><code class="code">limit</code> : default = no extra limit other than default</div><div class="param_info"><code class="code">limit_recursion</code> : default = no extra limit_recursion other than default</div><div class="param_info"><code class="code">iflags</code> : default = no extra flags</div><div class="param_info"><code class="code">flags</code> : default = ignored</div><div class="param_info"><code class="code">chtables</code> : default = builtin char tables</div></div> <b>Returns</b> the regular expression.<p>    For detailed documentation on how you can specify PERL-style regular
     expressions (= patterns), please consult the PCRE-documentation
-    (&quot;man pcrepattern&quot;) or PERL-manuals.</div></div>
+    (&quot;man pcrepattern&quot;) or PERL-manuals.</p></div></div>
 <pre><span class="VALregexp_or"><span class="keyword">val</span> regexp_or</span> : <code class="type">?study:bool -&gt;
 ?limit:int -&gt;
 ?limit_recursion:int -&gt;
@@ -135,10 +135,10 @@
     <code class="code">callout_number</code> ranging from 0 to 255.  Substrings captured so far
     are accessible as usual via <code class="code">substrings</code>.  You will have to consider
     <code class="code">capture_top</code> and <code class="code">capture_last</code> to know about the current state of
-    valid substrings.<br/>    By raising exception <code class="code">Backtrack</code> within a callout function, the user
+    valid substrings.<p>    By raising exception <code class="code">Backtrack</code> within a callout function, the user
     can force the pattern matching engine to backtrack to other possible
     solutions.  Other exceptions will terminate matching immediately
-    and return control to OCaml.</div></div>
+    and return control to OCaml.</p></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Matching of patterns and subpattern extraction</h6></div></div>
 <pre><span class="VALpcre_exec"><span class="keyword">val</span> pcre_exec</span> : <code class="type">?iflags:<a href="?package=pcre-ocaml&amp;module=Pcre&amp;type=irflag">irflag</a> -&gt;
 ?flags:<a href="?package=pcre-ocaml&amp;module=Pcre&amp;type=rflag">rflag</a> list -&gt;
@@ -233,10 +233,10 @@
 <div class="info"><div class="info"><h6 id="6_TITLE">String substitution</h6></div></div>
 <pre><span class="TYPEsubstitution"><span class="keyword">type</span> substitution</span> </pre><div class="info"><div class="info">Information on substitution patterns</div></div>
 <pre><span class="VALsubst"><span class="keyword">val</span> subst</span> : <code class="type">string -&gt; <a href="?package=pcre-ocaml&amp;module=Pcre&amp;type=substitution">substitution</a></code></pre><div class="info"><div class="info"><code class="code">subst str</code> converts the string <code class="code">str</code> representing a
-    substitution pattern to the internal representation<br/>    The contents of the substitution string <code class="code">str</code> can be normal text
-    mixed with any of the following (mostly as in PERL):<br/>    - <em>$[0-9]+</em>  - a &quot;$&quot; immediately followed by an arbitrary number.
+    substitution pattern to the internal representation<p>    The contents of the substitution string <code class="code">str</code> can be normal text
+    mixed with any of the following (mostly as in PERL):</p><p>    - <em>$[0-9]+</em>  - a &quot;$&quot; immediately followed by an arbitrary number.
                        &quot;$0&quot; stands for the name of the executable,
-                       any other number for the n-th backreference.<ul><li><em>$&amp;</em>         - the whole matched pattern</li><li><em>$`</em>         - the text before the match</li><li><em>$'</em>         - the text after the match</li><li><em>$+</em>         - the last group that matched</li><li><em>$$</em>         - a single &quot;$&quot;</li><li><em>$!</em>         - delimiter which does not appear in the substitution.
+                       any other number for the n-th backreference.</p><ul><li><em>$&amp;</em>         - the whole matched pattern</li><li><em>$`</em>         - the text before the match</li><li><em>$'</em>         - the text after the match</li><li><em>$+</em>         - the last group that matched</li><li><em>$$</em>         - a single &quot;$&quot;</li><li><em>$!</em>         - delimiter which does not appear in the substitution.
                        Can be used to part &quot;$<code class="code">0-9</code>+&quot; from an immediately
                        following other number. </li></ul></div></div>
 <pre><span class="VALreplace"><span class="keyword">val</span> replace</span> : <code class="type">?iflags:<a href="?package=pcre-ocaml&amp;module=Pcre&amp;type=irflag">irflag</a> -&gt;

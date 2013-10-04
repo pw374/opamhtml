@@ -1,13 +1,13 @@
 <div class="ocaml_toplevel_module">
 <div class="info"><div class="info">This module defines signatures that are to be included in other signatures to ensure a
     consistent interface to invariant-style functions.  There is a signature (<code class="code">S</code>, <code class="code">S1</code>,
-    <code class="code">S2</code>, <code class="code">S3</code>) for each arity of type.  Usage looks like:<br/>    <pre class="codepre"><code class="code">
+    <code class="code">S2</code>, <code class="code">S3</code>) for each arity of type.  Usage looks like:<p>    </p><code class="code">
       type t
       include Invariant.S with type t := t
-    </code></pre><br/>    or<br/>    <pre class="codepre"><code class="code">
+    </code><p>    or</p><p>    </p><code class="code">
       type 'a t
       include Invariant.S1 with type 'a t := 'a t
-    </code></pre></div></div>
+    </code></div></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> = <code class="type">'a -&gt; unit</code></pre>
 <pre><span class="TYPEinv"><span class="keyword">type</span> <code class="type">'a </code>inv</span> = <code class="type">'a <a href="?package=core_kernel&amp;module=Invariant_intf&amp;type=t">t</a></code></pre>
 <div class="ocaml_module sig" name="S"><pre><span class="keyword">module type</span> <a href="?package=core_kernel&amp;module=Invariant_intf.S">S</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
@@ -33,13 +33,13 @@
 <pre><span class="VALinvariant"><span class="keyword">val</span> invariant</span> : <code class="type"><a href="?package=core_kernel&amp;module=Source_code_position0&amp;type=t">Source_code_position0.t</a> -&gt;
 'a -&gt; ('a -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a>) -&gt; (unit -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">invariant here t sexp_of_t f</code> runs <code class="code">f ()</code>, and if <code class="code">f</code> raises, wraps the exception
       in an <code class="code">Error.t</code> that states &quot;invariant failed&quot; and includes both the exception
-      raised by <code class="code">f</code>, as well as <code class="code">sexp_of_t t</code>.  Idiomatic usage looks like:<br/>      <pre class="codepre"><code class="code">
+      raised by <code class="code">f</code>, as well as <code class="code">sexp_of_t t</code>.  Idiomatic usage looks like:<p>      </p><code class="code">
         invariant _here_ t &lt;:sexp_of&lt; t &gt;&gt; (fun () -&gt;
           ... check t's invariants ... )
-      </code></pre></div></div>
+      </code></div></div>
 <pre><span class="VALcheck_field"><span class="keyword">val</span> check_field</span> : <code class="type">'a -&gt; 'b <a href="?package=core_kernel&amp;module=Invariant_intf.Invariant&amp;type=t">t</a> -&gt; ('a, 'b) <a href="?package=fieldslib&amp;module=Field&amp;type=t">Fieldslib.Field.t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">check_field</code> is used when checking invariants using <code class="code">Fields.iter</code>.  It wraps an
       exception raised when checking a field with the field's name.  Idiomatic usage looks
-      like:<br/>      <pre class="codepre"><code class="code">
+      like:<p>      </p><code class="code">
         type t =
           { foo : Foo.t;
             bar : Bar.t;
@@ -53,26 +53,26 @@
               ~foo:(check Foo.invariant)
               ~bar:(check Bar.invariant))
         ;;
-      </code></pre></div></div></div></div>
+      </code></div></div></div></div>
 
 <div class="info"><div class="info">This module defines signatures that are to be included in other signatures to ensure a
     consistent interface to invariant-style functions.  There is a signature (<code class="code">S</code>, <code class="code">S1</code>,
-    <code class="code">S2</code>, <code class="code">S3</code>) for each arity of type.  Usage looks like:<br/>    <pre class="codepre"><code class="code">
+    <code class="code">S2</code>, <code class="code">S3</code>) for each arity of type.  Usage looks like:<p>    </p><code class="code">
       type t
       include Invariant.S with type t := t
-    </code></pre><br/>    or<br/>    <pre class="codepre"><code class="code">
+    </code><p>    or</p><p>    </p><code class="code">
       type 'a t
       include Invariant.S1 with type 'a t := 'a t
-    </code></pre></div></div>
+    </code></div></div>
 <div class="info"><div class="info"><code class="code">invariant here t sexp_of_t f</code> runs <code class="code">f ()</code>, and if <code class="code">f</code> raises, wraps the exception
       in an <code class="code">Error.t</code> that states &quot;invariant failed&quot; and includes both the exception
-      raised by <code class="code">f</code>, as well as <code class="code">sexp_of_t t</code>.  Idiomatic usage looks like:<br/>      <pre class="codepre"><code class="code">
+      raised by <code class="code">f</code>, as well as <code class="code">sexp_of_t t</code>.  Idiomatic usage looks like:<p>      </p><code class="code">
         invariant _here_ t &lt;:sexp_of&lt; t &gt;&gt; (fun () -&gt;
           ... check t's invariants ... )
-      </code></pre></div></div>
+      </code></div></div>
 <div class="info"><div class="info"><code class="code">check_field</code> is used when checking invariants using <code class="code">Fields.iter</code>.  It wraps an
       exception raised when checking a field with the field's name.  Idiomatic usage looks
-      like:<br/>      <pre class="codepre"><code class="code">
+      like:<p>      </p><code class="code">
         type t =
           { foo : Foo.t;
             bar : Bar.t;
@@ -86,5 +86,5 @@
               ~foo:(check Foo.invariant)
               ~bar:(check Bar.invariant))
         ;;
-      </code></pre></div></div>
+      </code></div></div>
 </div>

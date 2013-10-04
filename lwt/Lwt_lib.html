@@ -1,12 +1,12 @@
 <div class="ocaml_toplevel_module"><div class="info">Cooperative unix system calls</div>
 <div class="info"><div class="info">This module transform non-cooperative functions of the standard
     library into cooperative ones by launching them into system
-    threads.<br/>    Indeed, lots of functions of the <code class="code">Unix</code> modules, corresponding to
+    threads.<p>    Indeed, lots of functions of the <code class="code">Unix</code> modules, corresponding to
     functions of the standard C library may take times to
     complete. For example <code class="code">gethostbyname</code> may use DNS resolution,
-    users informations may be stored in a ldap database, ...<br/>    Since these functions are implemented (in the standard C library)
+    users informations may be stored in a ldap database, ...</p><p>    Since these functions are implemented (in the standard C library)
     using blocking IOs, if you use them directly, you program may
-    hang.</div></div>
+    hang.</p></div></div>
 <pre><span class="VALgetaddrinfo"><span class="keyword">val</span> getaddrinfo</span> : <code class="type">string -&gt; string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=getaddrinfo_option">Unix.getaddrinfo_option</a> list -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=addr_info">Unix.addr_info</a> list <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Cooperative getaddrinfo with cache (using Lwt_preemptive.detach)</div></div>
 <pre><span class="VALgethostbyname"><span class="keyword">val</span> gethostbyname</span> : <code class="type">string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=host_entry">Unix.host_entry</a> <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Cooperative gethostbyname with cache (using Lwt_preemptive.detach)</div></div>
 <pre><span class="VALgetnameinfo"><span class="keyword">val</span> getnameinfo</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=getnameinfo_option">Unix.getnameinfo_option</a> list -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=name_info">Unix.name_info</a> <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Cooperative getnameinfo with cache (using Lwt_preemptive.detach)</div></div>

@@ -2,14 +2,14 @@
 <div class="info"><div class="info">Mutexes are here defined as values that reside in shared heaps
     ( <a href="#Netmcore_heap">Netmcore_heap</a>), for example in the header field of 
      <a href="#Netmcore_array">Netmcore_array</a> or somewhere else in heap-allocated
-    data structures.<br/>    In order to ensure that the mutex is in the heap, the
+    data structures.<p>    In order to ensure that the mutex is in the heap, the
     special function <code class="code">create</code> must be used to initialize it
     there. As <code class="code">create</code> requires a mutator as argument, this is
     only possible by calling <code class="code">create</code> from the callback of
-     <a href="#Netmcore_heap.modify">Netmcore_heap.modify</a>.<br/>    Mutexes are special values, and cannot be copied or moved.<br/>    Mutexes are implemented on top of semaphores. For mutex types with
+     <a href="#Netmcore_heap.modify">Netmcore_heap.modify</a>.</p><p>    Mutexes are special values, and cannot be copied or moved.</p><p>    Mutexes are implemented on top of semaphores. For mutex types with
     deadlock handling, the process is considered as the owner, and
-    process ID is the identifier.<br/>    Only mutexes of type <code class="code">`Normal</code> are thread-safe, i.e. can be used
-    when the worker processes also use threads internally.</div></div>
+    process ID is the identifier.</p><p>    Only mutexes of type <code class="code">`Normal</code> are thread-safe, i.e. can be used
+    when the worker processes also use threads internally.</p></div></div>
 <pre><span class="TYPEmutex_type"><span class="keyword">type</span> mutex_type</span> = <code class="type">[ `Errorcheck | `Normal | `Recursive ]</code></pre><div class="info"><div class="info">Types:<ul><li><code class="code">`Normal</code> mutexes have no checks for deadlocks.</li><li><code class="code">`Errorcheck</code> mutexes check whether the process locks the mutex
 	  again, and fail in this case. Also, only the owning process can
 	  unlock a mutex.</li><li><code class="code">`Recursive</code> mutexes allow that the owner locks several times.
@@ -20,8 +20,8 @@
 <pre><span class="VALdummy"><span class="keyword">val</span> dummy</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Netmcore_mutex&amp;type=mutex">mutex</a></code></pre><div class="info"><div class="info">A dummy mutex is non-functional, but can be used to put something
       into <code class="code">mutex</code>-typed variables</div></div>
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=mutator">Netmcore_heap.mutator</a> -&gt; <a href="?package=ocamlnet&amp;module=Netmcore_mutex&amp;type=mutex_type">mutex_type</a> -&gt; <a href="?package=ocamlnet&amp;module=Netmcore_mutex&amp;type=mutex">mutex</a></code></pre><div class="info"><div class="info"><code class="code">create m t</code>: Creates a mutex of type <code class="code">t</code>, and
-      pushes it to the heap, using the mutator <code class="code">m</code>.<br/>      After being pushed to the heap, the mutex can be used. It is
-      nonsense to copy it outside the heap.</div></div>
+      pushes it to the heap, using the mutator <code class="code">m</code>.<p>      After being pushed to the heap, the mutex can be used. It is
+      nonsense to copy it outside the heap.</p></div></div>
 <pre><span class="VALlock"><span class="keyword">val</span> lock</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore_mutex&amp;type=mutex">mutex</a> -&gt; unit</code></pre><div class="info"><div class="info">Locks the mutex</div></div>
 <pre><span class="VALunlock"><span class="keyword">val</span> unlock</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore_mutex&amp;type=mutex">mutex</a> -&gt; unit</code></pre><div class="info"><div class="info">Unlocks the mutex</div></div>
 <pre><span class="VALdestroy"><span class="keyword">val</span> destroy</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore_mutex&amp;type=mutex">mutex</a> -&gt; unit</code></pre><div class="info"><div class="info">Destroys the mutex</div></div>

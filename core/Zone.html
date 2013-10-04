@@ -1,10 +1,10 @@
 <div class="ocaml_toplevel_module"><div class="info">Time-zone handling.</div>
 <div class="info"><div class="info"><h1 id="1_TITLE">User-friendly interface</h1></div></div>
-<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">The type of a time-zone.<br/>    bin_io and sexp representations of Zone.t are the name of the zone, and not the full
+<pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">The type of a time-zone.<p>    bin_io and sexp representations of Zone.t are the name of the zone, and not the full
     data that is read from disk when Zone.find is called.  The full Zone.t is
     reconstructed on the receiving/reading side by reloading the zone file from disk.  Any
     zone name that is accepted by <code class="code">find</code> is acceptable in the bin_io and sexp
-    representations.</div></div>
+    representations.</p></div></div>
 <div class="ocaml_include ident" path="?package=core_kernel&amp;module=Std.Identifiable.S" items="[&quot;Hash_queue&quot;,&quot;Hash_set&quot;,&quot;Pooled_hashtbl&quot;,&quot;Table&quot;,&quot;Hashable&quot;,&quot;Set&quot;,&quot;Map&quot;,&quot;Replace_polymorphic_compare&quot;]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core_kernel&amp;module=Std.Identifiable.S">Core_kernel.Std.Identifiable.S</a></code> with type t := <a href="?package=core&amp;module=Zone&amp;type=t">t</a></code></pre></div>
 <pre><span class="VALfind"><span class="keyword">val</span> find</span> : <code class="type">string -&gt; <a href="?package=core&amp;module=Zone&amp;type=t">t</a> option</code></pre><div class="info"><div class="info"><code class="code">find name</code> looks up a <code class="code">t</code> by its name and returns it.</div></div>
 <pre><span class="VALfind_office"><span class="keyword">val</span> find_office</span> : <code class="type">[ `chi | `hkg | `ldn | `nyc ] -&gt; <a href="?package=core&amp;module=Zone&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">find_office office</code> a more type-safe interface for pulling timezones related to
@@ -12,11 +12,11 @@
 <pre><span class="VALfind_exn"><span class="keyword">val</span> find_exn</span> : <code class="type">string -&gt; <a href="?package=core&amp;module=Zone&amp;type=t">t</a></code></pre>
 <pre><span class="VALmachine_zone"><span class="keyword">val</span> machine_zone</span> : <code class="type">?refresh:bool -&gt; unit -&gt; <a href="?package=core&amp;module=Zone&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">machine_zone ?refresh ()</code> returns the machines zone (t).  It does this by first
     looking for a value in the environment variable &quot;TZ&quot;, and loading the named zone if
-    it is set.  If &quot;TZ&quot; is not set it reads /etc/localtime directly.<br/>    The first call to machine_zone is cached, so there is no need to cache it locally.
-    The cache can be bypassed and refreshed by setting ~refresh to true.<br/>    Note that this function can throw an exception if the TZ time variable is
+    it is set.  If &quot;TZ&quot; is not set it reads /etc/localtime directly.<p>    The first call to machine_zone is cached, so there is no need to cache it locally.
+    The cache can be bypassed and refreshed by setting ~refresh to true.</p><p>    Note that this function can throw an exception if the TZ time variable is
     misconfigured or if the appropriate timezone files can't be found because of the way
     the box is configured.  We don't put an _exn on this function because that
-    misconfiguration is quite rare.</div></div>
+    misconfiguration is quite rare.</p></div></div>
 <pre><span class="VALlikely_machine_zones"><span class="keyword">val</span> likely_machine_zones</span> : <code class="type">string list <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info"><code class="code">likely_machine_zones</code> is a list of zone names that will be searched first when trying
     to determine the machine zone of a box.  Setting this to a likely set of zones for
     your application will speed the very first call to machine_zone</div></div>
@@ -57,9 +57,9 @@
 <pre><span class="VALbin_writer_t"><span class="keyword">val</span> bin_writer_t</span> : <code class="type"><a href="?package=core&amp;module=Zone.Stable.V1&amp;type=t">t</a> <a href="?package=core_kernel&amp;module=Std.Bin_prot.Type_class&amp;type=writer">Core_kernel.Std.Bin_prot.Type_class.writer</a></code></pre>
 <pre><span class="VALt_of_sexp"><span class="keyword">val</span> t_of_sexp</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; <a href="?package=core&amp;module=Zone.Stable.V1&amp;type=t">t</a></code></pre>
 <pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type"><a href="?package=core&amp;module=Zone.Stable.V1&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre></div></div></div></div>
-<div class="info"><div class="info"><h1 id="1_TITLE">Notes on time</h1><br/>  This library replicates and extends the functionality of the standard Unix time handling
+<div class="info"><div class="info"><h1 id="1_TITLE">Notes on time</h1><p>  This library replicates and extends the functionality of the standard Unix time handling
   functions (currently exposed in the Unix module, and indirectly through the Time
-  module).<br/>  Things you should know before delving into the mess of time...<br/>  <h2 id="2_TITLE">Some general resources (summarized information also appears below) </h2><br/>  <span class="verbatim">    general overview   - http://www.twinsun.com/tz/tz-link.htm
+  module).</p><p>  Things you should know before delving into the mess of time...</p><p>  </p><h2 id="2_TITLE">Some general resources (summarized information also appears below) </h2><p>  <span class="verbatim">    general overview   - http://www.twinsun.com/tz/tz-link.htm
     zone abbreviations - http://blogs.msdn.com/oldnewthing/archive/2008/03/07/8080060.aspx
     leap seconds       - http://en.wikipedia.org/wiki/Leap_second
     epoch time         - http://en.wikipedia.org/wiki/Unix_time
@@ -67,14 +67,14 @@
     TAI time           - http://en.wikipedia.org/wiki/International_Atomic_Time
     Almost every possible time measurement -
       http://www.ucolick.org/~sla/leapsecs/timescales.html
-  </span><br/>  <h2 id="2_TITLE">Standards for measuring time </h2><br/>  - Epoch time/Unix time/Posix time: Defined as the number of seconds that have passed
+  </span></p><p>  </p><h2 id="2_TITLE">Standards for measuring time </h2><p>  - Epoch time/Unix time/Posix time: Defined as the number of seconds that have passed
     since midnight, January 1st, 1970 GMT.  However, under epoch time, a day is always
     86,400 seconds long, and a minute never contains more than 60 total seconds.  In other
     words, epoch time does not take leap seconds into account properly.  What a POSIX
     compliant system does during a leap second depends on the way in which its clock is
     managed.  It either ignores it, replays the second, or causes a second to last longer
     than a second (retards the second).  The important thing to remember is that however
-    the transition is managed, all days start on an evenly divisible multiple of 86,400.<ul><li>GMT/Greenwich Mean Time/Greenwich Civil Time: The time based on the movement of the
+    the transition is managed, all days start on an evenly divisible multiple of 86,400.</p><ul><li>GMT/Greenwich Mean Time/Greenwich Civil Time: The time based on the movement of the
     sun relative to the meridian through the Old Greenwich Observatory (0 degrees).  The
     movement of the sun in this case is a &quot;mean&quot; movement of the sun to adjust for slight
     eccentricities in the rotation of the earth, as well as for the effect of the tilt of
@@ -113,20 +113,20 @@
   partly because different parts of the world didn't actually have well defined time zones
   for a long time.  If you go back far enough, you run into the switch between the Julian
   (old) and the Gregorian calendar, which happened at different times in history in
-  different places in the world.<br/>  <h2 id="2_TITLE">How does a system determine what time zone it is in? </h2><br/>  + Check to see if the TZ environment variable is set.  If it is, it can be set to one
-    of three forms, two of which are rarely, if ever used see:<br/>      http://www.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap08.html<br/>    for more information on the obscure forms.  The common form represents a relative path
+  different places in the world.<p>  </p><h2 id="2_TITLE">How does a system determine what time zone it is in? </h2><p>  + Check to see if the TZ environment variable is set.  If it is, it can be set to one
+    of three forms, two of which are rarely, if ever used see:</p><p>      http://www.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap08.html</p><p>    for more information on the obscure forms.  The common form represents a relative path
     from the base /usr/share/zoneinfo/posix, and is generally in the form of a continent
     or country name paired with a city name (Europe/London, America/New_York).  This is
     used to load the specified file from disk, which contains a time zone database in zic
-    format (man tzfile).<br/>  + If TZ is not set, the system will try to read the file located at /etc/localtime,
+    format (man tzfile).</p><p>  + If TZ is not set, the system will try to read the file located at /etc/localtime,
     which must be a zic timezone database (and which is often just a symlink into
-    /usr/share/zoneinfo/posix).<ol><li>If /etc/localtime cannot be found, then the system is assumed to be in GMT.</li></ol>  It's worth noting that under this system there is no place on the system to go to get
+    /usr/share/zoneinfo/posix).</p><ol><li>If /etc/localtime cannot be found, then the system is assumed to be in GMT.</li></ol>  It's worth noting that under this system there is no place on the system to go to get
   the name of the file you are using (/etc/localtime may not be a link, and may just be a
   copy, or its own database not represented in /usr/share/zoneinfo).  Additionally, the
   names of the files in the system zoneinfo database follow an internal standard, and
   there is no established standard for naming timezones.  So even if you were using one of
   these files, and you did know its name, you cannot assume that that name matches any
-  timezone specified by any other system or description.<br/>  One common misconception about time zones is that the standard time zone abbreviations
+  timezone specified by any other system or description.<p>  One common misconception about time zones is that the standard time zone abbreviations
   can be used.  For instance, EST surely refers to Eastern Standard Time.  This is
   unfortunately not true - CST can refer to China Central Time, Central Standard Time, or
   Cuba Summer Time for instance - and time zone libraries that appear to correctly parse
@@ -135,22 +135,22 @@
   different abbreviations depending on whether the time in question is in standard time,
   or daylight savings time.  These abbreviations are kept in the timezone databases, which
   is how programs like date manage to output meaningful abbreviations, it is only reading
-  in times with abbreviations that is poorly specified.<br/>  This library contains a function that attempts to make an accurate determination of the
+  in times with abbreviations that is poorly specified.</p><p>  This library contains a function that attempts to make an accurate determination of the
   machine timezone by testing the md5 sum of the currently referenced timezone file
   against all of the possible candidates in the system database.  It additionally makes
   some adjustments to return the more common timezone names since some files in the
   database are duplicated under several names.  It returns an option because of the
-  problems mentioned above.<br/>  <h2 id="2_TITLE">The problems with string time conversions </h2><br/>  There are two cases where string time conversions are problematic, both related to
-  daylight savings time.<br/>  In the case where time jumps forward one hour, there are possible representations of
+  problems mentioned above.</p><p>  </p><h2 id="2_TITLE">The problems with string time conversions </h2><p>  There are two cases where string time conversions are problematic, both related to
+  daylight savings time.</p><p>  In the case where time jumps forward one hour, there are possible representations of
   times that never happened 2006-04-02T02:30:00 in the eastern U.S. never happened for
   instance, because the clock jumped forward one hour directly from 2 to 3.  Unix time
   zone libraries asked to convert one of these times will generally produce the epoch time
   that represents the time 1/2 hour after 2 am, which when converted back to a string
-  representation will be T03:30:00.<br/>  The second case is when the clocks are set back one hour, which causes one hour of time
+  representation will be T03:30:00.</p><p>  The second case is when the clocks are set back one hour, which causes one hour of time
   to happen twice.  Converting a string in this range without further specification into
   an epoch time is indeterminate since it could be referring to either of two times.  Unix
   libraries handle this by either allowing you to pass in a dst flag to the conversion
   function to specify which time you mean, or by using a heuristic to guess which time you
-  meant.<br/>  The existence of both cases make a strong argument for serializing all times in UTC,
-  which doesn't suffer from these issues.</div></div>
+  meant.</p><p>  The existence of both cases make a strong argument for serializing all times in UTC,
+  which doesn't suffer from these issues.</p></div></div>
 </div>

@@ -33,12 +33,12 @@
 <pre><span class="TYPEcomparator"><span class="keyword">type</span> comparator</span> </pre>
 <pre><span class="VALcomparator"><span class="keyword">val</span> comparator</span> : <code class="type">(<a href="?package=core_kernel&amp;module=Comparable_intf.S_common&amp;type=t">t</a>, <a href="?package=core_kernel&amp;module=Comparable_intf.S_common&amp;type=comparator">comparator</a>) <a href="?package=core_kernel&amp;module=Comparator&amp;type=t">Comparator.t</a></code></pre>
 <div class="ocaml_include ident" path="?package=core_kernel&amp;module=Comparable_intf.Validate" items="[]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core_kernel&amp;module=Comparable_intf.Validate">Validate</a></code> with type <a href="?package=core_kernel&amp;module=Comparable_intf.Validate&amp;type=t">t</a> := <a href="?package=core_kernel&amp;module=Comparable_intf.S_common&amp;type=t">t</a></code></pre></div></div></div>
-<div class="ocaml_module sig" name="S"><pre><span class="keyword">module type</span> <a href="?package=core_kernel&amp;module=Comparable_intf.S">S</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Usage example:<br/>    <pre class="codepre"><code class="code">
+<div class="ocaml_module sig" name="S"><pre><span class="keyword">module type</span> <a href="?package=core_kernel&amp;module=Comparable_intf.S">S</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Usage example:<p>    </p><code class="code">
       module Foo : sig
         type t = ...
         include Comparable.S with type t := t
       end
-    </code></pre><br/>    Then use <code class="code">Comparable.Make</code> in the struct (see comparable.mli for an example).</div></div><div class="ocaml_module_content">
+    </code><p>    Then use <code class="code">Comparable.Make</code> in the struct (see comparable.mli for an example).</p></div></div><div class="ocaml_module_content">
 <div class="ocaml_include ident" path="?package=core_kernel&amp;module=Comparable_intf.S_common" items="[]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core_kernel&amp;module=Comparable_intf.S_common">S_common</a></code></code></pre></div>
 <div class="ocaml_module ident" name="Map" path="?package=core_kernel&amp;module=Core_map.S"><pre><span class="keyword">module</span> <a href="?package=core_kernel&amp;module=Comparable_intf.S.Map">Map</a> : <code class="type"><code class="code"><a href="?package=core_kernel&amp;module=Core_map.S">Core_map.S</a></code> with type Key.t = <a href="?package=core_kernel&amp;module=Comparable_intf.S&amp;type=t">t</a> with type Key.comparator = <a href="?package=core_kernel&amp;module=Comparable_intf.S&amp;type=comparator">comparator</a></code></pre></div>
 <div class="ocaml_module ident" name="Set" path="?package=core_kernel&amp;module=Core_set.S"><pre><span class="keyword">module</span> <a href="?package=core_kernel&amp;module=Comparable_intf.S.Set">Set</a> : <code class="type"><code class="code"><a href="?package=core_kernel&amp;module=Core_set.S">Core_set.S</a></code> with type Elt.t = <a href="?package=core_kernel&amp;module=Comparable_intf.S&amp;type=t">t</a> with type Elt.comparator = <a href="?package=core_kernel&amp;module=Comparable_intf.S&amp;type=comparator">comparator</a></code></pre></div></div></div>
@@ -57,10 +57,10 @@
       intended to be mnemonic when used like <code class="code">List.sort ~cmp:ascending</code> and <code class="code">List.sort
       ~cmp:descending</code>, since they cause the list to be sorted in ascending or descending
       order, respectively.</div></div>
-<div class="info"><div class="info">Usage example:<br/>    <pre class="codepre"><code class="code">
+<div class="info"><div class="info">Usage example:<p>    </p><code class="code">
       module Foo : sig
         type t = ...
         include Comparable.S with type t := t
       end
-    </code></pre><br/>    Then use <code class="code">Comparable.Make</code> in the struct (see comparable.mli for an example).</div></div>
+    </code><p>    Then use <code class="code">Comparable.Make</code> in the struct (see comparable.mli for an example).</p></div></div>
 </div>

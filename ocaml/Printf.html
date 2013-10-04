@@ -2,12 +2,12 @@
 <pre><span class="VALfprintf"><span class="keyword">val</span> fprintf</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a> -&gt;
 ('a, <a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a>, unit) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format">Pervasives.format</a> -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">fprintf outchan format arg1 ... argN</code> formats the arguments
    <code class="code">arg1</code> to <code class="code">argN</code> according to the format string <code class="code">format</code>, and
-   outputs the resulting string on the channel <code class="code">outchan</code>.<br/>   The format string is a character string which contains two types of
+   outputs the resulting string on the channel <code class="code">outchan</code>.<p>   The format string is a character string which contains two types of
    objects: plain characters, which are simply copied to the output
    channel, and conversion specifications, each of which causes
-   conversion and printing of arguments.<br/>   Conversion specifications have the following form:<br/>   <code class="code">% [flags] [width] [.precision] type</code><br/>   In short, a conversion specification consists in the <code class="code">%</code> character,
+   conversion and printing of arguments.</p><p>   Conversion specifications have the following form:</p><p>   <code class="code">% [flags] [width] [.precision] type</code></p><p>   In short, a conversion specification consists in the <code class="code">%</code> character,
    followed by optional modifiers and a type which is made of one or
-   two characters.<br/>   The types and their meanings are:<br/>   - <code class="code">d</code>, <code class="code">i</code>: convert an integer argument to signed decimal.<ul><li><code class="code">u</code>, <code class="code">n</code>, <code class="code">l</code>, <code class="code">L</code>, or <code class="code">N</code>: convert an integer argument to
+   two characters.</p><p>   The types and their meanings are:</p><p>   - <code class="code">d</code>, <code class="code">i</code>: convert an integer argument to signed decimal.</p><ul><li><code class="code">u</code>, <code class="code">n</code>, <code class="code">l</code>, <code class="code">L</code>, or <code class="code">N</code>: convert an integer argument to
      unsigned decimal.  Warning: <code class="code">n</code>, <code class="code">l</code>, <code class="code">L</code>, and <code class="code">N</code> are
      used for <code class="code">scanf</code>, and should not be used for <code class="code">printf</code>.</li><li><code class="code">x</code>: convert an integer argument to unsigned hexadecimal,
      using lowercase letters.</li><li><code class="code">X</code>: convert an integer argument to unsigned hexadecimal,
@@ -36,15 +36,15 @@
      sign if positive.</li><li>space: for signed numerical conversions, prefix number with a
      space if positive.</li><li><code class="code">#</code>: request an alternate formatting style for numbers.</li></ul>   The optional <code class="code">width</code> is an integer indicating the minimal
    width of the result. For instance, <code class="code">%6d</code> prints an integer,
-   prefixing it with spaces to fill at least 6 characters.<br/>   The optional <code class="code">precision</code> is a dot <code class="code">.</code> followed by an integer
+   prefixing it with spaces to fill at least 6 characters.<p>   The optional <code class="code">precision</code> is a dot <code class="code">.</code> followed by an integer
    indicating how many digits follow the decimal point in the <code class="code">%f</code>,
    <code class="code">%e</code>, and <code class="code">%E</code> conversions. For instance, <code class="code">%.4f</code> prints a <code class="code">float</code> with
-   4 fractional digits.<br/>   The integer in a <code class="code">width</code> or <code class="code">precision</code> can also be specified as
+   4 fractional digits.</p><p>   The integer in a <code class="code">width</code> or <code class="code">precision</code> can also be specified as
    <code class="code">*</code>, in which case an extra integer argument is taken to specify
    the corresponding <code class="code">width</code> or <code class="code">precision</code>. This integer argument
    precedes immediately the argument to print.
    For instance, <code class="code">%.*f</code> prints a <code class="code">float</code> with as many fractional
-   digits as the value of the argument given before the float.</div></div>
+   digits as the value of the argument given before the float.</p></div></div>
 <pre><span class="VALprintf"><span class="keyword">val</span> printf</span> : <code class="type">('a, <a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a>, unit) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format">Pervasives.format</a> -&gt; 'a</code></pre><div class="info"><div class="info">Same as  <a href="#Printf.fprintf">Printf.fprintf</a>, but output on <code class="code">stdout</code>.</div></div>
 <pre><span class="VALeprintf"><span class="keyword">val</span> eprintf</span> : <code class="type">('a, <a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a>, unit) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format">Pervasives.format</a> -&gt; 'a</code></pre><div class="info"><div class="info">Same as  <a href="#Printf.fprintf">Printf.fprintf</a>, but output on <code class="code">stderr</code>.</div></div>
 <pre><span class="VALsprintf"><span class="keyword">val</span> sprintf</span> : <code class="type">('a, unit, string) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format">Pervasives.format</a> -&gt; 'a</code></pre><div class="info"><div class="info">Same as  <a href="#Printf.fprintf">Printf.fprintf</a>, but instead of printing on an output channel,

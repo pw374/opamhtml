@@ -1,24 +1,24 @@
 <div class="ocaml_toplevel_module"><div class="info">A non-threadsafe reimplementation of <code class="code">Lazy</code></div>
-<div class="info"><div class="info">Lazy values reimplementation.<br/>    There are two advantages to reimplementing the lazy module in pure
+<div class="info"><div class="info">Lazy values reimplementation.<p>    There are two advantages to reimplementing the lazy module in pure
     Ocaml.  Advantage number one is speed: I've measured ~140 clocks to
     force a standard lazy value the first time, and ~80 clocks to force
     it the second time.  If the lazy computation you're avoiding is
     creating a simple cons cell, this is horribly expensive.  The following
     implementation is like ~30 clocks to force the lazy value the first
-    time, and single-digit clocks to force it the second time.<br/>    The second one is that we can make lazy values a monad.  This is a
+    time, and single-digit clocks to force it the second time.</p><p>    The second one is that we can make lazy values a monad.  This is a
     correctness issue, as a common mistake with laziness is not being
     lazy enough.  This is much easier to get right if you're doing
-    monadic binding.<br/>    There are two downsides to doing it this way.  One, you can't use
+    monadic binding.</p><p>    There are two downsides to doing it this way.  One, you can't use
     lazy keyword.  And two, this implementation uses a little more memory
-    per lazy value (it currently uses 5 words/lazy value).</div></div>
+    per lazy value (it currently uses 5 words/lazy value).</p></div></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> </pre><div class="info"><div class="info">The lazy type</div></div>
 <pre><span class="VALof_val"><span class="keyword">val</span> of_val</span> : <code class="type">'a -&gt; 'a <a href="?package=core_extended&amp;module=Lazy_m&amp;type=t">t</a></code></pre><div class="info"><div class="info">Create a lazy value of a non-lazy value.  The lazy value created will
     be already forced, for obvious reasons.</div></div>
 <pre><span class="VALof_fun"><span class="keyword">val</span> of_fun</span> : <code class="type">(unit -&gt; 'a) -&gt; 'a <a href="?package=core_extended&amp;module=Lazy_m&amp;type=t">t</a></code></pre><div class="info"><div class="info">Create a lazy value of a function.  The function will not be executed
-    until the lazy value is first forced, and will only be executed once.<br/>    If the function raises an exception, all futures forces of the
-    lazy value will also raise the same exception.</div></div>
-<pre><span class="VALforce"><span class="keyword">val</span> force</span> : <code class="type">'a <a href="?package=core_extended&amp;module=Lazy_m&amp;type=t">t</a> -&gt; 'a</code></pre><div class="info"><div class="info">Force the lazy value.<br/>    If the function that produces the value throws an exception, this
-    function will throw the same exception.</div></div>
+    until the lazy value is first forced, and will only be executed once.<p>    If the function raises an exception, all futures forces of the
+    lazy value will also raise the same exception.</p></div></div>
+<pre><span class="VALforce"><span class="keyword">val</span> force</span> : <code class="type">'a <a href="?package=core_extended&amp;module=Lazy_m&amp;type=t">t</a> -&gt; 'a</code></pre><div class="info"><div class="info">Force the lazy value.<p>    If the function that produces the value throws an exception, this
+    function will throw the same exception.</p></div></div>
 <pre><span class="VALis_val"><span class="keyword">val</span> is_val</span> : <code class="type">'a <a href="?package=core_extended&amp;module=Lazy_m&amp;type=t">t</a> -&gt; bool</code></pre><div class="info"><div class="info">Returns true if the lazy value has been forced and did not throw an
     exception.</div></div>
 <div class="ocaml_include ident" path="?package=core&amp;module=Std.Interfaces.Monad" items="[&quot;Monad_infix&quot;]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core&amp;module=Std.Interfaces.Monad">Core.Std.Interfaces.Monad</a></code> with type t := 'a <a href="?package=core_extended&amp;module=Lazy_m&amp;type=t">t</a></code></pre></div>

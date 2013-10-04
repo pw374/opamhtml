@@ -1,20 +1,20 @@
-<div class="ocaml_toplevel_module"><div class="info">Hash tables and hash functions.<br/>   Hash tables are hashed association tables, with in-place modification.</div>
+<div class="ocaml_toplevel_module"><div class="info">Hash tables and hash functions.<p>   Hash tables are hashed association tables, with in-place modification.</p></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Generic interface</h6></div></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b) </code>t</span> </pre><div class="info"><div class="info">The type of hash tables from type <code class="code">'a</code> to type <code class="code">'b</code>.</div></div>
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">?random:bool -&gt; int -&gt; ('a, 'b) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">Hashtbl.create n</code> creates a new, empty hash table, with
    initial size <code class="code">n</code>.  For best results, <code class="code">n</code> should be on the
    order of the expected number of elements that will be in
    the table.  The table grows as needed, so <code class="code">n</code> is just an
-   initial guess.<br/>   The optional <code class="code">random</code> parameter (a boolean) controls whether
+   initial guess.<p>   The optional <code class="code">random</code> parameter (a boolean) controls whether
    the internal organization of the hash table is randomized at each
-   execution of <code class="code">Hashtbl.create</code> or deterministic over all executions.<br/>   A hash table that is created with <code class="code">~random:false</code> uses a
+   execution of <code class="code">Hashtbl.create</code> or deterministic over all executions.</p><p>   A hash table that is created with <code class="code">~random:false</code> uses a
    fixed hash function ( <a href="#Hashtbl.hash">Hashtbl.hash</a>) to distribute keys among
    buckets.  As a consequence, collisions between keys happen
    deterministically.  In Web-facing applications or other
    security-sensitive applications, the deterministic collision
    patterns can be exploited by a malicious user to create a
    denial-of-service attack: the attacker sends input crafted to
-   create many collisions in the table, slowing the application down.<br/>   A hash table that is created with <code class="code">~random:true</code> uses the seeded
+   create many collisions in the table, slowing the application down.</p><p>   A hash table that is created with <code class="code">~random:true</code> uses the seeded
    hash function  <a href="#Hashtbl.seeded_hash">Hashtbl.seeded_hash</a> with a seed that is randomly
    chosen at hash table creation time.  In effect, the hash function
    used is randomly selected among <code class="code">2^{30}</code> different hash functions.
@@ -23,10 +23,10 @@
    However, because of randomization, enumerating all elements of the
    hash table using  <a href="#Hashtbl.fold">Hashtbl.fold</a> or  <a href="#Hashtbl.iter">Hashtbl.iter</a> is no longer
    deterministic: elements are enumerated in different orders at
-   different runs of the program.<br/>   If no <code class="code">~random</code> parameter is given, hash tables are created
+   different runs of the program.</p><p>   If no <code class="code">~random</code> parameter is given, hash tables are created
    in non-random mode by default.  This default can be changed
    either programmatically by calling  <a href="#Hashtbl.randomize">Hashtbl.randomize</a> or by
-   setting the <code class="code">R</code> flag in the <code class="code">OCAMLRUNPARAM</code> environment variable.<b>Before 4.00.0</b> the <code class="code">random</code> parameter was not present and all
+   setting the <code class="code">R</code> flag in the <code class="code">OCAMLRUNPARAM</code> environment variable.</p><b>Before 4.00.0</b> the <code class="code">random</code> parameter was not present and all
    hash tables were created in non-randomized mode.<br/></div></div>
 <pre><span class="VALclear"><span class="keyword">val</span> clear</span> : <code class="type">('a, 'b) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Empty a hash table. Use <code class="code">reset</code> instead of <code class="code">clear</code> to shrink the
     size of the bucket table to its initial size.</div></div>
@@ -55,26 +55,26 @@
    followed by  <a href="#Hashtbl.add">Hashtbl.add</a><code class="code"> tbl x y</code>.</div></div>
 <pre><span class="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -&gt; 'b -&gt; unit) -&gt; ('a, 'b) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">Hashtbl.iter f tbl</code> applies <code class="code">f</code> to all bindings in table <code class="code">tbl</code>.
    <code class="code">f</code> receives the key as first argument, and the associated value
-   as second argument. Each binding is presented exactly once to <code class="code">f</code>.<br/>   The order in which the bindings are passed to <code class="code">f</code> is unspecified.
+   as second argument. Each binding is presented exactly once to <code class="code">f</code>.<p>   The order in which the bindings are passed to <code class="code">f</code> is unspecified.
    However, if the table contains several bindings for the same key,
    they are passed to <code class="code">f</code> in reverse order of introduction, that is,
-   the most recent binding is passed first.<br/>   If the hash table was created in non-randomized mode, the order
+   the most recent binding is passed first.</p><p>   If the hash table was created in non-randomized mode, the order
    in which the bindings are enumerated is reproducible between
    successive runs of the program, and even between minor versions
    of OCaml.  For randomized hash tables, the order of enumeration
-   is entirely random.</div></div>
+   is entirely random.</p></div></div>
 <pre><span class="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -&gt; 'b -&gt; 'c -&gt; 'c) -&gt; ('a, 'b) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">t</a> -&gt; 'c -&gt; 'c</code></pre><div class="info"><div class="info"><code class="code">Hashtbl.fold f tbl init</code> computes
    <code class="code">(f kN dN ... (f k1 d1 init)...)</code>,
    where <code class="code">k1 ... kN</code> are the keys of all bindings in <code class="code">tbl</code>,
    and <code class="code">d1 ... dN</code> are the associated values.
-   Each binding is presented exactly once to <code class="code">f</code>.<br/>   The order in which the bindings are passed to <code class="code">f</code> is unspecified.
+   Each binding is presented exactly once to <code class="code">f</code>.<p>   The order in which the bindings are passed to <code class="code">f</code> is unspecified.
    However, if the table contains several bindings for the same key,
    they are passed to <code class="code">f</code> in reverse order of introduction, that is,
-   the most recent binding is passed first.<br/>   If the hash table was created in non-randomized mode, the order
+   the most recent binding is passed first.</p><p>   If the hash table was created in non-randomized mode, the order
    in which the bindings are enumerated is reproducible between
    successive runs of the program, and even between minor versions
    of OCaml.  For randomized hash tables, the order of enumeration
-   is entirely random.</div></div>
+   is entirely random.</p></div></div>
 <pre><span class="VALlength"><span class="keyword">val</span> length</span> : <code class="type">('a, 'b) <a href="?package=ocaml&amp;module=Hashtbl&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info"><code class="code">Hashtbl.length tbl</code> returns the number of bindings in <code class="code">tbl</code>.
    It takes constant time.  Multiple bindings are counted once each, so
    <code class="code">Hashtbl.length</code> gives the number of times <code class="code">Hashtbl.iter</code> calls its
@@ -83,13 +83,13 @@
     randomized mode by default:  <a href="#Hashtbl.create">Hashtbl.create</a> returns randomized
     hash tables, unless the <code class="code">~random:false</code> optional parameter is given.
     The same effect can be achieved by setting the <code class="code">R</code> parameter in
-    the <code class="code">OCAMLRUNPARAM</code> environment variable.<br/>    It is recommended that applications or Web frameworks that need to
+    the <code class="code">OCAMLRUNPARAM</code> environment variable.<p>    It is recommended that applications or Web frameworks that need to
     protect themselves against the denial-of-service attack described
     in  <a href="#Hashtbl.create">Hashtbl.create</a> call <code class="code">Hashtbl.randomize()</code> at initialization
-    time.<br/>    Note that once <code class="code">Hashtbl.randomize()</code> was called, there is no way
+    time.</p><p>    Note that once <code class="code">Hashtbl.randomize()</code> was called, there is no way
     to revert to the non-randomized default behavior of  <a href="#Hashtbl.create">Hashtbl.create</a>.
     This is intentional.  Non-randomized hash tables can still be
-    created using <code class="code">Hashtbl.create ~random:false</code>. <b>Since</b> 4.00.0</div></div>
+    created using <code class="code">Hashtbl.create ~random:false</code>.</p> <b>Since</b> 4.00.0</div></div>
 <pre><code><span class="TYPEstatistics"><span class="keyword">type</span> statistics</span> = {</code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTstatistics.num_bindings">num_bindings</span> : <code class="type">int</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">Number of bindings present in the table.
         Same value as returned by  <a href="#Hashtbl.length">Hashtbl.length</a>.</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTstatistics.num_buckets">num_buckets</span> : <code class="type">int</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">Number of buckets in the table.</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTstatistics.max_bucket_length">max_bucket_length</span> : <code class="type">int</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">Maximal number of bindings per bucket.</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTstatistics.bucket_histogram">bucket_histogram</span> : <code class="type">int array</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">Histogram of bucket sizes.  This array <code class="code">histo</code> has

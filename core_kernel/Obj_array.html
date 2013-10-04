@@ -1,10 +1,10 @@
-<div class="ocaml_toplevel_module"><div class="info">An array of <code class="code">Obj.t</code>s.<br/>    This is useful to have as its own type because we can implement faster <code class="code">get</code> and <code class="code">set</code>
+<div class="ocaml_toplevel_module"><div class="info">An array of <code class="code">Obj.t</code>s.<p>    This is useful to have as its own type because we can implement faster <code class="code">get</code> and <code class="code">set</code>
     functions that know that they aren't dealing with float arrays and save a test for it.
-    We also have <code class="code">set</code> avoid the write barrier (caml_modify) in certain situations.<br/>    Just like with a regular <code class="code">Array</code>, the elements are boxed so they don't get copied by
-    <code class="code">sub</code>, <code class="code">get</code>, <code class="code">set</code>, <code class="code">blit</code>, etc.<br/>    The dynamic check this array module implements is something we hope to have
+    We also have <code class="code">set</code> avoid the write barrier (caml_modify) in certain situations.</p><p>    Just like with a regular <code class="code">Array</code>, the elements are boxed so they don't get copied by
+    <code class="code">sub</code>, <code class="code">get</code>, <code class="code">set</code>, <code class="code">blit</code>, etc.</p><p>    The dynamic check this array module implements is something we hope to have
     implemented at a lower level (as part of the native compiler's code generation).
     Given that, the interface is somewhat spartan and intended for use within internal
-    data structures.</div>
+    data structures.</p></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre>
 <div class="ocaml_include ident" path="?package=core_kernel&amp;module=Blit.S" items="[]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core_kernel&amp;module=Blit.S">Blit.S</a></code> with type t := <a href="?package=core_kernel&amp;module=Obj_array&amp;type=t">t</a></code></pre></div>
 <div class="ocaml_include ident" path="?package=core_kernel&amp;module=Invariant.S" items="[]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core_kernel&amp;module=Invariant.S">Invariant.S</a></code> with type t := <a href="?package=core_kernel&amp;module=Obj_array&amp;type=t">t</a></code></pre></div>
@@ -22,8 +22,8 @@
 <pre><span class="VALunsafe_set"><span class="keyword">val</span> unsafe_set</span> : <code class="type"><a href="?package=core_kernel&amp;module=Obj_array&amp;type=t">t</a> -&gt; int -&gt; <a href="?package=ocaml&amp;module=Obj&amp;type=t">Obj.t</a> -&gt; unit</code></pre>
 <pre><span class="VALunsafe_set_assuming_currently_int"><span class="keyword">val</span> unsafe_set_assuming_currently_int</span> : <code class="type"><a href="?package=core_kernel&amp;module=Obj_array&amp;type=t">t</a> -&gt; int -&gt; <a href="?package=ocaml&amp;module=Obj&amp;type=t">Obj.t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">unsafe_set_assuming_currently_int t i obj</code> sets index <code class="code">i</code> of <code class="code">t</code> to <code class="code">obj</code>, but only
     works correctly if <code class="code">Obj.is_int (get t i)</code>.  This precondition saves a dynamic
-    check.<br/>    <code class="code">unsafe_set_int_assuming_currently_int</code> is similar, except the value being set is an
-    int.</div></div>
+    check.<p>    <code class="code">unsafe_set_int_assuming_currently_int</code> is similar, except the value being set is an
+    int.</p></div></div>
 <pre><span class="VALunsafe_set_int_assuming_currently_int"><span class="keyword">val</span> unsafe_set_int_assuming_currently_int</span> : <code class="type"><a href="?package=core_kernel&amp;module=Obj_array&amp;type=t">t</a> -&gt; int -&gt; int -&gt; unit</code></pre>
 <pre><span class="VALunsafe_clear_if_pointer"><span class="keyword">val</span> unsafe_clear_if_pointer</span> : <code class="type"><a href="?package=core_kernel&amp;module=Obj_array&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">unsafe_clear_if_pointer t i</code> prevents <code class="code">t.(i)</code> from pointing to anything to prevent
     space leaks.  It does this by setting <code class="code">t.(i)</code> to <code class="code">Obj.repr 0</code>.  As a performance hack,
@@ -39,8 +39,8 @@
     <code class="code">unsafe_*</code> variants omit the bounds check of <code class="code">i</code>.</div></div>
 <div class="info"><div class="info"><code class="code">unsafe_set_assuming_currently_int t i obj</code> sets index <code class="code">i</code> of <code class="code">t</code> to <code class="code">obj</code>, but only
     works correctly if <code class="code">Obj.is_int (get t i)</code>.  This precondition saves a dynamic
-    check.<br/>    <code class="code">unsafe_set_int_assuming_currently_int</code> is similar, except the value being set is an
-    int.</div></div>
+    check.<p>    <code class="code">unsafe_set_int_assuming_currently_int</code> is similar, except the value being set is an
+    int.</p></div></div>
 <div class="info"><div class="info"><code class="code">unsafe_clear_if_pointer t i</code> prevents <code class="code">t.(i)</code> from pointing to anything to prevent
     space leaks.  It does this by setting <code class="code">t.(i)</code> to <code class="code">Obj.repr 0</code>.  As a performance hack,
     it only does this when <code class="code">not (Obj.is_int t.(i))</code>.</div></div>

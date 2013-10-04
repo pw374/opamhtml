@@ -1,22 +1,22 @@
-<div class="ocaml_toplevel_module"><div class="info">Memory pools<br/>    A memory pool is a block of shared memory that is set aside for storing
+<div class="ocaml_toplevel_module"><div class="info">Memory pools<p>    A memory pool is a block of shared memory that is set aside for storing
     shared data structures. The pool needs to be created before the
     worker processes are forked off that are going to use the pool.
     The worker processes do not map the pool to some random address,
     but rather the processes inherit the pool from the common master
     process which ensures that all processes will see the pool at
-    the same address.<br/>    In order to allow inheritance, the function  <a href="#Netmcore.start">Netmcore.start</a>
+    the same address.</p><p>    In order to allow inheritance, the function  <a href="#Netmcore.start">Netmcore.start</a>
     for starting workers needs to get an additional argument
     <code class="code">~inherit_resources</code>. The resource ID of the pool must be put
     into this list - otherwise the worker does not get access to
-    the pool.<br/>    It is not possible to enlarge the pool later (because of the
+    the pool.</p><p>    It is not possible to enlarge the pool later (because of the
     inheritance method for making the pool accessible). It is advised
     to make the pool large enough for all possible data cases, and
-    to let the user configure this size.</div>
+    to let the user configure this size.</p></div>
 <pre><span class="EXCEPTIONOut_of_pool_memory"><span class="keyword">exception</span> Out_of_pool_memory</span></pre>
 <pre><span class="VALcreate_mempool"><span class="keyword">val</span> create_mempool</span> : <code class="type">?alloc_really:bool -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a></code></pre><div class="info"><div class="info">Creates the memory pool as shared memory object of the passed size
-      (rounded up to the next multiple of pages) and returns the resource ID.<br/>      Note that the process calling this function cannot use the pool,
+      (rounded up to the next multiple of pages) and returns the resource ID.<p>      Note that the process calling this function cannot use the pool,
       but only worker processes that are forked later. It is possible
-      to call <code class="code">create_mempool</code> before running  <a href="#Netmcore.startup">Netmcore.startup</a>.<br/>      Option <code class="code">alloc_really</code>: On some operating systems (namely Linux)
+      to call <code class="code">create_mempool</code> before running  <a href="#Netmcore.startup">Netmcore.startup</a>.</p><p>      Option <code class="code">alloc_really</code>: On some operating systems (namely Linux)
       shared memory is not fully included into the memory bookkeeping
       as long as nothing is written into it (so-called
       overcommitment). This means that the memory is not reserved, and
@@ -25,13 +25,13 @@
       bus error. By setting <code class="code">alloc_really</code> to true, all allocated
       memory pages are immediately written to, and thus the problem is
       avoided (or better, if memory is really tight, you get the bus
-      error now immediately, at least).<br/>      <b>Note that memory pools have kernel persistence! They are not
+      error now immediately, at least).</p><p>      <b>Note that memory pools have kernel persistence! They are not
       automatically deleted when the process finishes. Call <code class="code">unlink_mempool</code>
-      to delete memory pools.</b></div></div>
+      to delete memory pools.</b></p></div></div>
 <pre><span class="VALalloc_mem"><span class="keyword">val</span> alloc_mem</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">Netsys_mem.memory</a></code></pre><div class="info"><div class="info">Allocate memory in this pool. The passed int the size of the
       returned <code class="code">memory</code> object. The size is rounded up to the next
-      multiple of pages.<br/>      Blocks are actually allocated in units of pages.<br/>      Raises <code class="code">Out_of_pool_memory</code> if there is not enough contiguous
-      space in the pool.</div></div>
+      multiple of pages.<p>      Blocks are actually allocated in units of pages.</p><p>      Raises <code class="code">Out_of_pool_memory</code> if there is not enough contiguous
+      space in the pool.</p></div></div>
 <pre><span class="VALsize_mem"><span class="keyword">val</span> size_mem</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">Netsys_mem.memory</a> -&gt; int</code></pre><div class="info"><div class="info">Returns the size of this block, or raises <code class="code">Not_found</code></div></div>
 <pre><span class="VALsize_mem_at_addr"><span class="keyword">val</span> size_mem_at_addr</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; nativeint -&gt; int</code></pre><div class="info"><div class="info">Returns the size of the block at this address, or raises <code class="code">Not_found</code></div></div>
 <pre><span class="VALfree_mem"><span class="keyword">val</span> free_mem</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">Netsys_mem.memory</a> -&gt; unit</code></pre><div class="info"><div class="info">Frees this allocated block</div></div>

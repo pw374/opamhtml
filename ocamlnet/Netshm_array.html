@@ -7,21 +7,21 @@
 <a href="?package=ocamlnet&amp;module=Netshm&amp;type=locking_method">Netshm.locking_method</a> -&gt; <a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_descr">Netshm.shm_descr</a> -&gt; 'a <a href="?package=ocamlnet&amp;module=Netshm_array&amp;type=t">t</a></code></pre><div class="info"><div class="info">Manages a shared memory object as an array,
  including the representation of arbitrary O'Caml values.
  The first argument of type <code class="code">'a</code> is the default value of the
- array elements.<br/> This bases on <code class="code">Netshm.manage</code>, and the arguments <code class="code">pagesize</code>,
- <code class="code">locking_method</code> and <code class="code">shm_descr</code> are documented there.<br/> If an empty memory object is managed, it is initialized as
+ array elements.<p> This bases on <code class="code">Netshm.manage</code>, and the arguments <code class="code">pagesize</code>,
+ <code class="code">locking_method</code> and <code class="code">shm_descr</code> are documented there.</p><p> If an empty memory object is managed, it is initialized as
  array with zero elements. If a non-empty memory object is
  managed, it must contain a valid array structure.
  The size of the array is then the same as when the array
- was managed the last time.<br/> By passing <code class="code">init</code> with argument <code class="code">n</code>, the array is reinitialized as
- array with <code class="code">n</code> elements containing the default value.<br/> It is essential that the same data managers are passed as at the time
- when the array was initialized.<br/> Arrays are implemented as <code class="code">(int32, 'a) Netshm_hashtbl.t</code>.</div></div>
+ was managed the last time.</p><p> By passing <code class="code">init</code> with argument <code class="code">n</code>, the array is reinitialized as
+ array with <code class="code">n</code> elements containing the default value.</p><p> It is essential that the same data managers are passed as at the time
+ when the array was initialized.</p><p> Arrays are implemented as <code class="code">(int32, 'a) Netshm_hashtbl.t</code>.</p></div></div>
 <pre><span class="VALlength"><span class="keyword">val</span> length</span> : <code class="type">'a <a href="?package=ocamlnet&amp;module=Netshm_array&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">Returns the length of the array</div></div>
 <pre><span class="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a <a href="?package=ocamlnet&amp;module=Netshm_array&amp;type=t">t</a> -&gt; int -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">get a k</code>: Returns the contents of the array element number <code class="code">k</code> where
- <code class="code">0 &lt;= k &lt; length a</code>.<br/> If you do <code class="code">module Array = Netshm_array</code> in your code you can also
- use the notation <code class="code">a.(k)</code>.</div></div>
+ <code class="code">0 &lt;= k &lt; length a</code>.<p> If you do <code class="code">module Array = Netshm_array</code> in your code you can also
+ use the notation <code class="code">a.(k)</code>.</p></div></div>
 <pre><span class="VALset"><span class="keyword">val</span> set</span> : <code class="type">'a <a href="?package=ocamlnet&amp;module=Netshm_array&amp;type=t">t</a> -&gt; int -&gt; 'a -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">set a k x</code>: Sets the contents of the array element number <code class="code">k</code> to <code class="code">x</code>
- where <code class="code">0 &lt;= k &lt; length a</code>.<br/> If you do <code class="code">module Array = Netshm_array</code> in your code you can also
- use the notation <code class="code">a.(k) &lt;- x</code>.</div></div>
+ where <code class="code">0 &lt;= k &lt; length a</code>.<p> If you do <code class="code">module Array = Netshm_array</code> in your code you can also
+ use the notation <code class="code">a.(k) &lt;- x</code>.</p></div></div>
 <pre><span class="VALresize"><span class="keyword">val</span> resize</span> : <code class="type">'a <a href="?package=ocamlnet&amp;module=Netshm_array&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">resize a n</code>: Resizes the array to length <code class="code">n</code>. If the array is enlarged
  the new elements will be initialized to the default value.</div></div>
 <pre><span class="VALdefault_value"><span class="keyword">val</span> default_value</span> : <code class="type">'a <a href="?package=ocamlnet&amp;module=Netshm_array&amp;type=t">t</a> -&gt; 'a</code></pre><div class="info"><div class="info">Returns the default value</div></div>

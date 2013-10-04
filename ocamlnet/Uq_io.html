@@ -47,33 +47,33 @@ bool</code></pre><div class="info"><div class="info">Returns whether <code class
 <pre><span class="VALinput_e"><span class="keyword">val</span> input_e</span> : <code class="type">[&lt; <a href="?package=ocamlnet&amp;module=Uq_io&amp;type=in_device">in_device</a> ] -&gt; <a href="?package=ocamlnet&amp;module=Uq_io&amp;type=string_like">string_like</a> -&gt; int -&gt; int -&gt; int <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">Uq_engines.engine</a></code></pre><div class="info"><div class="info"><code class="code">let e = input_e d s pos len</code>: Reads data from <code class="code">d</code> and puts it into
      the string <code class="code">s</code> starting at <code class="code">pos</code> and with maximum length <code class="code">len</code>.
      When data is available, the engine <code class="code">e</code> transitions to <code class="code">`Done n</code>
-     where <code class="code">n</code> is the number of actually read bytes.<br/>     If <code class="code">len&gt;0</code> and no bytes can be read because the end is reached, the engine
-     transitions to <code class="code">`Error End_of_file</code>.</div></div>
+     where <code class="code">n</code> is the number of actually read bytes.<p>     If <code class="code">len&gt;0</code> and no bytes can be read because the end is reached, the engine
+     transitions to <code class="code">`Error End_of_file</code>.</p></div></div>
 <pre><span class="VALreally_input_e"><span class="keyword">val</span> really_input_e</span> : <code class="type">[&lt; <a href="?package=ocamlnet&amp;module=Uq_io&amp;type=in_device">in_device</a> ] -&gt; <a href="?package=ocamlnet&amp;module=Uq_io&amp;type=string_like">string_like</a> -&gt; int -&gt; int -&gt; unit <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">Uq_engines.engine</a></code></pre><div class="info"><div class="info"><code class="code">let e = input_e d s pos len</code>: Reads data from <code class="code">d</code> and puts it into
      the string <code class="code">s</code> starting at <code class="code">pos</code> and with length <code class="code">len</code>.
      Exactly <code class="code">len</code> bytes are read, and when done, 
-     the engine <code class="code">e</code> transitions to <code class="code">`Done ()</code>.<br/>     If the end of the file is reached before <code class="code">len</code> bytes are read,
-     the engine transitions to <code class="code">`Error End_of_file</code>.</div></div>
+     the engine <code class="code">e</code> transitions to <code class="code">`Done ()</code>.<p>     If the end of the file is reached before <code class="code">len</code> bytes are read,
+     the engine transitions to <code class="code">`Error End_of_file</code>.</p></div></div>
 <pre><span class="VALinput_line_e"><span class="keyword">val</span> input_line_e</span> : <code class="type">?max_len:int -&gt; <a href="?package=ocamlnet&amp;module=Uq_io&amp;type=in_bdevice">in_bdevice</a> -&gt; string <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">Uq_engines.engine</a></code></pre><div class="info"><div class="info"><code class="code">let e = input_line_e d</code>: Reads the next line from <code class="code">d</code> and transitions
       to <code class="code">`Done line</code> when done. Note that this is only supported for a
-      buffered device!<br/>      If the end of the file is already reached when this function is 
-      called, the engine transitions to <code class="code">`Error End_of_file</code>.<br/>      If <code class="code">max_len</code> is set, this is the maximum length of the line
+      buffered device!<p>      If the end of the file is already reached when this function is 
+      called, the engine transitions to <code class="code">`Error End_of_file</code>.</p><p>      If <code class="code">max_len</code> is set, this is the maximum length of the line
       (including LF). If exceeded, the engine transitions to
-      <code class="code">`Error Line_too_long</code>.</div></div>
+      <code class="code">`Error Line_too_long</code>.</p></div></div>
 <pre><span class="VALinput_lines_e"><span class="keyword">val</span> input_lines_e</span> : <code class="type">?max_len:int -&gt; <a href="?package=ocamlnet&amp;module=Uq_io&amp;type=in_bdevice">in_bdevice</a> -&gt; string list <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">Uq_engines.engine</a></code></pre><div class="info"><div class="info"><code class="code">let e = input_lines_e d</code>: Reads as many lines from <code class="code">d</code> as can be
       found in the buffer of <code class="code">d</code>, and transitions to <code class="code">`Done lines</code>. If
       no complete line is in the buffer, the function extends the buffer and
       waits until at least one line is added to the buffer (if necessary,
-      this process is repeated).<br/>      If the end of the file is already reached when this function is 
+      this process is repeated).<p>      If the end of the file is already reached when this function is 
       called, the engine transitions to <code class="code">`Error End_of_file</code>.
-      The function never returns an empty list of lines.<br/>      <code class="code">input_lines_e</code> is just an optimized version of <code class="code">input_line_e</code> that
-      requires fewer and cheaper blitting operations.<br/>      If <code class="code">max_len</code> is set, this is the maximum length of the line
+      The function never returns an empty list of lines.</p><p>      <code class="code">input_lines_e</code> is just an optimized version of <code class="code">input_line_e</code> that
+      requires fewer and cheaper blitting operations.</p><p>      If <code class="code">max_len</code> is set, this is the maximum length of the line
       (including LF). If exceeded, the engine transitions to
-      <code class="code">`Error Line_too_long</code>.</div></div>
+      <code class="code">`Error Line_too_long</code>.</p></div></div>
 <pre><span class="VALeof_as_none"><span class="keyword">val</span> eof_as_none</span> : <code class="type">'a <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=final_state">Uq_engines.final_state</a> -&gt; 'a option <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=final_state">Uq_engines.final_state</a></code></pre><div class="info"><div class="info">Represents EOF as <code class="code">None</code>. Useful in the combination
-      <pre class="codepre"><code class="code"> input_e d s p l &gt;&gt; eof_as_none </code></pre>
+      <code class="code"> input_e d s p l &gt;&gt; eof_as_none </code>
       and 
-      <pre class="codepre"><code class="code"> input_line_e d &gt;&gt; eof_as_none </code></pre>
+      <code class="code"> input_line_e d &gt;&gt; eof_as_none </code>
       where <code class="code">&gt;&gt;</code> is from  <a href="#Uq_engines.Operators">Uq_engines.Operators</a></div></div>
 <div class="info"><div class="info"><h2 id="2_TITLE">Output</h2></div></div>
 <pre><span class="VALoutput_e"><span class="keyword">val</span> output_e</span> : <code class="type">[&lt; <a href="?package=ocamlnet&amp;module=Uq_io&amp;type=out_device">out_device</a> ] -&gt; <a href="?package=ocamlnet&amp;module=Uq_io&amp;type=string_like">string_like</a> -&gt; int -&gt; int -&gt; int <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">Uq_engines.engine</a></code></pre><div class="info"><div class="info"><code class="code">let e = output_e d s pos len</code>: Outputs data to <code class="code">d</code> and takes it
@@ -94,9 +94,9 @@ bool</code></pre><div class="info"><div class="info">Returns whether <code class
       this engine writes the EOF marker and transitions to 
       <code class="code">`Done true</code>. For other devices nothing happens, and the engine
       transitions to <code class="code">`Done false</code>. (In the latter case, the only way to
-      signal EOF is to shut down the device, see below.)<br/>      Note that the effect of <code class="code">write_eof_e</code> cannot be buffered. Because
+      signal EOF is to shut down the device, see below.)<p>      Note that the effect of <code class="code">write_eof_e</code> cannot be buffered. Because
       of this, the <code class="code">io_buffer</code> flushes all data first (i.e. <code class="code">write_eof_e</code>
-      implies the effect of <code class="code">flush_e</code>).</div></div>
+      implies the effect of <code class="code">flush_e</code>).</p></div></div>
 <pre><span class="VALcopy_e"><span class="keyword">val</span> copy_e</span> : <code class="type">?small_buffer:bool -&gt;
 ?len:int -&gt;
 ?len64:int64 -&gt; [&lt; <a href="?package=ocamlnet&amp;module=Uq_io&amp;type=in_device">in_device</a> ] -&gt; [&lt; <a href="?package=ocamlnet&amp;module=Uq_io&amp;type=out_device">out_device</a> ] -&gt; int64 <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">Uq_engines.engine</a></code></pre><div class="info"><div class="info"><code class="code">let e = copy_e d_in d_out</code>: Copies data from <code class="code">d_in</code> to <code class="code">d_out</code>,
@@ -104,18 +104,18 @@ bool</code></pre><div class="info"><div class="info">Returns whether <code class
       <code class="code">n</code> are the number of copied bytes).
       By default, <code class="code">d_in</code> is read until end of file. If <code class="code">len</code> is passed,
       at most this number of bytes are copied. The length can also be given
-      as <code class="code">int64</code> in <code class="code">len64</code>.<br/>      By setting <code class="code">small_buffer</code>, the copy buffer consists only of a 
-      single page. Normally, a bigger buffer is allocated.</div></div>
+      as <code class="code">int64</code> in <code class="code">len64</code>.<p>      By setting <code class="code">small_buffer</code>, the copy buffer consists only of a 
+      single page. Normally, a bigger buffer is allocated.</p></div></div>
 <pre><span class="VALflush_e"><span class="keyword">val</span> flush_e</span> : <code class="type">[&lt; <a href="?package=ocamlnet&amp;module=Uq_io&amp;type=out_device">out_device</a> ] -&gt; unit <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">Uq_engines.engine</a></code></pre><div class="info"><div class="info"><code class="code">let e = flush_e d</code>: If <code class="code">d</code> has an internal buffer, all data is
       written out to <code class="code">d</code>. If there is no such buffer, this is a no-op.
       When done, the engine transitions to <code class="code">`Done()</code>.</div></div>
 <div class="info"><div class="info"><h2 id="2_TITLE">Shutdown</h2></div></div>
 <div class="info"><div class="info">The shutdown is the last part of the protocol. Although it is
     often done autonomously by the kernel, this interface supports
-    user-implemented shutdowns (e.g. for SSL).<br/>    The shutdown can be skipped, and the device can be inactivated
+    user-implemented shutdowns (e.g. for SSL).<p>    The shutdown can be skipped, and the device can be inactivated
     immediately. For some devices, the other side of the I/O stream
-    will then see an error, though.<br/>    The shutdown is always for both the input and the output circuit
-    of the device.</div></div>
+    will then see an error, though.</p><p>    The shutdown is always for both the input and the output circuit
+    of the device.</p></div></div>
 <pre><span class="VALshutdown_e"><span class="keyword">val</span> shutdown_e</span> : <code class="type">?linger:float -&gt;
 [&lt; `Async_in of <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=async_in_channel">Uq_engines.async_in_channel</a> * <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a>
  | `Async_out of <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=async_out_channel">Uq_engines.async_out_channel</a> * <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a>
@@ -127,11 +127,11 @@ bool</code></pre><div class="info"><div class="info">Returns whether <code class
  | `Polldescr of <a href="?package=ocamlnet&amp;module=Netsys&amp;type=fd_style">Netsys.fd_style</a> * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> * <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> ] -&gt;
 unit <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">Uq_engines.engine</a></code></pre><div class="info"><div class="info">Performs a regular shutdown of the device. The <code class="code">linger</code> argument
       may be used to configure a non-default linger timeout.
-      The engine transitions to <code class="code">`Done()</code> when done.<br/>      The shutdown also releases the OS resources (closes the descriptor
-      etc.), but only if successful.<br/>      Note that the effect of <code class="code">shutdown_e</code> cannot be buffered. Because
+      The engine transitions to <code class="code">`Done()</code> when done.<p>      The shutdown also releases the OS resources (closes the descriptor
+      etc.), but only if successful.</p><p>      Note that the effect of <code class="code">shutdown_e</code> cannot be buffered. Because
       of this, the <code class="code">io_buffer</code> flushes all data first (i.e. <code class="code">shutdown_e</code>
       implies the effect of <code class="code">flush_e</code>). Input data available in the 
-      buffer can still be read after the shutdown.</div></div>
+      buffer can still be read after the shutdown.</p></div></div>
 <pre><span class="VALinactivate"><span class="keyword">val</span> inactivate</span> : <code class="type">[&lt; `Async_in of <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=async_in_channel">Uq_engines.async_in_channel</a> * <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a>
  | `Async_out of <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=async_out_channel">Uq_engines.async_out_channel</a> * <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a>
  | `Buffer_in of <a href="?package=ocamlnet&amp;module=Uq_io&amp;type=in_buffer">in_buffer</a>
@@ -145,8 +145,8 @@ unit</code></pre><div class="info"><div class="info">Releases the OS resources i
       It is wrong to inactivate after a successful shutdown, because the
       shutdown already includes the inactivation.</div></div>
 <div class="info"><div class="info"><h2 id="2_TITLE">Buffers</h2></div></div>
-<pre><span class="VALcreate_in_buffer"><span class="keyword">val</span> create_in_buffer</span> : <code class="type">?small_buffer:bool -&gt; [&lt; <a href="?package=ocamlnet&amp;module=Uq_io&amp;type=in_device">in_device</a> ] -&gt; <a href="?package=ocamlnet&amp;module=Uq_io&amp;type=in_buffer">in_buffer</a></code></pre><div class="info"><div class="info">Provides a buffered version of the <code class="code">in_device</code>.<br/>      By setting <code class="code">small_buffer</code>, the initial input buffer consists only of a 
-      single page. Normally, a bigger buffer is allocated.</div></div>
+<pre><span class="VALcreate_in_buffer"><span class="keyword">val</span> create_in_buffer</span> : <code class="type">?small_buffer:bool -&gt; [&lt; <a href="?package=ocamlnet&amp;module=Uq_io&amp;type=in_device">in_device</a> ] -&gt; <a href="?package=ocamlnet&amp;module=Uq_io&amp;type=in_buffer">in_buffer</a></code></pre><div class="info"><div class="info">Provides a buffered version of the <code class="code">in_device</code>.<p>      By setting <code class="code">small_buffer</code>, the initial input buffer consists only of a 
+      single page. Normally, a bigger buffer is allocated.</p></div></div>
 <pre><span class="VALin_buffer_length"><span class="keyword">val</span> in_buffer_length</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Uq_io&amp;type=in_buffer">in_buffer</a> -&gt; int</code></pre><div class="info"><div class="info">The length</div></div>
 <pre><span class="VALin_buffer_blit"><span class="keyword">val</span> in_buffer_blit</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Uq_io&amp;type=in_buffer">in_buffer</a> -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Uq_io&amp;type=string_like">string_like</a> -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">Blit to a string or memory buffer</div></div>
 <pre><span class="VALin_buffer_fill_e"><span class="keyword">val</span> in_buffer_fill_e</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Uq_io&amp;type=in_buffer">in_buffer</a> -&gt; bool <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">Uq_engines.engine</a></code></pre><div class="info"><div class="info">Requests that the buffer is filled more than currently, and
@@ -154,8 +154,8 @@ unit</code></pre><div class="info"><div class="info">Releases the OS resources i
       EOF is reached (eof=true).</div></div>
 <pre><span class="VALcreate_out_buffer"><span class="keyword">val</span> create_out_buffer</span> : <code class="type">?small_buffer:bool -&gt; max:int option -&gt; [&lt; <a href="?package=ocamlnet&amp;module=Uq_io&amp;type=out_device">out_device</a> ] -&gt; <a href="?package=ocamlnet&amp;module=Uq_io&amp;type=out_buffer">out_buffer</a></code></pre><div class="info"><div class="info">Provides a buffered version of the <code class="code">out_device</code>. The argument
       <code class="code">max</code> is the maximum number of bytes to buffer. This can also be
-      set to <code class="code">None</code> meaning no limit.<br/>      By setting <code class="code">small_buffer</code>, the initial output buffer consists only of a 
-      single page. Normally, a bigger buffer is allocated.</div></div>
+      set to <code class="code">None</code> meaning no limit.<p>      By setting <code class="code">small_buffer</code>, the initial output buffer consists only of a 
+      single page. Normally, a bigger buffer is allocated.</p></div></div>
 <pre><span class="VALfilter_out_buffer"><span class="keyword">val</span> filter_out_buffer</span> : <code class="type">max:int option -&gt; <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=io_obj_channel">Netchannels.io_obj_channel</a> -&gt; [&lt; <a href="?package=ocamlnet&amp;module=Uq_io&amp;type=out_device">out_device</a> ] -&gt; <a href="?package=ocamlnet&amp;module=Uq_io&amp;type=out_buffer">out_buffer</a></code></pre><div class="info"><div class="info"><code class="code">filter_out_buffer ~max p d</code>: The data written to this device is
       redirected via pipe <code class="code">p</code> and finally written to <code class="code">d</code>.</div></div>
 </div>

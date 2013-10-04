@@ -1,19 +1,19 @@
 <div class="ocaml_toplevel_module"><div class="info">Simple templating library.  It reads HTML files &quot;with variables&quot;
     and can either output an OCaml module (reusable template with some
-    static checks) or perform substitutions and return the HTML.<br/>    To parametrize the HTML, you can add the following arguments to
+    static checks) or perform substitutions and return the HTML.<p>    To parametrize the HTML, you can add the following arguments to
     any HTML tag:
     <span class="verbatim">    ml:content=&quot;&lt;ident&gt;&quot;
     ml:content=&quot;&lt;ident&gt; &lt;arg1&gt; ... &lt;argN&gt;&quot;
     ml:strip=&quot;true&quot;   ml:strip=&quot;if empty&quot;
-    ml:replace=&quot;&lt;ident&gt;&quot;					     </span><br/>    - The argument <code class="code">ml:content=&quot;v&quot;</code> (<code class="code">v</code> is any valid OCaml variable
+    ml:replace=&quot;&lt;ident&gt;&quot;					     </span></p><p>    - The argument <code class="code">ml:content=&quot;v&quot;</code> (<code class="code">v</code> is any valid OCaml variable
       name) tells that the content of the HTML tag must be replaced by
-      the HTML contained in the OCaml variable <code class="code">v</code>.<ul><li><code class="code">ml:content=&quot;f v1 ... vN&quot;</code> does the same but uses the return
+      the HTML contained in the OCaml variable <code class="code">v</code>.</p><ul><li><code class="code">ml:content=&quot;f v1 ... vN&quot;</code> does the same but uses the return
       value of the OCaml function <code class="code">f</code> on the list <code class="code">[v1; ...; vN]</code> as
       the replacement HTML.</li><li><code class="code">ml:strip=&quot;true&quot;</code> says that the HTML tag should be removed
       and replaced by the content.</li><li><code class="code">ml:strip=&quot;if empty&quot;</code> says that the HTML tag should be removed
       only if the replacement content is empty.</li><li><code class="code">ml:replace=&quot;v&quot;</code> is the same as <code class="code">ml:content=&quot;v&quot;</code> except that it
       adds <code class="code">ml:strip=&quot;true&quot;</code>.</li></ul>    A special value of &lt;ident&gt; is &quot;include&quot;.  It serves to include the
-    files passed as arguments and does not define a new function.<br/>    Inside HTML arguments themselves, one can use<ul><li><code class="code">${&lt;ident&gt;}</code> which is replaced by the content (a string) of the
+    files passed as arguments and does not define a new function.<p>    Inside HTML arguments themselves, one can use</p><ul><li><code class="code">${&lt;ident&gt;}</code> which is replaced by the content (a string) of the
       variable &lt;indent&gt;;</li><li><code class="code">${f v1 ... vN}</code> which is replaced by the string returned by the
       function <code class="code">f</code> applied to the list <code class="code">[v1; ...; vN]</code>. </li></ul></div>
 <pre><span class="TYPEhtml"><span class="keyword">type</span> html</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Nethtml&amp;type=document">Nethtml.document</a> list</code></pre>
@@ -116,10 +116,10 @@ string -&gt; (&lt; content : <a href="?package=weberizer&amp;module=Weberizer&am
       <code class="code">path</code> is the relative link to go from the location pointed by
       <code class="code">p</code> to the directory.  If <code class="code">filename p</code> is of the form
       index.html or index.&lt;lang&gt;.html, then only its directory is
-      included in the navigation information.<br/>      Descriptive names are based on the name of the directory or,
+      included in the navigation information.<p>      Descriptive names are based on the name of the directory or,
       if an index.&lt;lang&gt;.html file is present it is taken as its
       title (if any).  &lt;lang&gt; is determined according to the file
-      pointed by <code class="code">p</code> (if of the form name.&lt;lang&gt;.html).</div></div>
+      pointed by <code class="code">p</code> (if of the form name.&lt;lang&gt;.html).</p></div></div>
 <pre><span class="VALtranslations"><span class="keyword">val</span> translations</span> : <code class="type">?rel_dir:(string -&gt; string -&gt; string) -&gt;
 langs:string list -&gt; <a href="?package=weberizer&amp;module=Weberizer.Path&amp;type=t">t</a> -&gt; (string * string) list</code></pre><div class="info"><div class="info"><code class="code">translations langs p</code> returns a list of couples <code class="code">(lang, url)</code>
       for all translations of the file pointed by the path <code class="code">p</code>.

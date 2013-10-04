@@ -13,37 +13,37 @@
       with a main function of type <code class="code">'main</code>; see the <code class="code">basic</code> function below.  Combinators
       in this library incrementally build up the type of main according to what
       command-line parameters it expects, so the resulting type of <code class="code">main</code> is something
-      like:<br/>      <code class="code">arg1 -&gt; ... -&gt; argN -&gt; unit</code><br/>      It may help to think of <code class="code">('a, 'b) t</code> as a function space <code class="code">'a -&gt; 'b</code> embellished with
-      information about:<br/>      <ul><li>how to auto-complete a partial command line</li><li>what the command does and how to call it</li><li>how to parse command line</li></ul><br/>      One can view a value of type <code class="code">('main_in, 'main_out) t</code> as function that transforms a
+      like:<p>      <code class="code">arg1 -&gt; ... -&gt; argN -&gt; unit</code></p><p>      It may help to think of <code class="code">('a, 'b) t</code> as a function space <code class="code">'a -&gt; 'b</code> embellished with
+      information about:</p><p>      </p><ul><li>how to auto-complete a partial command line</li><li>what the command does and how to call it</li><li>how to parse command line</li></ul><p>      One can view a value of type <code class="code">('main_in, 'main_out) t</code> as function that transforms a
       main function from type <code class="code">'main_in</code> to <code class="code">'main_out</code>, typically by supplying some
-      arguments.  E.g. a value of type <code class="code">Spec.t</code> might have type:<br/>     <pre class="codepre"><code class="code">
+      arguments.  E.g. a value of type <code class="code">Spec.t</code> might have type:</p><p>     </p><code class="code">
        (arg1 -&gt; ... -&gt; argN -&gt; 'r, 'r) Spec.t
-     </code></pre><br/>      Such a value can transform a main function of type <code class="code">arg1 -&gt; ... -&gt; argN -&gt; 'r</code> by
+     </code><p>      Such a value can transform a main function of type <code class="code">arg1 -&gt; ... -&gt; argN -&gt; 'r</code> by
       supplying it argument values of type <code class="code">arg1</code>, ..., <code class="code">argn</code>, leaving a main function
       whose type is <code class="code">'r</code>.  In the end, <code class="code">Command.basic</code> takes a completed spec where <code class="code">'r =
-      unit</code>, and hence whose type looks like:<br/>      <pre class="codepre"><code class="code">
+      unit</code>, and hence whose type looks like:</p><p>      </p><code class="code">
         (arg1 -&gt; ... -&gt; argN -&gt; unit, unit) Spec.t
-     </code></pre><br/>      A value of this type can fully apply a main function of type <code class="code">arg1 -&gt; ... -&gt; argN
-      -&gt; unit</code> to all its arguments.<br/>      The view of <code class="code">('main_in, main_out) Spec.t</code> as a function from <code class="code">'main_in</code> to
-      <code class="code">'main_out</code> is directly reflected by the <code class="code">step</code> function, whose type is:<br/>      <pre class="codepre"><code class="code">
+     </code><p>      A value of this type can fully apply a main function of type <code class="code">arg1 -&gt; ... -&gt; argN
+      -&gt; unit</code> to all its arguments.</p><p>      The view of <code class="code">('main_in, main_out) Spec.t</code> as a function from <code class="code">'main_in</code> to
+      <code class="code">'main_out</code> is directly reflected by the <code class="code">step</code> function, whose type is:</p><p>      </p><code class="code">
         val step : ('m1 -&gt; 'm2) -&gt; ('m1, 'm2) t
-     </code></pre></div></div>
-<div class="info"><div class="info"><code class="code">spec1 ++ spec2 ++ ... ++ specN</code> composes spec1 through specN.<br/>      For example, if <code class="code">spec_a</code> and <code class="code">spec_b</code> have types:<br/>      <pre class="codepre"><code class="code">
+     </code></div></div>
+<div class="info"><div class="info"><code class="code">spec1 ++ spec2 ++ ... ++ specN</code> composes spec1 through specN.<p>      For example, if <code class="code">spec_a</code> and <code class="code">spec_b</code> have types:</p><p>      </p><code class="code">
         spec_a: (a1 -&gt; ... -&gt; aN -&gt; 'ra, 'ra) Spec.t
         spec_b: (b1 -&gt; ... -&gt; bM -&gt; 'rb, 'rb) Spec.t
-      </code></pre><br/>      then <code class="code">spec_a ++ spec_b</code> has the following type:<br/>      <pre class="codepre"><code class="code">
+      </code><p>      then <code class="code">spec_a ++ spec_b</code> has the following type:</p><p>      </p><code class="code">
         (a1 -&gt; ... -&gt; aN -&gt; b1 -&gt; ... -&gt; bM -&gt; 'rb, 'rb) Spec.t
-      </code></pre><br/>      So, <code class="code">spec_a ++ spec_b</code> transforms a main function it by first supplying <code class="code">spec_a</code>'s
+      </code><p>      So, <code class="code">spec_a ++ spec_b</code> transforms a main function it by first supplying <code class="code">spec_a</code>'s
       arguments of type <code class="code">a1</code>, ..., <code class="code">aN</code>, and then supplying <code class="code">spec_b</code>'s arguments of type
-      <code class="code">b1</code>, ..., <code class="code">bm</code>.<br/>      One can understand <code class="code">++</code> as function composition by thinking of the type of specs
-      as concrete function types, representing the transformation of a main function:<br/>      <pre class="codepre"><code class="code">
+      <code class="code">b1</code>, ..., <code class="code">bm</code>.</p><p>      One can understand <code class="code">++</code> as function composition by thinking of the type of specs
+      as concrete function types, representing the transformation of a main function:</p><p>      </p><code class="code">
         spec_a: \/ra. (a1 -&gt; ... -&gt; aN -&gt; 'ra) -&gt; 'ra
         spec_b: \/rb. (b1 -&gt; ... -&gt; bM -&gt; 'rb) -&gt; 'rb
-      </code></pre><br/>      Under this interpretation, the composition of <code class="code">spec_a</code> and <code class="code">spec_b</code> has type:<br/>      <pre class="codepre"><code class="code">
+      </code><p>      Under this interpretation, the composition of <code class="code">spec_a</code> and <code class="code">spec_b</code> has type:</p><p>      </p><code class="code">
         spec_a ++ spec_b : \/rc. (a1 -&gt; ... -&gt; aN -&gt; b1 -&gt; ... -&gt; bM -&gt; 'rc) -&gt; 'rc
-      </code></pre><br/>      And the implementation is just function composition:<br/>      <pre class="codepre"><code class="code">
+      </code><p>      And the implementation is just function composition:</p><p>      </p><code class="code">
         sa ++ sb = fun main -&gt; sb (sa main)
-      </code></pre></div></div>
+      </code></div></div>
 <pre><span class="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">('m, 'm) <a href="?package=core&amp;module=Command.Spec&amp;type=t">t</a></code></pre><div class="info"><div class="info">the empty command-line spec</div></div>
 <pre><span class="VAL(++)"><span class="keyword">val</span> (++)</span> : <code class="type">('m1, 'm2) <a href="?package=core&amp;module=Command.Spec&amp;type=t">t</a> -&gt; ('m2, 'm3) <a href="?package=core&amp;module=Command.Spec&amp;type=t">t</a> -&gt; ('m1, 'm3) <a href="?package=core&amp;module=Command.Spec&amp;type=t">t</a></code></pre><div class="info"><div class="info">command-line spec composition</div></div>
 <pre><span class="VAL(+&gt;)"><span class="keyword">val</span> (+&gt;)</span> : <code class="type">('m1, 'a -&gt; 'm2) <a href="?package=core&amp;module=Command.Spec&amp;type=t">t</a> -&gt; 'a <a href="?package=core&amp;module=Command.Spec&amp;type=param">param</a> -&gt; ('m1, 'm2) <a href="?package=core&amp;module=Command.Spec&amp;type=t">t</a></code></pre><div class="info"><div class="info">add a rightmost parameter onto the type of main</div></div>
@@ -58,17 +58,17 @@
                +&gt; flag &quot;-user&quot; (optional string) ~doc:&quot;USER to frobnicate&quot;
                : (string -&gt; 'm, 'm) t </span></li><li><i>introducing labeled arguments</i>
             <span class="verbatim">step (fun m v -&gt; m ~foo:v)
-               +&gt; flag &quot;-foo&quot; no_arg : (foo:bool -&gt; 'm, 'm) t </span></li></ul><br/>      A use of <code class="code">step</code> might look something like:<br/>      <pre class="codepre"><code class="code">
+               +&gt; flag &quot;-foo&quot; no_arg : (foo:bool -&gt; 'm, 'm) t </span></li></ul><p>      A use of <code class="code">step</code> might look something like:</p><p>      </p><code class="code">
         step (fun main -&gt; let ... in main x1 ... xN) : (arg1 -&gt; ... -&gt; argN -&gt; 'r, 'r) t
-      </code></pre><br/>      Thus, <code class="code">step</code> allows one to write arbitrary code to decide how to transform a main
-      function.  As a simple example:<br/>      <pre class="codepre"><code class="code">
+      </code><p>      Thus, <code class="code">step</code> allows one to write arbitrary code to decide how to transform a main
+      function.  As a simple example:</p><p>      </p><code class="code">
         step (fun main -&gt; main 13.) : (float -&gt; 'r, 'r) t
-      </code></pre><br/>      This spec is identical to <code class="code">const 13.</code>; it transforms a main function by supplying
-      it with a single float argument, <code class="code">13.</code>.  As another example:<br/>      <pre class="codepre"><code class="code">
+      </code><p>      This spec is identical to <code class="code">const 13.</code>; it transforms a main function by supplying
+      it with a single float argument, <code class="code">13.</code>.  As another example:</p><p>      </p><code class="code">
         step (fun m v -&gt; m ~foo:v) : (foo:'foo -&gt; 'r, 'foo -&gt; 'r) t
-      </code></pre><br/>      This spec transforms a main function that requires a labeled argument into
+      </code><p>      This spec transforms a main function that requires a labeled argument into
       a main function that requires the argument unlabeled, making it easily composable
-      with other spec combinators.</div></div>
+      with other spec combinators.</p></div></div>
 <pre><span class="VALwrap"><span class="keyword">val</span> wrap</span> : <code class="type">(run:('m1 -&gt; 'r1) -&gt; main:'m2 -&gt; 'r2) -&gt; ('m1, 'r1) <a href="?package=core&amp;module=Command.Spec&amp;type=t">t</a> -&gt; ('m2, 'r2) <a href="?package=core&amp;module=Command.Spec&amp;type=t">t</a></code></pre><div class="info"><div class="info">combinator for defining a class of commands with common behavior</div><div class="info">Here are two examples of command classes defined using <code class="code">wrap</code>
       <ul><li><i>iterate over lines from stdin</i>
             <span class="verbatim">wrap (fun ~run ~main -&gt;
@@ -88,9 +88,9 @@
         type via bash's programmable TAB-completion.  In addition to the argument prefix,
         autocompletion also has access to any previously parsed arguments in the form of a
         heterogeneous map into which previously parsed arguments may register themselves by
-        providing a Univ_map.Key using the ~key argument to <code class="code">create</code>.<br/>        If the <code class="code">of_string</code> function raises an exception, command line parsing will be
+        providing a Univ_map.Key using the ~key argument to <code class="code">create</code>.<p>        If the <code class="code">of_string</code> function raises an exception, command line parsing will be
         aborted and the exception propagated up to top-level and printed along with
-        command-line help.</div></div>
+        command-line help.</p></div></div>
 <pre><span class="VALof_map"><span class="keyword">val</span> of_map</span> : <code class="type">?key:'a <a href="?package=core_kernel&amp;module=Std.Univ_map.Multi.Key&amp;type=t">Core_kernel.Std.Univ_map.Multi.Key.t</a> -&gt;
 'a <a href="?package=core_kernel&amp;module=Std.String.Map&amp;type=t">Core_kernel.Std.String.Map.t</a> -&gt; 'a <a href="?package=core&amp;module=Command.Spec.Arg_type&amp;type=t">t</a></code></pre><div class="info"><div class="info">an auto-completing Arg_type over a finite set of values</div></div>
 <pre><span class="VALof_alist_exn"><span class="keyword">val</span> of_alist_exn</span> : <code class="type">?key:'a <a href="?package=core_kernel&amp;module=Std.Univ_map.Multi.Key&amp;type=t">Core_kernel.Std.Univ_map.Multi.Key.t</a> -&gt; (string * 'a) list -&gt; 'a <a href="?package=core&amp;module=Command.Spec.Arg_type&amp;type=t">t</a></code></pre><div class="info"><div class="info">convenience wrapper for <code class="code">of_map</code>.  Raises on duplicate keys</div></div></div></div>
@@ -104,10 +104,10 @@
 <div class="info"><div class="info"><h1 id="1_TITLE">flag specifications</h1></div></div>
 <pre><span class="TYPEflag"><span class="keyword">type</span> <code class="type">'a </code>flag</span> </pre><div class="info"><div class="info">a flag specification</div></div>
 <pre><span class="VALflag"><span class="keyword">val</span> flag</span> : <code class="type">?aliases:string list -&gt; string -&gt; 'a <a href="?package=core&amp;module=Command.Spec&amp;type=flag">flag</a> -&gt; doc:string -&gt; 'a <a href="?package=core&amp;module=Command.Spec&amp;type=param">param</a></code></pre><div class="info"><div class="info"><code class="code">flag name spec ~doc</code> specifies a command that, among other things, takes a flag
-      named <code class="code">name</code> on its command line.  <code class="code">doc</code> indicates the meaning of the flag.<br/>      NOTE: the <code class="code">doc</code> for a flag which takes an argument should be of the form <code class="code">arg_name ^
+      named <code class="code">name</code> on its command line.  <code class="code">doc</code> indicates the meaning of the flag.<p>      NOTE: the <code class="code">doc</code> for a flag which takes an argument should be of the form <code class="code">arg_name ^
       &quot; &quot; ^ description</code> where <code class="code">arg_name</code> describes the argument and <code class="code">description</code>
-      describes the meaning of the flag.<br/>      NOTE: flag names (including aliases) containing underscores will
-            be rejected.  Use dashes instead.</div></div>
+      describes the meaning of the flag.</p><p>      NOTE: flag names (including aliases) containing underscores will
+            be rejected.  Use dashes instead.</p></div></div>
 <pre><span class="VALrequired"><span class="keyword">val</span> required</span> : <code class="type">'a <a href="?package=core&amp;module=Command.Spec.Arg_type&amp;type=t">Arg_type.t</a> -&gt; 'a <a href="?package=core&amp;module=Command.Spec&amp;type=flag">flag</a></code></pre><div class="info"><div class="info">required flags must be passed exactly once</div></div>
 <pre><span class="VALoptional"><span class="keyword">val</span> optional</span> : <code class="type">'a <a href="?package=core&amp;module=Command.Spec.Arg_type&amp;type=t">Arg_type.t</a> -&gt; 'a option <a href="?package=core&amp;module=Command.Spec&amp;type=flag">flag</a></code></pre><div class="info"><div class="info">optional flags may be passed at most once</div></div>
 <pre><span class="VALoptional_with_default"><span class="keyword">val</span> optional_with_default</span> : <code class="type">'a -&gt; 'a <a href="?package=core&amp;module=Command.Spec.Arg_type&amp;type=t">Arg_type.t</a> -&gt; 'a <a href="?package=core&amp;module=Command.Spec&amp;type=flag">flag</a></code></pre><div class="info"><div class="info"><code class="code">optional_with_default</code> flags may be passed at most once, and
@@ -124,20 +124,20 @@
       line parser to abort and pass through all remaining command line
       arguments as the value of the flag.</div></div>
 <pre><span class="VALflags_of_args_exn"><span class="keyword">val</span> flags_of_args_exn</span> : <code class="type"><a href="?package=core_kernel&amp;module=Std.Arg&amp;type=t">Core_kernel.Std.Arg.t</a> list -&gt; ('a, 'a) <a href="?package=core&amp;module=Command.Spec&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">flags_of_args_exn args</code> creates a spec from <code class="code">Arg.t</code>s, for compatibility with
-      ocaml's base libraries.  Fails if it encounters an arg that cannot be converted.<br/>      NOTE: There is a difference in side effect ordering between <code class="code">Arg</code> and <code class="code">Command</code>.  In
+      ocaml's base libraries.  Fails if it encounters an arg that cannot be converted.<p>      NOTE: There is a difference in side effect ordering between <code class="code">Arg</code> and <code class="code">Command</code>.  In
       the <code class="code">Arg</code> module, flag handling functions embedded in <code class="code">Arg.t</code> values will be run in
       the order that flags are passed on the command line.  In the <code class="code">Command</code> module, using
       <code class="code">flags_of_args_exn flags</code>, they are evaluated in the order that the <code class="code">Arg.t</code> values
-      appear in <code class="code">flags</code>.</div></div>
+      appear in <code class="code">flags</code>.</p></div></div>
 <div class="info"><div class="info"><h1 id="1_TITLE">anonymous argument specifications</h1></div></div>
 <pre><span class="TYPEanons"><span class="keyword">type</span> <code class="type">'a </code>anons</span> </pre><div class="info"><div class="info">a specification of some number of anonymous arguments</div></div>
 <pre><span class="VALanon"><span class="keyword">val</span> anon</span> : <code class="type">'a <a href="?package=core&amp;module=Command.Spec&amp;type=anons">anons</a> -&gt; 'a <a href="?package=core&amp;module=Command.Spec&amp;type=param">param</a></code></pre><div class="info"><div class="info"><code class="code">anon spec</code> specifies a command that, among other things, takes
       the anonymous arguments specified by <code class="code">spec</code>.</div></div>
-<pre><span class="VAL%:"><span class="keyword">val</span> %:</span> : <code class="type">string -&gt; 'a <a href="?package=core&amp;module=Command.Spec.Arg_type&amp;type=t">Arg_type.t</a> -&gt; 'a <a href="?package=core&amp;module=Command.Spec&amp;type=anons">anons</a></code></pre><div class="info"><div class="info"><code class="code">(name %: typ)</code> specifies a required anonymous argument of type <code class="code">typ</code>.<br/>      The <code class="code">name</code> must not be surrounded by whitespace, if it is, an exn will be raised.<br/>      If the <code class="code">name</code> is surrounded by a special character pair (&lt;&gt;, {}, [] or (),)
-      <code class="code">name</code> will remain as-is, otherwise, <code class="code">name</code> will be uppercased.<br/>      In the situation where <code class="code">name</code> is only prefixed or only suffixed by one of the
+<pre><span class="VAL%:"><span class="keyword">val</span> %:</span> : <code class="type">string -&gt; 'a <a href="?package=core&amp;module=Command.Spec.Arg_type&amp;type=t">Arg_type.t</a> -&gt; 'a <a href="?package=core&amp;module=Command.Spec&amp;type=anons">anons</a></code></pre><div class="info"><div class="info"><code class="code">(name %: typ)</code> specifies a required anonymous argument of type <code class="code">typ</code>.<p>      The <code class="code">name</code> must not be surrounded by whitespace, if it is, an exn will be raised.</p><p>      If the <code class="code">name</code> is surrounded by a special character pair (&lt;&gt;, {}, [] or (),)
+      <code class="code">name</code> will remain as-is, otherwise, <code class="code">name</code> will be uppercased.</p><p>      In the situation where <code class="code">name</code> is only prefixed or only suffixed by one of the
       special character pairs, or different pairs are used, (e.g. &quot;&lt;ARG]&quot;) an exn will
-      be raised.<br/>      The (possibly transformed) <code class="code">name</code> is mentioned in the generated help for the
-      command.</div></div>
+      be raised.</p><p>      The (possibly transformed) <code class="code">name</code> is mentioned in the generated help for the
+      command.</p></div></div>
 <pre><span class="VALsequence"><span class="keyword">val</span> sequence</span> : <code class="type">'a <a href="?package=core&amp;module=Command.Spec&amp;type=anons">anons</a> -&gt; 'a list <a href="?package=core&amp;module=Command.Spec&amp;type=anons">anons</a></code></pre><div class="info"><div class="info"><code class="code">sequence anons</code> specifies a sequence of anonymous arguments.  An exception
       will be raised if <code class="code">anons</code> matches anything other than a fixed number of
       anonymous arguments</div></div>
@@ -147,14 +147,14 @@
 <div class="info"><div class="info"><code class="code">t2</code>, <code class="code">t3</code>, and <code class="code">t4</code> each concatenate multiple anonymous argument
       specs into a single one. The purpose of these combinators is to allow
       for optional sequences of anonymous arguments.  Consider a command with
-      usage:<br/>      <span class="verbatim">        main.exe FOO [BAR BAZ]
-       </span><br/>      where the second and third anonymous arguments must either both
-      be there or both not be there.  This can be expressed as:<br/>      <pre class="codepre"><code class="code">
+      usage:<p>      <span class="verbatim">        main.exe FOO [BAR BAZ]
+       </span></p><p>      where the second and third anonymous arguments must either both
+      be there or both not be there.  This can be expressed as:</p><p>      </p><code class="code">
         t2 (&quot;FOO&quot; %: foo) (maybe (t2 (&quot;BAR&quot; %: bar) (&quot;BAZ&quot; %: baz)))]
-       </code></pre><br/>      Sequences of 5 or more anonymous arguments can be built up using
-      nested tuples:<br/>      <pre class="codepre"><code class="code">
+       </code><p>      Sequences of 5 or more anonymous arguments can be built up using
+      nested tuples:</p><p>      </p><code class="code">
         maybe (t3 a b (t3 c d e))
-      </code></pre></div></div>
+      </code></div></div>
 <pre><span class="VALt2"><span class="keyword">val</span> t2</span> : <code class="type">'a <a href="?package=core&amp;module=Command.Spec&amp;type=anons">anons</a> -&gt; 'b <a href="?package=core&amp;module=Command.Spec&amp;type=anons">anons</a> -&gt; ('a * 'b) <a href="?package=core&amp;module=Command.Spec&amp;type=anons">anons</a></code></pre>
 <pre><span class="VALt3"><span class="keyword">val</span> t3</span> : <code class="type">'a <a href="?package=core&amp;module=Command.Spec&amp;type=anons">anons</a> -&gt; 'b <a href="?package=core&amp;module=Command.Spec&amp;type=anons">anons</a> -&gt; 'c <a href="?package=core&amp;module=Command.Spec&amp;type=anons">anons</a> -&gt; ('a * 'b * 'c) <a href="?package=core&amp;module=Command.Spec&amp;type=anons">anons</a></code></pre>
 <pre><span class="VALt4"><span class="keyword">val</span> t4</span> : <code class="type">'a <a href="?package=core&amp;module=Command.Spec&amp;type=anons">anons</a> -&gt; 'b <a href="?package=core&amp;module=Command.Spec&amp;type=anons">anons</a> -&gt; 'c <a href="?package=core&amp;module=Command.Spec&amp;type=anons">anons</a> -&gt; 'd <a href="?package=core&amp;module=Command.Spec&amp;type=anons">anons</a> -&gt; ('a * 'b * 'c * 'd) <a href="?package=core&amp;module=Command.Spec&amp;type=anons">anons</a></code></pre></div></div>
@@ -168,20 +168,20 @@
     subcommands, as found in <code class="code">subcommand_alist</code>.  <code class="code">summary</code> is to contain
     a short one-line description of the command group.  <code class="code">readme</code> is to
     contain any longer description of its behavior that will go on that
-    command's help screen.<br/>    NOTE: subcommand names containing underscores will be rejected.  Use dashes instead.</div></div>
+    command's help screen.<p>    NOTE: subcommand names containing underscores will be rejected.  Use dashes instead.</p></div></div>
 <pre><span class="VALrun"><span class="keyword">val</span> run</span> : <code class="type">?version:string -&gt;
 ?build_info:string -&gt;
-?argv:string list -&gt; ?extend:(string list -&gt; string list) -&gt; <a href="?package=core&amp;module=Command&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Run a command against <code class="code">Sys.argv</code>, or <code class="code">argv</code> if it is specified.<br/>    <code class="code">extend</code> can be used to add extra command line arguments to basic subcommands of the
+?argv:string list -&gt; ?extend:(string list -&gt; string list) -&gt; <a href="?package=core&amp;module=Command&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Run a command against <code class="code">Sys.argv</code>, or <code class="code">argv</code> if it is specified.<p>    <code class="code">extend</code> can be used to add extra command line arguments to basic subcommands of the
     command.  <code class="code">extend</code> will be passed the (fully expanded) path to a command, and its
     output will be appended to the list of arguments being processed.  For example,
-    suppose a program like this is compiled into <code class="code">exe</code>:<br/>      <pre class="codepre"><code class="code">
+    suppose a program like this is compiled into <code class="code">exe</code>:</p><p>      </p><code class="code">
         let bar = Command.basic ...
         let foo = Command.group ~summary:... [&quot;bar&quot;, bar]
         let main = Command.group ~summary:... [&quot;foo&quot;, foo]
         Command.run ~extend:(fun _ -&gt; [&quot;-baz&quot;]) main
-      </code></pre><br/>    Then if a user ran <code class="code">exe f b</code>, <code class="code">extend</code> would be passed <code class="code">[&quot;foo&quot;; &quot;bar&quot;]</code> and <code class="code">&quot;-baz&quot;</code>
+      </code><p>    Then if a user ran <code class="code">exe f b</code>, <code class="code">extend</code> would be passed <code class="code">[&quot;foo&quot;; &quot;bar&quot;]</code> and <code class="code">&quot;-baz&quot;</code>
     would be appended to the command line for processing by <code class="code">bar</code>.  This can be used to
-    add a default flags section to a user config file.</div></div>
+    add a default flags section to a user config file.</p></div></div>
 <div class="ocaml_module sig" name="Deprecated"><pre><span class="keyword">module</span> <a href="?package=core&amp;module=Command.Deprecated">Deprecated</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info"><code class="code">Deprecated</code> should be used only by <code class="code">Core_extended.Deprecated_command</code>.  At some point
     it will go away.</div></div><div class="ocaml_module_content">
 <div class="ocaml_module sig" name="Spec"><pre><span class="keyword">module</span> <a href="?package=core&amp;module=Command.Deprecated.Spec">Spec</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">

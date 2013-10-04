@@ -1,9 +1,9 @@
-<div class="ocaml_toplevel_module"><div class="info">Sets over ordered types.<br/>   This module implements the set data structure, given a total ordering
+<div class="ocaml_toplevel_module"><div class="info">Sets over ordered types.<p>   This module implements the set data structure, given a total ordering
    function over the set elements. All operations over sets
    are purely applicative (no side-effects).
    The implementation uses balanced binary trees, and is therefore
    reasonably efficient: insertion and membership take time
-   logarithmic in the size of the set, for instance.</div>
+   logarithmic in the size of the set, for instance.</p></div>
 <div class="ocaml_module sig" name="OrderedType"><pre><span class="keyword">module type</span> <a href="?package=ocaml&amp;module=Set.OrderedType">OrderedType</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Input signature of the functor  <a href="#Set.Make">Set.Make</a>.</div></div><div class="ocaml_module_content">
 <pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">The type of the set elements.</div></div>
 <pre><span class="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="?package=ocaml&amp;module=Set.OrderedType&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Set.OrderedType&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">A total ordering function over the set elements.

@@ -1,6 +1,6 @@
 <div class="ocaml_toplevel_module"><div class="info">Easy_format: indentation made easy.</div>
 <div class="info"><div class="info">This module provides a functional, simplified layer over
-  the Format module of the standard library.<br/>  Input data must be first modelled as a tree using 3 kinds of nodes:<ul><li>atoms</li><li>lists</li><li>labelled nodes</li></ul>  Atoms represent any text that is guaranteed to be printed as-is.
+  the Format module of the standard library.<p>  Input data must be first modelled as a tree using 3 kinds of nodes:</p><ul><li>atoms</li><li>lists</li><li>labelled nodes</li></ul>  Atoms represent any text that is guaranteed to be printed as-is.
   Lists can model any sequence of items such as arrays of data
   or lists of definitions that are labelled with something 
   like &quot;int main&quot;, &quot;let x =&quot; or &quot;x:&quot;.</div></div>
@@ -44,11 +44,11 @@
     Always derive a new set of parameters from an existing record. 
     See  <a href="#Easy_format.list">Easy_format.list</a>.</div></div>
 <pre><span class="VALlist"><span class="keyword">val</span> list</span> : <code class="type"><a href="?package=easy-format&amp;module=Easy_format&amp;type=list_param">list_param</a></code></pre><div class="info"><div class="info">Default list-formatting parameters, using the default values
-      described in the type definition above.<br/>      In order to make code compatible with future versions of the library,
+      described in the type definition above.<p>      In order to make code compatible with future versions of the library,
       the record inheritance syntax should be used, e.g.
       <code class="code"> { list with align_closing = false } </code>.
       If new record fields are added, the program would still compile
-      and work as before.</div></div>
+      and work as before.</p></div></div>
 <pre><code><span class="TYPElabel_param"><span class="keyword">type</span> label_param</span> = {</code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTlabel_param.space_after_label">space_after_label</span> : <code class="type">bool</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">Whether there must be some whitespace
 				after the label. 
@@ -58,18 +58,18 @@
     Always derive a new set of parameters from an existing record. 
     See  <a href="#Easy_format.label">Easy_format.label</a>.</div></div>
 <pre><span class="VALlabel"><span class="keyword">val</span> label</span> : <code class="type"><a href="?package=easy-format&amp;module=Easy_format&amp;type=label_param">label_param</a></code></pre><div class="info"><div class="info">Default label-formatting parameters, using the default values
-      described in the type definition above.<br/>      In order to make code compatible with future versions of the library,
+      described in the type definition above.<p>      In order to make code compatible with future versions of the library,
       the record inheritance syntax should be used, e.g.
       <code class="code"> { label with indent_after_label = 0 } </code>.
       If new record fields are added, the program would still compile
-      and work as before.</div></div>
+      and work as before.</p></div></div>
 <pre><code><span class="TYPEt"><span class="keyword">type</span> t</span> = </code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTt.Atom"><span class="constructor">Atom</span></span> <span class="keyword">of</span> <code class="type">string * <a href="?package=easy-format&amp;module=Easy_format&amp;type=atom_param">atom_param</a></code></code></td><td class="typefieldcomment" align="left"><div class="info">Plain string normally
 				    without line breaks.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTt.List"><span class="constructor">List</span></span> <span class="keyword">of</span> <code class="type">string * string * string * <a href="?package=easy-format&amp;module=Easy_format&amp;type=list_param">list_param</a> * <a href="?package=easy-format&amp;module=Easy_format&amp;type=t">t</a> list</code></code></td><td class="typefieldcomment" align="left"><div class="info"><code class="code">List ((opening, separator, closing, param), nodes)</code></div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTt.Label"><span class="constructor">Label</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=easy-format&amp;module=Easy_format&amp;type=t">t</a> * <a href="?package=easy-format&amp;module=Easy_format&amp;type=label_param">label_param</a> * <a href="?package=easy-format&amp;module=Easy_format&amp;type=t">t</a></code></code></td><td class="typefieldcomment" align="left"><div class="info"><code class="code">Label ((label, param), node)</code>: labelled node.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTt.Custom"><span class="constructor">Custom</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocaml&amp;module=Format&amp;type=formatter">Format.formatter</a> -&gt; unit</code></code></td><td class="typefieldcomment" align="left"><div class="info">User-defined printing function that allows to use the
 	  Format module directly if necessary. It is responsible
 	  for leaving the formatter in a clean state.</div></td></tr></table><div class="info"><div class="info">The type of the tree to be pretty-printed. Each node contains
-    its own formatting parameters.<br/>    Detail of a list node 
-    <code class="code">List ((opening, separator, closing, param), nodes)</code>:<br/>    - <code class="code">opening</code>: opening string such as <code class="code">&quot;{&quot;</code> <code class="code">&quot;[&quot;</code> <code class="code">&quot;(&quot;</code> <code class="code">&quot;begin&quot;</code> <code class="code">&quot;&quot;</code> etc.<ul><li><code class="code">separator</code>: node separator such as <code class="code">&quot;;&quot;</code> <code class="code">&quot;,&quot;</code> <code class="code">&quot;&quot;</code> <code class="code">&quot;+&quot;</code> <code class="code">&quot;|&quot;</code> etc.</li><li><code class="code">closing</code>: closing string such as <code class="code">&quot;}&quot;</code> <code class="code">&quot;]&quot;</code> <code class="code">&quot;)&quot;</code> <code class="code">&quot;end&quot;</code> <code class="code">&quot;&quot;</code> etc.</li><li><code class="code">nodes</code>: elements of the list.</li></ul></div></div>
+    its own formatting parameters.<p>    Detail of a list node 
+    <code class="code">List ((opening, separator, closing, param), nodes)</code>:</p><p>    - <code class="code">opening</code>: opening string such as <code class="code">&quot;{&quot;</code> <code class="code">&quot;[&quot;</code> <code class="code">&quot;(&quot;</code> <code class="code">&quot;begin&quot;</code> <code class="code">&quot;&quot;</code> etc.</p><ul><li><code class="code">separator</code>: node separator such as <code class="code">&quot;;&quot;</code> <code class="code">&quot;,&quot;</code> <code class="code">&quot;&quot;</code> <code class="code">&quot;+&quot;</code> <code class="code">&quot;|&quot;</code> etc.</li><li><code class="code">closing</code>: closing string such as <code class="code">&quot;}&quot;</code> <code class="code">&quot;]&quot;</code> <code class="code">&quot;)&quot;</code> <code class="code">&quot;end&quot;</code> <code class="code">&quot;&quot;</code> etc.</li><li><code class="code">nodes</code>: elements of the list.</li></ul></div></div>
 <pre><span class="TYPEescape"><span class="keyword">type</span> escape</span> = <code class="type">[ `Escape of (string -&gt; int -&gt; int -&gt; unit) -&gt; string -&gt; int -&gt; int -&gt; unit
 | `Escape_string of string -&gt; string
 | `None ]</code></pre>

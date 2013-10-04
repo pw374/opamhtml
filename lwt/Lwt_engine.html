@@ -50,8 +50,8 @@
 <pre><span class="METHODtimer_count"><span class="keyword">method</span> timer_count</span> : <code class="code">int</code></pre>
 
 <div class="info"><div class="info"><h6 id="6_TITLE">Backend methods</h6></div></div>
-<div class="info"><div class="info">Notes:<br/>      - the callback passed to register methods is of type <code class="code">unit -&gt;
-      unit</code> and not <code class="code">event -&gt; unit</code><ul><li>register methods returns a lazy value which unregister the
+<div class="info"><div class="info">Notes:<p>      - the callback passed to register methods is of type <code class="code">unit -&gt;
+      unit</code> and not <code class="code">event -&gt; unit</code></p><ul><li>register methods returns a lazy value which unregister the
       event when forced
   </li></ul></div></div>
 <pre><span class="METHODcleanup"><span class="keyword">method</span> <span class="keyword">virtual</span> <span class="keyword">private</span> cleanup</span> : <code class="code">unit</code></pre>
@@ -88,21 +88,21 @@
 
 <pre><span class="METHODselect"><span class="keyword">method</span> <span class="keyword">virtual</span> <span class="keyword">private</span> select</span> : <code class="code"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list -&gt;
 <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list -&gt; float -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list</code></pre>
-<div class="info"><div class="info"><code class="code">select fds_r fds_w timeout</code> waits for either:<br/>        - one of the file descriptor of <code class="code">fds_r</code> to become readable<ul><li>one of the file descriptor of <code class="code">fds_w</code> to become writable</li><li>timeout to expire</li></ul>        and returns the list of readable file descriptor and the list
+<div class="info"><div class="info"><code class="code">select fds_r fds_w timeout</code> waits for either:<p>        - one of the file descriptor of <code class="code">fds_r</code> to become readable</p><ul><li>one of the file descriptor of <code class="code">fds_w</code> to become writable</li><li>timeout to expire</li></ul>        and returns the list of readable file descriptor and the list
         of writable file descriptors.</div></div></div></div>
 <div class="ocaml_class sig" name="poll_based"><pre><span class="TYPEpoll_based"><span class="keyword">class</span> <span class="keyword">virtual </span><a href="?package=lwt&amp;module=Lwt_engine&amp;class=poll_based">poll_based</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Abstract class for engines based on a poll-like function.</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=lwt&amp;module=Lwt_engine&amp;class=t"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=lwt&amp;module=Lwt_engine&amp;class=t">t</a></pre></div>
 
 <pre><span class="METHODpoll"><span class="keyword">method</span> <span class="keyword">virtual</span> <span class="keyword">private</span> poll</span> : <code class="code">(<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> * bool * bool) list -&gt;
 float -&gt; (<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> * bool * bool) list</code></pre>
 <div class="info"><div class="info"><code class="code">poll fds tiomeout</code>, where <code class="code">fds</code> is a list of tuples of the
-        form <code class="code">(fd, check_readable, check_writable)</code>, waits for either:<br/>        - one of the file descriptor with <code class="code">check_readable</code> set to
-          <code class="code">true</code> to become readable<ul><li>one of the file descriptor with <code class="code">check_writable</code> set to
+        form <code class="code">(fd, check_readable, check_writable)</code>, waits for either:<p>        - one of the file descriptor with <code class="code">check_readable</code> set to
+          <code class="code">true</code> to become readable</p><ul><li>one of the file descriptor with <code class="code">check_writable</code> set to
           <code class="code">true</code> to become writable</li><li>timeout to expire</li></ul>        and returns the list of file descriptors with their readable
         and writable status.</div></div></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">The current engine</h6></div></div>
 <pre><span class="VALget"><span class="keyword">val</span> get</span> : <code class="type">unit -&gt; <a href="?package=lwt&amp;module=Lwt_engine&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">get ()</code> returns the engine currently in use.</div></div>
 <pre><span class="VALset"><span class="keyword">val</span> set</span> : <code class="type">?transfer:bool -&gt; ?destroy:bool -&gt; #<a href="?package=lwt&amp;module=Lwt_engine&amp;class=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">set ?transfer ?destroy engine</code> replaces the current engine by
-      the given one.<br/>      If <code class="code">transfer</code> is <code class="code">true</code> (the default) all events from the
-      current engine are transferred to the new one.<br/>      If <code class="code">destroy</code> is <code class="code">true</code> (the default) then the current engine is
-      destroyed before being replaced.</div></div>
+      the given one.<p>      If <code class="code">transfer</code> is <code class="code">true</code> (the default) all events from the
+      current engine are transferred to the new one.</p><p>      If <code class="code">destroy</code> is <code class="code">true</code> (the default) then the current engine is
+      destroyed before being replaced.</p></div></div>
 </div>

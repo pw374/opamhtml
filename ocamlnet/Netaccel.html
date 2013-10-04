@@ -1,11 +1,11 @@
-<div class="ocaml_toplevel_module"><div class="info">Accelerators for bytecode<br/> This module can be linked with executables to accelerate
+<div class="ocaml_toplevel_module"><div class="info">Accelerators for bytecode<p> This module can be linked with executables to accelerate
  certain functions. In particular, the following functions
- will run faster:<br/> -  <a href="#Netaux.ArrayAux.int_blit">Netaux.ArrayAux.int_blit</a><ul><li>All conversion functions in  <a href="#Netconversion">Netconversion</a> when they
+ will run faster:</p><p> -  <a href="#Netaux.ArrayAux.int_blit">Netaux.ArrayAux.int_blit</a></p><ul><li>All conversion functions in  <a href="#Netconversion">Netconversion</a> when they
    must read an ISO-8859-1 or UTF-8 encoded string</li></ul> It is not recommended to install the accelerators for native
  code, however (and with the distributed build rules, this
- is not done).<br/> To link this module, you must name both <code class="code">netaccel.cma</code> and
+ is not done).<p> To link this module, you must name both <code class="code">netaccel.cma</code> and
  <code class="code">netaccel_link.cmo</code> explicitly on the ocamlc command line
  (after <code class="code">netstring.cma</code>).
- If you use <code class="code">findlib</code>, this is done automatically.</div>
+ If you use <code class="code">findlib</code>, this is done automatically.</p></div>
 <pre><span class="VALinit"><span class="keyword">val</span> init</span> : <code class="type">unit -&gt; unit</code></pre>
 </div>

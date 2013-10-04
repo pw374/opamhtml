@@ -1,23 +1,23 @@
 <div class="ocaml_toplevel_module"><div class="info">Cooperative system calls</div>
 <div class="info"><div class="info">This modules redefine system calls, as in the <code class="code">Unix</code> module of the
     standard library, but mapped into cooperative ones, which will not
-    block the program, letting other threads run.<br/>    The semantic of all operations is the following: if the action
+    block the program, letting other threads run.<p>    The semantic of all operations is the following: if the action
     (for example reading from a <b>file descriptor</b>) can be performed
     immediatly, it is done and returns immediatly, otherwise it
     returns a sleeping threads which is waked up when the operation
-    completes.<br/>    Most operations on sockets and pipes (on Windows it is only
+    completes.</p><p>    Most operations on sockets and pipes (on Windows it is only
     sockets) are <b>cancelable</b>, this means that you can cancel them
     with  <a href="#Lwt.cancel">Lwt.cancel</a>. For example if you want to read something from
     a <b>file descriptor</b> with a timeout, you can cancel the action
     after the timeout and the reading will not be performed if not
-    already done.<br/>    More precisely, assuming that you have two sockets <code class="code">sock1</code> and
+    already done.</p><p>    More precisely, assuming that you have two sockets <code class="code">sock1</code> and
     <code class="code">sock2</code> and you want to read something from <code class="code">sock1</code> or exclusively
     from <code class="code">sock2</code>, and fail with an exception if a timeout of 1 second
     expires, without reading anything from <code class="code">sock1</code> and <code class="code">sock2</code>, even
-    if they become readable in the future.<br/>    Then you can do:<br/>    <pre class="codepre"><code class="code">
+    if they become readable in the future.</p><p>    Then you can do:</p><p>    </p><code class="code">
       Lwt.pick [Lwt_unix.timeout 1.0; read sock1 buf1 ofs1 len1; read sock2 buf2 ofs2 len2]
-    </code></pre><br/>    In this case it is guaranteed that exactly one of the three
-    operations will completes, and other will just be cancelled.</div></div>
+    </code><p>    In this case it is guaranteed that exactly one of the three
+    operations will completes, and other will just be cancelled.</p></div></div>
 <pre><span class="VALhandle_unix_error"><span class="keyword">val</span> handle_unix_error</span> : <code class="type">('a -&gt; 'b <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; 'a -&gt; 'b <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Same as <code class="code">Unix.handle_unix_error</code> but catches lwt-level
       exceptions</div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Configuration</h6></div></div>
@@ -25,28 +25,28 @@
 		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTasync_method.Async_none"><span class="constructor">Async_none</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">System calls are made synchronously, and may block the
           entire program.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTasync_method.Async_detach"><span class="constructor">Async_detach</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">System calls are made in another system thread, thus without
           blocking other Lwt threads. The drawback is that it may
-          degrade performances in some cases.<br/>          This is the default.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTasync_method.Async_switch"><span class="constructor">Async_switch</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">System calls are made in the main thread, and if one blocks
+          degrade performances in some cases.<p>          This is the default.</p></div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTasync_method.Async_switch"><span class="constructor">Async_switch</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">System calls are made in the main thread, and if one blocks
           the execution continue in another system thread. This method
           is the most efficint, also you will get better performances
           if you force all threads to run on the same cpu. On linux
-          this can be done by using the command <code class="code">taskset</code>.<br/>          Note that this method is still experimental.</div></td></tr></table><div class="info"><div class="info">For system calls that cannot be made asynchronously, Lwt uses one
+          this can be done by using the command <code class="code">taskset</code>.<p>          Note that this method is still experimental.</p></div></td></tr></table><div class="info"><div class="info">For system calls that cannot be made asynchronously, Lwt uses one
     of the following method:</div></div>
-<pre><span class="VALdefault_async_method"><span class="keyword">val</span> default_async_method</span> : <code class="type">unit -&gt; <a href="?package=lwt&amp;module=Lwt_unix&amp;type=async_method">async_method</a></code></pre><div class="info"><div class="info">Returns the default async method.<br/>      This can be initialized using the environment variable
+<pre><span class="VALdefault_async_method"><span class="keyword">val</span> default_async_method</span> : <code class="type">unit -&gt; <a href="?package=lwt&amp;module=Lwt_unix&amp;type=async_method">async_method</a></code></pre><div class="info"><div class="info">Returns the default async method.<p>      This can be initialized using the environment variable
       <code class="code">&quot;LWT_ASYNC_METHOD&quot;</code> with possible values <code class="code">&quot;none&quot;</code>,
-      <code class="code">&quot;detach&quot;</code> and <code class="code">&quot;switch&quot;</code>.</div></div>
+      <code class="code">&quot;detach&quot;</code> and <code class="code">&quot;switch&quot;</code>.</p></div></div>
 <pre><span class="VALset_default_async_method"><span class="keyword">val</span> set_default_async_method</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_unix&amp;type=async_method">async_method</a> -&gt; unit</code></pre><div class="info"><div class="info">Sets the default async method.</div></div>
 <pre><span class="VALasync_method"><span class="keyword">val</span> async_method</span> : <code class="type">unit -&gt; <a href="?package=lwt&amp;module=Lwt_unix&amp;type=async_method">async_method</a></code></pre><div class="info"><div class="info"><code class="code">async_method ()</code> returns the async method used in the current
       thread.</div></div>
 <pre><span class="VALasync_method_key"><span class="keyword">val</span> async_method_key</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_unix&amp;type=async_method">async_method</a> <a href="?package=lwt&amp;module=Lwt&amp;type=key">Lwt.key</a></code></pre><div class="info"><div class="info">The key for storing the local async method.</div></div>
-<pre><span class="VALwith_async_none"><span class="keyword">val</span> with_async_none</span> : <code class="type">(unit -&gt; 'a) -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">with_async_none f</code> is a shorthand for:<br/>      <pre class="codepre"><code class="code">
+<pre><span class="VALwith_async_none"><span class="keyword">val</span> with_async_none</span> : <code class="type">(unit -&gt; 'a) -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">with_async_none f</code> is a shorthand for:<p>      </p><code class="code">
         Lwt.with_value async_method_key (Some Async_none) f
-      </code></pre></div></div>
-<pre><span class="VALwith_async_detach"><span class="keyword">val</span> with_async_detach</span> : <code class="type">(unit -&gt; 'a) -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">with_async_none f</code> is a shorthand for:<br/>      <pre class="codepre"><code class="code">
+      </code></div></div>
+<pre><span class="VALwith_async_detach"><span class="keyword">val</span> with_async_detach</span> : <code class="type">(unit -&gt; 'a) -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">with_async_none f</code> is a shorthand for:<p>      </p><code class="code">
         Lwt.with_value async_method_key (Some Async_detach) f
-      </code></pre></div></div>
-<pre><span class="VALwith_async_switch"><span class="keyword">val</span> with_async_switch</span> : <code class="type">(unit -&gt; 'a) -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">with_async_none f</code> is a shorthand for:<br/>      <pre class="codepre"><code class="code">
+      </code></div></div>
+<pre><span class="VALwith_async_switch"><span class="keyword">val</span> with_async_switch</span> : <code class="type">(unit -&gt; 'a) -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">with_async_none f</code> is a shorthand for:<p>      </p><code class="code">
         Lwt.with_value async_method_key (Some Async_switch) f
-      </code></pre></div></div>
+      </code></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Sleeping</h6></div></div>
 <pre><span class="VALsleep"><span class="keyword">val</span> sleep</span> : <code class="type">float -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">sleep d</code> is a threads which remain suspended for <code class="code">d</code> seconds
       and then terminates.</div></div>
@@ -57,13 +57,13 @@
 <pre><span class="EXCEPTIONTimeout"><span class="keyword">exception</span> Timeout</span></pre><div class="info"><div class="info">Exception raised by timeout operations</div></div>
 <pre><span class="VALtimeout"><span class="keyword">val</span> timeout</span> : <code class="type">float -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">timeout d</code> is a thread which remains suspended for <code class="code">d</code> seconds
       then fails with  <a href="#Timeout">Timeout</a></div></div>
-<pre><span class="VALwith_timeout"><span class="keyword">val</span> with_timeout</span> : <code class="type">float -&gt; (unit -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">with_timeout d f</code> is a short-hand for:<br/>      <pre class="codepre"><code class="code">
+<pre><span class="VALwith_timeout"><span class="keyword">val</span> with_timeout</span> : <code class="type">float -&gt; (unit -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">with_timeout d f</code> is a short-hand for:<p>      </p><code class="code">
         Lwt.pick [Lwt_unix.timeout d; f ()]
-      </code></pre></div></div>
+      </code></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Operation on file-descriptors</h6></div></div>
 <pre><span class="TYPEfile_descr"><span class="keyword">type</span> file_descr</span> </pre><div class="info"><div class="info">The abstract type for <b>file descriptor</b>s. A Lwt <b>file
       descriptor</b> is a pair of a unix <b>file descriptor</b> (of type
-      <code class="code">Unix.file_descr</code>) and a <b>state</b>.<br/>      A <b>file descriptor</b> may be:<br/>      - <b>opened</b>, in which case it is fully usable<ul><li><b>closed</b> or <b>aborted</b>, in which case it is no longer
+      <code class="code">Unix.file_descr</code>) and a <b>state</b>.<p>      A <b>file descriptor</b> may be:</p><p>      - <b>opened</b>, in which case it is fully usable</p><ul><li><b>closed</b> or <b>aborted</b>, in which case it is no longer
       usable </li></ul></div></div>
 <pre><code><span class="TYPEstate"><span class="keyword">type</span> state</span> = </code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTstate.Opened"><span class="constructor">Opened</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">The <b>file descriptor</b> is opened</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTstate.Closed"><span class="constructor">Closed</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">The <b>file descriptor</b> has been closed by  <a href="#close">close</a>. It must
@@ -73,19 +73,19 @@
 <pre><span class="VALunix_file_descr"><span class="keyword">val</span> unix_file_descr</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">file_descr</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></pre><div class="info"><div class="info">Returns the underlying unix <b>file descriptor</b>. It always
       succeeds, even if the <b>file descriptor</b>'s state is not
        <a href="#Open">Open</a>.</div></div>
-<pre><span class="VALof_unix_file_descr"><span class="keyword">val</span> of_unix_file_descr</span> : <code class="type">?blocking:bool -&gt; ?set_flags:bool -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">file_descr</a></code></pre><div class="info"><div class="info">Creates a lwt <b>file descriptor</b> from a unix one.<br/>      <code class="code">blocking</code> is the blocking mode of the file-descriptor, and
+<pre><span class="VALof_unix_file_descr"><span class="keyword">val</span> of_unix_file_descr</span> : <code class="type">?blocking:bool -&gt; ?set_flags:bool -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">file_descr</a></code></pre><div class="info"><div class="info">Creates a lwt <b>file descriptor</b> from a unix one.<p>      <code class="code">blocking</code> is the blocking mode of the file-descriptor, and
       describes how Lwt will use it. In non-blocking mode, read/write
       on this file descriptor are made using non-blocking IO; in
       blocking mode they are made using the current async method.  If
       <code class="code">blocking</code> is not specified it is guessed according to the file
       kind: socket and pipes are in non-blocking mode and others are
-      in blocking mode.<br/>      If <code class="code">set_flags</code> is <code class="code">true</code> (the default) then the file flags are
+      in blocking mode.</p><p>      If <code class="code">set_flags</code> is <code class="code">true</code> (the default) then the file flags are
       modified according to the <code class="code">blocking</code> argument, otherwise they
-      are left unchanged.<br/>      Note that the blocking mode is less efficient than the
+      are left unchanged.</p><p>      Note that the blocking mode is less efficient than the
       non-blocking one, so it should be used only for file descriptors
       that does not support asynchronous operations, such as regular
       files, or for shared descriptors such as  <a href="#stdout">stdout</a>,  <a href="#stderr">stderr</a> or
-       <a href="#stdin">stdin</a>.</div></div>
+       <a href="#stdin">stdin</a>.</p></div></div>
 <pre><span class="VALblocking"><span class="keyword">val</span> blocking</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">file_descr</a> -&gt; bool <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">blocking fd</code> returns whether <code class="code">fd</code> is used in blocking or
       non-blocking mode.</div></div>
 <pre><span class="VALset_blocking"><span class="keyword">val</span> set_blocking</span> : <code class="type">?set_flags:bool -&gt; <a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">file_descr</a> -&gt; bool -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">set_blocking fd b</code> puts <code class="code">fd</code> in blocking or non-blocking
@@ -94,13 +94,13 @@
       application level.</div></div>
 <pre><span class="VALabort"><span class="keyword">val</span> abort</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">file_descr</a> -&gt; exn -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">abort fd exn</code> makes all current and further uses of the file
       descriptor fail with the given exception. This put the <b>file
-      descriptor</b> into the  <a href="#Aborted">Aborted</a> state.<br/>      If the <b>file descriptor</b> is closed, this does nothing, if it is
-      aborted, this replace the abort exception by <code class="code">exn</code>.<br/>      Note that this only works for reading and writing operations on
-      file descriptors supporting non-blocking mode.</div></div>
+      descriptor</b> into the  <a href="#Aborted">Aborted</a> state.<p>      If the <b>file descriptor</b> is closed, this does nothing, if it is
+      aborted, this replace the abort exception by <code class="code">exn</code>.</p><p>      Note that this only works for reading and writing operations on
+      file descriptors supporting non-blocking mode.</p></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Process handling</h6></div></div>
 <pre><span class="VALfork"><span class="keyword">val</span> fork</span> : <code class="type">unit -&gt; int</code></pre><div class="info"><div class="info"><code class="code">fork ()</code> does the same as <code class="code">Unix.fork</code>. You must use this
       function instead of <code class="code">Unix.fork</code> when you want to use Lwt in the
-      child process.<br/>      Notes:<ul><li>in the child process all pending jobs are canceled,</li><li>if you are going to use Lwt in the parent and the child, it is
+      child process.<p>      Notes:</p><ul><li>in the child process all pending jobs are canceled,</li><li>if you are going to use Lwt in the parent and the child, it is
         a good idea to call  <a href="#Lwt_io.flush_all">Lwt_io.flush_all</a> before callling
          <a href="#fork">fork</a> to avoid double-flush. </li></ul></div></div>
 <pre><span class="TYPEprocess_status"><span class="keyword">type</span> process_status</span> = <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=process_status">Unix.process_status</a></code></pre><table class="typetable">
@@ -113,7 +113,7 @@
 		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTresource_usage.ru_utime">ru_utime</span> : <code class="type">float</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">User time used</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTresource_usage.ru_stime">ru_stime</span> : <code class="type">float</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">System time used</div></td></tr><tr><td>}</td></tr></table><div class="info"><div class="info">Resource usages</div></div>
 <pre><span class="VALwait4"><span class="keyword">val</span> wait4</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_unix&amp;type=wait_flag">wait_flag</a> list -&gt; int -&gt; (int * <a href="?package=lwt&amp;module=Lwt_unix&amp;type=process_status">process_status</a> * <a href="?package=lwt&amp;module=Lwt_unix&amp;type=resource_usage">resource_usage</a>) <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">wait4 flags pid</code> returns <code class="code">(pid, status, rusage)</code> where <code class="code">(pid,
       status)</code> is the same result as <code class="code">Unix.waitpid flags pid</code>, and
-      <code class="code">rusage</code> contains accounting information about the child.<br/>      On windows it will always returns <code class="code">{ utime = 0.0; stime = 0.0 }</code>.</div></div>
+      <code class="code">rusage</code> contains accounting information about the child.<p>      On windows it will always returns <code class="code">{ utime = 0.0; stime = 0.0 }</code>.</p></div></div>
 <pre><span class="VALwait_count"><span class="keyword">val</span> wait_count</span> : <code class="type">unit -&gt; int</code></pre><div class="info"><div class="info">Returns the number of threads waiting for a child to
       terminate.</div></div>
 <pre><span class="VALsystem"><span class="keyword">val</span> system</span> : <code class="type">string -&gt; <a href="?package=lwt&amp;module=Lwt_unix&amp;type=process_status">process_status</a> <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Executes the given command, waits until it terminates, and
@@ -152,7 +152,7 @@
 <pre><span class="VALfsync"><span class="keyword">val</span> fsync</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">file_descr</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Synchronise all data and metadata of the file descriptor with
       the disk. On Windows it uses <code class="code">FlushFileBuffers</code>.</div></div>
 <pre><span class="VALfdatasync"><span class="keyword">val</span> fdatasync</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">file_descr</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Synchronise all data (but not metadata) of the file descriptor
-      with the disk.<br/>      Note that <code class="code">fdatasync</code> is not available on all platforms.</div></div>
+      with the disk.<p>      Note that <code class="code">fdatasync</code> is not available on all platforms.</p></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">File status</h6></div></div>
 <pre><span class="TYPEfile_kind"><span class="keyword">type</span> file_kind</span> = <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_kind">Unix.file_kind</a></code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTfile_kind.S_REG"><span class="constructor">S_REG</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTfile_kind.S_DIR"><span class="constructor">S_DIR</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTfile_kind.S_CHR"><span class="constructor">S_CHR</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTfile_kind.S_BLK"><span class="constructor">S_BLK</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTfile_kind.S_LNK"><span class="constructor">S_LNK</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTfile_kind.S_FIFO"><span class="constructor">S_FIFO</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTfile_kind.S_SOCK"><span class="constructor">S_SOCK</span></span></code></td></tr></table>
@@ -259,12 +259,12 @@
 <pre><span class="VALbind"><span class="keyword">val</span> bind</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">file_descr</a> -&gt; <a href="?package=lwt&amp;module=Lwt_unix&amp;type=sockaddr">sockaddr</a> -&gt; unit</code></pre><div class="info"><div class="info">Wrapper for <code class="code">Unix.bind</code></div></div>
 <pre><span class="VALlisten"><span class="keyword">val</span> listen</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">file_descr</a> -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">Wrapper for <code class="code">Unix.listen</code></div></div>
 <pre><span class="VALaccept"><span class="keyword">val</span> accept</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">file_descr</a> -&gt; (<a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">file_descr</a> * <a href="?package=lwt&amp;module=Lwt_unix&amp;type=sockaddr">sockaddr</a>) <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Wrapper for <code class="code">Unix.accept</code></div></div>
-<pre><span class="VALaccept_n"><span class="keyword">val</span> accept_n</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">file_descr</a> -&gt; int -&gt; ((<a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">file_descr</a> * <a href="?package=lwt&amp;module=Lwt_unix&amp;type=sockaddr">sockaddr</a>) list * exn option) <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">accept_n fd count</code> accepts up to <code class="code">count</code> connection in one time.<br/>      - if no connection is available right now, it returns a sleeping
-      thread<br/>      - if more that 1 and less than <code class="code">count</code> are available, it returns
-      all of them<br/>      - if more that <code class="code">count</code> are available, it returns the next
-      <code class="code">count</code> of them<br/>      - if an error happen, it returns the connections that have been
-      successfully accepted so far and the error<br/>      <code class="code">accept_n</code> has the advantage of improving performances. If you
-      want a more detailed description, you can have a look at:<br/>       <a href="http://portal.acm.org/citation.cfm?id=1247435">Acceptable strategies for improving web server performance</a></div></div>
+<pre><span class="VALaccept_n"><span class="keyword">val</span> accept_n</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">file_descr</a> -&gt; int -&gt; ((<a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">file_descr</a> * <a href="?package=lwt&amp;module=Lwt_unix&amp;type=sockaddr">sockaddr</a>) list * exn option) <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">accept_n fd count</code> accepts up to <code class="code">count</code> connection in one time.<p>      - if no connection is available right now, it returns a sleeping
+      thread</p><p>      - if more that 1 and less than <code class="code">count</code> are available, it returns
+      all of them</p><p>      - if more that <code class="code">count</code> are available, it returns the next
+      <code class="code">count</code> of them</p><p>      - if an error happen, it returns the connections that have been
+      successfully accepted so far and the error</p><p>      <code class="code">accept_n</code> has the advantage of improving performances. If you
+      want a more detailed description, you can have a look at:</p><p>       <a href="http://portal.acm.org/citation.cfm?id=1247435">Acceptable strategies for improving web server performance</a></p></div></div>
 <pre><span class="VALconnect"><span class="keyword">val</span> connect</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">file_descr</a> -&gt; <a href="?package=lwt&amp;module=Lwt_unix&amp;type=sockaddr">sockaddr</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Wrapper for <code class="code">Unix.connect</code></div></div>
 <pre><span class="TYPEshutdown_command"><span class="keyword">type</span> shutdown_command</span> = <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=shutdown_command">Unix.shutdown_command</a></code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTshutdown_command.SHUTDOWN_RECEIVE"><span class="constructor">SHUTDOWN_RECEIVE</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTshutdown_command.SHUTDOWN_SEND"><span class="constructor">SHUTDOWN_SEND</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTshutdown_command.SHUTDOWN_ALL"><span class="constructor">SHUTDOWN_ALL</span></span></code></td></tr></table>
@@ -283,19 +283,19 @@
 <pre><span class="VALrecv_msg"><span class="keyword">val</span> recv_msg</span> : <code class="type">socket:<a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">file_descr</a> -&gt;
 io_vectors:<a href="?package=lwt&amp;module=Lwt_unix&amp;type=io_vector">io_vector</a> list -&gt; (int * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list) <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">recv_msg ~socket ~io_vectors</code> receives data into a list of
       io-vectors, plus any file-descriptors that may accompany the
-      message.<br/>      This call is not available on windows.</div></div>
+      message.<p>      This call is not available on windows.</p></div></div>
 <pre><span class="VALsend_msg"><span class="keyword">val</span> send_msg</span> : <code class="type">socket:<a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">file_descr</a> -&gt;
 io_vectors:<a href="?package=lwt&amp;module=Lwt_unix&amp;type=io_vector">io_vector</a> list -&gt; fds:<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list -&gt; int <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">send_msg ~socket ~io_vectors ~fds</code> sends data from a list of
       io-vectors, accompanied with a list of file-descriptor. If
       fd-passing is not possible on the current system and <code class="code">fds</code> is
-      not empty, it raises <code class="code">Lwt_sys.Not_available &quot;fd_passing&quot;</code>.<br/>      This call is not available on windows.</div></div>
+      not empty, it raises <code class="code">Lwt_sys.Not_available &quot;fd_passing&quot;</code>.<p>      This call is not available on windows.</p></div></div>
 <pre><code><span class="TYPEcredentials"><span class="keyword">type</span> credentials</span> = {</code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTcredentials.cred_pid">cred_pid</span> : <code class="type">int</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTcredentials.cred_uid">cred_uid</span> : <code class="type">int</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTcredentials.cred_gid">cred_gid</span> : <code class="type">int</code>;</code></td></tr><tr><td>}</td></tr></table>
 <pre><span class="VALget_credentials"><span class="keyword">val</span> get_credentials</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">file_descr</a> -&gt; <a href="?package=lwt&amp;module=Lwt_unix&amp;type=credentials">credentials</a></code></pre><div class="info"><div class="info"><code class="code">get_credentials fd</code> returns credential informations from the
       given socket. On some platforms, obtaining the peer pid is not
       possible and it will be set to <code class="code">-1</code>. If obtaining credentials 
       is not possible on the current system, it raises
-      <code class="code">Lwt_sys.Not_available &quot;get_credentials&quot;</code>.<br/>      This call is not available on windows.</div></div>
+      <code class="code">Lwt_sys.Not_available &quot;get_credentials&quot;</code>.<p>      This call is not available on windows.</p></div></div>
 <div class="info"><div class="info"><div class="h8">Socket options</div></div></div>
 <pre><span class="TYPEsocket_bool_option"><span class="keyword">type</span> socket_bool_option</span> = <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=socket_bool_option">Unix.socket_bool_option</a></code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsocket_bool_option.SO_DEBUG"><span class="constructor">SO_DEBUG</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsocket_bool_option.SO_BROADCAST"><span class="constructor">SO_BROADCAST</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsocket_bool_option.SO_REUSEADDR"><span class="constructor">SO_REUSEADDR</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsocket_bool_option.SO_KEEPALIVE"><span class="constructor">SO_KEEPALIVE</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsocket_bool_option.SO_DONTROUTE"><span class="constructor">SO_DONTROUTE</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsocket_bool_option.SO_OOBINLINE"><span class="constructor">SO_OOBINLINE</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsocket_bool_option.SO_ACCEPTCONN"><span class="constructor">SO_ACCEPTCONN</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsocket_bool_option.TCP_NODELAY"><span class="constructor">TCP_NODELAY</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsocket_bool_option.IPV6_ONLY"><span class="constructor">IPV6_ONLY</span></span></code></td></tr></table>
@@ -364,13 +364,13 @@ io_vectors:<a href="?package=lwt&amp;module=Lwt_unix&amp;type=io_vector">io_vect
 <pre><span class="VALwrap_syscall"><span class="keyword">val</span> wrap_syscall</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_unix&amp;type=io_event">io_event</a> -&gt; <a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">file_descr</a> -&gt; (unit -&gt; 'a) -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">wrap_syscall set fd action</code> wrap an action on a <b>file
       descriptor</b>. It tries to execture action, and if it can not be
       performed immediately without blocking, it is registered for
-      latter.<br/>      In the latter case, if the thread is canceled, <code class="code">action</code> is
-      removed from <code class="code">set</code>.</div></div>
+      latter.<p>      In the latter case, if the thread is canceled, <code class="code">action</code> is
+      removed from <code class="code">set</code>.</p></div></div>
 <pre><span class="VALcheck_descriptor"><span class="keyword">val</span> check_descriptor</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">file_descr</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">check_descriptor fd</code> raise an exception if <code class="code">fd</code> is not in the
       state  <a href="#Open">Open</a></div></div>
 <pre><span class="VALregister_action"><span class="keyword">val</span> register_action</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_unix&amp;type=io_event">io_event</a> -&gt; <a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">file_descr</a> -&gt; (unit -&gt; 'a) -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">register_action set fd action</code> registers <code class="code">action</code> on <code class="code">fd</code>. When
-      <code class="code">fd</code> becomes <code class="code">readable</code>/<code class="code">writable</code> <code class="code">action</code> is called.<br/>      Note:<br/>      - you must call <code class="code">check_descriptor fd</code> before calling
-      <code class="code">register_action</code><br/>      - you should prefer using  <a href="#wrap_syscall">wrap_syscall</a></div></div>
+      <code class="code">fd</code> becomes <code class="code">readable</code>/<code class="code">writable</code> <code class="code">action</code> is called.<p>      Note:</p><p>      - you must call <code class="code">check_descriptor fd</code> before calling
+      <code class="code">register_action</code></p><p>      - you should prefer using  <a href="#wrap_syscall">wrap_syscall</a></p></div></div>
 <pre><span class="TYPEjob"><span class="keyword">type</span> <code class="type">'a </code>job</span> </pre><div class="info"><div class="info">Type of job descriptions. A job description describe how to call
       a C function and how to get its result. The C function may be
       executed in another system thread.</div></div>
@@ -378,16 +378,16 @@ io_vectors:<a href="?package=lwt&amp;module=Lwt_unix&amp;type=io_vector">io_vect
 job:'a <a href="?package=lwt&amp;module=Lwt_unix&amp;type=job">job</a> -&gt; result:('a <a href="?package=lwt&amp;module=Lwt_unix&amp;type=job">job</a> -&gt; 'b) -&gt; free:('a <a href="?package=lwt&amp;module=Lwt_unix&amp;type=job">job</a> -&gt; unit) -&gt; 'b <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">This is the old and deprecated way of running a job. Use
        <a href="#run_job">run_job</a> in new code.</div></div>
 <pre><span class="VALrun_job"><span class="keyword">val</span> run_job</span> : <code class="type">?async_method:<a href="?package=lwt&amp;module=Lwt_unix&amp;type=async_method">async_method</a> -&gt; 'a <a href="?package=lwt&amp;module=Lwt_unix&amp;type=job">job</a> -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">run_job ?async_method job</code> starts <code class="code">job</code> and wait for its
-      termination.<br/>      The async method is choosen follow:<ul><li>if the optional parameter <code class="code">async_method</code> is specified, it is
+      termination.<p>      The async method is choosen follow:</p><ul><li>if the optional parameter <code class="code">async_method</code> is specified, it is
         used,</li><li>otherwise if the local key  <a href="#async_method_key">async_method_key</a> is set in the
         current thread, it is used,</li><li>otherwise the default method (returned by
          <a href="#default_async_method">default_async_method</a>) is used.</li></ul>      If the method is  <a href="#Async_none">Async_none</a> then the job is run synchronously
       and may block the current system thread, thus blocking all Lwt
-      threads.<br/>      If the method is  <a href="#Async_detach">Async_detach</a> then the job is run in another
+      threads.<p>      If the method is  <a href="#Async_detach">Async_detach</a> then the job is run in another
       system thread, unless the the maximum number of worker threads
-      has been reached (as given by  <a href="#pool_size">pool_size</a>).<br/>      If the method is  <a href="#Async_switch">Async_switch</a> then the job is run
+      has been reached (as given by  <a href="#pool_size">pool_size</a>).</p><p>      If the method is  <a href="#Async_switch">Async_switch</a> then the job is run
       synchronously and if it blocks, execution will continue in
-      another system thread (unless the limit is reached).</div></div>
+      another system thread (unless the limit is reached).</p></div></div>
 <pre><span class="VALabort_jobs"><span class="keyword">val</span> abort_jobs</span> : <code class="type">exn -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">abort_jobs exn</code> make all pending jobs to fail with exn. Note
       that this does not abort the real job (i.e. the C function
       executing it), just the lwt thread for it.</div></div>
@@ -398,9 +398,9 @@ job:'a <a href="?package=lwt&amp;module=Lwt_unix&amp;type=job">job</a> -&gt; res
     thread. The following functions allow to use this pipe.</div></div>
 <pre><span class="VALmake_notification"><span class="keyword">val</span> make_notification</span> : <code class="type">?once:bool -&gt; (unit -&gt; unit) -&gt; int</code></pre><div class="info"><div class="info"><code class="code">new_notifier ?once f</code> registers a new notifier. It returns the
       id of the notifier. Each time a notification with this id is
-      received, <code class="code">f</code> is called.<br/>      if <code class="code">once</code> is specified, then the notification is stopped after
-      the first time it is received. It defaults to <code class="code">false</code>.</div></div>
-<pre><span class="VALsend_notification"><span class="keyword">val</span> send_notification</span> : <code class="type">int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">send_notification id</code> sends a notification.<br/>      This function is thread-safe.</div></div>
+      received, <code class="code">f</code> is called.<p>      if <code class="code">once</code> is specified, then the notification is stopped after
+      the first time it is received. It defaults to <code class="code">false</code>.</p></div></div>
+<pre><span class="VALsend_notification"><span class="keyword">val</span> send_notification</span> : <code class="type">int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">send_notification id</code> sends a notification.<p>      This function is thread-safe.</p></div></div>
 <pre><span class="VALstop_notification"><span class="keyword">val</span> stop_notification</span> : <code class="type">int -&gt; unit</code></pre><div class="info"><div class="info">Stop the given notification. Note that you should not reuse the
       id after the notification has been stopped, the result is
       unspecified if you do so.</div></div>

@@ -16,10 +16,10 @@
 ?env:<a href="?package=async_unix&amp;module=Process&amp;type=env">env</a> -&gt; prog:string -&gt; args:string list -&gt; unit -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">with_create_args</code> specifies the arguments used to create a child process.</div></div>
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type"><a href="?package=async_unix&amp;module=Process&amp;type=t">t</a> <a href="?package=core&amp;module=Std.Or_error&amp;type=t">Core.Std.Or_error.t</a> <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a> <a href="?package=async_unix&amp;module=Process&amp;type=with_create_args">with_create_args</a></code></pre><div class="info"><div class="info"><code class="code">create ~prog ~args ?working_dir ?env ()</code> uses fork+exec to create a child process
     that runs the executable <code class="code">prog</code> with <code class="code">args</code> as arguments.  It creates pipes to
-    communicate with the child process's stdin, stdout, and stderr.<br/>    If <code class="code">working_dir</code> is supplied, then the child process will chdir() there before calling
-    exec().<br/>    <code class="code">env</code> specifies the environment of the child process.<br/>    <code class="code">create</code> returns <code class="code">Error</code> if it is unable to create the child process.  This can happen
+    communicate with the child process's stdin, stdout, and stderr.<p>    If <code class="code">working_dir</code> is supplied, then the child process will chdir() there before calling
+    exec().</p><p>    <code class="code">env</code> specifies the environment of the child process.</p><p>    <code class="code">create</code> returns <code class="code">Error</code> if it is unable to create the child process.  This can happen
     in any number of situations (unable to fork, unable to create the pipes, unable to
-    cd to <code class="code">working_dir</code>, unable to exec, etc.).</div></div>
+    cd to <code class="code">working_dir</code>, unable to exec, etc.).</p></div></div>
 <div class="ocaml_module sig" name="Output"><pre><span class="keyword">module</span> <a href="?package=async_unix&amp;module=Process.Output">Output</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info"><code class="code">wait t</code> closes <code class="code">stdin t</code> and then begins collecting the output produced on <code class="code">t</code>'s
     <code class="code">stdout</code> and <code class="code">stderr</code>, continuing to collect output until <code class="code">t</code> terminates.  As usual,
     other async jobs can run before the deferred returned by <code class="code">wait</code> becomes determined.</div></div><div class="ocaml_module_content">
@@ -50,10 +50,10 @@
 <div class="info"><div class="info">default is <code class="code">`Extend []</code></div></div>
 <div class="info"><div class="info"><code class="code">create ~prog ~args ?working_dir ?env ()</code> uses fork+exec to create a child process
     that runs the executable <code class="code">prog</code> with <code class="code">args</code> as arguments.  It creates pipes to
-    communicate with the child process's stdin, stdout, and stderr.<br/>    If <code class="code">working_dir</code> is supplied, then the child process will chdir() there before calling
-    exec().<br/>    <code class="code">env</code> specifies the environment of the child process.<br/>    <code class="code">create</code> returns <code class="code">Error</code> if it is unable to create the child process.  This can happen
+    communicate with the child process's stdin, stdout, and stderr.<p>    If <code class="code">working_dir</code> is supplied, then the child process will chdir() there before calling
+    exec().</p><p>    <code class="code">env</code> specifies the environment of the child process.</p><p>    <code class="code">create</code> returns <code class="code">Error</code> if it is unable to create the child process.  This can happen
     in any number of situations (unable to fork, unable to create the pipes, unable to
-    cd to <code class="code">working_dir</code>, unable to exec, etc.).</div></div>
+    cd to <code class="code">working_dir</code>, unable to exec, etc.).</p></div></div>
 <div class="info"><div class="info"><code class="code">wait t</code> closes <code class="code">stdin t</code> and then begins collecting the output produced on <code class="code">t</code>'s
     <code class="code">stdout</code> and <code class="code">stderr</code>, continuing to collect output until <code class="code">t</code> terminates.  As usual,
     other async jobs can run before the deferred returned by <code class="code">wait</code> becomes determined.</div></div>

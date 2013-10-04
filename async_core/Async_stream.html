@@ -1,6 +1,6 @@
-<div class="ocaml_toplevel_module"><div class="info">For most applications one should use <code class="code">Pipe</code> instead of Stream.<br/>    A stream is an immutable sequence of values, with a possibly incomplete tail that may
-    be extended asynchronously.<br/>    The basic primitive operation for getting the next element out of stream is
-    Stream.next, which (asynchronously) returns the element and the rest of the stream.</div>
+<div class="ocaml_toplevel_module"><div class="info">For most applications one should use <code class="code">Pipe</code> instead of Stream.<p>    A stream is an immutable sequence of values, with a possibly incomplete tail that may
+    be extended asynchronously.</p><p>    The basic primitive operation for getting the next element out of stream is
+    Stream.next, which (asynchronously) returns the element and the rest of the stream.</p></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> = <code class="type">'a <a href="?package=async_core&amp;module=Tail.Stream&amp;type=t">Tail.Stream.t</a></code></pre><div class="info"><div class="info"><code class="code">sexp_of_t t f</code> returns a sexp of all of the elements currently available in the
     stream.  It is just for display purposes.  There is no <code class="code">t_of_sexp</code>.</div></div>
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">('a <a href="?package=async_core&amp;module=Tail&amp;type=t">Tail.t</a> -&gt; unit) -&gt; 'a <a href="?package=async_core&amp;module=Async_stream&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create f</code> returns a stream <code class="code">t</code> and calls <code class="code">f tail</code>, where the elements of the stream
@@ -23,11 +23,11 @@
     the end of <code class="code">t</code> is reached.</div></div>
 <div class="info"><div class="info">Sequence operations
     ----------------------------------------------------------------------
-    There are the usual sequence operations:<br/>    <span class="verbatim">      append, fold, iter, map, filter_map, take
-    </span><br/>    There are also deferred variants:<br/>    <span class="verbatim">      iter', map', filter_map'
-    </span><br/>    These take anonymous functions that return deferreds generalizing the usual sequence
+    There are the usual sequence operations:<p>    <span class="verbatim">      append, fold, iter, map, filter_map, take
+    </span></p><p>    There are also deferred variants:</p><p>    <span class="verbatim">      iter', map', filter_map'
+    </span></p><p>    These take anonymous functions that return deferreds generalizing the usual sequence
     operation and allowing the client to control the rate at which the sequence is
-    processed.</div></div>
+    processed.</p></div></div>
 <pre><span class="VALappend"><span class="keyword">val</span> append</span> : <code class="type">'a <a href="?package=async_core&amp;module=Async_stream&amp;type=t">t</a> -&gt; 'a <a href="?package=async_core&amp;module=Async_stream&amp;type=t">t</a> -&gt; 'a <a href="?package=async_core&amp;module=Async_stream&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">append t1 t2</code> returns a stream with all the values of t1, in order, and if t1 ends,
     these values are followed by all the values of t2.</div></div>
 <pre><span class="VALconcat"><span class="keyword">val</span> concat</span> : <code class="type">'a <a href="?package=async_core&amp;module=Async_stream&amp;type=t">t</a> <a href="?package=async_core&amp;module=Async_stream&amp;type=t">t</a> -&gt; 'a <a href="?package=async_core&amp;module=Async_stream&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">concat t</code> takes a stream of streams and produces a stream that is the concatenation
@@ -35,11 +35,11 @@
 <pre><span class="VALavailable_now"><span class="keyword">val</span> available_now</span> : <code class="type">'a <a href="?package=async_core&amp;module=Async_stream&amp;type=t">t</a> -&gt; 'a list * 'a <a href="?package=async_core&amp;module=Async_stream&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">available_now t</code> returns t prefix of t that is available now, along with the rest of
     the stream.</div></div>
 <pre><span class="VALfilter_deprecated"><span class="keyword">val</span> filter_deprecated</span> : <code class="type">'a <a href="?package=async_core&amp;module=Async_stream&amp;type=t">t</a> -&gt; f:('a -&gt; bool) -&gt; 'a <a href="?package=async_core&amp;module=Async_stream&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">filter_deprecated s ~f</code> returns a stream with one element, v, for each v in s such
-    with f v = true.<br/>    Using <code class="code">filter_deprecated</code> can easily lead to space leaks.  It is better to use
-    <code class="code">Async.Pipe</code> than <code class="code">Async.Stream</code>.</div></div>
+    with f v = true.<p>    Using <code class="code">filter_deprecated</code> can easily lead to space leaks.  It is better to use
+    <code class="code">Async.Pipe</code> than <code class="code">Async.Stream</code>.</p></div></div>
 <pre><span class="VALfilter_map_deprecated"><span class="keyword">val</span> filter_map_deprecated</span> : <code class="type">'a <a href="?package=async_core&amp;module=Async_stream&amp;type=t">t</a> -&gt; f:('a -&gt; 'b option) -&gt; 'b <a href="?package=async_core&amp;module=Async_stream&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">filter_map_deprecated s ~f</code> returns a stream with one element, v', for each v in s
-    such with f v = Some v'.<br/>    Using <code class="code">filter_map_deprecated</code> can easily lead to space leaks.  It is better to use
-    <code class="code">Async.Pipe</code> than <code class="code">Async.Stream</code>.</div></div>
+    such with f v = Some v'.<p>    Using <code class="code">filter_map_deprecated</code> can easily lead to space leaks.  It is better to use
+    <code class="code">Async.Pipe</code> than <code class="code">Async.Stream</code>.</p></div></div>
 <pre><span class="VALfold'"><span class="keyword">val</span> fold'</span> : <code class="type">'a <a href="?package=async_core&amp;module=Async_stream&amp;type=t">t</a> -&gt; init:'b -&gt; f:('b -&gt; 'a -&gt; 'b <a href="?package=async_core&amp;module=Deferred&amp;type=t">Deferred.t</a>) -&gt; 'b <a href="?package=async_core&amp;module=Deferred&amp;type=t">Deferred.t</a></code></pre><div class="info"><div class="info"><code class="code">fold' t ~init ~f</code> is like list fold, walking over the elements of the stream in
     order, as they become available.  <code class="code">fold'</code> returns a deferred that will yield the final
     value of the accumulator, if the end of the stream is reached.</div></div>
@@ -54,10 +54,10 @@
     becomes determined.</div></div>
 <pre><span class="VALiter_durably'"><span class="keyword">val</span> iter_durably'</span> : <code class="type">'a <a href="?package=async_core&amp;module=Async_stream&amp;type=t">t</a> -&gt; f:('a -&gt; unit <a href="?package=async_core&amp;module=Deferred&amp;type=t">Deferred.t</a>) -&gt; unit <a href="?package=async_core&amp;module=Deferred&amp;type=t">Deferred.t</a></code></pre><div class="info"><div class="info"><code class="code">iter_durably' t ~f</code> is like <code class="code">iter' t ~f</code>, except if <code class="code">f</code> raises an exception it
     continues with the next element of the stream *and* reraises the exception (to the
-    monitor in scope when iter_durably was called).<br/>    <code class="code">iter_durably t ~f</code> is like <code class="code">iter t ~f</code>, except if <code class="code">f</code> raises an exception it
+    monitor in scope when iter_durably was called).<p>    <code class="code">iter_durably t ~f</code> is like <code class="code">iter t ~f</code>, except if <code class="code">f</code> raises an exception it
     continues with the next element of the stream *and* reraises the exception (to the
-    monitor in scope when iter_durably was called).<br/>    <code class="code">iter_durably_report_end t ~f</code> is equivalent to <code class="code">iter_durably' t ~f:(fun x -&gt; return
-    (f x))</code> but it is more efficient</div></div>
+    monitor in scope when iter_durably was called).</p><p>    <code class="code">iter_durably_report_end t ~f</code> is equivalent to <code class="code">iter_durably' t ~f:(fun x -&gt; return
+    (f x))</code> but it is more efficient</p></div></div>
 <pre><span class="VALiter_durably"><span class="keyword">val</span> iter_durably</span> : <code class="type">'a <a href="?package=async_core&amp;module=Async_stream&amp;type=t">t</a> -&gt; f:('a -&gt; unit) -&gt; unit</code></pre>
 <pre><span class="VALiter_durably_report_end"><span class="keyword">val</span> iter_durably_report_end</span> : <code class="type">'a <a href="?package=async_core&amp;module=Async_stream&amp;type=t">t</a> -&gt; f:('a -&gt; unit) -&gt; unit <a href="?package=async_core&amp;module=Deferred&amp;type=t">Deferred.t</a></code></pre>
 <pre><span class="VALlength"><span class="keyword">val</span> length</span> : <code class="type">'a <a href="?package=async_core&amp;module=Async_stream&amp;type=t">t</a> -&gt; int <a href="?package=async_core&amp;module=Deferred&amp;type=t">Deferred.t</a></code></pre><div class="info"><div class="info"><code class="code">length s</code> returns a deferred that is determined when the end of s is reached, taking
@@ -118,11 +118,11 @@
     the end of <code class="code">t</code> is reached.</div></div>
 <div class="info"><div class="info">Sequence operations
     ----------------------------------------------------------------------
-    There are the usual sequence operations:<br/>    <span class="verbatim">      append, fold, iter, map, filter_map, take
-    </span><br/>    There are also deferred variants:<br/>    <span class="verbatim">      iter', map', filter_map'
-    </span><br/>    These take anonymous functions that return deferreds generalizing the usual sequence
+    There are the usual sequence operations:<p>    <span class="verbatim">      append, fold, iter, map, filter_map, take
+    </span></p><p>    There are also deferred variants:</p><p>    <span class="verbatim">      iter', map', filter_map'
+    </span></p><p>    These take anonymous functions that return deferreds generalizing the usual sequence
     operation and allowing the client to control the rate at which the sequence is
-    processed.</div></div>
+    processed.</p></div></div>
 <div class="info"><div class="info"><code class="code">append t1 t2</code> returns a stream with all the values of t1, in order, and if t1 ends,
     these values are followed by all the values of t2.</div></div>
 <div class="info"><div class="info"><code class="code">concat t</code> takes a stream of streams and produces a stream that is the concatenation
@@ -130,11 +130,11 @@
 <div class="info"><div class="info"><code class="code">available_now t</code> returns t prefix of t that is available now, along with the rest of
     the stream.</div></div>
 <div class="info"><div class="info"><code class="code">filter_deprecated s ~f</code> returns a stream with one element, v, for each v in s such
-    with f v = true.<br/>    Using <code class="code">filter_deprecated</code> can easily lead to space leaks.  It is better to use
-    <code class="code">Async.Pipe</code> than <code class="code">Async.Stream</code>.</div></div>
+    with f v = true.<p>    Using <code class="code">filter_deprecated</code> can easily lead to space leaks.  It is better to use
+    <code class="code">Async.Pipe</code> than <code class="code">Async.Stream</code>.</p></div></div>
 <div class="info"><div class="info"><code class="code">filter_map_deprecated s ~f</code> returns a stream with one element, v', for each v in s
-    such with f v = Some v'.<br/>    Using <code class="code">filter_map_deprecated</code> can easily lead to space leaks.  It is better to use
-    <code class="code">Async.Pipe</code> than <code class="code">Async.Stream</code>.</div></div>
+    such with f v = Some v'.<p>    Using <code class="code">filter_map_deprecated</code> can easily lead to space leaks.  It is better to use
+    <code class="code">Async.Pipe</code> than <code class="code">Async.Stream</code>.</p></div></div>
 <div class="info"><div class="info"><code class="code">fold' t ~init ~f</code> is like list fold, walking over the elements of the stream in
     order, as they become available.  <code class="code">fold'</code> returns a deferred that will yield the final
     value of the accumulator, if the end of the stream is reached.</div></div>
@@ -149,10 +149,10 @@
     becomes determined.</div></div>
 <div class="info"><div class="info"><code class="code">iter_durably' t ~f</code> is like <code class="code">iter' t ~f</code>, except if <code class="code">f</code> raises an exception it
     continues with the next element of the stream *and* reraises the exception (to the
-    monitor in scope when iter_durably was called).<br/>    <code class="code">iter_durably t ~f</code> is like <code class="code">iter t ~f</code>, except if <code class="code">f</code> raises an exception it
+    monitor in scope when iter_durably was called).<p>    <code class="code">iter_durably t ~f</code> is like <code class="code">iter t ~f</code>, except if <code class="code">f</code> raises an exception it
     continues with the next element of the stream *and* reraises the exception (to the
-    monitor in scope when iter_durably was called).<br/>    <code class="code">iter_durably_report_end t ~f</code> is equivalent to <code class="code">iter_durably' t ~f:(fun x -&gt; return
-    (f x))</code> but it is more efficient</div></div>
+    monitor in scope when iter_durably was called).</p><p>    <code class="code">iter_durably_report_end t ~f</code> is equivalent to <code class="code">iter_durably' t ~f:(fun x -&gt; return
+    (f x))</code> but it is more efficient</p></div></div>
 <div class="info"><div class="info"><code class="code">length s</code> returns a deferred that is determined when the end of s is reached, taking
     the value of the number of elements in s</div></div>
 <div class="info"><div class="info"><code class="code">map' t f</code> creates a new stream that with one element, (f v), for each element v of

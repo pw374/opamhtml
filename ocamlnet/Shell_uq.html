@@ -5,8 +5,8 @@
  installed for proper function of the engines. It is recommended to
  call the pair of functions  <a href="#Shell_sys.configure_job_handlers">Shell_sys.configure_job_handlers</a> and
   <a href="#Shell_sys.install_job_handlers">Shell_sys.install_job_handlers</a> for this purpose. This is not
- done automatically.<br/> Note that this has a global side effect on the whole process, because
- there is only one set of signal handlers.</div></div>
+ done automatically.<p> Note that this has a global side effect on the whole process, because
+ there is only one set of signal handlers.</p></div></div>
 <div class="info"><div class="info"><h1 id="1_TITLE">Engines</h1></div></div>
 <div class="ocaml_class sig" name="job_handler_engine_type"><pre><span class="TYPEjob_handler_engine_type"><span class="keyword">class type</span> <code class="type">['t] </code><a href="?package=ocamlnet&amp;module=Shell_uq&amp;class=job_handler_engine_type">job_handler_engine_type</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">This type of engine also returns the <code class="code">job</code> and the <code class="code">job_instance</code>.</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"> <pre><span class="keyword">inherit</span> <code class="type"/><code class="type">['t] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">Uq_engines.engine</a></pre></div>
 
@@ -21,19 +21,19 @@
  error status <code class="code">`Error Subprocess_failure</code>. If <code class="code">ignore_error_code</code>,
  failed jobs are ignored, and result in the status <code class="code">`Done</code>
  (however, jobs terminated by signals are still reported as
- errors).<br/> For the other arguments see  <a href="#Shell.call">Shell.call</a>.<br/> When the engine goes to <code class="code">`Error</code> or <code class="code">`Aborted</code>, the job
- is terminated (  <a href="#Shell_sys.abandon_job">Shell_sys.abandon_job</a> ).</div></div></div>
-<div class="info"><div class="info"><h1 id="1_TITLE">Examples</h1> <br/> All examples presented for the  <a href="#Shell">Shell</a> module can be easily rewritten
+ errors).<p> For the other arguments see  <a href="#Shell.call">Shell.call</a>.</p><p> When the engine goes to <code class="code">`Error</code> or <code class="code">`Aborted</code>, the job
+ is terminated (  <a href="#Shell_sys.abandon_job">Shell_sys.abandon_job</a> ).</p></div></div></div>
+<div class="info"><div class="info"><h1 id="1_TITLE">Examples</h1> <p> All examples presented for the  <a href="#Shell">Shell</a> module can be easily rewritten
  for <code class="code">Shell_uq</code>. For example, to call &quot;ls&quot; and collect the result in a
- buffer, use this piece of code:<br/> <pre class="codepre"><code class="code">
+ buffer, use this piece of code:</p><p> </p><code class="code">
  let ues = Unixqueue.create_unix_event_system();;
  let b = Buffer.create 10;;
  let e = new call_engine ~stdout:(Shell.to_buffer b) [ Shell.command &quot;ls&quot; ];;
  Unixqueue.run ues;;
  let r = Buffer.contents b;;
- </code></pre><br/> This means, one simply creates a <code class="code">call_engine</code> instead of invoking
+ </code><p> This means, one simply creates a <code class="code">call_engine</code> instead of invoking
   <a href="#Shell.call">Shell.call</a>, and then runs the queue. Note that you must look at
  <code class="code">e#state</code> to find out whether the engine <code class="code">e</code> produced an error, no
- exception is raised in this case.<br/> It is allowed (and somehow the purpose of this module) to create
- several job engines, and let them run in parallel.</div></div>
+ exception is raised in this case.</p><p> It is allowed (and somehow the purpose of this module) to create
+ several job engines, and let them run in parallel.</p></div></div>
 </div>

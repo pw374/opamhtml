@@ -1,21 +1,21 @@
-<div class="ocaml_toplevel_module"><div class="info"><div class="info">A library for building asynchronous RPC-style protocols.<br/>    The approach here is to have a separate representation of the server-side
+<div class="ocaml_toplevel_module"><div class="info"><div class="info">A library for building asynchronous RPC-style protocols.<p>    The approach here is to have a separate representation of the server-side
     implementation of an RPC (An <code class="code">Implementation.t</code>) and the interface that it exports
     (either an <code class="code">Rpc.t</code>, a <code class="code">State_rpc.t</code> or a <code class="code">Pipe_rpc.t</code>, but we'll refer to them
     generically as RPC interfaces).  A server builds the <code class="code">Implementation.t</code> out of an RPC
     interface and a function for implementing the RPC, while the client dispatches a
-    request using the same RPC interface.<br/>    The <code class="code">Implementation.t</code> hides the type of the query and the response, whereas the
+    request using the same RPC interface.</p><p>    The <code class="code">Implementation.t</code> hides the type of the query and the response, whereas the
     <code class="code">Rpc.t</code> is polymorphic in the query and response type.  This allows you to build a
-    <code class="code">Implementations.t</code> out of a list of <code class="code">Implementation.t</code>s.<br/>    Each RPC also comes with a version number.  This is meant to allow support of multiple
+    <code class="code">Implementations.t</code> out of a list of <code class="code">Implementation.t</code>s.</p><p>    Each RPC also comes with a version number.  This is meant to allow support of multiple
     different versions of what is essentially the same RPC.  You can think of it as an
     extension to the name of the RPC, and in fact, each RPC is uniquely identified by its
     (name, version) pair.  RPCs with the same name but different versions should implement
-    similar functionality.</div></div>
+    similar functionality.</p></div></div>
 <div class="ocaml_module sig" name="Implementation"><pre><span class="keyword">module</span> <a href="?package=async_extra&amp;module=Rpc.Implementation">Implementation</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
 <pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'connection_state </code>t</span> </pre><div class="info"><div class="info">A <code class="code">'connection_state t</code> is something which knows how to respond to one query, given
       a <code class="code">'connection_state</code>.  That is, you can create a <code class="code">'connection_state t</code> by providing
-      a function which takes a query *and* a <code class="code">'connection_state</code> and provides a response.<br/>      The reason for this is that rpcs often do something like look something up in a
+      a function which takes a query *and* a <code class="code">'connection_state</code> and provides a response.<p>      The reason for this is that rpcs often do something like look something up in a
       master structure.  This way, <code class="code">Implementation.t</code>'s can be created without having the
-      master structure in your hands.</div></div>
+      master structure in your hands.</p></div></div>
 <div class="ocaml_module sig" name="Description"><pre><span class="keyword">module</span> <a href="?package=async_extra&amp;module=Rpc.Implementation.Description">Description</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
 <pre><code><span class="TYPEt"><span class="keyword">type</span> t</span> = {</code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTt.name">name</span> : <code class="type">string</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTt.version">version</span> : <code class="type">int</code>;</code></td></tr><tr><td>}</td></tr></table>

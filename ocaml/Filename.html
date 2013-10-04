@@ -19,15 +19,15 @@
    end with the suffix <code class="code">suff</code>.</div></div>
 <pre><span class="VALchop_extension"><span class="keyword">val</span> chop_extension</span> : <code class="type">string -&gt; string</code></pre><div class="info"><div class="info">Return the given file name without its extension. The extension
    is the shortest suffix starting with a period and not including
-   a directory separator, <code class="code">.xyz</code> for instance.<br/>   Raise <code class="code">Invalid_argument</code> if the given name does not contain
-   an extension.</div></div>
+   a directory separator, <code class="code">.xyz</code> for instance.<p>   Raise <code class="code">Invalid_argument</code> if the given name does not contain
+   an extension.</p></div></div>
 <pre><span class="VALbasename"><span class="keyword">val</span> basename</span> : <code class="type">string -&gt; string</code></pre><div class="info"><div class="info">Split a file name into directory name / base file name.
    If <code class="code">name</code> is a valid file name, then <code class="code">concat (dirname name) (basename name)</code>
    returns a file name which is equivalent to <code class="code">name</code>. Moreover,
    after setting the current directory to <code class="code">dirname name</code> (with  <a href="#Sys.chdir">Sys.chdir</a>),
    references to <code class="code">basename name</code> (which is a relative file name)
-   designate the same file as <code class="code">name</code> before the call to  <a href="#Sys.chdir">Sys.chdir</a>.<br/>   This function conforms to the specification of POSIX.1-2008 for the
-   <code class="code">basename</code> utility.</div></div>
+   designate the same file as <code class="code">name</code> before the call to  <a href="#Sys.chdir">Sys.chdir</a>.<p>   This function conforms to the specification of POSIX.1-2008 for the
+   <code class="code">basename</code> utility.</p></div></div>
 <pre><span class="VALdirname"><span class="keyword">val</span> dirname</span> : <code class="type">string -&gt; string</code></pre><div class="info"><div class="info">See  <a href="#Filename.basename">Filename.basename</a>.
    This function conforms to the specification of POSIX.1-2008 for the
    <code class="code">dirname</code> utility.</div></div>

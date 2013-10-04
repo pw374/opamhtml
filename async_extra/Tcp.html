@@ -17,12 +17,12 @@
     finished processing and the file descriptor for the socket is closed.  If <code class="code">interrupt</code>
     is supplied then the connection attempt will be aborted if interrupt is fulfilled
     before the connection has been established.  Similarly, all connection attempts have a
-    timeout (default 30s), that can be overridden with <code class="code">timeout</code>.<br/>    It is fine for <code class="code">f</code> to ignore the supplied socket and just use the reader and writer.
-    The socket is there to make it convenient to call <code class="code">Socket</code> functions.</div></div>
+    timeout (default 30s), that can be overridden with <code class="code">timeout</code>.<p>    It is fine for <code class="code">f</code> to ignore the supplied socket and just use the reader and writer.
+    The socket is there to make it convenient to call <code class="code">Socket</code> functions.</p></div></div>
 <pre><span class="VALconnect_sock"><span class="keyword">val</span> connect_sock</span> : <code class="type">([&lt; <a href="?package=async_extra&amp;module=Import.Socket.Address&amp;type=t">Import.Socket.Address.t</a> ] as 'a) <a href="?package=async_extra&amp;module=Tcp&amp;type=where_to_connect">where_to_connect</a> -&gt;
 ([ `Active ], 'a) <a href="?package=async_extra&amp;module=Import.Socket&amp;type=t">Import.Socket.t</a> <a href="?package=async_extra&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre><div class="info"><div class="info"><code class="code">connect_sock ~host ~port</code> opens a TCP connection to the specified hostname
-    and port, returning the socket.<br/>    Any errors in the connection will be reported to the monitor that was current
-    when connect was called.</div></div>
+    and port, returning the socket.<p>    Any errors in the connection will be reported to the monitor that was current
+    when connect was called.</p></div></div>
 <pre><span class="VALconnect"><span class="keyword">val</span> connect</span> : <code class="type">(([&lt; <a href="?package=async_extra&amp;module=Import.Socket.Address&amp;type=t">Import.Socket.Address.t</a> ] as 'a) <a href="?package=async_extra&amp;module=Tcp&amp;type=where_to_connect">where_to_connect</a> -&gt;
  (([ `Active ], 'a) <a href="?package=async_extra&amp;module=Import.Socket&amp;type=t">Import.Socket.t</a> * <a href="?package=async_extra&amp;module=Import.Reader&amp;type=t">Import.Reader.t</a> * <a href="?package=async_extra&amp;module=Import.Writer&amp;type=t">Import.Writer.t</a>)
  <a href="?package=async_extra&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>)
@@ -31,8 +31,8 @@
     descriptor, and so closing one will affect the other.  In particular, closing the
     reader before closing the writer will cause the writer to subsequently raise an
     exception when it attempts to flush internally-buffered bytes to the OS, due to a
-    closed fd.  You should close the <code class="code">Writer</code> first to avoid this problem.<br/>    If possible, use <code class="code">with_connection</code>, which automatically handles closing.<br/>    It is fine to ignore the returned socket and just use the reader and writer.  The
-    socket is there to make it convenient to call <code class="code">Socket</code> functions.</div></div>
+    closed fd.  You should close the <code class="code">Writer</code> first to avoid this problem.<p>    If possible, use <code class="code">with_connection</code>, which automatically handles closing.</p><p>    It is fine to ignore the returned socket and just use the reader and writer.  The
+    socket is there to make it convenient to call <code class="code">Socket</code> functions.</p></div></div>
 <div class="ocaml_module sig" name="Where_to_listen"><pre><span class="keyword">module</span> <a href="?package=async_extra&amp;module=Tcp.Where_to_listen">Where_to_listen</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">A <code class="code">Where_to_listen</code> describes the socket that a tcp server should listen on.</div></div><div class="ocaml_module_content">
 <pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">('address, 'listening_on) </code>t</span> </pre>
 <pre><span class="TYPEinet"><span class="keyword">type</span> inet</span> = <code class="type">(<a href="?package=async_extra&amp;module=Import.Socket.Address.Inet&amp;type=t">Import.Socket.Address.Inet.t</a>, int) <a href="?package=async_extra&amp;module=Tcp.Where_to_listen&amp;type=t">t</a></code></pre>
@@ -52,9 +52,9 @@ address:'a -&gt; listening_on:('a -&gt; 'listening_on) -&gt; ('a, 'listening_on)
       determined after <code class="code">Fd.close_finished fd</code> on the socket's fd.  It is guaranteed that
       <code class="code">t</code>'s client handler will never be called after <code class="code">close t</code>.  It is ok to call <code class="code">close</code>
       multiple times on the same <code class="code">t</code>; calls subsequent to the initial call will have no
-      effect, but will return the same deferred as the original call.<br/>      <code class="code">close_finished</code> becomes determined after <code class="code">Fd.close_finished fd</code> on the socket's fd,
+      effect, but will return the same deferred as the original call.<p>      <code class="code">close_finished</code> becomes determined after <code class="code">Fd.close_finished fd</code> on the socket's fd,
      i.e. the same deferred that <code class="code">close</code> returns.  <code class="code">close_finished</code> differs from <code class="code">close</code>
-     in that it does not have the side effect of initiating a close.<br/>     <code class="code">is_closed t</code> returns <code class="code">true</code> iff <code class="code">close t</code> has been called.</div></div>
+     in that it does not have the side effect of initiating a close.</p><p>     <code class="code">is_closed t</code> returns <code class="code">true</code> iff <code class="code">close t</code> has been called.</p></div></div>
 <pre><span class="VALclose_finished"><span class="keyword">val</span> close_finished</span> : <code class="type">([&lt; <a href="?package=async_extra&amp;module=Import.Socket.Address&amp;type=t">Import.Socket.Address.t</a> ], 'a) <a href="?package=async_extra&amp;module=Tcp.Server&amp;type=t">t</a> -&gt; unit <a href="?package=async_extra&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
 <pre><span class="VALis_closed"><span class="keyword">val</span> is_closed</span> : <code class="type">([&lt; <a href="?package=async_extra&amp;module=Import.Socket.Address&amp;type=t">Import.Socket.Address.t</a> ], 'a) <a href="?package=async_extra&amp;module=Tcp.Server&amp;type=t">t</a> -&gt; bool</code></pre>
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">?max_connections:int -&gt;
@@ -70,15 +70,15 @@ address:'a -&gt; listening_on:('a -&gt; 'listening_on) -&gt; ('a, 'listening_on)
       by <code class="code">where_to_listen</code>.  It returns a server once the socket is ready to accept
       connections.  The server calls <code class="code">handler (address, reader, writer)</code> for each client
       that connects.  If the deferred returned by <code class="code">handler</code> is ever determined, or
-      <code class="code">handler</code> raises an exception, then <code class="code">reader</code> and <code class="code">writer</code> are closed.<br/>      <code class="code">max_pending_connections</code> is the maximum number of clients that can have a
+      <code class="code">handler</code> raises an exception, then <code class="code">reader</code> and <code class="code">writer</code> are closed.<p>      <code class="code">max_pending_connections</code> is the maximum number of clients that can have a
       connection pending, as with <code class="code">Unix.Socket.listen</code>.  Additional connections will be
-      rejected.<br/>      <code class="code">max_connections</code> is the maximum number of clients that can be connected
+      rejected.</p><p>      <code class="code">max_connections</code> is the maximum number of clients that can be connected
       simultaneously.  The server will not call <code class="code">accept</code> unless the number of clients is
       less than <code class="code">max_connections</code>, although of course potential clients can have a
-      connection pending.<br/>      <code class="code">buffer_age_limit</code> passes on to the underlying writer option of the same name.<br/>      <code class="code">on_handler_error</code> determines what happens if the handler throws an exception.  The
+      connection pending.</p><p>      <code class="code">buffer_age_limit</code> passes on to the underlying writer option of the same name.</p><p>      <code class="code">on_handler_error</code> determines what happens if the handler throws an exception.  The
       default is <code class="code">`Raise</code>.  If an exception is raised by on_handler_error (either
       explicitely via `Raise, or in the closure passed to `Call) no further connections
-      will be accepted.<br/>      The server will stop accepting and close the listening socket when an error handler
+      will be accepted.</p><p>      The server will stop accepting and close the listening socket when an error handler
       raises (either via <code class="code">`Raise</code> or <code class="code">`Call f</code> where <code class="code">f</code> raises), or if <code class="code">close</code> is
-      called.</div></div></div></div>
+      called.</p></div></div></div></div>
 </div>

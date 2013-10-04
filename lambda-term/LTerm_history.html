@@ -1,19 +1,19 @@
 <div class="ocaml_toplevel_module"><div class="info">History management</div>
 <pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">Type of a history.</div></div>
-<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">?max_size:int -&gt; ?max_entries:int -&gt; <a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a> list -&gt; <a href="?package=lambda-term&amp;module=LTerm_history&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create ?max_size ?max_lines init</code> creates a new history.<br/>      <code class="code">max_size</code> is the maximum size in bytes of the history. Oldest
+<pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">?max_size:int -&gt; ?max_entries:int -&gt; <a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a> list -&gt; <a href="?package=lambda-term&amp;module=LTerm_history&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create ?max_size ?max_lines init</code> creates a new history.<p>      <code class="code">max_size</code> is the maximum size in bytes of the history. Oldest
       entries are dropped if this limit is reached. The default is
-      <code class="code">max_int</code>.<br/>      <code class="code">max_entries</code> is the maximum number of entries of the
+      <code class="code">max_int</code>.</p><p>      <code class="code">max_entries</code> is the maximum number of entries of the
       history. Oldest entries are dropped if this limit is
-      reached. The default is no <code class="code">max_int</code>.<br/>      <code class="code">init</code> is the initial contents of the history. All entries of
+      reached. The default is no <code class="code">max_int</code>.</p><p>      <code class="code">init</code> is the initial contents of the history. All entries of
       <code class="code">init</code> are considered &quot;old&quot;. Old entries are not saved by
-       <a href="#save">save</a> when <code class="code">append</code> is set to <code class="code">true</code>.<br/>      Note: the first element of <code class="code">init</code> must be the most recent
-      entry.</div></div>
+       <a href="#save">save</a> when <code class="code">append</code> is set to <code class="code">true</code>.</p><p>      Note: the first element of <code class="code">init</code> must be the most recent
+      entry.</p></div></div>
 <pre><span class="VALadd"><span class="keyword">val</span> add</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm_history&amp;type=t">t</a> -&gt; ?skip_empty:bool -&gt; ?skip_dup:bool -&gt; <a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">add history ?skip_empty ?skip_dup entry</code> adds <code class="code">entry</code> to the
       top of the history. If <code class="code">skip_empty</code> is <code class="code">true</code> (the default) and
       <code class="code">entry</code> contains only spaces, it is not added. If <code class="code">skip_dup</code> is
       <code class="code">true</code> (the default) and <code class="code">entry</code> is equal to the top of the
-      history, it is not added.<br/>      If <code class="code">entry</code> is bigger than the maximum size of the history, the
-      history is not modified.</div></div>
+      history, it is not added.<p>      If <code class="code">entry</code> is bigger than the maximum size of the history, the
+      history is not modified.</p></div></div>
 <pre><span class="VALcontents"><span class="keyword">val</span> contents</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm_history&amp;type=t">t</a> -&gt; <a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a> list</code></pre><div class="info"><div class="info">Returns all the entries of the history. The first element of the
       list is the most recent entry.</div></div>
 <pre><span class="VALsize"><span class="keyword">val</span> size</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm_history&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">Returns the size (in bytes) of the history.</div></div>
@@ -31,27 +31,27 @@
 ?log:(int -&gt; string -&gt; unit) -&gt;
 ?skip_empty:bool -&gt; ?skip_dup:bool -&gt; string -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">load history ?log ?skip_empty ?skip_dup filename</code> loads entries
       from <code class="code">filename</code> to <code class="code">history</code>. If <code class="code">filename</code> does not exists
-      <code class="code">history</code> is not modified.<br/>      <code class="code">log</code> is the function used to log errors contained in the
+      <code class="code">history</code> is not modified.<p>      <code class="code">log</code> is the function used to log errors contained in the
       history file (errors are because of non-UTF8 data). Arguments
       are a line number and an error message. The default is to use
       the default logger (of <code class="code">Lwt_log</code>). Entries containing errors are
-      skipped.<br/>      Note: all entries are marked as old, i.e. <code class="code">old_count history =
-      length history</code>.</div></div>
+      skipped.</p><p>      Note: all entries are marked as old, i.e. <code class="code">old_count history =
+      length history</code>.</p></div></div>
 <pre><span class="VALsave"><span class="keyword">val</span> save</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm_history&amp;type=t">t</a> -&gt;
 ?max_size:int -&gt;
 ?max_entries:int -&gt;
 ?skip_empty:bool -&gt;
 ?skip_dup:bool -&gt; ?append:bool -&gt; ?perm:int -&gt; string -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">save history ?max_size ?max_entries ?skip_empty ?sjip_dup ?perm
-      filename</code> saves <code class="code">history</code> to <code class="code">filename</code>.<br/>      If <code class="code">append</code> is <code class="code">false</code> then the file is truncated and new
+      filename</code> saves <code class="code">history</code> to <code class="code">filename</code>.<p>      If <code class="code">append</code> is <code class="code">false</code> then the file is truncated and new
       entries are saved. If it is <code class="code">true</code> (the default) then new
       entries are added at the end. <code class="code">perm</code> are the file permissions in
-      case it is created.<br/>      If <code class="code">append</code> is <code class="code">true</code> and there is no new entries, the file is
+      case it is created.</p><p>      If <code class="code">append</code> is <code class="code">true</code> and there is no new entries, the file is
       not touched. In any other case, limits are honored and the
       resulting file will never contains more bytes than <code class="code">max_size</code> or
       more entries than <code class="code">max_entries</code>. If <code class="code">max_size</code> and/or
-      <code class="code">max_entries</code> are not specified, the ones of <code class="code">history</code> are used.<br/>      After the history is successfully saved, all entries of
+      <code class="code">max_entries</code> are not specified, the ones of <code class="code">history</code> are used.</p><p>      After the history is successfully saved, all entries of
       <code class="code">history</code> are marked as old, i.e. <code class="code">old_count history = length
-      history</code>.</div></div>
+      history</code>.</p></div></div>
 <pre><span class="VALentry_size"><span class="keyword">val</span> entry_size</span> : <code class="type"><a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a> -&gt; int</code></pre><div class="info"><div class="info"><code class="code">entry_size entry</code> returns the size taken by an entry in the
       history file in bytes. This is not exactly <code class="code">String.length entry</code>
       since some characters are escaped and the entry is terminated by

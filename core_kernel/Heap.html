@@ -1,8 +1,8 @@
-<div class="ocaml_toplevel_module"><div class="info">Heap implementation based on a pairing-heap.<br/>    This heap implementations supports an arbitrary element type, via a comparison
+<div class="ocaml_toplevel_module"><div class="info">Heap implementation based on a pairing-heap.<p>    This heap implementations supports an arbitrary element type, via a comparison
     function.  If you need a heap with elements ordered by integers, then it may be more
     efficient to use a <code class="code">Timing_wheel.Priority_queue</code>, which is a heap implementation
     specialized to integer keys, and with some other performance differences and usage
-    restrictions.</div>
+    restrictions.</p></div>
 <div class="ocaml_include ident" path="?package=core_kernel&amp;module=Heap_intf.S" items="[]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core_kernel&amp;module=Heap_intf.S">Heap_intf.S</a></code></code></pre></div>
 <div class="ocaml_module sig" name="Removable"><pre><span class="keyword">module</span> <a href="?package=core_kernel&amp;module=Heap.Removable">Removable</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Removable augments a heap with the ability to remove elements from the heap in lg(n)
     (amortized) time at any point after they have been added.  Elements within a Removable

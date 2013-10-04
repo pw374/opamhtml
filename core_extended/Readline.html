@@ -1,6 +1,6 @@
-<div class="ocaml_toplevel_module"><div class="info">Interactive line editing.<br/>   This implements very basic <code class="code">readline</code> abilities: backspace, left and right
+<div class="ocaml_toplevel_module"><div class="info">Interactive line editing.<p>   This implements very basic <code class="code">readline</code> abilities: backspace, left and right
    arrows work as expected.
-   There's also a history that can be browsed through the <code class="code">up</code> and <code class="code">down</code> arrows.</div>
+   There's also a history that can be browsed through the <code class="code">up</code> and <code class="code">down</code> arrows.</p></div>
 <pre><span class="TYPEcompleter"><span class="keyword">type</span> completer</span> = <code class="type">left:string -&gt; right:string -&gt; string list</code></pre>
 <div class="ocaml_module sig" name="History"><pre><span class="keyword">module</span> <a href="?package=core_extended&amp;module=Readline.History">History</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">A mutable variable representing the history.</div></div><div class="ocaml_module_content">
 <pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre>

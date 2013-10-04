@@ -7,11 +7,11 @@
     Async scheduler before the wrapped function is run, and will stop the scheduler when
     the wrapped function returns.</div></div>
 <div class="info"><div class="info">To create an <code class="code">Arg_type.t</code> that uses auto-completion and uses async to compute the
-    possible completions, one should use<br/>    <pre class="codepre"><code class="code">
+    possible completions, one should use<p>    </p><code class="code">
       Arg_type.create ~complete of_string
-    </code></pre><br/>    where <code class="code">complete</code> wraps its async operations in <code class="code">Thread_safe.block_on_async</code>.  With
+    </code><p>    where <code class="code">complete</code> wraps its async operations in <code class="code">Thread_safe.block_on_async</code>.  With
     this, the <code class="code">complete</code> function is only called when the executable is auto-completing,
     not for ordinary execution.  This improves performance, and also means that the async
     scheduler isn't started for ordinary execution of the command, which makes it possible
-    for the command to daemonize (which requires the scheduler to not have been started).</div></div>
+    for the command to daemonize (which requires the scheduler to not have been started).</p></div></div>
 </div>

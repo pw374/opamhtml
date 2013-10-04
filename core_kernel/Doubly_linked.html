@@ -4,10 +4,10 @@
     functions.  If those user-supplied functions modify the data structure, what is the
     semantics of the remainder of the iteration?  This module sidesteps this issue by
     detecting attempts by user-supplied functions to modify a doubly-linked list while in
-    the middle of iterating over it.<br/>    Modification functions include: insert_*, remove*, transfer
-    Iteration functions include: exists, fold*, for_all, find<br/>    Calls to modification functions detect if the list is being iterated over, and if so
+    the middle of iterating over it.<p>    Modification functions include: insert_*, remove*, transfer
+    Iteration functions include: exists, fold*, for_all, find</p><p>    Calls to modification functions detect if the list is being iterated over, and if so
     raise an exception rather than modify the list.  For example, a use like the following
-    would raise.<br/>    iter t ~f:(fun _ -&gt; ... remove t e ...)</div></div>
+    would raise.</p><p>    iter t ~f:(fun _ -&gt; ... remove t e ...)</p></div></div>
 <div class="ocaml_module sig" name="Elt"><pre><span class="keyword">module</span> <a href="?package=core_kernel&amp;module=Doubly_linked.Elt">Elt</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
 <pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> </pre>
 <pre><span class="VALvalue"><span class="keyword">val</span> value</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Doubly_linked.Elt&amp;type=t">t</a> -&gt; 'a</code></pre>
@@ -39,9 +39,9 @@
 <pre><span class="VALremove_first"><span class="keyword">val</span> remove_first</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Doubly_linked&amp;type=t">t</a> -&gt; 'a option</code></pre>
 <pre><span class="VALremove_last"><span class="keyword">val</span> remove_last</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Doubly_linked&amp;type=t">t</a> -&gt; 'a option</code></pre>
 <pre><span class="VALfold_elt"><span class="keyword">val</span> fold_elt</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Doubly_linked&amp;type=t">t</a> -&gt; init:'b -&gt; f:('b -&gt; 'a <a href="?package=core_kernel&amp;module=Doubly_linked.Elt&amp;type=t">Elt.t</a> -&gt; 'b) -&gt; 'b</code></pre><div class="info"><div class="info"><code class="code">fold_elt t ~init ~f</code> is the same as fold, except <code class="code">f</code> is called with the <code class="code">'a Elt.t</code>'s
-    from the list instead of the contained <code class="code">'a</code> values.<br/>    Note that like other iteration functions, it is an error to mutate <code class="code">t</code> inside the
+    from the list instead of the contained <code class="code">'a</code> values.<p>    Note that like other iteration functions, it is an error to mutate <code class="code">t</code> inside the
     fold. If you'd like to call <code class="code">remove</code> on any of the <code class="code">'a Elt.t</code>'s, accumulate them here
-    and do so after <code class="code">fold_elt</code> returns.</div></div>
+    and do so after <code class="code">fold_elt</code> returns.</p></div></div>
 <pre><span class="VALiter_elt"><span class="keyword">val</span> iter_elt</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Doubly_linked&amp;type=t">t</a> -&gt; f:('a <a href="?package=core_kernel&amp;module=Doubly_linked.Elt&amp;type=t">Elt.t</a> -&gt; unit) -&gt; unit</code></pre>
 <pre><span class="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Doubly_linked&amp;type=t">t</a> -&gt; init:'b -&gt; f:('a -&gt; 'b -&gt; 'b) -&gt; 'b</code></pre>
 <pre><span class="VALfind_elt"><span class="keyword">val</span> find_elt</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Doubly_linked&amp;type=t">t</a> -&gt; f:('a -&gt; bool) -&gt; 'a <a href="?package=core_kernel&amp;module=Doubly_linked.Elt&amp;type=t">Elt.t</a> option</code></pre><div class="info"><div class="info"><code class="code">find_elt t ~f</code> finds the first element in <code class="code">t</code> that satisfies <code class="code">f</code>, by testing each of
@@ -50,9 +50,9 @@
 <pre><span class="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Doubly_linked&amp;type=t">t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Doubly_linked&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">copy t</code> returns a copy of <code class="code">t</code>.</div></div>
 <pre><span class="VALtransfer"><span class="keyword">val</span> transfer</span> : <code class="type">src:'a <a href="?package=core_kernel&amp;module=Doubly_linked&amp;type=t">t</a> -&gt; dst:'a <a href="?package=core_kernel&amp;module=Doubly_linked&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">transfer ~src ~dst</code> has the same behavior as
     <code class="code">iter src ~f:(insert_last dst); clear src</code>
-    except that it runs in constant time.<br/>    If <code class="code">s = to_list src</code> and <code class="code">d = to_list dst</code>, then after <code class="code">transfer ~src ~dst</code>:
+    except that it runs in constant time.<p>    If <code class="code">s = to_list src</code> and <code class="code">d = to_list dst</code>, then after <code class="code">transfer ~src ~dst</code>:
       <code class="code">to_list src = []</code>
-      <code class="code">to_list dst = d @ s</code></div></div>
+      <code class="code">to_list dst = d @ s</code></p></div></div>
 <pre><span class="VALfilter_inplace"><span class="keyword">val</span> filter_inplace</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Doubly_linked&amp;type=t">t</a> -&gt; f:('a -&gt; bool) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">filter_inplace t ~f</code> removes all elements of <code class="code">t</code> that don't satisfy <code class="code">f</code>.</div></div>
 <pre><span class="VALunchecked_iter"><span class="keyword">val</span> unchecked_iter</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Doubly_linked&amp;type=t">t</a> -&gt; f:('a -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">unchecked_iter t ~f</code> behaves like <code class="code">iter t ~f</code> except that <code class="code">f</code> is allowed to modify
     <code class="code">t</code>.  Adding or removing elements before the element currently being visited has no
@@ -74,18 +74,18 @@
 <div class="info"><div class="info">constant-time removal of an element.  It is an error to call <code class="code">remove t e</code> when <code class="code">e</code> is
     not in <code class="code">t</code>.</div></div>
 <div class="info"><div class="info"><code class="code">fold_elt t ~init ~f</code> is the same as fold, except <code class="code">f</code> is called with the <code class="code">'a Elt.t</code>'s
-    from the list instead of the contained <code class="code">'a</code> values.<br/>    Note that like other iteration functions, it is an error to mutate <code class="code">t</code> inside the
+    from the list instead of the contained <code class="code">'a</code> values.<p>    Note that like other iteration functions, it is an error to mutate <code class="code">t</code> inside the
     fold. If you'd like to call <code class="code">remove</code> on any of the <code class="code">'a Elt.t</code>'s, accumulate them here
-    and do so after <code class="code">fold_elt</code> returns.</div></div>
+    and do so after <code class="code">fold_elt</code> returns.</p></div></div>
 <div class="info"><div class="info"><code class="code">find_elt t ~f</code> finds the first element in <code class="code">t</code> that satisfies <code class="code">f</code>, by testing each of
     element of <code class="code">t</code> in turn until <code class="code">f</code> succeeds.</div></div>
 <div class="info"><div class="info"><code class="code">clear t</code> removes all elements from the list in constant time.</div></div>
 <div class="info"><div class="info"><code class="code">copy t</code> returns a copy of <code class="code">t</code>.</div></div>
 <div class="info"><div class="info"><code class="code">transfer ~src ~dst</code> has the same behavior as
     <code class="code">iter src ~f:(insert_last dst); clear src</code>
-    except that it runs in constant time.<br/>    If <code class="code">s = to_list src</code> and <code class="code">d = to_list dst</code>, then after <code class="code">transfer ~src ~dst</code>:
+    except that it runs in constant time.<p>    If <code class="code">s = to_list src</code> and <code class="code">d = to_list dst</code>, then after <code class="code">transfer ~src ~dst</code>:
       <code class="code">to_list src = []</code>
-      <code class="code">to_list dst = d @ s</code></div></div>
+      <code class="code">to_list dst = d @ s</code></p></div></div>
 <div class="info"><div class="info"><code class="code">filter_inplace t ~f</code> removes all elements of <code class="code">t</code> that don't satisfy <code class="code">f</code>.</div></div>
 <div class="info"><div class="info"><code class="code">unchecked_iter t ~f</code> behaves like <code class="code">iter t ~f</code> except that <code class="code">f</code> is allowed to modify
     <code class="code">t</code>.  Adding or removing elements before the element currently being visited has no

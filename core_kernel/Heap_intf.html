@@ -4,12 +4,12 @@
       reconstructing the correct comparison function when de-serializing.</div></div>
 <div class="ocaml_include ident" path="?package=core_kernel&amp;module=Container.S1" items="[]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core_kernel&amp;module=Container.S1">Container.S1</a></code> with type t := 'a <a href="?package=core_kernel&amp;module=Heap_intf.S&amp;type=t">t</a></code></pre></div>
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">?min_size:int -&gt; cmp:('a -&gt; 'a -&gt; int) -&gt; unit -&gt; 'a <a href="?package=core_kernel&amp;module=Heap_intf.S&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create ?min_size ~cmp</code> returns a new min-heap that can store <code class="code">min_size</code> elements
-      without reallocations, using ordering function <code class="code">cmp</code>.<br/>      The top of the heap is the smallest element as determined by the provided comparison
+      without reallocations, using ordering function <code class="code">cmp</code>.<p>      The top of the heap is the smallest element as determined by the provided comparison
       function.  In particular, if <code class="code">cmp x y &lt; 0</code> then <code class="code">x</code> will be &quot;on top of&quot; <code class="code">y</code> in the
-      heap.<br/>      Memory use is surprising in two ways:<br/>      1. The underlying pool never shrinks, so current memory use will at least be
-      proportional to the largest number of elements that the heap has ever held.<br/>      2. Not all the memory is freed upon <code class="code">remove</code>, but rather after some number of
+      heap.</p><p>      Memory use is surprising in two ways:</p><p>      1. The underlying pool never shrinks, so current memory use will at least be
+      proportional to the largest number of elements that the heap has ever held.</p><p>      2. Not all the memory is freed upon <code class="code">remove</code>, but rather after some number of
       subsequent <code class="code">pop</code> operations. Alternating <code class="code">add</code> and <code class="code">remove</code> operations can therefore
-      use unbounded memory.</div></div>
+      use unbounded memory.</p></div></div>
 <pre><span class="VALof_array"><span class="keyword">val</span> of_array</span> : <code class="type">'a array -&gt; cmp:('a -&gt; 'a -&gt; int) -&gt; 'a <a href="?package=core_kernel&amp;module=Heap_intf.S&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">min_size</code> (see <code class="code">create</code>) will be set to the size of the input array or list.</div></div>
 <pre><span class="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">'a list -&gt; cmp:('a -&gt; 'a -&gt; int) -&gt; 'a <a href="?package=core_kernel&amp;module=Heap_intf.S&amp;type=t">t</a></code></pre>
 <pre><span class="VALtop"><span class="keyword">val</span> top</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Heap_intf.S&amp;type=t">t</a> -&gt; 'a option</code></pre><div class="info"><div class="info">returns the top (i.e., smallest) element of the heap</div></div>
@@ -23,12 +23,12 @@
 <pre><span class="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Heap_intf.S&amp;type=t">t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Heap_intf.S&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">copy t</code> returns a shallow copy</div></div>
 <pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type">('a -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a>) -&gt; 'a <a href="?package=core_kernel&amp;module=Heap_intf.S&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
 <div class="info"><div class="info"><code class="code">create ?min_size ~cmp</code> returns a new min-heap that can store <code class="code">min_size</code> elements
-      without reallocations, using ordering function <code class="code">cmp</code>.<br/>      The top of the heap is the smallest element as determined by the provided comparison
+      without reallocations, using ordering function <code class="code">cmp</code>.<p>      The top of the heap is the smallest element as determined by the provided comparison
       function.  In particular, if <code class="code">cmp x y &lt; 0</code> then <code class="code">x</code> will be &quot;on top of&quot; <code class="code">y</code> in the
-      heap.<br/>      Memory use is surprising in two ways:<br/>      1. The underlying pool never shrinks, so current memory use will at least be
-      proportional to the largest number of elements that the heap has ever held.<br/>      2. Not all the memory is freed upon <code class="code">remove</code>, but rather after some number of
+      heap.</p><p>      Memory use is surprising in two ways:</p><p>      1. The underlying pool never shrinks, so current memory use will at least be
+      proportional to the largest number of elements that the heap has ever held.</p><p>      2. Not all the memory is freed upon <code class="code">remove</code>, but rather after some number of
       subsequent <code class="code">pop</code> operations. Alternating <code class="code">add</code> and <code class="code">remove</code> operations can therefore
-      use unbounded memory.</div></div>
+      use unbounded memory.</p></div></div>
 <div class="info"><div class="info"><code class="code">min_size</code> (see <code class="code">create</code>) will be set to the size of the input array or list.</div></div>
 <div class="info"><div class="info">returns the top (i.e., smallest) element of the heap</div></div>
 <div class="info"><div class="info"><code class="code">remove_top t</code> does nothing if <code class="code">t</code> is empty</div></div>
@@ -41,12 +41,12 @@
 <div class="info"><div class="info">of_sexp and bin_io functions aren't supplied for heaps due to the difficulties in
       reconstructing the correct comparison function when de-serializing.</div></div>
 <div class="info"><div class="info"><code class="code">create ?min_size ~cmp</code> returns a new min-heap that can store <code class="code">min_size</code> elements
-      without reallocations, using ordering function <code class="code">cmp</code>.<br/>      The top of the heap is the smallest element as determined by the provided comparison
+      without reallocations, using ordering function <code class="code">cmp</code>.<p>      The top of the heap is the smallest element as determined by the provided comparison
       function.  In particular, if <code class="code">cmp x y &lt; 0</code> then <code class="code">x</code> will be &quot;on top of&quot; <code class="code">y</code> in the
-      heap.<br/>      Memory use is surprising in two ways:<br/>      1. The underlying pool never shrinks, so current memory use will at least be
-      proportional to the largest number of elements that the heap has ever held.<br/>      2. Not all the memory is freed upon <code class="code">remove</code>, but rather after some number of
+      heap.</p><p>      Memory use is surprising in two ways:</p><p>      1. The underlying pool never shrinks, so current memory use will at least be
+      proportional to the largest number of elements that the heap has ever held.</p><p>      2. Not all the memory is freed upon <code class="code">remove</code>, but rather after some number of
       subsequent <code class="code">pop</code> operations. Alternating <code class="code">add</code> and <code class="code">remove</code> operations can therefore
-      use unbounded memory.</div></div>
+      use unbounded memory.</p></div></div>
 <div class="info"><div class="info"><code class="code">min_size</code> (see <code class="code">create</code>) will be set to the size of the input array or list.</div></div>
 <div class="info"><div class="info">returns the top (i.e., smallest) element of the heap</div></div>
 <div class="info"><div class="info"><code class="code">remove_top t</code> does nothing if <code class="code">t</code> is empty</div></div>

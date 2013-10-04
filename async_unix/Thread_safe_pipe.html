@@ -1,7 +1,7 @@
 <div class="ocaml_toplevel_module"><div class="info">A thread-safe pipe is a thread-safe interface to the write end of a normal
     <code class="code">Async.Pipe</code>.  All operations except for <code class="code">create</code> must be called from threads outside
-    async.  <code class="code">create</code> can be called from inside or outside async.<br/>    For <code class="code">Pipe</code> functions that return a <code class="code">unit Deferred.t</code>, the analog in <code class="code">Thread_safe_pipe</code>
-    blocks.<br/>    For documentation of <code class="code">wakeup_scheduler</code>, see the  <a href="#Thread_safe">Thread_safe</a> module.</div>
+    async.  <code class="code">create</code> can be called from inside or outside async.<p>    For <code class="code">Pipe</code> functions that return a <code class="code">unit Deferred.t</code>, the analog in <code class="code">Thread_safe_pipe</code>
+    blocks.</p><p>    For documentation of <code class="code">wakeup_scheduler</code>, see the  <a href="#Thread_safe">Thread_safe</a> module.</p></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> </pre>
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">unit -&gt; 'a <a href="?package=async_unix&amp;module=Import.Pipe.Reader&amp;type=t">Import.Pipe.Reader.t</a> * 'a <a href="?package=async_unix&amp;module=Thread_safe_pipe&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create ()</code> returns a reader end, which must be used inside async, and a writer end,
     which must be used outside async.  <code class="code">create</code> can be called inside or outside async.</div></div>

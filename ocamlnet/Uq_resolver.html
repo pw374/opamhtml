@@ -1,10 +1,10 @@
 <div class="ocaml_toplevel_module"><div class="info">Support for pluggable resolvers</div>
 <div class="info"><div class="info">A resolver maps several kinds of names to addresses, or vice versa.
     Currently, only DNS host lookups are supported (but this can be extended
-    if needed).<br/>    The plugin mechanism allows one to change the name resovler Ocamlnet
+    if needed).<p>    The plugin mechanism allows one to change the name resovler Ocamlnet
     uses. Resolvers can be both synchronous or asynchronous. Note however,
     that the default resolver is synchronous and simply bases on
-    <code class="code">Unix.gethostbyname</code>.<br/>    Requirements of the resolver:<ul><li>IP addresses may be enclosed in square brackets, but also given without
+    <code class="code">Unix.gethostbyname</code>.</p><p>    Requirements of the resolver:</p><ul><li>IP addresses may be enclosed in square brackets, but also given without
       such brackets. If such an IP address is passed to the resolver, the
       string address is just converted to a <code class="code">Unix.inet_addr</code>.
  </li></ul></div></div>
@@ -33,19 +33,19 @@
         state of the engine transitions to <code class="code">`Done he</code> or <code class="code">`Error e</code>.</div></div></div></div>
 <div class="info"><div class="info"><h1 id="1_TITLE">Synchronous Interface</h1></div></div>
 <pre><span class="VALget_host_by_name"><span class="keyword">val</span> get_host_by_name</span> : <code class="type">?resolver:<a href="?package=ocamlnet&amp;module=Uq_resolver&amp;type=resolver">resolver</a> -&gt; string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=host_entry">Unix.host_entry</a></code></pre><div class="info"><div class="info">Look up the host, and return the host entry
-      or raise the exception <code class="code">Host_not_found</code>.<br/>      If a <code class="code">resolver</code> is passed, this resolver is used, otherwise the
-      pluggable resolver is used.</div></div>
+      or raise the exception <code class="code">Host_not_found</code>.<p>      If a <code class="code">resolver</code> is passed, this resolver is used, otherwise the
+      pluggable resolver is used.</p></div></div>
 <pre><span class="VALsockaddr_of_socksymbol"><span class="keyword">val</span> sockaddr_of_socksymbol</span> : <code class="type">?resolver:<a href="?package=ocamlnet&amp;module=Uq_resolver&amp;type=resolver">resolver</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsockaddr&amp;type=socksymbol">Netsockaddr.socksymbol</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a></code></pre><div class="info"><div class="info">Use the resolver to look up names in  <a href="#Netsockaddr.socksymbol">Netsockaddr.socksymbol</a>,
       and convert the symbol to a <code class="code">Unix.sockaddr</code> only containing IP
-      addresses.<br/>      If a <code class="code">resolver</code> is passed, this resolver is used, otherwise the
-      pluggable resolver is used.</div></div>
+      addresses.<p>      If a <code class="code">resolver</code> is passed, this resolver is used, otherwise the
+      pluggable resolver is used.</p></div></div>
 <div class="info"><div class="info"><h1 id="1_TITLE">Resolvers</h1></div></div>
 <pre><span class="VALdefault_resolver"><span class="keyword">val</span> default_resolver</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Uq_resolver&amp;type=resolver">resolver</a></code></pre><div class="info"><div class="info">The default resolver uses <code class="code">Unix.gethostbyname</code> to look up names.
       Note that this usually means that no IPv6 addresses are returned.</div></div>
 <pre><span class="VALgai_resolver"><span class="keyword">val</span> gai_resolver</span> : <code class="type">?ipv4:bool -&gt; ?ipv6:bool -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Uq_resolver&amp;type=resolver">resolver</a></code></pre><div class="info"><div class="info">This resolver uses <code class="code">Unix.getaddrinfo</code>. One can set whether IPv4
       or IPv6 addresses may be returned (only one type is returned).
       The order of addresses cannot
-      be set, but there is a global config file <code class="code">/etc/gai.info</code>.<br/>      The <code class="code">h_aliases</code> field of the result is not set.<br/>      By default, both <code class="code">ipv4</code> and <code class="code">ipv6</code> are enabled.</div></div>
+      be set, but there is a global config file <code class="code">/etc/gai.info</code>.<p>      The <code class="code">h_aliases</code> field of the result is not set.</p><p>      By default, both <code class="code">ipv4</code> and <code class="code">ipv6</code> are enabled.</p></div></div>
 <div class="info"><div class="info"><h1 id="1_TITLE">Plugins</h1></div></div>
 <pre><span class="VALcurrent_resolver"><span class="keyword">val</span> current_resolver</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Uq_resolver&amp;type=resolver">resolver</a></code></pre><div class="info"><div class="info">Returns the pluggable resolver</div></div>
 <pre><span class="VALset_current_resolver"><span class="keyword">val</span> set_current_resolver</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Uq_resolver&amp;type=resolver">resolver</a> -&gt; unit</code></pre><div class="info"><div class="info">Set the pluggable resolver</div></div>

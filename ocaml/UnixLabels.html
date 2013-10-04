@@ -278,7 +278,7 @@ timeout:float -&gt; <a href="?package=ocaml&amp;module=UnixLabels&amp;type=file_
    process from acquiring a read or write lock on the region.
    A read lock prevents any other
    process from acquiring a write lock on the region, but lets
-   other processes acquire read locks on it.<br/>   The <code class="code">F_LOCK</code> and <code class="code">F_TLOCK</code> commands attempts to put a write lock
+   other processes acquire read locks on it.<p>   The <code class="code">F_LOCK</code> and <code class="code">F_TLOCK</code> commands attempts to put a write lock
    on the specified region.
    The <code class="code">F_RLOCK</code> and <code class="code">F_TRLOCK</code> commands attempts to put a read lock
    on the specified region.
@@ -290,7 +290,7 @@ timeout:float -&gt; <a href="?package=ocaml&amp;module=UnixLabels&amp;type=file_
    the specified region.
    Finally, the <code class="code">F_TEST</code> command tests whether a write lock can be
    acquired on the specified region, without actually putting a lock.
-   It returns immediately if successful, or fails otherwise.</div></div>
+   It returns immediately if successful, or fails otherwise.</p></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Signals</h6>
    Note: installation of signal handlers is performed via
    the functions  <a href="#Sys.signal">Sys.signal</a> and  <a href="#Sys.set_signal">Sys.set_signal</a>.</div></div>
@@ -519,7 +519,7 @@ addr:<a href="?package=ocaml&amp;module=UnixLabels&amp;type=sockaddr">sockaddr</
     records describing socket parameters and addresses suitable for
     communicating with the given host and service.  The empty list is
     returned if the host or service names are unknown, or the constraints
-    expressed in <code class="code">opts</code> cannot be satisfied.<br/>    <code class="code">host</code> is either a host name or the string representation of an IP
+    expressed in <code class="code">opts</code> cannot be satisfied.<p>    <code class="code">host</code> is either a host name or the string representation of an IP
     address.  <code class="code">host</code> can be given as the empty string; in this case,
     the ``any'' address or the ``loopback'' address are used,
     depending whether <code class="code">opts</code> contains <code class="code">AI_PASSIVE</code>.
@@ -528,7 +528,7 @@ addr:<a href="?package=ocaml&amp;module=UnixLabels&amp;type=sockaddr">sockaddr</
     in this case, the port field of the returned addresses is set to 0.
     <code class="code">opts</code> is a possibly empty list of options that allows the caller
     to force a particular socket domain (e.g. IPv6 only or IPv4 only)
-    or a particular socket type (e.g. TCP only or UDP only).</div></div>
+    or a particular socket type (e.g. TCP only or UDP only).</p></div></div>
 <pre><code><span class="TYPEname_info"><span class="keyword">type</span> name_info</span> = {</code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTname_info.ni_hostname">ni_hostname</span> : <code class="type">string</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">Name or IP address of host</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTname_info.ni_service">ni_service</span> : <code class="type">string</code>;</code></td></tr><tr><td>}</td></tr></table><div class="info"><div class="info">Name of service or port number</div></div>
 <div class="info"><div class="info">Host and service information returned by  <a href="#Unix.getnameinfo">Unix.getnameinfo</a>.</div></div>

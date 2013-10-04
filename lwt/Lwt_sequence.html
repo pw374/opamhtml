@@ -1,6 +1,6 @@
 <div class="ocaml_toplevel_module"><div class="info">Mutable sequence of elements</div>
 <div class="info"><div class="info">A sequence is an object holding a list of elements which support
-    the following operations:<br/>    - adding an element to the left or the right in time and space O(1)<ul><li>taking an element from the left or the right in time and space O(1)</li><li>removing a previously added element from a sequence in time and space O(1)</li><li>removing an element while the sequence is being transversed.
+    the following operations:<p>    - adding an element to the left or the right in time and space O(1)</p><ul><li>taking an element from the left or the right in time and space O(1)</li><li>removing a previously added element from a sequence in time and space O(1)</li><li>removing an element while the sequence is being transversed.
 </li></ul></div></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> </pre><div class="info"><div class="info">Type of a sequence holding values of type <code class="code">'a</code></div></div>
 <pre><span class="TYPEnode"><span class="keyword">type</span> <code class="type">'a </code>node</span> </pre><div class="info"><div class="info">Type of a node holding one value of type <code class="code">'a</code> in a sequence</div></div>
@@ -42,13 +42,13 @@
 <pre><span class="VALiter_node_r"><span class="keyword">val</span> iter_node_r</span> : <code class="type">('a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=node">node</a> -&gt; unit) -&gt; 'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">iter_l f s</code> applies <code class="code">f</code> on all nodes of <code class="code">s</code> starting from
       the right</div></div>
 <pre><span class="VALfold_l"><span class="keyword">val</span> fold_l</span> : <code class="type">('a -&gt; 'b -&gt; 'b) -&gt; 'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">t</a> -&gt; 'b -&gt; 'b</code></pre><div class="info"><div class="info"><code class="code">fold_l f s</code> is:
-      <pre class="codepre"><code class="code">
+      <code class="code">
         fold_l f s x = f en (... (f e2 (f e1 x)))
-      </code></pre>
+      </code>
       where <code class="code">e1</code>, <code class="code">e2</code>, ..., <code class="code">en</code> are the elements of <code class="code">s</code></div></div>
 <pre><span class="VALfold_r"><span class="keyword">val</span> fold_r</span> : <code class="type">('a -&gt; 'b -&gt; 'b) -&gt; 'a <a href="?package=lwt&amp;module=Lwt_sequence&amp;type=t">t</a> -&gt; 'b -&gt; 'b</code></pre><div class="info"><div class="info"><code class="code">fold_r f s</code> is:
-      <pre class="codepre"><code class="code">
+      <code class="code">
         fold_r f s x = f e1 (f e2 (... (f en x)))
-      </code></pre>
+      </code>
       where <code class="code">e1</code>, <code class="code">e2</code>, ..., <code class="code">en</code> are the elements of <code class="code">s</code></div></div>
 </div>

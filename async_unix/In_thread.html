@@ -17,20 +17,20 @@
 ?name:string -&gt; (unit -&gt; 'a) -&gt; 'a <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre><div class="info"><div class="info"><code class="code">run ?priority ?thread ?name f</code> runs <code class="code">f ()</code> in another thread and returns the result
     as a Deferred in the Async world.  If <code class="code">f ()</code> raises an exception (asynchronously,
     since it is another thread) then that exception will be raised to the monitor that
-    called <code class="code">run</code>.<br/>    Async code should not be used from within <code class="code">f</code>.<br/>    If <code class="code">thread</code> is not supplied, then any thread from the thread pool could be used.  If
+    called <code class="code">run</code>.<p>    Async code should not be used from within <code class="code">f</code>.</p><p>    If <code class="code">thread</code> is not supplied, then any thread from the thread pool could be used.  If
     you need to run routines in a specific thread (as is required by some libraries like
-    Sqlite), you should create a helper thread and supply it to <code class="code">run</code>.<br/>    If <code class="code">priority</code> is supplied, the priority of the thread in the linux scheduler will be
+    Sqlite), you should create a helper thread and supply it to <code class="code">run</code>.</p><p>    If <code class="code">priority</code> is supplied, the priority of the thread in the linux scheduler will be
     set to <code class="code">priority</code> for the duration of <code class="code">f ()</code>, provided the thread is allowed to do so,
-    see `man setpriority`.<br/>    If you call <code class="code">run</code> several times with the same helper thread, the <code class="code">f ()</code> calls will run
+    see `man setpriority`.</p><p>    If you call <code class="code">run</code> several times with the same helper thread, the <code class="code">f ()</code> calls will run
     in sequence, in the order in which they are supplied to <code class="code">run</code>.  Each <code class="code">f ()</code> will
-    complete (return or raise) before another <code class="code">f ()</code> starts.<br/>    For example, if you do:<br/>    <pre class="codepre"><code class="code">
+    complete (return or raise) before another <code class="code">f ()</code> starts.</p><p>    For example, if you do:</p><p>    </p><code class="code">
       let () =
         run ~thread f1;
         run ~thread f2;
         run ~thread f3;
-    </code></pre><br/>    Then the thread will run <code class="code">f1 ()</code> to completion, then <code class="code">f2 ()</code> to completion, then
-    <code class="code">f3 ()</code> to completion.<br/>    If <code class="code">name</code> is supplied, the name of the thread will be set to it for the duration of
-    the execution of <code class="code">f ()</code>.</div></div>
+    </code><p>    Then the thread will run <code class="code">f1 ()</code> to completion, then <code class="code">f2 ()</code> to completion, then
+    <code class="code">f3 ()</code> to completion.</p><p>    If <code class="code">name</code> is supplied, the name of the thread will be set to it for the duration of
+    the execution of <code class="code">f ()</code>.</p></div></div>
 <pre><span class="VALsyscall"><span class="keyword">val</span> syscall</span> : <code class="type">name:string -&gt;
 (unit -&gt; 'a) -&gt; ('a, exn) <a href="?package=core&amp;module=Std.Result&amp;type=t">Core.Std.Result.t</a> <a href="?package=async_core&amp;module=Deferred&amp;type=t">Async_core.Deferred.t</a></code></pre><div class="info"><div class="info"><code class="code">syscall f</code> runs f, which should be a single system call, and returns the result,
     handling the restarting of interrupted system calls.  To avoid race conditions, the

@@ -1,9 +1,9 @@
-<div class="ocaml_toplevel_module"><div class="info">A list of pretty printers for various types, for use in toplevels.<br/>    <code class="code">Pretty_printer</code> has a <code class="code">string list ref</code> with the names of <code class="code">pp</code> functions matching the
-    interface:<br/>    <pre class="codepre"><code class="code">
+<div class="ocaml_toplevel_module"><div class="info">A list of pretty printers for various types, for use in toplevels.<p>    <code class="code">Pretty_printer</code> has a <code class="code">string list ref</code> with the names of <code class="code">pp</code> functions matching the
+    interface:</p><p>    </p><code class="code">
       val pp : Format.formatter -&gt; t -&gt; unit
-    </code></pre><br/>    The names are actually OCaml identifier names, e.g. &quot;Core.Date.pp&quot;.  Code for building
+    </code><p>    The names are actually OCaml identifier names, e.g. &quot;Core.Date.pp&quot;.  Code for building
     toplevels (this code is not in Core) evaluates the strings to yield the pretty
-    printers and register them with OCaml runtime.</div>
+    printers and register them with OCaml runtime.</p></div>
 <pre><span class="VALall"><span class="keyword">val</span> all</span> : <code class="type">unit -&gt; string list</code></pre><div class="info"><div class="info"><code class="code">all ()</code> returns all pretty printers that have been <code class="code">register</code>ed.</div></div>
 <pre><span class="VALregister"><span class="keyword">val</span> register</span> : <code class="type">string -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">register name</code> adds <code class="code">name</code> to the list of pretty printers.</div></div>
 <div class="ocaml_module sig" name="S"><pre><span class="keyword">module type</span> <a href="?package=core_kernel&amp;module=Pretty_printer.S">S</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Modules that provide a pretty printer will match <code class="code">S</code>.</div></div><div class="ocaml_module_content">

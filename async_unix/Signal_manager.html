@@ -1,7 +1,7 @@
 <div class="ocaml_toplevel_module"><div class="info">A signal manager keeps track of a set of signals to be managed and the signal handlers
     for them.  When a signal manager is managing a signal, it installs its own OCaml
     handler for that signal that records delivery of the signal.  It then later, upon
-    request, will deliver the signal to all its handlers.<br/>    Once a signal manager starts managing a signal, it never stops.</div>
+    request, will deliver the signal to all its handlers.<p>    Once a signal manager starts managing a signal, it never stops.</p></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre>
 <div class="ocaml_include ident" path="?package=core&amp;module=Std.Invariant.S" items="[]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core&amp;module=Std.Invariant.S">Core.Std.Invariant.S</a></code> with type t := <a href="?package=async_unix&amp;module=Signal_manager&amp;type=t">t</a></code></pre></div>
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">thread_safe_notify_signal_delivered:(unit -&gt; unit) -&gt; <a href="?package=async_unix&amp;module=Signal_manager&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create</code> creates and returns a signal manager <code class="code">t</code>.  Whenever a signal that <code class="code">t</code> is

@@ -14,16 +14,16 @@
 <pre><span class="TYPEmat"><span class="keyword">type</span> mat</span> = <code class="type"><a href="?package=sexplib&amp;module=Conv&amp;type=float64_mat">float64_mat</a></code></pre>
 <div class="info"><div class="info"><h6 id="6_TITLE">Conversion of OCaml-values to S-expressions</h6></div></div>
 <pre><span class="VALdefault_string_of_float"><span class="keyword">val</span> default_string_of_float</span> : <code class="type">(float -&gt; string) <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info"><code class="code">default_string_of_float</code> reference to the default function used
-    to convert floats to strings.<br/>    Initially set to <code class="code">fun n -&gt; sprintf &quot;%.20G&quot; n</code>.</div></div>
+    to convert floats to strings.<p>    Initially set to <code class="code">fun n -&gt; sprintf &quot;%.20G&quot; n</code>.</p></div></div>
 <pre><span class="VALwrite_old_option_format"><span class="keyword">val</span> write_old_option_format</span> : <code class="type">bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info"><code class="code">write_old_option_format</code> reference for the default option format
     used to write option values.  If set to <code class="code">true</code>, the old-style option
-    format will be used, the new-style one otherwise.<br/>    Initially set to <code class="code">true</code>.</div></div>
+    format will be used, the new-style one otherwise.<p>    Initially set to <code class="code">true</code>.</p></div></div>
 <pre><span class="VALread_old_option_format"><span class="keyword">val</span> read_old_option_format</span> : <code class="type">bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info"><code class="code">read_old_option_format</code> reference for the default option format
     used to read option values.  <code class="code">Of_sexp_error</code> will be raised
     with old-style option values if this reference is set to <code class="code">false</code>.
     Reading new-style option values is always supported.  Using a global
     reference instead of changing the converter calling conventions is
-    the only way to avoid breaking old code with the standard macros.<br/>    Initially set to <code class="code">true</code>.</div></div>
+    the only way to avoid breaking old code with the standard macros.<p>    Initially set to <code class="code">true</code>.</p></div></div>
 <pre><span class="VALlist_map"><span class="keyword">val</span> list_map</span> : <code class="type">('a -&gt; 'b) -&gt; 'a list -&gt; 'b list</code></pre><div class="info"><div class="info">We re-export a tail recursive map function, because some modules
     override the standard library functions (e.g. <code class="code">StdLabels</code>) which
     wrecks havoc with the camlp4 extension.</div></div>
@@ -198,7 +198,7 @@
       template <code class="code">templ</code>, unless the number of stored handlers for the given
       template exceeds <code class="code">get_max_exn_tags ()</code>, in which case the handler will
       never be called.  When <code class="code">sexp_of_exn</code> is called, the passed exception
-      is guaranteed to match the template.<br/>      NOTE: if the exception belongs to a transient module, e.g. local modules
+      is guaranteed to match the template.<p>      NOTE: if the exception belongs to a transient module, e.g. local modules
       (including functor instantiations), first-class modules, etc., a manually
       written <code class="code">sexp_of_exn</code> must use <code class="code">Obj.magic</code> internally to avoid matching
       or creating the exception, otherwise the handler can never be reclaimed
@@ -206,8 +206,8 @@
       the exception will be automatically registered for removal with the GC
       (default).  Finalisation will not work with exceptions that have been
       allocated outside the heap, which is the case for some standard ones
-      e.g. <code class="code">Sys_error</code>.<br/>      NOTE: Use with great caution, this function is primarily intended for
-      automated use!  If unsure, use <code class="code">add_slow</code> instead.<div class="parameters"><div class="param_info"><code class="code">finalise</code> : default = <code class="code">true</code></div></div></div></div>
+      e.g. <code class="code">Sys_error</code>.</p><p>      NOTE: Use with great caution, this function is primarily intended for
+      automated use!  If unsure, use <code class="code">add_slow</code> instead.</p><div class="parameters"><div class="param_info"><code class="code">finalise</code> : default = <code class="code">true</code></div></div></div></div>
 <pre><span class="VALadd_slow"><span class="keyword">val</span> add_slow</span> : <code class="type">(exn -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexp.t</a> option) -&gt; <a href="?package=sexplib&amp;module=Conv.Exn_converter&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">add_slow sexp_of_exn</code> registers exception S-expression converter
       <code class="code">sexp_of_exn</code> and returns a handle.  Exception converters registered this
       way are much slower than with <code class="code">add</code>, but this function does not require

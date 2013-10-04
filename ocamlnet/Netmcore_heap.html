@@ -1,11 +1,11 @@
-<div class="ocaml_toplevel_module"><div class="info">Shared heaps of structured values<br/>    These heaps live in  <a href="#Netmcore_mempool">Netmcore_mempool</a>-type shared memory pools,
+<div class="ocaml_toplevel_module"><div class="info">Shared heaps of structured values<p>    These heaps live in  <a href="#Netmcore_mempool">Netmcore_mempool</a>-type shared memory pools,
     and can contain an arbitrary number of Ocaml values. These values
     can be mutable, but special care has to be taken when modifying them.
     The first value pushed onto the heap is called the <i>root element</i>.
     All other values must be (directly or indirectly) reachable from the
-    root element.<br/>    Heaps are created with a certain initial size. The heaps remain
+    root element.</p><p>    Heaps are created with a certain initial size. The heaps remain
     connected with the memory pool, and they are enlarged if necessary
-    by allocating more blocks in the pool.<br/>    As the heaps are shared between processes, it must be taken care
+    by allocating more blocks in the pool.</p><p>    As the heaps are shared between processes, it must be taken care
     that no reference is made from shared heaps to normal process-local
     memory. These references would only be valid in the process creating
     them, and following such references from other processes would probably
@@ -15,24 +15,24 @@
     as this function makes it possible to copy more values to the heap.
     Unfortunately, there is nothing in the type system that would prevent
     direct mutation. so this can only be ensured by the discipline of the
-    programmer.<br/>    The values of the heap are also garbage-collected: If all allocated
+    programmer.</p><p>    The values of the heap are also garbage-collected: If all allocated
     space is used and more values need to be added, it is first tried
     to get rid of old unreachable values. The garbarge collection is done
     by the process that happens to initiate the addition of the value
     that does no more fit onto the heap. During garbage collection, no
     other additions can be done, but read accesses are not prevented.
-    The garbage collector does not move values (addresses remain unchanged).<br/>    The garabage collector only considers values as reachable that are
+    The garbage collector does not move values (addresses remain unchanged).</p><p>    The garabage collector only considers values as reachable that are
     reachable via the root element. It is not sufficient when a value
-    is only reachable via a process-specific reference.</div>
+    is only reachable via a process-specific reference.</p></div>
 <pre><span class="TYPEheap"><span class="keyword">type</span> <code class="type">'a </code>heap</span> </pre><div class="info"><div class="info">A heap where the type of the root element is <code class="code">'a</code></div></div>
 <pre><span class="TYPEdescr"><span class="keyword">type</span> <code class="type">'a </code>descr</span> </pre><div class="info"><div class="info">A descriptor (&quot;address&quot;) pointing to the heap. Descriptors
       can be marshalled.</div></div>
 <pre><span class="VALcreate_heap"><span class="keyword">val</span> create_heap</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; int -&gt; 'a -&gt; 'a <a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=heap">heap</a></code></pre><div class="info"><div class="info"><code class="code">create_heap pool_id size root</code>: Creates a new heap with <code class="code">size</code>
       bytes in the pool identified by <code class="code">pool_id</code>. This ID must refer
-      to a  <a href="#Netmcore_mempool">Netmcore_mempool</a>-managed pool.<br/>      The value <code class="code">root</code> is copied to the new heap. This is done by
+      to a  <a href="#Netmcore_mempool">Netmcore_mempool</a>-managed pool.<p>      The value <code class="code">root</code> is copied to the new heap. This is done by
       deeply duplicating <code class="code">root</code> and all values pointed to by <code class="code">root</code>,
-      and storing these duplicates in the heap.<br/>      The possible types of value <code class="code">root</code> are restricted, see the <code class="code">add</code>
-      function for more.</div></div>
+      and storing these duplicates in the heap.</p><p>      The possible types of value <code class="code">root</code> are restricted, see the <code class="code">add</code>
+      function for more.</p></div></div>
 <pre><span class="VALminimum_size"><span class="keyword">val</span> minimum_size</span> : <code class="type">'a -&gt; int</code></pre><div class="info"><div class="info">Returns the <code class="code">size</code> value one must pass to <code class="code">create_heap</code> at minimum
       to put this root element onto the heap.</div></div>
 <pre><span class="VALroot"><span class="keyword">val</span> root</span> : <code class="type">'a <a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=heap">heap</a> -&gt; 'a</code></pre><div class="info"><div class="info">Returns the root element</div></div>
@@ -40,19 +40,19 @@
 <pre><span class="VALheap_of_descr"><span class="keyword">val</span> heap_of_descr</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; 'a <a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=descr">descr</a> -&gt; 'a <a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=heap">heap</a></code></pre><div class="info"><div class="info"><code class="code">heap_of_descr pool d</code>:
       Get the heap for a descriptor. This assumes that the heap still
       exists.</div></div>
-<pre><span class="TYPEmutator"><span class="keyword">type</span> mutator</span> </pre><div class="info"><div class="info">Mutators allow it to push new values onto the heap.<br/>      Caveat: pushed values are not considered as roots, and thus they
+<pre><span class="TYPEmutator"><span class="keyword">type</span> mutator</span> </pre><div class="info"><div class="info">Mutators allow it to push new values onto the heap.<p>      Caveat: pushed values are not considered as roots, and thus they
       need immediately be attached to the existing data structure.
       Otherwise, the next push might trigger a garbage collection, and
       the new value is deleted. If this is not possible, one can
-      call <code class="code">pin</code> instead (see below).</div></div>
+      call <code class="code">pin</code> instead (see below).</p></div></div>
 <pre><span class="VALmodify"><span class="keyword">val</span> modify</span> : <code class="type">'a <a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=heap">heap</a> -&gt; (<a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=mutator">mutator</a> -&gt; 'r) -&gt; 'r</code></pre><div class="info"><div class="info"><code class="code">modify h mutate</code>: This function locks the heap so that this process
       has exclusive write access to it for the duration of the <code class="code">mutate</code>
       function. The <code class="code">mutate</code> function is immediately called back, and
       the argument of <code class="code">mutate</code> is the mutator <code class="code">m</code> that allows one to push
-      values onto the heap.<br/>      By calling <code class="code">add m x</code> from the body of <code class="code">mutate</code> one can create a copy
-      of <code class="code">x</code> that is stored in the heap.</div></div>
+      values onto the heap.<p>      By calling <code class="code">add m x</code> from the body of <code class="code">mutate</code> one can create a copy
+      of <code class="code">x</code> that is stored in the heap.</p></div></div>
 <pre><span class="VALadd"><span class="keyword">val</span> add</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=mutator">mutator</a> -&gt; 'a -&gt; 'a</code></pre><div class="info"><div class="info">Pushes a new value onto the heap. This creates a deep copy of the
-      value.<br/>      Not all values can be pushed here. In particular, forbidden are:<ul><li>Functions</li><li>Objects</li><li>Unsupported custom blocks, e.g. <code class="code">in_channel</code> and <code class="code">out_channel</code>.
+      value.<p>      Not all values can be pushed here. In particular, forbidden are:</p><ul><li>Functions</li><li>Objects</li><li>Unsupported custom blocks, e.g. <code class="code">in_channel</code> and <code class="code">out_channel</code>.
         Supported custom blocks are only <code class="code">int32</code>, <code class="code">int64</code>, <code class="code">nativeint</code>,
         and bigarrays.</li><li>Heaps (a heap cannot contain a heap)</li><li>Values containing semaphores and other synchronization primitives.
         Explicitly allowed are dummy primitives like  <a href="#Netmcore_mutex.dummy">Netmcore_mutex.dummy</a>.
@@ -60,18 +60,18 @@
 <pre><span class="VALadd_immutable"><span class="keyword">val</span> add_immutable</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=mutator">mutator</a> -&gt; 'a -&gt; 'a</code></pre><div class="info"><div class="info">Pushes a new value onto the heap. This function must only be used
       if the added value is immutable. An important optimization is applied
       here: if parts of the value are already living on the heap, these
-      parts are not copied, but shared with the output value.<br/>      The same value restrictions apply as for <code class="code">add</code>. Note that
+      parts are not copied, but shared with the output value.<p>      The same value restrictions apply as for <code class="code">add</code>. Note that
       <code class="code">add_immutable</code> cannot be used if the value to copy lives in a different
       heap of the same pool (as a whole or partially). In this case use
-      <code class="code">add</code>.</div></div>
+      <code class="code">add</code>.</p></div></div>
 <pre><span class="VALadd_uniform_array"><span class="keyword">val</span> add_uniform_array</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=mutator">mutator</a> -&gt; int -&gt; 'a -&gt; 'a array</code></pre><div class="info"><div class="info"><code class="code">add_uniform_array m n x</code>: Pushes a new value with n elements onto
       the heap. Each index position of the array is initialized with
-      the same copy of <code class="code">x</code>.<br/>      You should not call this function with <code class="code">n=0</code>, because this results in
-      a copied atom, which is an illegal representation in OCaml.</div></div>
+      the same copy of <code class="code">x</code>.<p>      You should not call this function with <code class="code">n=0</code>, because this results in
+      a copied atom, which is an illegal representation in OCaml.</p></div></div>
 <pre><span class="VALadd_init_array"><span class="keyword">val</span> add_init_array</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=mutator">mutator</a> -&gt; int -&gt; (int -&gt; 'a) -&gt; 'a array</code></pre><div class="info"><div class="info"><code class="code">add_init_array m n f</code>: Pushes a new value with n elements onto
       the heap. The index position <code class="code">k</code> is inititialized by running
-      <code class="code">f k</code> and pushing the copy of this onto the heap.<br/>      You should not call this function with <code class="code">n=0</code>, because this results in
-      a copied atom, which is an illegal representation in OCaml.</div></div>
+      <code class="code">f k</code> and pushing the copy of this onto the heap.<p>      You should not call this function with <code class="code">n=0</code>, because this results in
+      a copied atom, which is an illegal representation in OCaml.</p></div></div>
 <pre><span class="VALadd_some"><span class="keyword">val</span> add_some</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=mutator">mutator</a> -&gt; 'a -&gt; 'a option</code></pre><div class="info"><div class="info"><code class="code">add_some mut x</code>: Returns <code class="code">Some x</code> where the O'Caml value representing
       <code class="code">Some</code> is allocated in the heap using <code class="code">mut</code>. It is assumed that <code class="code">x</code> is
       already  a resident of the heap. This means <code class="code">x</code> is not copied!</div></div>
@@ -79,8 +79,8 @@
       <code class="code">len</code> to the heap using <code class="code">mut</code>, and returns the string</div></div>
 <pre><span class="VALpin"><span class="keyword">val</span> pin</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=mutator">mutator</a> -&gt; 'a -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">pin m x</code>: Pins a shared value <code class="code">x</code> so it cannot be deleted by
       the garbage collector. The value remains pinned for the lifetime
-      of the mutator <code class="code">m</code> (i.e. the runtime of the <code class="code">modify</code> function).<br/>      Pinning is relatively expensive if done in masses, and should be
-      avoided if possible.</div></div>
+      of the mutator <code class="code">m</code> (i.e. the runtime of the <code class="code">modify</code> function).<p>      Pinning is relatively expensive if done in masses, and should be
+      avoided if possible.</p></div></div>
 <pre><span class="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">'a -&gt; 'a</code></pre><div class="info"><div class="info">Creates a deep copy of the input value, and stores the duplicate
       in normal process memory.</div></div>
 <pre><span class="VALwith_value"><span class="keyword">val</span> with_value</span> : <code class="type">'a <a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=heap">heap</a> -&gt; (unit -&gt; 'b) -&gt; ('b -&gt; 'c) -&gt; 'c</code></pre><div class="info"><div class="info"><code class="code">with_value h find process</code>: Logically, this runs
@@ -88,8 +88,8 @@
       executed, the heap is write-locked. This returns a value <code class="code">x</code>.
       While <code class="code">process</code> is being executed, the value <code class="code">x</code> is temporarily
       added to the set of reachable values, so that a parallely running
-      garbage collection will not delete it.<br/>      Note that <code class="code">x</code> <b>must</b> reside in the heap!<br/>      Calling <code class="code">modify</code> from <code class="code">find</code> will cause a deadlock. Calling 
-      it from <code class="code">process</code> is allowed.</div></div>
+      garbage collection will not delete it.<p>      Note that <code class="code">x</code> <b>must</b> reside in the heap!</p><p>      Calling <code class="code">modify</code> from <code class="code">find</code> will cause a deadlock. Calling 
+      it from <code class="code">process</code> is allowed.</p></div></div>
 <pre><span class="VALwith_value_2"><span class="keyword">val</span> with_value_2</span> : <code class="type">'a <a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=heap">heap</a> -&gt; (unit -&gt; 'b * 'c) -&gt; ('b * 'c -&gt; 'z) -&gt; 'z</code></pre>
 <pre><span class="VALwith_value_3"><span class="keyword">val</span> with_value_3</span> : <code class="type">'a <a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=heap">heap</a> -&gt; (unit -&gt; 'b * 'c * 'd) -&gt; ('b * 'c * 'd -&gt; 'z) -&gt; 'z</code></pre>
 <pre><span class="VALwith_value_4"><span class="keyword">val</span> with_value_4</span> : <code class="type">'a <a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=heap">heap</a> -&gt; (unit -&gt; 'b * 'c * 'd * 'e) -&gt; ('b * 'c * 'd * 'e -&gt; 'z) -&gt; 'z</code></pre>
@@ -103,8 +103,8 @@
 <pre><span class="VALsem_container"><span class="keyword">val</span> sem_container</span> : <code class="type">'a <a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=heap">heap</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=container">Netsys_sem.container</a></code></pre><div class="info"><div class="info">Return the semaphore container</div></div>
 <pre><span class="VALmut_sem_container"><span class="keyword">val</span> mut_sem_container</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=mutator">mutator</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_sem&amp;type=container">Netsys_sem.container</a></code></pre><div class="info"><div class="info">Return the semaphore container</div></div>
 <pre><span class="VALdebug_info"><span class="keyword">val</span> debug_info</span> : <code class="type">'a <a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=heap">heap</a> -&gt; string</code></pre><div class="info"><div class="info">Returns a multi-line debug string</div></div>
-<div class="info"><div class="info"><h2 id="2_TITLE">Example: Mutable Variable</h2><br/>    This example creates a heap that stores a single value. (This is
-    available as  <a href="#Netmcore_ref">Netmcore_ref</a>.)<br/>    <pre class="codepre"><code class="code">
+<div class="info"><div class="info"><h2 id="2_TITLE">Example: Mutable Variable</h2><p>    This example creates a heap that stores a single value. (This is
+    available as  <a href="#Netmcore_ref">Netmcore_ref</a>.)</p><p>    </p><code class="code">
     let shared_ref x =
       (* The shm version of [ref x] *)
       let r = ref x in
@@ -122,7 +122,7 @@
         (fun add -&gt;
           (root sref) := add x
         )
-    </code></pre></div></div>
+    </code></div></div>
 <div class="ocaml_module sig" name="Debug"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netmcore_heap.Debug">Debug</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
 <pre><span class="VALenable"><span class="keyword">val</span> enable</span> : <code class="type">bool <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre></div></div>
 </div>

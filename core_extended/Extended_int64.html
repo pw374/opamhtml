@@ -1,7 +1,7 @@
 <div class="ocaml_toplevel_module"><div class="info"><div class="info">Extensions to <code class="code">Core.Core_int64</code></div></div>
-<div class="ocaml_module sig" name="Filesize"><pre><span class="keyword">module</span> <a href="?package=core_extended&amp;module=Extended_int64.Filesize">Filesize</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">An int reprensting a file length<br/>   Same as the int type but has a specific sexp converter so that you can
+<div class="ocaml_module sig" name="Filesize"><pre><span class="keyword">module</span> <a href="?package=core_extended&amp;module=Extended_int64.Filesize">Filesize</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">An int reprensting a file length<p>   Same as the int type but has a specific sexp converter so that you can
     write &quot;10g&quot;. Suffixes are b,k,g,m...
-    The sexp reader also accepts plain ints.</div></div><div class="ocaml_module_content">
+    The sexp reader also accepts plain ints.</p></div></div><div class="ocaml_module_content">
 <pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type"><a href="?package=core&amp;module=Std.Int64&amp;type=t">Core.Std.Int64.t</a></code></pre>
 <pre><span class="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="?package=core_extended&amp;module=Extended_int64.Filesize&amp;type=t">t</a> -&gt; string</code></pre>
 <pre><span class="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -&gt; <a href="?package=core_extended&amp;module=Extended_int64.Filesize&amp;type=t">t</a></code></pre>

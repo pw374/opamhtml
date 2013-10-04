@@ -5,29 +5,29 @@
        server to increase concurrency on the server</li><li>failover to other servers when the orignal servers time out</li><li>support for an initial ping at connection establishment time
        to test the availability of the connection</li><li>retransmission of idempotent RPC calls</li></ul>    Proxies can only handle stream connections (TCP and Unix Domain).
     Also, the remote endpoints must already be specified by socket
-    addresses. (No portmapper and other indirect lookup methods.)<br/>    The proxy functionality is implemented in two layers, the managed
+    addresses. (No portmapper and other indirect lookup methods.)<p>    The proxy functionality is implemented in two layers, the managed
     clients, and the managed sets. The former layer can handle only
     one TCP connection (with reconnect), whereas the latter is able to
     manage a bunch of connections to the same service.  Both layers
     can profit from a reliability cache that knows which services had
-    errors in the past.<br/>    See below for a tutorial.<br/>    There is also a blog article explaining RPC proxies:
+    errors in the past.</p><p>    See below for a tutorial.</p><p>    There is also a blog article explaining RPC proxies:
      <a href="http://blog.camlcity.org/blog/ocamlnet3_ha.html"> The next server,
-    please!</a></div></div>
+    please!</a></p></div></div>
 <div class="ocaml_module sig" name="ReliabilityCache"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Rpc_proxy.ReliabilityCache">ReliabilityCache</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
 <div class="info"><div class="info">The reliability cache stores information about the availability
       of remote servers. The managed clients put information about
-      recent failures into the cache.<br/>      It is advantegeous to have only one cache per process, because
-      this maximizes the usefulness. The cache is thread-safe.<br/>      A server endpoint is disabled when too many errors occur in
+      recent failures into the cache.<p>      It is advantegeous to have only one cache per process, because
+      this maximizes the usefulness. The cache is thread-safe.</p><p>      A server endpoint is disabled when too many errors occur in
       sequence. For a disabled endpoint the functions <code class="code">host_is_enabled</code>
       and/or <code class="code">sockaddr_is_enabled</code> return <code class="code">false</code>. The endpoint is
       automatically enabled again after some timeout; this is initially
       <code class="code">disable_timeout_min</code>, but is increased exponentially until
-      <code class="code">disable_timeout_max</code> when further errors occur.<br/>      Independently of this machinery the functions <code class="code">host_is_enabled</code>
+      <code class="code">disable_timeout_max</code> when further errors occur.</p><p>      Independently of this machinery the functions <code class="code">host_is_enabled</code>
       and <code class="code">sockaddr_is_enabled</code> may also return <code class="code">false</code> when an
       external availability checker says that the endpoint is down.
       This information is not entered into the cache, and will also
       not trigger the disable timeout. Instead, the hook function
-      getting the availability will be simply called again.</div></div>
+      getting the availability will be simply called again.</p></div></div>
 <pre><span class="TYPErcache"><span class="keyword">type</span> rcache</span> </pre><div class="info"><div class="info">The cache</div></div>
 <pre><span class="TYPErcache_policy"><span class="keyword">type</span> rcache_policy</span> = <code class="type">[ `Any_failing_port_disables_host
 | `Failing_port_disables_host of int
@@ -66,25 +66,25 @@
         global cache for the first time.</div></div>
 <pre><span class="VALderive_rcache"><span class="keyword">val</span> derive_rcache</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_proxy.ReliabilityCache&amp;type=rcache">rcache</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_proxy.ReliabilityCache&amp;type=rcache_config">rcache_config</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_proxy.ReliabilityCache&amp;type=rcache">rcache</a></code></pre><div class="info"><div class="info"><code class="code">derive_cache parent config</code>: Returns a new cache that shares the
         error counters with <code class="code">parent</code>. The interpretation of the counters,
-        however, may be differently configured in <code class="code">config</code>.<br/>        Because it is advantageous to share the error information as much
+        however, may be differently configured in <code class="code">config</code>.<p>        Because it is advantageous to share the error information as much
         as possible, the recommended way to create a new cache object is
-        to derive it from the global cache.<br/>        What <code class="code">derive_rcache</code> actually does (and this is not yet
+        to derive it from the global cache.</p><p>        What <code class="code">derive_rcache</code> actually does (and this is not yet
         optimal): Any <code class="code">incr</code> and <code class="code">reset</code> of an error counter is also
         forwarded to the parent cache. The tests whether hosts and ports
         are enabled do an AND of the results for the cache and its parent
         (i.e. both must be ok to enable). This allows some information
-        sharing, but only in vertical direction.</div></div>
+        sharing, but only in vertical direction.</p></div></div>
 <pre><span class="VALincr_rcache_error_counter"><span class="keyword">val</span> incr_rcache_error_counter</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_proxy.ReliabilityCache&amp;type=rcache">rcache</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a> -&gt; unit</code></pre><div class="info"><div class="info">Increase the error counter for this sockaddr. If the threshold
-        is reached and there is a disable policy, the sockaddr will be disabled.<br/>        This function is to be called after an RPC call times out, or
-        runs into a socket error.</div></div>
+        is reached and there is a disable policy, the sockaddr will be disabled.<p>        This function is to be called after an RPC call times out, or
+        runs into a socket error.</p></div></div>
 <pre><span class="VALreset_rcache_error_counter"><span class="keyword">val</span> reset_rcache_error_counter</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_proxy.ReliabilityCache&amp;type=rcache">rcache</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a> -&gt; unit</code></pre><div class="info"><div class="info">Reset the error counter for this sockaddr. If disabled, the
-        sockaddr is set to enabled again.<br/>        This function is to be called when an RPC call is successful.</div></div>
+        sockaddr is set to enabled again.<p>        This function is to be called when an RPC call is successful.</p></div></div>
 <pre><span class="VALsockaddr_is_enabled"><span class="keyword">val</span> sockaddr_is_enabled</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_proxy.ReliabilityCache&amp;type=rcache">rcache</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a> -&gt; bool</code></pre><div class="info"><div class="info">Returns whether the sockaddr is enabled. This also calls the
         <code class="code">rcache_availability</code> hook.</div></div>
 <pre><span class="VALhost_is_enabled"><span class="keyword">val</span> host_is_enabled</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_proxy.ReliabilityCache&amp;type=rcache">rcache</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=inet_addr">Unix.inet_addr</a> -&gt; bool</code></pre><div class="info"><div class="info">Returns whether the host is enabled</div></div></div></div>
 <div class="ocaml_module sig" name="ManagedClient"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedClient">ManagedClient</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
 <div class="info"><div class="info">Managed clients are  <a href="#Rpc_client">Rpc_client</a> clients with the ability to
-      reconnect in the case of errors. <br/>      Additional features:<ul><li>they can also be disabled, either based on a  time criterion or
+      reconnect in the case of errors. <p>      Additional features:</p><ul><li>they can also be disabled, either based on a  time criterion or
          a customizable hook. This encodes the assumption that failing
          servers need some time to recover</li><li>unused connections are closed (driven by a timeout)</li><li>support for the initial ping after establishing the connection</li></ul>      Initial pings are useful to test whether the connection is
       really working. Servers normally accept new TCP connections without
@@ -97,13 +97,13 @@
       been established. Only when this works the client believes the
       connection is really up. It is required that <code class="code">mclient_programs</code>
       is configured with at least one program, and this program must
-      have a procedure number 0 of type <code class="code">void -&gt; void</code>.<br/>      In multi-threaded programs, threads must not share managed clients.<br/>      Managed clients can be used together with ocamlrpcgen-generated
+      have a procedure number 0 of type <code class="code">void -&gt; void</code>.<p>      In multi-threaded programs, threads must not share managed clients.</p><p>      Managed clients can be used together with ocamlrpcgen-generated
       modules. Provided the generated module <code class="code">M_clnt</code> contains the
-      client code for program <code class="code">P</code> and version <code class="code">V</code>, one can do<br/>      <pre class="codepre"><code class="code">
+      client code for program <code class="code">P</code> and version <code class="code">V</code>, one can do</p><p>      </p><code class="code">
          module MC = M_clnt.Make'P(Rpc_proxy.ManagedClient)
-      </code></pre><br/>      and call RPCs <code class="code">f</code> as in<br/>      <pre class="codepre"><code class="code">
+      </code><p>      and call RPCs <code class="code">f</code> as in</p><p>      </p><code class="code">
          let res = MC.V.f mc arg
-      </code></pre><br/>      (if <code class="code">mc</code> is the managed client, and <code class="code">arg</code> the argument).</div></div>
+      </code><p>      (if <code class="code">mc</code> is the managed client, and <code class="code">arg</code> the argument).</p></div></div>
 <pre><span class="TYPEmclient"><span class="keyword">type</span> mclient</span> </pre><div class="info"><div class="info">A managed client</div></div>
 <pre><code><span class="TYPEmclient_config"><span class="keyword">type</span> mclient_config</span> = {</code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTmclient_config.mclient_rcache">mclient_rcache</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_proxy.ReliabilityCache&amp;type=rcache">ReliabilityCache.rcache</a></code>;</code></td><td class="typefieldcomment" align="left"><div class="info">The rcache</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTmclient_config.mclient_socket_config">mclient_socket_config</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=socket_config">Rpc_client.socket_config</a></code>;</code></td><td class="typefieldcomment" align="left"><div class="info">The socket configuration</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTmclient_config.mclient_idle_timeout">mclient_idle_timeout</span> : <code class="type">float</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">After how many seconds unused connections are closed.
@@ -160,26 +160,26 @@ unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedClient&amp;typ
         connection. The only effect can be that the error counter
         exceeds the <code class="code">rcache_threshold</code> so that the server endpoint
         is disabled for some time. However, this only affects new 
-        connections, not existing ones.<br/>        For a stricter interpretation of errors see 
-        <code class="code">enforce_unavailability</code>.<br/>        The error counter is increased anyway when a socket error
+        connections, not existing ones.<p>        For a stricter interpretation of errors see 
+        <code class="code">enforce_unavailability</code>.</p><p>        The error counter is increased anyway when a socket error
         happens, or an RPC call times out and <code class="code">msg_timeout_is_fatal</code>
         is set. This function can be used to also interpret other
-        misbehaviors as fatal errors.</div></div>
+        misbehaviors as fatal errors.</p></div></div>
 <pre><span class="VALenforce_unavailability"><span class="keyword">val</span> enforce_unavailability</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedClient&amp;type=mclient">mclient</a> -&gt; unit</code></pre><div class="info"><div class="info">Enforces that all pending procedure calls get the
         <code class="code">Service_unavailable</code> exception, and that the client is shut down.
         The background is this: When the reliability cache discovers an
         unavailable port or host, only the new call is stopped with this
         exception, but older calls remain unaffected. This function
-        can be used to change the policy, and to stop even pending calls.<br/>        The difference to <code class="code">trigger_shutdown</code> is that the pending RPC
+        can be used to change the policy, and to stop even pending calls.<p>        The difference to <code class="code">trigger_shutdown</code> is that the pending RPC
         calls get the exception <code class="code">Service_unavailable</code> instead of
          <a href="#Rpc_client.Message_lost">Rpc_client.Message_lost</a>, and that it is enforced that the
-        shutdown is recorded as fatal error in the reliability cache.</div></div>
+        shutdown is recorded as fatal error in the reliability cache.</p></div></div>
 <pre><span class="VALset_batch_call"><span class="keyword">val</span> set_batch_call</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedClient&amp;type=mclient">mclient</a> -&gt; unit</code></pre><div class="info"><div class="info">The next call is a batch call. See  <a href="#Rpc_client.set_batch_call">Rpc_client.set_batch_call</a></div></div>
 <pre><span class="VALrpc_engine"><span class="keyword">val</span> rpc_engine</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedClient&amp;type=mclient">mclient</a> -&gt;
 (<a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedClient&amp;type=mclient">mclient</a> -&gt; 'a -&gt; ((unit -&gt; 'b) -&gt; unit) -&gt; unit) -&gt;
-'a -&gt; 'b <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">Uq_engines.engine</a></code></pre><div class="info"><div class="info">Call an RPC function in engine style:<br/>        <pre class="codepre"><code class="code"> let e = rpc_engine mc f_rpc </code></pre><br/>        where <code class="code">f_rpc</code> is one of the generated client functions (async
+'a -&gt; 'b <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">Uq_engines.engine</a></code></pre><div class="info"><div class="info">Call an RPC function in engine style:<p>        </p><code class="code"> let e = rpc_engine mc f_rpc </code><p>        where <code class="code">f_rpc</code> is one of the generated client functions (async
 	signature). The engine reaches <code class="code">`Done r</code> when the result <code class="code">r</code>
-	has arrived.<br/>	The engine is not abortable (shut the client down instead).</div></div>
+	has arrived.</p><p>	The engine is not abortable (shut the client down instead).</p></div></div>
 <pre><span class="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedClient&amp;type=mclient">mclient</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedClient&amp;type=mclient">mclient</a> -&gt; int</code></pre><div class="info"><div class="info"><code class="code">ManagedClient</code> can be used with <code class="code">Set.Make</code> and <code class="code">Map.Make</code></div></div>
 <div class="ocaml_include ident" path="?package=ocamlnet&amp;module=Rpc_client.USE_CLIENT" items="[]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=ocamlnet&amp;module=Rpc_client.USE_CLIENT">Rpc_client.USE_CLIENT</a></code> with type t = <a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedClient&amp;type=mclient">mclient</a></code></pre><div class="info"><div class="info">We implement the <code class="code">USE_CLIENT</code> interface for calling procedures</div></div></div></div></div>
 <div class="ocaml_module sig" name="ManagedSet"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedSet">ManagedSet</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
@@ -214,12 +214,12 @@ unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedClient&amp;typ
         and how often each port may be contacted (i.e. max number of
         connections).</div></div>
 <pre><span class="VALmset_pick"><span class="keyword">val</span> mset_pick</span> : <code class="type">?from:int list -&gt; <a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedSet&amp;type=mset">mset</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedClient&amp;type=mclient">ManagedClient.mclient</a> * int</code></pre><div class="info"><div class="info">Pick an mclient for another call, or raise <code class="code">Cluster_service_unavailable</code>.
-        The returned int is the index in the <code class="code">mset_services</code> array.<br/>        If <code class="code">from</code> is given, not all specified mclients qualify for this
+        The returned int is the index in the <code class="code">mset_services</code> array.<p>        If <code class="code">from</code> is given, not all specified mclients qualify for this
         call. In <code class="code">from</code> one can pass a list of indexes pointing into
         the <code class="code">mset_services</code> array, and only from these mclients the 
         mclient is picked. For <code class="code">`Failover</code> policies, the order given
         in <code class="code">from</code> is respected, and the mclients are checked from left
-        to right.</div></div>
+        to right.</p></div></div>
 <pre><span class="VALmset_services"><span class="keyword">val</span> mset_services</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedSet&amp;type=mset">mset</a> -&gt; (<a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=connector">Rpc_client.connector</a> * int) array</code></pre><div class="info"><div class="info">Returns the service array</div></div>
 <pre><span class="VALmset_load"><span class="keyword">val</span> mset_load</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedSet&amp;type=mset">mset</a> -&gt; int array</code></pre><div class="info"><div class="info">Returns the number of pending calls per service</div></div>
 <pre><span class="VALevent_system"><span class="keyword">val</span> event_system</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedSet&amp;type=mset">mset</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a></code></pre><div class="info"><div class="info">Return the event system</div></div>
@@ -239,31 +239,31 @@ unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedClient&amp;typ
         tried <code class="code">mset_idempotent_max</code> times. It is recommended to set
         <code class="code">rcache_threshold</code> to 1 when using this function because this
         enforces that a different mclient is picked when the first one
-        fails.<br/>        Note that a timeout is not considered as a fatal error by default;
-        one has to enable that by setting <code class="code">mclient_msg_timeout_is_fatal</code>.<br/>        Note that this form of function is compatible with the 
-        generated <code class="code">foo'async</code> functions of the language mapping.<br/>        <code class="code">from</code> has the same meaning as in <code class="code">mset_pick</code>.</div></div>
+        fails.<p>        Note that a timeout is not considered as a fatal error by default;
+        one has to enable that by setting <code class="code">mclient_msg_timeout_is_fatal</code>.</p><p>        Note that this form of function is compatible with the 
+        generated <code class="code">foo'async</code> functions of the language mapping.</p><p>        <code class="code">from</code> has the same meaning as in <code class="code">mset_pick</code>.</p></div></div>
 <pre><span class="VALidempotent_sync_call"><span class="keyword">val</span> idempotent_sync_call</span> : <code class="type">?from:int list -&gt;
 <a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedSet&amp;type=mset">mset</a> -&gt;
 (<a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedClient&amp;type=mclient">ManagedClient.mclient</a> -&gt; 'a -&gt; ((unit -&gt; 'b) -&gt; unit) -&gt; unit) -&gt; 'a -&gt; 'b</code></pre><div class="info"><div class="info">Synchronized version. Note that you have to pass an asynchronous
         function as second argument. The result is synchronous, however.</div></div></div></div>
-<div class="info"><div class="info"><h1 id="tut">The <code class="code">Rpc_proxy</code> tutorial</h1><br/>    <h2 id="mclient">Managed clients</h2><br/>    A normal RPC client has a very limited lifecylce: It is created,
+<div class="info"><div class="info"><h1 id="tut">The <code class="code">Rpc_proxy</code> tutorial</h1><p>    </p><h2 id="mclient">Managed clients</h2><p>    A normal RPC client has a very limited lifecylce: It is created,
    then a connection is made to an RPC service, messages are exchanged,
    and finally the connection is terminated. After that the client
-   becomes unusable. In short, it is &quot;use once&quot; client.<br/>   In contrast to this, managed clients can be recycled. This is
+   becomes unusable. In short, it is &quot;use once&quot; client.</p><p>   In contrast to this, managed clients can be recycled. This is
    especially useful for dealing with socket errors, and 
-   connection terminations triggered by the RPC server.<br/>   <b>How to use managed clients:</b> For a <i>normal</i> RPC client the
+   connection terminations triggered by the RPC server.</p><p>   <b>How to use managed clients:</b> For a <i>normal</i> RPC client the
    generator <code class="code">ocamlrpcgen</code> creates all required glue code to easily
    start RPC calls. For example, if a file <code class="code">proto.x</code> is taken as input
-   for <code class="code">ocamlrpcgen</code>, a piece of code doing a call could look like:<br/>   <pre class="codepre"><code class="code"> 
+   for <code class="code">ocamlrpcgen</code>, a piece of code doing a call could look like:</p><p>   </p><code class="code"> 
       let client =
         Proto_clnt.PROG.VERS.create_client connector protocol
       let result =
         Proto_clnt.PROG.VERS.procedure client argument
-   </code></pre><br/>   (Here, <code class="code">PROG</code>, <code class="code">VERS</code>, <code class="code">procedure</code> are just placeholders for the
-   name of the program, the version identifier, and the procedure name.)<br/>   For RPC proxies, however, this is slightly more complicated. <code class="code">ocamlrpcgen</code>
+   </code><p>   (Here, <code class="code">PROG</code>, <code class="code">VERS</code>, <code class="code">procedure</code> are just placeholders for the
+   name of the program, the version identifier, and the procedure name.)</p><p>   For RPC proxies, however, this is slightly more complicated. <code class="code">ocamlrpcgen</code>
    does not produce a managed client that is ready for use. Instead,
    only a functor is provided that can take the
-    <a href="#Rpc_proxy.ManagedlClient">Rpc_proxy.ManagedlClient</a> module as input:<br/>   <pre class="codepre"><code class="code">
+    <a href="#Rpc_proxy.ManagedlClient">Rpc_proxy.ManagedlClient</a> module as input:</p><p>   </p><code class="code">
       module M = Proto_clnt.Make'PROG(Rpc_proxy.ManagedClient)
 
       let esys =
@@ -276,13 +276,13 @@ unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedClient&amp;typ
         Rpc_proxy.ManagedClient.create_mclient mclient_config connector esys
       let result =
         M.VERS.procedure mclient argument
-   </code></pre><br/>   (The functor approach has been chosen, because it gives the
+   </code><p>   (The functor approach has been chosen, because it gives the
    user more flexibility - it is possible to apply the functor
    on other implementations of improved clients than 
-    <a href="#Rpc_proxy.ManagedClient">Rpc_proxy.ManagedClient</a>.)<br/>   Note that <code class="code">esys</code> is always explicit, even in the case the
+    <a href="#Rpc_proxy.ManagedClient">Rpc_proxy.ManagedClient</a>.)</p><p>   Note that <code class="code">esys</code> is always explicit, even in the case the
    user only performs synchronous calls - the user should create
-   a new <code class="code">esys</code> then, pass it to <code class="code">mclient</code>, and ignore it otherwise.<br/>   Now, how does the recycling feature work? The managed client can be
-   in one of three states:<ul><li><code class="code">`Down</code>: The client is not connected. This is the initial state,
+   a new <code class="code">esys</code> then, pass it to <code class="code">mclient</code>, and ignore it otherwise.</p><p>   Now, how does the recycling feature work? The managed client can be
+   in one of three states:</p><ul><li><code class="code">`Down</code>: The client is not connected. This is the initial state,
       and the state after errors and terminated connections (no matter
       whether triggered by the client or by the server)</li><li><code class="code">`Connecting</code>: The client is busy (re)connecting (only used in
       some cases)</li><li><code class="code">`Up sockaddr</code>: The client is connected and has the socket address
@@ -290,21 +290,21 @@ unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedClient&amp;typ
    When it is <code class="code">`Down</code>, the next RPC call automatically starts the
    reconnect to the service. When the connection is established, the
    call is done, and the messages are exchanged that are representing
-   the call. After that, the state remains <code class="code">`Up</code> after the call.<br/>   When the call stops because of an error, the error is reported to
+   the call. After that, the state remains <code class="code">`Up</code> after the call.<p>   When the call stops because of an error, the error is reported to
    the user in the normal way, and the client is shut down, i.e. after
    an error the state is <code class="code">`Down</code>. If the user decides to try the call
    again, the client automatically reconnects following the outlined
    rules. Note that managed clients never automatically retry calls
-   by themselves.<br/>   When the TCP connection is regularly shut down (either by the server
+   by themselves.</p><p>   When the TCP connection is regularly shut down (either by the server
    or by the client calling  <a href="#Rpc_proxy.ManagedClient.shut_down">Rpc_proxy.ManagedClient.shut_down</a>), the
    client state is changed to <code class="code">`Down</code> at the next opportunity. Especially
    a server-driven shutdown may first be detected when the next RPC call
    is tried on the connection. This may or may not lead to an error 
    depending on the exact timing. In any way, the connection is finally
-   established again.<br/>   Of course, managed clients must be shut down after use, because
+   established again.</p><p>   Of course, managed clients must be shut down after use, because
    there is no other (automatic) way of recognizing that they are no
-   longer used. Call  <a href="#Rpc_proxy.ManagedClient.shut_down">Rpc_proxy.ManagedClient.shut_down</a> for this.<br/>   Managed client also have a few more features that can be
-   enabled in <code class="code">mclient_config</code>, especially:<ul><li><b>Initial ping</b>: This means that the TCP connection is tested
+   longer used. Call  <a href="#Rpc_proxy.ManagedClient.shut_down">Rpc_proxy.ManagedClient.shut_down</a> for this.</p><p>   Managed client also have a few more features that can be
+   enabled in <code class="code">mclient_config</code>, especially:</p><ul><li><b>Initial ping</b>: This means that the TCP connection is tested
       before being used for user operations. The test is done by pinging
       the service once (via the RPC null procedure). This is recommended
       because some connectivity problems can first be detected when the
@@ -320,14 +320,14 @@ unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedClient&amp;typ
       This mostly makes sense when there are alternative endpoints,
       i.e. in the context of a managed set (see below).
  </li></ul></div></div>
-<div class="info"><div class="info"><h2 id="2_TITLE">Managed Sets</h2><br/>    Managed sets are another layer on top of the managed
+<div class="info"><div class="info"><h2 id="2_TITLE">Managed Sets</h2><p>    Managed sets are another layer on top of the managed
     clients. These sets are able to manage several connections where
     each is implemented as managed client. The connections can go to
     the same server endpoint in order to parallelize RPCs at the
     client side, or to several server endpoints that provide the same
     service.  The latter can be used for client-driven load balancing,
     and for client-driven failover management of HA setups (HA = high
-    availability).<br/>    For creating a managed set, the code looks like<br/>    <pre class="codepre"><code class="code">
+    availability).</p><p>    For creating a managed set, the code looks like</p><p>    </p><code class="code">
       module M = Proto_clnt.Make'PROG(Rpc_proxy.ManagedClient)
 
       let esys =
@@ -351,22 +351,22 @@ unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedClient&amp;typ
         Rpc_proxy.ManagedSet.mset_pick mset in
       let result =
         M.VERS.procedure mclient argument
-    </code></pre><br/>    The managed clients are internally created by the set - one
+    </code><p>    The managed clients are internally created by the set - one
     only should pass in <code class="code">mclient_config</code> so the set knows what kind of
     client is preferred. For the simple application of maintaining
     several connections to the same server, one would create the <code class="code">mset</code>
-    with a one-element service array:<br/>    <pre class="codepre"><code class="code">
+    with a one-element service array:</p><p>    </p><code class="code">
        let services =
           [| connector, n_connections |]
-    </code></pre><br/>    where <code class="code">connector</code> describes the server port, and <code class="code">n_connections</code> is
+    </code><p>    where <code class="code">connector</code> describes the server port, and <code class="code">n_connections</code> is
     the maximum number of connections to create and maintain. 
     The  <a href="#Rpc_proxy.ManagedSet.mset_pick">Rpc_proxy.ManagedSet.mset_pick</a>
     function creates internally up to <code class="code">n_connections</code> managed clients,
     and returns one of them. By default, it is not guaranteed that the
     client is idle (meaning no previous call is pending)  - 
     if the connections are all already busy, <code class="code">mset_pick</code>
-    starts returning busy connections (but the least busy one first).<br/>    There are a number of options allowing to modify the default
-    behavior:<ul><li>One can enforce that only idle clients are returned by <code class="code">mset_pick</code>.
+    starts returning busy connections (but the least busy one first).</p><p>    There are a number of options allowing to modify the default
+    behavior:</p><ul><li>One can enforce that only idle clients are returned by <code class="code">mset_pick</code>.
        To do this, pass the argument <code class="code">~mset_pending_calls_max:1</code> to
         <a href="#Rpc_proxy.ManagedSet.create_mset_config">Rpc_proxy.ManagedSet.create_mset_config</a>. It can then happen
        that no client is idle, and <code class="code">mset_pick</code> will raise
@@ -380,35 +380,35 @@ unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedClient&amp;typ
        then the second service is used, etc.). The <code class="code">policy</code> argument
        is again to be passed to  <a href="#Rpc_proxy.ManagedSet.create_mset_config">Rpc_proxy.ManagedSet.create_mset_config</a>.</li></ul>   Of course, managed sets must be shut down after use, because
    there is no other (automatic) way of recognizing that they are no
-   longer used. Call  <a href="#Rpc_proxy.ManagedSet.shut_down">Rpc_proxy.ManagedSet.shut_down</a> for this.<br/>   <h2 id="2_TITLE">Caching reliability data</h2><br/>   The cache allows to disable certain hosts or ports when the error
+   longer used. Call  <a href="#Rpc_proxy.ManagedSet.shut_down">Rpc_proxy.ManagedSet.shut_down</a> for this.<p>   </p><h2 id="2_TITLE">Caching reliability data</h2><p>   The cache allows to disable certain hosts or ports when the error
    counter reaches a limit. The service is disabled for a limited time span.
    This is especially useful when there is an alternate port that can
    jump in for the failing one, i.e. when the <code class="code">services</code> array of a
-   managed set has two or more elements.<br/>   There is a single global cache object, but one can also create
+   managed set has two or more elements.</p><p>   There is a single global cache object, but one can also create
    specific cache objects. Generally, cache objects can be shared by
    many managed clients and managed sets. The hope is that sharing
    is useful because more data can be made available to users of
    services. If you do not want to use the global cache object, you
-   can create your own, and configure it in <code class="code">mclient_config</code>.<br/>   The global cache object is automatically used when nothing else
+   can create your own, and configure it in <code class="code">mclient_config</code>.</p><p>   The global cache object is automatically used when nothing else
    is specified. The global cache object is by default configured in
    a way so it does not have any effect, though. So we have to
-   change this in order to enable the cache:<br/>   <pre class="codepre"><code class="code">
+   change this in order to enable the cache:</p><p>   </p><code class="code">
      let rcache_config =
        Rpc_proxy.ReliabilityCache.create_rcache_config
         ~policy:`Independent
         ~threshold:3
         () in
      Rpc_proxy.ReliabilityCache.set_global_rcache_config rcache_config
-   </code></pre><br/>   This means that 3 errors in sequence disable a service port. <code class="code">`Independent</code>
-   means that each port is handled independently in this respect.<br/>    At the first time, the port is only disabled for one second. The
+   </code><p>   This means that 3 errors in sequence disable a service port. <code class="code">`Independent</code>
+   means that each port is handled independently in this respect.</p><p>    At the first time, the port is only disabled for one second. The
     duration of the time span is increased by each additional error
     until it reaches 64 seconds. These durations can be changed, of
-    course.<br/>    As the impact of changing the global cache object is sometimes
+    course.</p><p>    As the impact of changing the global cache object is sometimes
     unpredictable, one can also create a private cache object
     ( <a href="#Rpc_proxy.ReliabilityCache.create_rcache">Rpc_proxy.ReliabilityCache.create_rcache</a>). Another way is
     to derive a semi-private object from the global one. This means
     that the error counters are global, but the interpretation can
-    be set individually in each use. This would look like:<br/>    <pre class="codepre"><code class="code">
+    be set individually in each use. This would look like:</p><p>    </p><code class="code">
     let rcache_config =
       Rpc_proxy.ReliabilityCache.create_rcache_config
         ~policy:`Independent
@@ -425,23 +425,23 @@ unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_proxy.ManagedClient&amp;typ
         ~rcache
         ...
         ()
-    </code></pre><br/>  <h2 id="2_TITLE">Idempotent calls</h2><br/>    In the layer of managed sets there is some limited support for
-    automatically repeating failing idempotent RPC calls.<br/>    Instead of calling the RPC with<br/>    <pre class="codepre"><code class="code">
+    </code><p>  </p><h2 id="2_TITLE">Idempotent calls</h2><p>    In the layer of managed sets there is some limited support for
+    automatically repeating failing idempotent RPC calls.</p><p>    Instead of calling the RPC with</p><p>    </p><code class="code">
       let mclient, idx =
         Rpc_proxy.ManagedSet.mset_pick mset in
       let result =
         M.VERS.procedure mclient argument
-    </code></pre><br/>    one uses<br/>    <pre class="codepre"><code class="code">
+    </code><p>    one uses</p><p>    </p><code class="code">
       let result =
         Rpc_proxy.ManagedSet.idempotent_sync_call
           mset
           M.VERS.procedure'async
           argument
-    </code></pre><br/>    The effet is that  <a href="#Rpc_proxy.ManagedSet.idempotent_sync_call">Rpc_proxy.ManagedSet.idempotent_sync_call</a>
+    </code><p>    The effet is that  <a href="#Rpc_proxy.ManagedSet.idempotent_sync_call">Rpc_proxy.ManagedSet.idempotent_sync_call</a>
     repeats automatically the call when an error occurs. It is
     assumed that the call is idempotent so it can be repeated
-    without changing the meaning.<br/>    The call may be repeated several times. This is configured in
-    the managed set <code class="code">mset</code> (parameter <code class="code">mset_idempotent_max</code>).<br/>    Note that one has to pass the asynchronous version (suffix <code class="code">'async</code>)
-    of the RPC wrapper even when doing a synchronous call.<br/>    Also see the documentation for
-     <a href="#Rpc_proxy.ManagedSet.idempotent_async_call">Rpc_proxy.ManagedSet.idempotent_async_call</a>.</div></div>
+    without changing the meaning.</p><p>    The call may be repeated several times. This is configured in
+    the managed set <code class="code">mset</code> (parameter <code class="code">mset_idempotent_max</code>).</p><p>    Note that one has to pass the asynchronous version (suffix <code class="code">'async</code>)
+    of the RPC wrapper even when doing a synchronous call.</p><p>    Also see the documentation for
+     <a href="#Rpc_proxy.ManagedSet.idempotent_async_call">Rpc_proxy.ManagedSet.idempotent_async_call</a>.</p></div></div>
 </div>

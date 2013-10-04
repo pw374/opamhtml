@@ -6,16 +6,16 @@
  Unixqueue.t that must already exist and to which this module adds its
  own event handlers and event resources. This means that this module
  can co-exist with other services and share the same event queue with
- them.<br/> You can push several procedure calls on the event queue at once.
+ them.<p> You can push several procedure calls on the event queue at once.
  The queue serves then as a pipeline; the calls are sent to the
  server as long as the server accepts new calls. Replies are received
  in any order, and the return values of the remote procedures are
- delivered using a callback function.<br/> You can set timeouts and force automatic retransmission if you want
+ delivered using a callback function.</p><p> You can set timeouts and force automatic retransmission if you want
  this; these features are enabled by default if the underlying transport
  mechanism is UDP. Timeouts and other exceptions are delivered to the
- callback functions, too.<br/> The whole mechanism is designed to allow maximum parallelism without
+ callback functions, too.</p><p> The whole mechanism is designed to allow maximum parallelism without
  needing to use the multi-threading features of O'Caml. Especially,
- the following parallelisms can be done:<ul><li>Call several procedures of the same server in parallel. Note that
+ the following parallelisms can be done:</p><ul><li>Call several procedures of the same server in parallel. Note that
    this does not necessarily mean that the procedures are run in
    parallel since the server is free to decide whether to work
    in a synchronous or asynchronous way.</li><li>Call several procedures of different servers in parallel. To do so,
@@ -55,9 +55,9 @@
 <pre><span class="VALconnector_of_socksymbol"><span class="keyword">val</span> connector_of_socksymbol</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsockaddr&amp;type=socksymbol">Netsockaddr.socksymbol</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=connector">connector</a></code></pre><div class="info"><div class="info">Converts the  <a href="#Netsockaddr.socksymbol">Netsockaddr.socksymbol</a> into a connector</div></div>
 <pre><span class="VALshutdown_connector"><span class="keyword">val</span> shutdown_connector</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_transport&amp;type=rpc_multiplex_controller">Rpc_transport.rpc_multiplex_controller</a> -&gt; (unit -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info">The default implementation to shut down the connector. Actions are
  triggered that will take the connector down at some time in the future.
- At this time, the callback function is invoked.<br/> For <code class="code">Descriptor</code> connector the socket is shut down but not closed.
+ At this time, the callback function is invoked.<p> For <code class="code">Descriptor</code> connector the socket is shut down but not closed.
  For the other connector types the socket is also closed. 
- Win32 named pipes are shut down.</div></div>
+ Win32 named pipes are shut down.</p></div></div>
 <div class="ocaml_class sig" name="socket_config"><pre><span class="TYPEsocket_config"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Rpc_client&amp;class=socket_config">socket_config</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Configuration for <code class="code">`Socket</code> (see below).</div></div><div class="ocaml_class_content"><pre><span class="METHODnon_blocking_connect"><span class="keyword">method</span> non_blocking_connect</span> : <code class="code">bool</code></pre>
 <div class="info"><div class="info"><code class="code">non_blocking_connect</code>: Whether the remote service is connected
    in the background. In this case, <code class="code">create2</code> immediately returns,
@@ -75,14 +75,14 @@
 <div class="ocaml_class ident" name="blocking_socket_config" path="?package=ocamlnet&amp;module=Rpc_client&amp;class=socket_config"><pre><span class="TYPEblocking_socket_config"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Rpc_client&amp;class=blocking_socket_config">blocking_socket_config</a></span> : <code class="type"/><a href="?package=ocamlnet&amp;module=Rpc_client&amp;class=socket_config">socket_config</a></pre><div class="info"><div class="info">blocking <code class="code">connect</code> configuration as class</div></div></div>
 <pre><span class="TYPEmode2"><span class="keyword">type</span> mode2</span> = <code class="type">[ `Multiplexer_endpoint of <a href="?package=ocamlnet&amp;module=Rpc_transport&amp;type=rpc_multiplex_controller">Rpc_transport.rpc_multiplex_controller</a>
 | `Socket of <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> * <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=connector">connector</a> * <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=socket_config">socket_config</a>
-| `Socket_endpoint of <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> ]</code></pre><div class="info"><div class="info">Determines the type of the client for <code class="code">create2</code>:<br/> - <code class="code">`Socket_endpoint(proto,fd)</code>: Socket <code class="code">fd</code> is a connected socket
+| `Socket_endpoint of <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a> * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> ]</code></pre><div class="info"><div class="info">Determines the type of the client for <code class="code">create2</code>:<p> - <code class="code">`Socket_endpoint(proto,fd)</code>: Socket <code class="code">fd</code> is a connected socket
    descriptor used for communication. <code class="code">proto</code> determines the
    encapsulation; should be <code class="code">Tcp</code> for stream sockets and <code class="code">Udp</code> for
    datagram sockets. The descriptor will be closed when the client
-   terminates.<br/> - <code class="code">`Multiplexer_endpoint m</code>: <code class="code">m</code> is an RPC multiplex controller.<br/> - <code class="code">`Socket(proto, conn, config)</code>: Creates and connect a client
+   terminates.</p><p> - <code class="code">`Multiplexer_endpoint m</code>: <code class="code">m</code> is an RPC multiplex controller.</p><p> - <code class="code">`Socket(proto, conn, config)</code>: Creates and connect a client
    socket according to <code class="code">conn</code>. <code class="code">proto</code> determines the
    encapsulation; should be <code class="code">Tcp</code> for stream sockets and <code class="code">Udp</code> for
-   datagram sockets. <code class="code">config</code> specifies configuration details.</div></div>
+   datagram sockets. <code class="code">config</code> specifies configuration details.</p></div></div>
 <pre><span class="VALcreate2"><span class="keyword">val</span> create2</span> : <code class="type">?program_number:<a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a> -&gt;
 ?version_number:<a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a> -&gt;
 ?initial_xid:int -&gt;
@@ -94,11 +94,11 @@
  the <code class="code">Rpc_program.t</code> argument. (You can override the program and version
  numbers stored in this argument by the optional parameters
  <code class="code">program_number</code> and <code class="code">version_number</code>. If you need to call several
- programs/versions with the same client, use <code class="code">unbound_create</code> instead.)<br/> All communication to the server is handled using the given queue
+ programs/versions with the same client, use <code class="code">unbound_create</code> instead.)<p> All communication to the server is handled using the given queue
  <code class="code">Unixqueue.event_system</code>. There is a limit of 2GB per message
- or <code class="code">Sys.max_string_length</code>, whatever is lower.<br/> If the protocol (passed along with <code class="code">mode2</code>) is Tcp, the communication 
+ or <code class="code">Sys.max_string_length</code>, whatever is lower.</p><p> If the protocol (passed along with <code class="code">mode2</code>) is Tcp, the communication 
  will be handled stream-oriented. In this case, no timeout is detected
- and no retransmissions are done.<br/> If the protocol is Udp, a datagram-oriented communication style is
+ and no retransmissions are done.</p><p> If the protocol is Udp, a datagram-oriented communication style is
  used. This works only for Internet UDP sockets because these are
  bidirectional (Unix domain sockets are unidirectional and do not
  work). For Udp, there is a timeout of 15 seconds and a maximum
@@ -106,54 +106,54 @@
  For connected UDP sockets there is a limit of 64K per message
  (max. size of an Internet packet). For unconnected UDP sockets
  there is a limit of 16K per message due to restrictions in the
- OCaml runtime.<div class="parameters"><div class="param_info"><code class="code">program_number</code> : Overrides the program number in <code class="code">Rpc_program.t</code></div><div class="param_info"><code class="code">version_number</code> : Overrides the version number in <code class="code">Rpc_program.t</code></div><div class="param_info"><code class="code">initial_xid</code> : The initial value for the session identifier.</div><div class="param_info"><code class="code">shutdown</code> : This function is called when the client is shut down
+ OCaml runtime.</p><div class="parameters"><div class="param_info"><code class="code">program_number</code> : Overrides the program number in <code class="code">Rpc_program.t</code></div><div class="param_info"><code class="code">version_number</code> : Overrides the version number in <code class="code">Rpc_program.t</code></div><div class="param_info"><code class="code">initial_xid</code> : The initial value for the session identifier.</div><div class="param_info"><code class="code">shutdown</code> : This function is called when the client is shut down
    to close the client socket. By default, <code class="code">shutdown_connector</code> is
    called.</div></div></div></div>
 <pre><span class="VALunbound_create"><span class="keyword">val</span> unbound_create</span> : <code class="type">?initial_xid:int -&gt;
 ?shutdown:(<a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt;
            <a href="?package=ocamlnet&amp;module=Rpc_transport&amp;type=rpc_multiplex_controller">Rpc_transport.rpc_multiplex_controller</a> -&gt; (unit -&gt; unit) -&gt; unit) -&gt;
 <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=mode2">mode2</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a></code></pre><div class="info"><div class="info">Creates an unbound client. This is like <code class="code">create2</code>, but the client is
-      not restricted to a particular RPC program.<br/>      One can convert an unbound client into a bound client by calling
+      not restricted to a particular RPC program.<p>      One can convert an unbound client into a bound client by calling
       <code class="code">bind</code>, see below. It is possible to bind several times, so several
       programs can be called with the same client (provided the server is
-      also capable of dealing with several programs).<br/>      This function does not support <code class="code">Portmapped</code> connectors.</div></div>
+      also capable of dealing with several programs).</p><p>      This function does not support <code class="code">Portmapped</code> connectors.</p></div></div>
 <pre><span class="VALbind"><span class="keyword">val</span> bind</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_program&amp;type=t">Rpc_program.t</a> -&gt; unit</code></pre><div class="info"><div class="info">Binds this program additionally</div></div>
 <pre><span class="VALuse"><span class="keyword">val</span> use</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_program&amp;type=t">Rpc_program.t</a> -&gt; unit</code></pre><div class="info"><div class="info">If there are no bound programs, this is a no-op. Otherwise it is 
       checked whether the passed program is bound. If not, an exception
-      is raised.<br/>      Programs are compared by comparing  <a href="#Rpc_program.id">Rpc_program.id</a>. The program
+      is raised.<p>      Programs are compared by comparing  <a href="#Rpc_program.id">Rpc_program.id</a>. The program
       must be the same value, but it is also allowed to 
        <a href="#Rpc_program.update">Rpc_program.update</a> it in the meantime, i.e. to change program
-      and version numbers.</div></div>
+      and version numbers.</p></div></div>
 <pre><span class="VALconfigure"><span class="keyword">val</span> configure</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; int -&gt; float -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">configure client retransmissions timeout</code>:
  sets the number of retransmissions and the timeout for the next calls.
  (These values are defaults; the actual values are stored with each
- call.)<br/> Values of <code class="code">retransmissions &gt; 0</code> are semantically only valid if the
+ call.)<p> Values of <code class="code">retransmissions &gt; 0</code> are semantically only valid if the
  called procedures are idempotent, i.e. invoking them several times
  with the same values has the same effect as only one invocation.
  Positive values for <code class="code">retransmissions</code> should only be used for Udp-style
- communication.<br/> The timeout value determines how long the client waits until the
+ communication.</p><p> The timeout value determines how long the client waits until the
  next retransmission is done, or, if no more retransmissions are
  permitted, a <code class="code">Message_timeout</code> exception is delivered to the receiving
  callback function. A <code class="code">timeout</code> value of 0.0 means immediate timeout
  (see next paragraph). A negative <code class="code">timeout</code> value means 'no timeout'.
  Positive <code class="code">timeout</code> values are possible for both Udp and Tcp connections.
- Timeout values are measured in seconds.<br/> There is a special application for the timeout value 0.0: If you
+ Timeout values are measured in seconds.</p><p> There is a special application for the timeout value 0.0: If you
  don't expect an answer from the server at all (&quot;batch mode&quot;), this
  timeout value will cause that the message handler will get
  a <code class="code">Message_timeout</code> exception immediately. You should ignore this
  exception for batch mode. The positive effect from the timeout is that
  the internal management routines will remove the remote call from
  the list of pending calls such that this list will not become too long.
- (You can get a similar effect by calling <code class="code">set_batch_call</code>, however.)<br/> Note that the meaning of timeouts for TCP connections is unclear.
+ (You can get a similar effect by calling <code class="code">set_batch_call</code>, however.)</p><p> Note that the meaning of timeouts for TCP connections is unclear.
  The TCP stream may be in an undefined state. Because of this, the
  client does not make any attempt to clean the state up for TCP.
- The user is advised to shut down the client, and reconnect.<br/> There is another subtle difference between UDP and TCP. For UDP,
+ The user is advised to shut down the client, and reconnect.</p><p> There is another subtle difference between UDP and TCP. For UDP,
  the timer is started when the packet is sent. For TCP, however,
  the timer is already started when the RPC call is added to the
  queue, i.e. much earlier. This means that the time for connecting
  to the remote service is also bound by the timeout. The rationale
  is that TCP timeouts are usually set to catch total service failures
- rather than packet losses, and this behaviour is best for this purpose.</div></div>
+ rather than packet losses, and this behaviour is best for this purpose.</p></div></div>
 <pre><span class="VALconfigure_next_call"><span class="keyword">val</span> configure_next_call</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; int -&gt; float -&gt; unit</code></pre><div class="info"><div class="info">Same as <code class="code">configure</code>, but it only affects the next call</div></div>
 <pre><span class="VALset_dgram_destination"><span class="keyword">val</span> set_dgram_destination</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=sockaddr">Unix.sockaddr</a> option -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">set_dgram_destination client addr_opt</code>: This function is required
  for using the client in conjunction with unconnected UDP sockets.
@@ -164,22 +164,22 @@
  Passing <code class="code">None</code> as <code class="code">addr_opt</code> removes the explicit destination again.
  Note that unconnected sockets differ from connected sockets also in
  the relaxation that they can receive messages from any IP address,
- and not only the one they are connected to.<br/> The current destination is used for all following calls. It is
- not automatically reset to <code class="code">None</code> after the next call.</div></div>
+ and not only the one they are connected to.<p> The current destination is used for all following calls. It is
+ not automatically reset to <code class="code">None</code> after the next call.</p></div></div>
 <pre><span class="VALset_batch_call"><span class="keyword">val</span> set_batch_call</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">The next call will be a batch call. The client does not wait for the
       response of a batch call. Instead, the client immediately fakes the
-      response of a &quot;void&quot; return value.<br/>      It is required that the batch call has a &quot;void&quot; return type. Otherwise,
-      the client raises an exception, and ignores the call.<br/>      This setting only affects the next call.</div></div>
+      response of a &quot;void&quot; return value.<p>      It is required that the batch call has a &quot;void&quot; return type. Otherwise,
+      the client raises an exception, and ignores the call.</p><p>      This setting only affects the next call.</p></div></div>
 <pre><span class="VALset_user_name"><span class="keyword">val</span> set_user_name</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; string option -&gt; unit</code></pre><div class="info"><div class="info">Sets the user name, or <code class="code">None</code> (the default user name). This is only
       meaningful for authentication.</div></div>
 <pre><span class="VALset_max_response_length"><span class="keyword">val</span> set_max_response_length</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">Sets the maximum length of responses. By default, there is only the
-      implicit maximum of <code class="code">Sys.max_string_length</code>.<br/>      If the maximum is exceeded, the exception <code class="code">Response_dropped</code> is raised.</div></div>
+      implicit maximum of <code class="code">Sys.max_string_length</code>.<p>      If the maximum is exceeded, the exception <code class="code">Response_dropped</code> is raised.</p></div></div>
 <pre><span class="VALset_exception_handler"><span class="keyword">val</span> set_exception_handler</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; (exn -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info">sets an exception handler (the default prints the exception 
  with <code class="code">`Crit</code> level to the logger set in  <a href="#Netlog">Netlog</a>).
  Only exceptions resulting from invocations of a
  callback function are forwarded to this handler (unless wrapped
- by <code class="code">Unbound_exception</code>).<br/> Exceptions occuring in the handler itself are not caught, and will
- fall through.</div></div>
+ by <code class="code">Unbound_exception</code>).<p> Exceptions occuring in the handler itself are not caught, and will
+ fall through.</p></div></div>
 <pre><span class="VALset_mstring_factories"><span class="keyword">val</span> set_mstring_factories</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=named_mstring_factories">Xdr_mstring.named_mstring_factories</a> -&gt; unit</code></pre><div class="info"><div class="info">Sets the mstring factory configuration that is used for decoding
       responses containing managed strings.</div></div>
 <pre><span class="VALevent_system"><span class="keyword">val</span> event_system</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a></code></pre><div class="info"><div class="info">Returns the unixqueue to which the client is attached</div></div>
@@ -194,7 +194,7 @@
 <pre><span class="VALget_protocol"><span class="keyword">val</span> get_protocol</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc&amp;type=protocol">Rpc.protocol</a></code></pre><div class="info"><div class="info">Get the protocol flavour</div></div>
 <pre><span class="VALabandon_call"><span class="keyword">val</span> abandon_call</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a> -&gt; unit</code></pre><div class="info"><div class="info">To be used in conjunction with  <a href="#Rpc_client.Keep_call">Rpc_client.Keep_call</a>: The call
       with this session identifier is no longer expected, and removed
-      from the internal data structures.<br/>      Restriction: for now, this does not work when there is authentication.</div></div>
+      from the internal data structures.<p>      Restriction: for now, this does not work when there is authentication.</p></div></div>
 <pre><span class="VALis_up"><span class="keyword">val</span> is_up</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; bool</code></pre><div class="info"><div class="info">Return whether the client is up</div></div>
 <pre><span class="VALunbound_sync_call"><span class="keyword">val</span> unbound_sync_call</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_program&amp;type=t">Rpc_program.t</a> -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_value">Xdr.xdr_value</a> -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_value">Xdr.xdr_value</a></code></pre><div class="info"><div class="info"><code class="code">unbound_sync_call client pgm proc arg</code>: Invoke the remote procedure
       <code class="code">proc</code> of the program <code class="code">pgm</code> via <code class="code">client</code>. The input arguments are
@@ -211,19 +211,19 @@ string -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_value">Xdr.x
       is initially in state <code class="code">`Working 0</code>. When the call is finished, the
       engine transitions to <code class="code">`Done r</code> where <code class="code">r</code> is the response value.
       If an error happens, it transitions to <code class="code">`Error e</code> where <code class="code">e</code> is the
-      exception.<br/>      One can <code class="code">abort</code> the engine, but one caveat: This does not stop
+      exception.<p>      One can <code class="code">abort</code> the engine, but one caveat: This does not stop
       the transmission of the current message (the underlying RPC transporter
       doing this is not aborted). Aborting can only prevent that a
       message is sent before it is sent, and it can remove the call from the
       housekeeping data structures before the response arrives. Of course,
       one can shut the client down to achieve immediate stop of data
-      transmission.</div></div></div>
+      transmission.</p></div></div></div>
 <pre><span class="VALsynchronize"><span class="keyword">val</span> synchronize</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; ('a -&gt; ((unit -&gt; 'b) -&gt; unit) -&gt; unit) -&gt; 'a -&gt; 'b</code></pre><div class="info"><div class="info">Turns an async call into a synchronous call</div></div>
 <pre><span class="VALshut_down"><span class="keyword">val</span> shut_down</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Shuts down the connection. Any unprocessed calls get the exception
  <code class="code">Message_lost</code>. It is no error to shut down a client that is already
- down - nothing happens in this case.<br/> Shutdowns can be complex operations. For this reason, this function
+ down - nothing happens in this case.<p> Shutdowns can be complex operations. For this reason, this function
  implements some magic that is usually the right thing, but may also
- be wrong:<ul><li>If called outside the event loop, it is assumed that a synchronous
+ be wrong:</p><ul><li>If called outside the event loop, it is assumed that a synchronous
     shutdown is desired, and the event loop is started to complete the
     shutdown immediately. This is right
     when the only task connected with the event loop is the shutdown,
@@ -238,34 +238,34 @@ string -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_value">Xdr.x
     can be closed.</li></ul> The following functions allow more fine grained control of the shutdown.</div></div>
 <pre><span class="VALsync_shutdown"><span class="keyword">val</span> sync_shutdown</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Enforces a synchronous shutdown of the connection. This is only
  possible if called from outside the event loop. This function fails
- if called from within the event loop.<br/> You can be sure that the shutdown is completely done when this
- function returns normally.</div></div>
+ if called from within the event loop.<p> You can be sure that the shutdown is completely done when this
+ function returns normally.</p></div></div>
 <pre><span class="VALtrigger_shutdown"><span class="keyword">val</span> trigger_shutdown</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; (unit -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info">Triggers the shutdown, and calls the passed function back when it is
- done.<br/> The function is not only called when the client has to be taken
- down, but also if the client is already down.</div></div>
+ done.<p> The function is not only called when the client has to be taken
+ down, but also if the client is already down.</p></div></div>
 <pre><span class="TYPEreject_code"><span class="keyword">type</span> reject_code</span> = <code class="type">[ `Fail | `Next | `Renew | `Retry ]</code></pre><div class="info"><div class="info">Reaction on authentication problems:<ul><li><code class="code">`Fail</code>: Stop here, and report to user</li><li><code class="code">`Retry</code>: Just try again with current session</li><li><code class="code">`Renew</code>: Drop the current session, and get a new session from
         the current <code class="code">auth_method</code></li><li><code class="code">`Next</code>: Try the next authentication method
    </li></ul></div></div>
 <div class="ocaml_class sig" name="auth_session"><pre><span class="TYPEauth_session"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Rpc_client&amp;class=auth_session">auth_session</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">An <code class="code">auth_session</code> object is normally created for every client instance.
  It contains the current state of authentication. The methods are only
- interesting for implementors of authentication methods.<br/> This class type might be revised in the future to allow asynchronous
- authentication (authentication often uses some network service).</div></div><div class="ocaml_class_content"><pre><span class="METHODnext_credentials"><span class="keyword">method</span> next_credentials</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt;
+ interesting for implementors of authentication methods.<p> This class type might be revised in the future to allow asynchronous
+ authentication (authentication often uses some network service).</p></div></div><div class="ocaml_class_content"><pre><span class="METHODnext_credentials"><span class="keyword">method</span> next_credentials</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt;
 <a href="?package=ocamlnet&amp;module=Rpc_program&amp;type=t">Rpc_program.t</a> -&gt;
 string -&gt;
 <a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a> -&gt;
 string * string * string * string * <a href="?package=ocamlnet&amp;module=Xdr&amp;type=encoder">Xdr.encoder</a> option * <a href="?package=ocamlnet&amp;module=Xdr&amp;type=decoder">Xdr.decoder</a> option</code></pre>
 <div class="info"><div class="info">Called with <code class="code">client prog proc xid</code>.
 	     Returns <code class="code">(cred_flavour, cred_data, verifier_flavor, verifier_data,
-	     enc_opt, dec_opt)</code>.<br/>	     Changed in Ocamlnet-3.3: Additional arguments <code class="code">prog</code>, <code class="code">proc</code>,
-	     <code class="code">xid</code>. New return values <code class="code">enc_opt</code> and <code class="code">dec_opt</code>.</div></div>
+	     enc_opt, dec_opt)</code>.<p>	     Changed in Ocamlnet-3.3: Additional arguments <code class="code">prog</code>, <code class="code">proc</code>,
+	     <code class="code">xid</code>. New return values <code class="code">enc_opt</code> and <code class="code">dec_opt</code>.</p></div></div>
 <pre><span class="METHODserver_rejects"><span class="keyword">method</span> server_rejects</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc&amp;type=server_error">Rpc.server_error</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=reject_code">reject_code</a></code></pre>
 <div class="info"><div class="info">Called if the server rejects the credentials or the verifier
- (Auth_xxx). This method indicates how to react on errors.<br/> Changed in Ocamlnet-3.3: Additional arg <code class="code">xid</code>. New return value.</div></div>
+ (Auth_xxx). This method indicates how to react on errors.<p> Changed in Ocamlnet-3.3: Additional arg <code class="code">xid</code>. New return value.</p></div></div>
 <pre><span class="METHODserver_accepts"><span class="keyword">method</span> server_accepts</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a> -&gt; string -&gt; string -&gt; unit</code></pre>
 <div class="info"><div class="info">Called if the server accepts the credentials. The two strings
  are the returned <code class="code">verifier_flavor</code> and <code class="code">verifier_data</code>.
  This method may raise <code class="code">Rpc_server Rpc_invalid_resp</code> to indicate
- that the returned verifier is wrong.<br/> Changed in Ocamlnet-3.3: Additional arg <code class="code">xid</code></div></div>
+ that the returned verifier is wrong.<p> Changed in Ocamlnet-3.3: Additional arg <code class="code">xid</code></p></div></div>
 <pre><span class="METHODauth_protocol"><span class="keyword">method</span> auth_protocol</span> : <code class="code">auth_protocol</code></pre>
 <div class="info"><div class="info">Return the corresponding protocol</div></div></div></div>
 <div class="ocaml_class sig" name="auth_protocol"><pre><span class="TYPEauth_protocol"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Rpc_client&amp;class=auth_protocol">auth_protocol</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">An authentication protocol is used for creating an authentication
@@ -280,17 +280,17 @@ string * string * string * string * <a href="?package=ocamlnet&amp;module=Xdr&am
 	should have been created with  <a href="#Rpc_packer.pack_value">Rpc_packer.pack_value</a>. It is 
 	possible that <code class="code">emit</code> is called several times with different
 	xid values. In this case, the returned packed value should
-	be identical except that the new xid is included in the message.<br/>	After emission, the state must change to <code class="code">`Receive</code>.</div></div>
+	be identical except that the new xid is included in the message.<p>	After emission, the state must change to <code class="code">`Receive</code>.</p></div></div>
 <pre><span class="METHODreceive"><span class="keyword">method</span> receive</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Rpc_packer&amp;type=packed_value">Rpc_packer.packed_value</a> -&gt; unit</code></pre>
 <div class="info"><div class="info">Receive a token for the <code class="code">xid</code> announced in <code class="code">state</code>. The passed
 	packed value is the full RPC message. The message may also contain
 	a server error - which may be processed by the protocol, or which
 	may cause the reaction that <code class="code">receive</code> raises an  <a href="#Rpc.Rpc_server">Rpc.Rpc_server</a>
-	exception.<br/>	After <code class="code">receive</code>, the state can change to <code class="code">`Emit</code>, <code class="code">`Done</code> or
+	exception.<p>	After <code class="code">receive</code>, the state can change to <code class="code">`Emit</code>, <code class="code">`Done</code> or
 	<code class="code">`Error</code>. The latter is obligatory when <code class="code">receive</code> raises an
 	exception. It is also possible not to raise an exception but
-	silently switch to <code class="code">`Error</code>.<br/>	Design limitation: there is right now no way to indicate that the
-	next authentication method should be used instead.</div></div>
+	silently switch to <code class="code">`Error</code>.</p><p>	Design limitation: there is right now no way to indicate that the
+	next authentication method should be used instead.</p></div></div>
 <pre><span class="METHODauth_method"><span class="keyword">method</span> auth_method</span> : <code class="code">auth_method</code></pre>
 </div></div>
 <div class="ocaml_class sig" name="auth_method"><pre><span class="TYPEauth_method"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Rpc_client&amp;class=auth_method">auth_method</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">An <code class="code">auth_method</code> object represents a method of authentication. Such an
@@ -299,17 +299,17 @@ string * string * string * string * <a href="?package=ocamlnet&amp;module=Xdr&am
 <pre><span class="METHODnew_session"><span class="keyword">method</span> new_session</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; string option -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=auth_protocol">auth_protocol</a></code></pre>
 <div class="info"><div class="info">Request a new session. The 2nd argument is the user name, or <code class="code">None</code>
 	     if the default is to be used (whatever this is). Some
-	     authenticators only support <code class="code">None</code>.<br/>	     It is allowed that the returned <code class="code">auth_protocol</code> object is already
-	     in state <code class="code">`Done</code>, i.e. that actually no protocol is run.<br/>	     Changed in Ocamlnet-3.3: different signature. The user name is
+	     authenticators only support <code class="code">None</code>.<p>	     It is allowed that the returned <code class="code">auth_protocol</code> object is already
+	     in state <code class="code">`Done</code>, i.e. that actually no protocol is run.</p><p>	     Changed in Ocamlnet-3.3: different signature. The user name is
 	     now an argument, and the method returns <code class="code">auth_protocol</code> instead
 	     of <code class="code">auth_session</code>. There can now be a separate session for
-	     each user (plus for the default user <code class="code">None</code>).</div></div></div></div>
+	     each user (plus for the default user <code class="code">None</code>).</p></div></div></div></div>
 <pre><span class="VALauth_none"><span class="keyword">val</span> auth_none</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=auth_method">auth_method</a></code></pre><div class="info"><div class="info">The authentication method that does not perform authentication.</div></div>
 <pre><span class="VALset_auth_methods"><span class="keyword">val</span> set_auth_methods</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=auth_method">auth_method</a> list -&gt; unit</code></pre><div class="info"><div class="info">Set the authentication methods for this client. The passed methods
  are tried in turn until a method is accepted by the server.
- The default is <code class="code"> auth_none </code><br/> When the methods are set for an active client, the ongoing calls
+ The default is <code class="code"> auth_none </code><p> When the methods are set for an active client, the ongoing calls
  are continued with the old method. First new calls are ensured to
- use the new list.</div></div>
+ use the new list.</p></div></div>
 <div class="ocaml_module sig" name="USE_CLIENT"><pre><span class="keyword">module type</span> <a href="?package=ocamlnet&amp;module=Rpc_client.USE_CLIENT">USE_CLIENT</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">This module type is what the generated &quot;clnt&quot; module assumes about the
     client interface</div></div><div class="ocaml_module_content">
 <pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">The client type</div></div>
@@ -336,23 +336,23 @@ string -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_value">Xdr.x
  The server is assumed to implement an RPC program as specified by
  the <code class="code">Rpc_program.t</code> argument. (You can override the program and version
  numbers stored in this argument by the optional parameters
- <code class="code">program_number</code> and <code class="code">version_number</code>.)<br/> All communication to the server is handled using the given queue
- <code class="code">Unixqueue.event_system</code>.<br/> If the protocol is Tcp, the communication will be handled stream-
+ <code class="code">program_number</code> and <code class="code">version_number</code>.)<p> All communication to the server is handled using the given queue
+ <code class="code">Unixqueue.event_system</code>.</p><p> If the protocol is Tcp, the communication will be handled stream-
  oriented. In this case, no timeout is detected and no retransmissions
- are done.<br/> If the protocol is Udp, a datagram-oriented communication style is
+ are done.</p><p> If the protocol is Udp, a datagram-oriented communication style is
  used. This works only for Internet UDP sockets because these are
  bidirectional (Unix domain sockets are unidirectional and do not
  work). For Udp, there is a timeout of 15 seconds and a maximum
- of 3 retransmissions (i.e. a total of 4 transmission trials).<br/> Unlike <code class="code">create2</code>, servers made with <code class="code">create</code> always use blocking
- <code class="code">connect</code> for backwards compatibility.<span class="warning">Deprecated.</span> This function should not be used any more in new programs.
+ of 3 retransmissions (i.e. a total of 4 transmission trials).</p><p> Unlike <code class="code">create2</code>, servers made with <code class="code">create</code> always use blocking
+ <code class="code">connect</code> for backwards compatibility.</p><span class="warning">Deprecated.</span> This function should not be used any more in new programs.
     Use <code class="code">create2</code> or <code class="code">unbound_create</code>.<br/><div class="parameters"><div class="param_info"><code class="code">program_number</code> : Overrides the program number in <code class="code">Rpc_program.t</code></div><div class="param_info"><code class="code">version_number</code> : Overrides the version number in <code class="code">Rpc_program.t</code></div><div class="param_info"><code class="code">initial_xid</code> : The initial value for the session identifier.</div><div class="param_info"><code class="code">shutdown</code> : This function is called when the client is shut down
    to close the client socket. By default, <code class="code">shutdown_connector</code> is
    called.</div></div></div></div>
 <pre><span class="VALprogram"><span class="keyword">val</span> program</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_program&amp;type=t">Rpc_program.t</a></code></pre><div class="info"><div class="info">Returns the program the client represents.<span class="warning">Deprecated.</span> This is the same as <code class="code">List.hd (Rpc_client.programs client)</code><br/></div></div>
 <pre><span class="VALadd_call"><span class="keyword">val</span> add_call</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=t">t</a> -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_value">Xdr.xdr_value</a> -&gt; ((unit -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_value">Xdr.xdr_value</a>) -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">add_call client proc_name arg f</code>: add the call to the procedure <code class="code">name</code>
- with argument <code class="code">arg</code> to the queue of unprocessed calls.<br/> When the reply has arrived or an error situation is detected, the
+ with argument <code class="code">arg</code> to the queue of unprocessed calls.<p> When the reply has arrived or an error situation is detected, the
  function <code class="code">f</code> is called back. The argument of <code class="code">f</code> is another function
- that will return the result or raise an exception:<br/> <pre class="codepre"><code class="code"> let my_f get_result =
+ that will return the result or raise an exception:</p><p> </p><code class="code"> let my_f get_result =
       try
         let result = get_result() in
         ...
@@ -360,11 +360,11 @@ string -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_value">Xdr.x
          exn -&gt; ...
     in
     add_call client name arg my_f
- </code></pre><br/> If <code class="code">f</code> does not catch the exception, the pluggable exception handler
+ </code><p> If <code class="code">f</code> does not catch the exception, the pluggable exception handler
  of the client is called (see <code class="code">set_exception_handler</code>). Exceptions are
- either <code class="code">Message_lost</code>, <code class="code">Message_timeout</code>, or <code class="code">Communication_error</code>.<br/> The function <code class="code">f</code> can raise the exception <code class="code">Keep_call</code> to indicate
+ either <code class="code">Message_lost</code>, <code class="code">Message_timeout</code>, or <code class="code">Communication_error</code>.</p><p> The function <code class="code">f</code> can raise the exception <code class="code">Keep_call</code> to indicate
  the special handling that a further reply of the call is expected
- (batching).<span class="warning">Deprecated.</span> <code class="code">add_call</code> is restricted to the case that there is only
+ (batching).</p><span class="warning">Deprecated.</span> <code class="code">add_call</code> is restricted to the case that there is only
    one bound program. It will fail in other cases. Use 
    <code class="code">unbound_async_call</code> instead. Note also that there is no longer
    the optional <code class="code">when_sent</code> argument. Use <code class="code">set_batch_call</code> instead<br/></div></div>

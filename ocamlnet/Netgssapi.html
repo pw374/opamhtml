@@ -12,8 +12,8 @@
 	whether the object is known, and reject any fake objects
 	created by the caller by raising <code class="code">Invalid_argument</code>.</div></div>
 <pre><span class="TYPEcontext"><span class="keyword">type</span> context</span> = <code class="type">&lt; otype : [ `Context ]; valid : bool &gt;</code></pre><div class="info"><div class="info">A context is also opaque, and the same rules apply as for
-	<code class="code">credential</code>.<br/>	The method <code class="code">valid</code> is true as long as the context is not
-	deleted.</div></div>
+	<code class="code">credential</code>.<p>	The method <code class="code">valid</code> is true as long as the context is not
+	deleted.</p></div></div>
 <pre><span class="TYPEtoken"><span class="keyword">type</span> token</span> = <code class="type">string</code></pre><div class="info"><div class="info">Authentication tokens. These are also opaque to the caller,
 	but have a string representation so that they can be sent
 	over the wire.</div></div>
@@ -78,18 +78,18 @@
 | `Replay_flag
 | `Sequence_flag ]</code></pre><div class="info"><div class="info">Flags for the <code class="code">init_sec_context</code> method</div></div>
 <div class="info"><div class="info"><h2 id="2_TITLE">Exceptions</h2></div></div>
-<div class="info"><div class="info">There are no defined exceptions.<br/>    Errors should be reported using the <code class="code">major_status</code> and <code class="code">minor_status</code>
-    codes as much as possible.<br/>    <code class="code">Invalid_argument</code> may be raised for clear violations of calling
+<div class="info"><div class="info">There are no defined exceptions.<p>    Errors should be reported using the <code class="code">major_status</code> and <code class="code">minor_status</code>
+    codes as much as possible.</p><p>    <code class="code">Invalid_argument</code> may be raised for clear violations of calling
     requirements, e.g. when an opaque object is passed to this interface
-    that was not returned by it before.</div></div>
+    that was not returned by it before.</p></div></div>
 <div class="info"><div class="info"><h2 id="2_TITLE">The API</h2></div></div>
-<div class="info"><div class="info">The methods have generally a type of the form<br/>    <pre class="codepre"><code class="code"> 
+<div class="info"><div class="info">The methods have generally a type of the form<p>    </p><code class="code"> 
        m : 't . arg1 -&gt; ... -&gt; argN -&gt; out:( ret1 -&gt; ... -&gt; retM -&gt; 't ) -&gt; 't 
-    </code></pre><br/>    where <code class="code">arg</code>s are input arguments (with the exception of <code class="code">context</code> 
+    </code><p>    where <code class="code">arg</code>s are input arguments (with the exception of <code class="code">context</code> 
     which is in/out), and where outputs are passed back by calling the <code class="code">out</code>
     functions with the outputs. The return value of <code class="code">out</code> is the return
-    value of the method call.<br/>    For example, if only <code class="code">output_token</code> of the <code class="code">accept_sec_context</code> method
-    is needed, one could call this method as in<br/>    <pre class="codepre"><code class="code">
+    value of the method call.</p><p>    For example, if only <code class="code">output_token</code> of the <code class="code">accept_sec_context</code> method
+    is needed, one could call this method as in</p><p>    </p><code class="code">
       let output_token =
 	gss_api # accept_sec_context 
 	   ... 
@@ -98,13 +98,13 @@
 		     ~major_status -&gt;
 		  output_token
 		)
-    </code></pre><br/>    Output values may not be defined when <code class="code">major_status</code> indicates
+    </code><p>    Output values may not be defined when <code class="code">major_status</code> indicates
     an error. (But see the RFC for details; especially <code class="code">init_sec_contect</code>
     and <code class="code">accept_sec_context</code> may emit tokens even when <code class="code">major_status</code>
-    indicates an error.)<br/>    The names of the parameters are taken from RFC 2744, only
+    indicates an error.)</p><p>    The names of the parameters are taken from RFC 2744, only
     suffixes like <code class="code">_handle</code> have been removed. When the prefixes
     <code class="code">input_</code> and <code class="code">output_</code> are meaningless, they are also removed.
-    All prefixes like &quot;GSS&quot; are removed anyway.</div></div>
+    All prefixes like &quot;GSS&quot; are removed anyway.</p></div></div>
 <div class="ocaml_class sig" name="gss_api"><pre><span class="TYPEgss_api"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netgssapi&amp;class=gss_api">gss_api</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="ocaml_class_content"><pre><span class="METHODprovider"><span class="keyword">method</span> provider</span> : <code class="code">string</code></pre>
 <div class="info"><div class="info">A string name identifying the provider</div></div>
 <pre><span class="METHODno_credential"><span class="keyword">method</span> no_credential</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=credential">credential</a></code></pre>
@@ -127,8 +127,8 @@
   unit -&gt; 't</code></pre>
 <div class="info"><div class="info">On the first call, pass <code class="code">~context:None</code>. If successful, the
 	function outputs a non-None <code class="code">~output_context</code> which should be
-	passed as new <code class="code">~context</code> in follow-up calls.<br/>	If the <code class="code">output_token</code> is non-empty, it must be transmitted to
-	the peer - independent of the <code class="code">major_status</code>.</div></div>
+	passed as new <code class="code">~context</code> in follow-up calls.<p>	If the <code class="code">output_token</code> is non-empty, it must be transmitted to
+	the peer - independent of the <code class="code">major_status</code>.</p></div></div>
 <pre><span class="METHODacquire_cred"><span class="keyword">method</span> acquire_cred</span> : <code class="code">'t.
   desired_name:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=name">name</a> -&gt;
   time_req:[ `Indefinite | `None | `This of float ] -&gt;
@@ -252,8 +252,8 @@
   unit -&gt; 't</code></pre>
 <div class="info"><div class="info">On the first call, pass <code class="code">~context:None</code>. If successful, the
 	function outputs a non-None <code class="code">~output_context</code> which should be
-	passed as new <code class="code">~context</code> in follow-up calls.<br/>	If the <code class="code">output_token</code> is non-empty, it must be transmitted to
-	the peer - independent of the <code class="code">major_status</code>.</div></div>
+	passed as new <code class="code">~context</code> in follow-up calls.<p>	If the <code class="code">output_token</code> is non-empty, it must be transmitted to
+	the peer - independent of the <code class="code">major_status</code>.</p></div></div>
 <pre><span class="METHODinquire_context"><span class="keyword">method</span> inquire_context</span> : <code class="code">'t.
   context:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=context">context</a> -&gt;
   out:(src_name:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=name">name</a> -&gt;
@@ -378,7 +378,7 @@
 <pre><span class="VALcreate_mic_token"><span class="keyword">val</span> create_mic_token</span> : <code class="type">sent_by_acceptor:bool -&gt;
 acceptor_subkey:bool -&gt;
 sequence_number:int64 -&gt;
-get_mic:(<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt; string) -&gt; message:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt; string</code></pre><div class="info"><div class="info">Create a MIC token:<br/>      - <code class="code">sent_by_acceptor</code>: whether this token comes from the acceptor<ul><li><code class="code">acceptor_subkey</code>: see RFC</li><li><code class="code">sequence_number</code>: a sequence number</li><li><code class="code">get_mic</code>: the checksum function
+get_mic:(<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt; string) -&gt; message:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt; string</code></pre><div class="info"><div class="info">Create a MIC token:<p>      - <code class="code">sent_by_acceptor</code>: whether this token comes from the acceptor</p><ul><li><code class="code">acceptor_subkey</code>: see RFC</li><li><code class="code">sequence_number</code>: a sequence number</li><li><code class="code">get_mic</code>: the checksum function
         (e.g.  <a href="#Netmech_scram.Cryptosystem.get_mic">Netmech_scram.Cryptosystem.get_mic</a>)</li><li><code class="code">message</code>: the message to be signed</li></ul>      The function returns the MIC token</div></div>
 <pre><span class="VALparse_mic_token_header"><span class="keyword">val</span> parse_mic_token_header</span> : <code class="type">string -&gt; bool * bool * int64</code></pre><div class="info"><div class="info">Returns the triple
       (<code class="code">sent_by_acceptor</code>, <code class="code">acceptor_subkey</code>, <code class="code">sequence_number</code>) from
@@ -390,15 +390,15 @@ get_mic:(<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">messa
 acceptor_subkey:bool -&gt;
 sequence_number:int64 -&gt;
 get_ec:(int -&gt; int) -&gt;
-encrypt_and_sign:(<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt; <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a>) -&gt; message:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt; <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a></code></pre><div class="info"><div class="info">Wraps a <code class="code">message</code> so that it is encrypted and signed (confidential).<br/>      - <code class="code">sent_by_acceptor</code>: whether this token comes from the acceptor<ul><li><code class="code">acceptor_subkey</code>: see RFC</li><li><code class="code">sequence_number</code>: a sequence number</li><li><code class="code">get_ec</code>: This function returns the &quot;extra count&quot; number for
+encrypt_and_sign:(<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt; <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a>) -&gt; message:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt; <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a></code></pre><div class="info"><div class="info">Wraps a <code class="code">message</code> so that it is encrypted and signed (confidential).<p>      - <code class="code">sent_by_acceptor</code>: whether this token comes from the acceptor</p><ul><li><code class="code">acceptor_subkey</code>: see RFC</li><li><code class="code">sequence_number</code>: a sequence number</li><li><code class="code">get_ec</code>: This function returns the &quot;extra count&quot; number for
         the size of the plaintext w/o filler (e.g. use
          <a href="#Netmech_scram.Cryptosystem.get_ec">Netmech_scram.Cryptosystem.get_ec</a>).</li><li><code class="code">encrypt_and_sign</code>: the encryption function from the cryptosystem.
         The plaintext is passed to this function, and the ciphertext with
         the appended signature must be returned in the string.</li><li><code class="code">message</code>: the payload message</li></ul>      The function returns the token wrapping the message.</div></div>
 <pre><span class="VALparse_wrap_token_header"><span class="keyword">val</span> parse_wrap_token_header</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt; bool * bool * bool * int64</code></pre><div class="info"><div class="info"><code class="code">let (sent_by_acceptor, sealed, acceptor_subkey, sequence_number) =
-      parse_wrap_token_header token</code><br/>      Fails if the <code class="code">token</code> cannot be parsed.</div></div>
+      parse_wrap_token_header token</code><p>      Fails if the <code class="code">token</code> cannot be parsed.</p></div></div>
 <pre><span class="VALunwrap_wrap_token_conf"><span class="keyword">val</span> unwrap_wrap_token_conf</span> : <code class="type">decrypt_and_verify:(<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt; <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a>) -&gt; token:<a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a> -&gt; <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=message">message</a></code></pre><div class="info"><div class="info">Unwraps the <code class="code">token</code> using the decryption function
-      <code class="code">decrypt_and_verify</code> from the cryptosystem.<br/>      The functions fails if there is a format error, or the integrity
-      check fails.<br/>      Non-confidential messages cannot be unwrapped with this function.</div></div>
+      <code class="code">decrypt_and_verify</code> from the cryptosystem.<p>      The functions fails if there is a format error, or the integrity
+      check fails.</p><p>      Non-confidential messages cannot be unwrapped with this function.</p></div></div>
 <div class="info"><div class="info">Token functions for non-confidential messages are still missing</div></div>
 </div>

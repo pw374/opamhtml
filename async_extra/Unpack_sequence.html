@@ -12,9 +12,9 @@ string <a href="?package=async_extra&amp;module=Import.Pipe.Reader&amp;type=t">I
 'a <a href="?package=async_extra&amp;module=Import.Pipe.Reader&amp;type=t">Import.Pipe.Reader.t</a> * ('a, 'b) <a href="?package=async_extra&amp;module=Unpack_sequence.Result&amp;type=t">Result.t</a> <a href="?package=async_extra&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre><div class="info"><div class="info"><code class="code">unpack_from_string_pipe unpack_buffer input</code> returns <code class="code">(output, result)</code>, and uses
     <code class="code">unpack_buffer</code> to unpack values from <code class="code">input</code> until <code class="code">input</code> is closed.  It puts the
     unpacked values into <code class="code">output</code>, which is closed once unpacking finishes, normally
-    or due to an error.  <code class="code">result</code> indicates why unpacking finished.<br/>    <code class="code">unpack_from_reader</code> and <code class="code">unpack_bin_prot_from_reader</code> are similar.  They are more
+    or due to an error.  <code class="code">result</code> indicates why unpacking finished.<p>    <code class="code">unpack_from_reader</code> and <code class="code">unpack_bin_prot_from_reader</code> are similar.  They are more
     efficient in that they blit bytes directly from the reader buffer to the unpack
-    buffer, without any intervening allocation.</div></div>
+    buffer, without any intervening allocation.</p></div></div>
 <pre><span class="VALunpack_from_reader"><span class="keyword">val</span> unpack_from_reader</span> : <code class="type">('a, 'b) <a href="?package=core&amp;module=Std.Unpack_buffer&amp;type=t">Core.Std.Unpack_buffer.t</a> -&gt;
 <a href="?package=async_extra&amp;module=Import.Reader&amp;type=t">Import.Reader.t</a> -&gt;
 'a <a href="?package=async_extra&amp;module=Import.Pipe.Reader&amp;type=t">Import.Pipe.Reader.t</a> * ('a, 'b) <a href="?package=async_extra&amp;module=Unpack_sequence.Result&amp;type=t">Result.t</a> <a href="?package=async_extra&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>

@@ -1,14 +1,14 @@
-<div class="ocaml_toplevel_module"><div class="info">Processor-native integers.<br/>   This module provides operations on the type <code class="code">nativeint</code> of
+<div class="ocaml_toplevel_module"><div class="info">Processor-native integers.<p>   This module provides operations on the type <code class="code">nativeint</code> of
    signed 32-bit integers (on 32-bit platforms) or
    signed 64-bit integers (on 64-bit platforms).
    This integer type has exactly the same width as that of a <code class="code">long</code>
    integer type in the C compiler.  All arithmetic operations over
    <code class="code">nativeint</code> are taken modulo 2<sup class="superscript">32</sup> or 2<sup class="superscript">64</sup> depending
-   on the word size of the architecture.<br/>   Performance notice: values of type <code class="code">nativeint</code> occupy more memory
+   on the word size of the architecture.</p><p>   Performance notice: values of type <code class="code">nativeint</code> occupy more memory
    space than values of type <code class="code">int</code>, and arithmetic operations on
    <code class="code">nativeint</code> are generally slower than those on <code class="code">int</code>.  Use <code class="code">nativeint</code>
    only when the application requires the extra bit of precision
-   over the <code class="code">int</code> type.</div>
+   over the <code class="code">int</code> type.</p></div>
 <pre><span class="VALzero"><span class="keyword">val</span> zero</span> : <code class="type">nativeint</code></pre><div class="info"><div class="info">The native integer 0.</div></div>
 <pre><span class="VALone"><span class="keyword">val</span> one</span> : <code class="type">nativeint</code></pre><div class="info"><div class="info">The native integer 1.</div></div>
 <pre><span class="VALminus_one"><span class="keyword">val</span> minus_one</span> : <code class="type">nativeint</code></pre><div class="info"><div class="info">The native integer -1.</div></div>

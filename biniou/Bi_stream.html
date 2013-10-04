@@ -1,10 +1,10 @@
 <div class="ocaml_toplevel_module"><div class="info">Streaming utilities (experimental)</div>
 <div class="info"><div class="info">This module offers a streaming interface for representing long lists
    of elements that cannot fit in memory.
-   Stream items are serialized as chunks of configurable length.<br/>   Stream format (independent from the biniou serialization format):<br/><span class="verbatim">  ( ONE INT64 BYTE* )* ZERO</span><br/>  where <code class="code">INT64</code> is the length of a chunk (unsigned big-endian 64-bit int),
+   Stream items are serialized as chunks of configurable length.<p>   Stream format (independent from the biniou serialization format):</p><p><span class="verbatim">  ( ONE INT64 BYTE* )* ZERO</span></p><p>  where <code class="code">INT64</code> is the length of a chunk (unsigned big-endian 64-bit int),
   i.e. the number of following <code class="code">BYTE</code>s.
   <code class="code">ONE</code> and <code class="code">ZERO</code> are the single-byte representations of 1 and 0 and are used
-  to indicate whether the end of the stream is reached.</div></div>
+  to indicate whether the end of the stream is reached.</p></div></div>
 <pre><span class="VALread_stream"><span class="keyword">val</span> read_stream</span> : <code class="type">(string -&gt; 'a array) -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a> -&gt; 'a <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a></code></pre><div class="info"><div class="info"><code class="code">read_stream of_string ic</code> creates an OCaml stream from
       an input channel <code class="code">ic</code>. The data come in chunks and each chunk
       is converted from a string to an array by calling <code class="code">of_string</code>.</div></div>

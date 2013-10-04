@@ -27,9 +27,9 @@ original:<a href="?package=core&amp;module=Std.Sexp&amp;type=t">Core.Std.Sexp.t<
 <pre><span class="VALsummarize"><span class="keyword">val</span> summarize</span> : <code class="type"><a href="?package=core&amp;module=Std.Sexp&amp;type=t">Core.Std.Sexp.t</a> -&gt;
 sub_sexp:<a href="?package=core&amp;module=Std.Sexp&amp;type=t">Core.Std.Sexp.t</a> -&gt;
 size:[ `depth of int | `string of int ] -&gt; <a href="?package=core&amp;module=Std.Sexp&amp;type=t">Core.Std.Sexp.t</a></code></pre><div class="info"><div class="info">Returns a smaller sexp by replacing sections with &quot;...&quot;.  Will try to show parts of the
-   sexp &quot;near&quot; sub_sexp.<br/>   Limiting size to length a string length is less efficient than a certain depth.  The
+   sexp &quot;near&quot; sub_sexp.<p>   Limiting size to length a string length is less efficient than a certain depth.  The
    meaning of a given depth is arbitrary except that more depth gives you a bigger sexp.  Try
-   100 or so.</div></div>
+   100 or so.</p></div></div>
 <pre><span class="VALof_sexp_allow_extra_fields"><span class="keyword">val</span> of_sexp_allow_extra_fields</span> : <code class="type">(<a href="?package=core&amp;module=Std.Sexp&amp;type=t">Core.Std.Sexp.t</a> -&gt; 'a) -&gt; <a href="?package=core&amp;module=Std.Sexp&amp;type=t">Core.Std.Sexp.t</a> -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">of_sexp_allow_extra_fields of_sexp sexp</code> uses <code class="code">of_sexp</code> to convert <code class="code">sexp</code> to a
     value, but will not fail if there any extra fields in a record.</div></div>
 <div class="info"><div class="info"><h3 id="3_TITLE">Transforming sexp parsers</h3></div></div>

@@ -2,25 +2,25 @@
     exception.  Every Async computation runs within the context of some monitor, which,
     when the computation is running, is referred to as the &quot;current&quot; monitor.  Monitors
     are arranged in a tree -- when a new monitor is created, it is a child of the current
-    monitor.<br/>    One can listen to a monitor using Monitor.errors to learn when the monitor sees an
-    error.<br/>    If a computation raises an unhandled exception, the current monitor does one of two
+    monitor.<p>    One can listen to a monitor using Monitor.errors to learn when the monitor sees an
+    error.</p><p>    If a computation raises an unhandled exception, the current monitor does one of two
     things.  If anyone is listening to the monitor (i.e. Monitor.errors has been called on
     the monitor), then the error stream is extended, and the listeners are responsible for
     doing something.  If no one is &quot;listening&quot; to the monitor, then the exception is
     raised to monitor's parent.  The initial monitor, i.e. the root of the monitor tree,
-    prints an unhandled-exception message and calls exit 1.<br/>*************** NOTE ABOUT THE TOPLEVEL MONITOR ****************<br/>    It is important to note that in the toplevel monitor, exceptions will only be caught
-    in the async part of a computation.  For example, in:<br/>    <pre class="codepre"><code class="code">
+    prints an unhandled-exception message and calls exit 1.</p><p>*************** NOTE ABOUT THE TOPLEVEL MONITOR ****************</p><p>    It is important to note that in the toplevel monitor, exceptions will only be caught
+    in the async part of a computation.  For example, in:</p><p>    </p><code class="code">
       upon (f ()) g
-    </code></pre><br/>    if <code class="code">f</code> raises, the exception will not go to a monitor; it will go to the next caml
+    </code><p>    if <code class="code">f</code> raises, the exception will not go to a monitor; it will go to the next caml
     exception handler on the stack.  Any exceptions raised by <code class="code">g</code> will be caught by the
     scheduler and propagated to the toplevel monitor.  Because of this it is advised to
-    always use <code class="code">Scheduler.schedule</code> or <code class="code">Scheduler.within</code>.  For example:<br/>    <pre class="codepre"><code class="code">
+    always use <code class="code">Scheduler.schedule</code> or <code class="code">Scheduler.within</code>.  For example:</p><p>    </p><code class="code">
       Scheduler.within (fun () -&gt; upon (f ()) g)
-    </code></pre><br/>    This code will catch an exception in either <code class="code">f</code> or <code class="code">g</code>, and propagate it to the
-    monitor.<br/>    This is only relevant to the toplevel monitor because if you create another monitor
+    </code><p>    This code will catch an exception in either <code class="code">f</code> or <code class="code">g</code>, and propagate it to the
+    monitor.</p><p>    This is only relevant to the toplevel monitor because if you create another monitor
     and you wish to run code within it you have no choice but to use <code class="code">Scheduler.within</code>.
     <code class="code">try_with</code> creates its own monitor and uses <code class="code">Scheduler.within</code>, so it does not have
-    this problem.</div>
+    this problem.</p></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type"><a href="?package=async_core&amp;module=Raw_monitor&amp;type=t">Raw_monitor.t</a></code></pre>
 <pre><span class="TYPEwith_optional_monitor_name"><span class="keyword">type</span> <code class="type">'a </code>with_optional_monitor_name</span> = <code class="type">?here:<a href="?package=core&amp;module=Std.Source_code_position&amp;type=t">Core.Std.Source_code_position.t</a> -&gt;
 ?info:<a href="?package=core&amp;module=Std.Info&amp;type=t">Core.Std.Info.t</a> -&gt; ?name:string -&gt; 'a</code></pre>
@@ -48,21 +48,21 @@
     <code class="code">run = `Now</code>, or schedules a job to run <code class="code">f</code>, if <code class="code">run = `Schedule</code>.  Once a result is
     returned, the rest of the errors raised by <code class="code">f</code> are ignored or re-raised, as per
     <code class="code">rest</code>.  <code class="code">try_with</code> never raises synchronously, and may only raise asynchronously with
-    <code class="code">rest = `Raise</code>.<br/>    The <code class="code">name</code> argument is used to give a name to the monitor the computation will be
-    running in.  This name will appear when printing errors.<br/>    If <code class="code">extract_exn = true</code>, then in an <code class="code">Error exn</code> result, the <code class="code">exn</code> will be the actual
+    <code class="code">rest = `Raise</code>.<p>    The <code class="code">name</code> argument is used to give a name to the monitor the computation will be
+    running in.  This name will appear when printing errors.</p><p>    If <code class="code">extract_exn = true</code>, then in an <code class="code">Error exn</code> result, the <code class="code">exn</code> will be the actual
     exception raised by the computation.  If <code class="code">extract_exn = false</code>, then the <code class="code">exn</code> will
     include additional information, like the monitor and backtrace.  One typically wants
     <code class="code">extract_exn = false</code> due to the additional information.  However, sometimes one wants
-    the concision of <code class="code">extract_exn = true</code>.</div></div>
+    the concision of <code class="code">extract_exn = true</code>.</p></div></div>
 <pre><span class="VALtry_with_rest_handling"><span class="keyword">val</span> try_with_rest_handling</span> : <code class="type">[ `Default of [ `Ignore | `Raise ] | `Force of [ `Ignore | `Raise ] ]
 <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info"><code class="code">try_with_rest_handling</code> determines how <code class="code">try_with f ~rest</code> determines the <code class="code">rest</code> value
     it actually uses.  If <code class="code">!try_with_rest_handling = `Default d</code>, then <code class="code">d</code> is the default
     value for <code class="code">rest</code>, but can be overriden by supplying <code class="code">rest</code> to <code class="code">try_with</code>.  If
     <code class="code">!try_with_rest_handling = Force f</code>, then the <code class="code">rest</code> supplied to <code class="code">try_with</code> is not
-    used, and <code class="code">f</code> is.<br/>    Initially, <code class="code">!try_with_rest_handling = `Default `Ignore</code>.</div></div>
+    used, and <code class="code">f</code> is.<p>    Initially, <code class="code">!try_with_rest_handling = `Default `Ignore</code>.</p></div></div>
 <pre><span class="VALtry_with_ignored_exn_handling"><span class="keyword">val</span> try_with_ignored_exn_handling</span> : <code class="type">[ `Eprintf | `Ignore | `Run of exn -&gt; unit ] <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre><div class="info"><div class="info"><code class="code">try_with_ignored_exn_handling</code> describes what should happen when <code class="code">try_with</code>'s <code class="code">rest</code>
     value is <code class="code">`Ignore</code>, as determined by <code class="code">!try_with_rest_handling</code> and the <code class="code">~rest</code>
-    supplied to <code class="code">try_with</code>.<br/>    Initially, <code class="code">!try_with_ignored_exn_handling = `Ignore</code>.</div></div>
+    supplied to <code class="code">try_with</code>.<p>    Initially, <code class="code">!try_with_ignored_exn_handling = `Ignore</code>.</p></div></div>
 <pre><span class="VALhandle_errors"><span class="keyword">val</span> handle_errors</span> : <code class="type">((unit -&gt; 'a <a href="?package=async_core&amp;module=Deferred&amp;type=t">Deferred.t</a>) -&gt; (exn -&gt; unit) -&gt; 'a <a href="?package=async_core&amp;module=Deferred&amp;type=t">Deferred.t</a>)
 <a href="?package=async_core&amp;module=Monitor&amp;type=with_optional_monitor_name">with_optional_monitor_name</a></code></pre><div class="info"><div class="info"><code class="code">handle_errors ?name f handler</code> runs <code class="code">f ()</code> inside a new monitor with the optionally
     supplied name, and calls <code class="code">handler error</code> on every error raised to that monitor.  Any
@@ -76,13 +76,13 @@
  finally:(unit -&gt; unit <a href="?package=async_core&amp;module=Deferred&amp;type=t">Deferred.t</a>) -&gt; 'a <a href="?package=async_core&amp;module=Deferred&amp;type=t">Deferred.t</a>)
 <a href="?package=async_core&amp;module=Monitor&amp;type=with_optional_monitor_name">with_optional_monitor_name</a></code></pre><div class="info"><div class="info"><code class="code">protect f ~finally</code> runs <code class="code">f ()</code> and then <code class="code">finally</code> regardless of the success or
     failure of <code class="code">f</code>.  It re-raises any exception thrown by <code class="code">f</code> or returns whatever <code class="code">f</code>
-    returned.<br/>    The <code class="code">name</code> argument is used to give a name to the monitor the computation will be
-    running in.  This name will appear when printing the errors.</div></div>
+    returned.<p>    The <code class="code">name</code> argument is used to give a name to the monitor the computation will be
+    running in.  This name will appear when printing the errors.</p></div></div>
 <pre><span class="VALmain"><span class="keyword">val</span> main</span> : <code class="type"><a href="?package=async_core&amp;module=Monitor&amp;type=t">t</a></code></pre>
 <pre><span class="VALkill"><span class="keyword">val</span> kill</span> : <code class="type"><a href="?package=async_core&amp;module=Monitor&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">kill t</code> causes <code class="code">t</code> and all of <code class="code">t</code>'s descendants to never start another job.  The job
-    that calls <code class="code">kill</code> will complete, even if it is a descendant of <code class="code">t</code>.<br/>    <code class="code">kill</code> can break user expectations.  For example, users expect in <code class="code">protect f ~finally</code>
+    that calls <code class="code">kill</code> will complete, even if it is a descendant of <code class="code">t</code>.<p>    <code class="code">kill</code> can break user expectations.  For example, users expect in <code class="code">protect f ~finally</code>
     that <code class="code">finally</code> will eventually run.  However, if the monitor in which <code class="code">finally</code> would
-    run is killed, then <code class="code">finally</code> will never run.</div></div>
+    run is killed, then <code class="code">finally</code> will never run.</p></div></div>
 <pre><span class="VALis_alive"><span class="keyword">val</span> is_alive</span> : <code class="type"><a href="?package=async_core&amp;module=Monitor&amp;type=t">t</a> -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">is_alive t</code> returns <code class="code">true</code> iff none of <code class="code">t</code> or its ancestors have been killed.</div></div>
 <div class="ocaml_module sig" name="Exported_for_scheduler"><pre><span class="keyword">module</span> <a href="?package=async_core&amp;module=Monitor.Exported_for_scheduler">Exported_for_scheduler</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
 <pre><span class="TYPEwith_options"><span class="keyword">type</span> <code class="type">'a </code>with_options</span> = <code class="type">?monitor:<a href="?package=async_core&amp;module=Monitor&amp;type=t">t</a> -&gt; ?priority:<a href="?package=async_core&amp;module=Priority&amp;type=t">Priority.t</a> -&gt; 'a</code></pre>
@@ -115,12 +115,12 @@
     <code class="code">run = `Now</code>, or schedules a job to run <code class="code">f</code>, if <code class="code">run = `Schedule</code>.  Once a result is
     returned, the rest of the errors raised by <code class="code">f</code> are ignored or re-raised, as per
     <code class="code">rest</code>.  <code class="code">try_with</code> never raises synchronously, and may only raise asynchronously with
-    <code class="code">rest = `Raise</code>.<br/>    The <code class="code">name</code> argument is used to give a name to the monitor the computation will be
-    running in.  This name will appear when printing errors.<br/>    If <code class="code">extract_exn = true</code>, then in an <code class="code">Error exn</code> result, the <code class="code">exn</code> will be the actual
+    <code class="code">rest = `Raise</code>.<p>    The <code class="code">name</code> argument is used to give a name to the monitor the computation will be
+    running in.  This name will appear when printing errors.</p><p>    If <code class="code">extract_exn = true</code>, then in an <code class="code">Error exn</code> result, the <code class="code">exn</code> will be the actual
     exception raised by the computation.  If <code class="code">extract_exn = false</code>, then the <code class="code">exn</code> will
     include additional information, like the monitor and backtrace.  One typically wants
     <code class="code">extract_exn = false</code> due to the additional information.  However, sometimes one wants
-    the concision of <code class="code">extract_exn = true</code>.</div></div>
+    the concision of <code class="code">extract_exn = true</code>.</p></div></div>
 <div class="info"><div class="info">default is <code class="code">false</code></div></div>
 <div class="info"><div class="info">default is <code class="code">`Schedule</code></div></div>
 <div class="info"><div class="info">default is <code class="code">`Ignore</code></div></div>
@@ -128,10 +128,10 @@
     it actually uses.  If <code class="code">!try_with_rest_handling = `Default d</code>, then <code class="code">d</code> is the default
     value for <code class="code">rest</code>, but can be overriden by supplying <code class="code">rest</code> to <code class="code">try_with</code>.  If
     <code class="code">!try_with_rest_handling = Force f</code>, then the <code class="code">rest</code> supplied to <code class="code">try_with</code> is not
-    used, and <code class="code">f</code> is.<br/>    Initially, <code class="code">!try_with_rest_handling = `Default `Ignore</code>.</div></div>
+    used, and <code class="code">f</code> is.<p>    Initially, <code class="code">!try_with_rest_handling = `Default `Ignore</code>.</p></div></div>
 <div class="info"><div class="info"><code class="code">try_with_ignored_exn_handling</code> describes what should happen when <code class="code">try_with</code>'s <code class="code">rest</code>
     value is <code class="code">`Ignore</code>, as determined by <code class="code">!try_with_rest_handling</code> and the <code class="code">~rest</code>
-    supplied to <code class="code">try_with</code>.<br/>    Initially, <code class="code">!try_with_ignored_exn_handling = `Ignore</code>.</div></div>
+    supplied to <code class="code">try_with</code>.<p>    Initially, <code class="code">!try_with_ignored_exn_handling = `Ignore</code>.</p></div></div>
 <div class="info"><div class="info"><code class="code">handle_errors ?name f handler</code> runs <code class="code">f ()</code> inside a new monitor with the optionally
     supplied name, and calls <code class="code">handler error</code> on every error raised to that monitor.  Any
     error raised by <code class="code">handler</code> goes to the monitor in effect when <code class="code">handle_errors</code> was
@@ -142,11 +142,11 @@
     raised to <code class="code">m</code>.</div></div>
 <div class="info"><div class="info"><code class="code">protect f ~finally</code> runs <code class="code">f ()</code> and then <code class="code">finally</code> regardless of the success or
     failure of <code class="code">f</code>.  It re-raises any exception thrown by <code class="code">f</code> or returns whatever <code class="code">f</code>
-    returned.<br/>    The <code class="code">name</code> argument is used to give a name to the monitor the computation will be
-    running in.  This name will appear when printing the errors.</div></div>
+    returned.<p>    The <code class="code">name</code> argument is used to give a name to the monitor the computation will be
+    running in.  This name will appear when printing the errors.</p></div></div>
 <div class="info"><div class="info"><code class="code">kill t</code> causes <code class="code">t</code> and all of <code class="code">t</code>'s descendants to never start another job.  The job
-    that calls <code class="code">kill</code> will complete, even if it is a descendant of <code class="code">t</code>.<br/>    <code class="code">kill</code> can break user expectations.  For example, users expect in <code class="code">protect f ~finally</code>
+    that calls <code class="code">kill</code> will complete, even if it is a descendant of <code class="code">t</code>.<p>    <code class="code">kill</code> can break user expectations.  For example, users expect in <code class="code">protect f ~finally</code>
     that <code class="code">finally</code> will eventually run.  However, if the monitor in which <code class="code">finally</code> would
-    run is killed, then <code class="code">finally</code> will never run.</div></div>
+    run is killed, then <code class="code">finally</code> will never run.</p></div></div>
 <div class="info"><div class="info"><code class="code">is_alive t</code> returns <code class="code">true</code> iff none of <code class="code">t</code> or its ancestors have been killed.</div></div>
 </div>

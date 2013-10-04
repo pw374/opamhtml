@@ -3,10 +3,10 @@
     <code class="code">sprintf</code> or manually constructing strings because you don't have to eagerly construct
     the string --- you only need to pay when you actually want to display the info.  which
     for many applications is rare.  Using <code class="code">Info</code> is also better than creating custom
-    exceptions because you have more control over the format.<br/>    Info is intended to be constructed in the following style; for simple info, you write:<br/>    <pre class="codepre"><code class="code">Info.of_string &quot;Unable to find file&quot;</code></pre><br/>    For info where you want to attach some content, you would write:<br/>    <pre class="codepre"><code class="code">Info.create &quot;Unable to find file&quot; filename &lt;:sexp_of&lt; string &gt;&gt;</code></pre><br/>    Or even,<br/>    <pre class="codepre"><code class="code">
+    exceptions because you have more control over the format.<p>    Info is intended to be constructed in the following style; for simple info, you write:</p><p>    </p><code class="code">Info.of_string &quot;Unable to find file&quot;</code><p>    For info where you want to attach some content, you would write:</p><p>    </p><code class="code">Info.create &quot;Unable to find file&quot; filename &lt;:sexp_of&lt; string &gt;&gt;</code><p>    Or even,</p><p>    </p><code class="code">
     Info.create &quot;price too big&quot; (price, [`Max max_price])
       (&lt;:sexp_of&lt; float * [`Max of float] &gt;&gt;)
-    </code></pre><br/>    Note that an <code class="code">Info.t</code> can be created from any arbritrary sexp with <code class="code">Info.t_of_sexp</code>.</div>
+    </code><p>    Note that an <code class="code">Info.t</code> can be created from any arbritrary sexp with <code class="code">Info.t_of_sexp</code>.</p></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre>
 <pre><span class="VALto_string_hum"><span class="keyword">val</span> to_string_hum</span> : <code class="type"><a href="?package=core_kernel&amp;module=Info&amp;type=t">t</a> -&gt; string</code></pre><div class="info"><div class="info">might be an expensive operation</div></div>
 <pre><span class="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -&gt; <a href="?package=core_kernel&amp;module=Info&amp;type=t">t</a></code></pre>

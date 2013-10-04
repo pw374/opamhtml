@@ -19,12 +19,12 @@
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Univ.Constr&amp;type=t">Constr.t</a> -&gt; 'a -&gt; <a href="?package=core_kernel&amp;module=Univ&amp;type=t">t</a></code></pre>
 <pre><span class="VALdoes_match"><span class="keyword">val</span> does_match</span> : <code class="type"><a href="?package=core_kernel&amp;module=Univ&amp;type=t">t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Univ.Constr&amp;type=t">Constr.t</a> -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">does_match t constr</code> returns <code class="code">true</code> iff <code class="code">t</code> was created by <code class="code">create constr v</code>.</div></div>
 <pre><span class="VALmatch_"><span class="keyword">val</span> match_</span> : <code class="type"><a href="?package=core_kernel&amp;module=Univ&amp;type=t">t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Univ.Constr&amp;type=t">Constr.t</a> -&gt; 'a option</code></pre><div class="info"><div class="info"><code class="code">match_ t constr</code> returns <code class="code">Some v</code> if <code class="code">t</code> was created by <code class="code">create constr v</code>, and
-    returns <code class="code">None</code> otherwise.<br/>    <code class="code">match_exn t constr</code> returns <code class="code">v</code> if <code class="code">t</code> was created by <code class="code">create constr v</code>, and raises
-    otherwise.</div></div>
+    returns <code class="code">None</code> otherwise.<p>    <code class="code">match_exn t constr</code> returns <code class="code">v</code> if <code class="code">t</code> was created by <code class="code">create constr v</code>, and raises
+    otherwise.</p></div></div>
 <pre><span class="VALmatch_exn"><span class="keyword">val</span> match_exn</span> : <code class="type"><a href="?package=core_kernel&amp;module=Univ&amp;type=t">t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Univ.Constr&amp;type=t">Constr.t</a> -&gt; 'a</code></pre>
 <pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type"><a href="?package=core_kernel&amp;module=Univ&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
 <div class="info"><div class="info"><code class="code">does_match t constr</code> returns <code class="code">true</code> iff <code class="code">t</code> was created by <code class="code">create constr v</code>.</div></div>
 <div class="info"><div class="info"><code class="code">match_ t constr</code> returns <code class="code">Some v</code> if <code class="code">t</code> was created by <code class="code">create constr v</code>, and
-    returns <code class="code">None</code> otherwise.<br/>    <code class="code">match_exn t constr</code> returns <code class="code">v</code> if <code class="code">t</code> was created by <code class="code">create constr v</code>, and raises
-    otherwise.</div></div>
+    returns <code class="code">None</code> otherwise.<p>    <code class="code">match_exn t constr</code> returns <code class="code">v</code> if <code class="code">t</code> was created by <code class="code">create constr v</code>, and raises
+    otherwise.</p></div></div>
 </div>

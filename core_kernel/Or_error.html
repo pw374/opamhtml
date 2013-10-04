@@ -1,5 +1,5 @@
 <div class="ocaml_toplevel_module"><div class="info">Type for tracking errors in an Error.t. This is a specialization of the Result type,
-    where the Error constructor carries an Error.t.<br/>    A common idiom is to wrap a function that is not implemented on all platforms, e.g.:<br/>    val do_something_linux_specific : (unit -&gt; unit) Or_error.t</div>
+    where the Error constructor carries an Error.t.<p>    A common idiom is to wrap a function that is not implemented on all platforms, e.g.:</p><p>    val do_something_linux_specific : (unit -&gt; unit) Or_error.t</p></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> = <code class="type">('a, <a href="?package=core_kernel&amp;module=Error&amp;type=t">Error.t</a>) <a href="?package=core_kernel&amp;module=Result&amp;type=t">Result.t</a></code></pre>
 <div class="ocaml_include ident" path="?package=core_kernel&amp;module=Monad.S" items="[&quot;Monad_infix&quot;]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core_kernel&amp;module=Monad.S">Monad.S</a></code> with type t := 'a <a href="?package=core_kernel&amp;module=Or_error&amp;type=t">t</a></code></pre></div>
 <pre><span class="VALtry_with"><span class="keyword">val</span> try_with</span> : <code class="type">?backtrace:bool -&gt; (unit -&gt; 'a) -&gt; 'a <a href="?package=core_kernel&amp;module=Or_error&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">try_with f</code> catches exceptions thrown by <code class="code">f</code> and returns them in the Result.t as an
@@ -19,9 +19,9 @@
 <pre><span class="VALtag_arg"><span class="keyword">val</span> tag_arg</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Or_error&amp;type=t">t</a> -&gt; string -&gt; 'b -&gt; ('b -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a>) -&gt; 'a <a href="?package=core_kernel&amp;module=Or_error&amp;type=t">t</a></code></pre>
 <pre><span class="VALunimplemented"><span class="keyword">val</span> unimplemented</span> : <code class="type">string -&gt; 'a <a href="?package=core_kernel&amp;module=Or_error&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">unimplemented name</code> returns a standard error value for an unimplemented value.</div></div>
 <pre><span class="VALcombine_errors"><span class="keyword">val</span> combine_errors</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Or_error&amp;type=t">t</a> list -&gt; 'a list <a href="?package=core_kernel&amp;module=Or_error&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">combine_errors ts</code> returns <code class="code">Ok</code> if every element in <code class="code">ts</code> is <code class="code">Ok</code>, else it returns
-    <code class="code">Error</code> with all the errors in <code class="code">ts</code>.  More precisely:<br/>    | combine_errors <code class="code">Ok a1; ...; Ok an</code> = Ok <code class="code">a1; ...; an</code>
+    <code class="code">Error</code> with all the errors in <code class="code">ts</code>.  More precisely:<p>    | combine_errors <code class="code">Ok a1; ...; Ok an</code> = Ok <code class="code">a1; ...; an</code>
     | combine_errors <code class="code">...; Error e1; ...; Error en; ...</code>
-    |   = Error (Error.of_list <code class="code">e1; ...; en</code>)</div></div>
+    |   = Error (Error.of_list <code class="code">e1; ...; en</code>)</p></div></div>
 <pre><span class="VALcombine_errors_unit"><span class="keyword">val</span> combine_errors_unit</span> : <code class="type">unit <a href="?package=core_kernel&amp;module=Or_error&amp;type=t">t</a> list -&gt; unit <a href="?package=core_kernel&amp;module=Or_error&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">combine_errors_unit</code> returns <code class="code">Ok</code> if every element in <code class="code">ts</code> is <code class="code">Ok ()</code>, else it
     returns <code class="code">Error</code> with all the errors in <code class="code">ts</code>, like <code class="code">combine_errors</code>.</div></div>
 <pre><span class="VALt_of_sexp"><span class="keyword">val</span> t_of_sexp</span> : <code class="type">(<a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; 'a) -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Or_error&amp;type=t">t</a></code></pre>
@@ -51,9 +51,9 @@
     <code class="code">tag_arg</code> is similar.</div></div>
 <div class="info"><div class="info"><code class="code">unimplemented name</code> returns a standard error value for an unimplemented value.</div></div>
 <div class="info"><div class="info"><code class="code">combine_errors ts</code> returns <code class="code">Ok</code> if every element in <code class="code">ts</code> is <code class="code">Ok</code>, else it returns
-    <code class="code">Error</code> with all the errors in <code class="code">ts</code>.  More precisely:<br/>    | combine_errors <code class="code">Ok a1; ...; Ok an</code> = Ok <code class="code">a1; ...; an</code>
+    <code class="code">Error</code> with all the errors in <code class="code">ts</code>.  More precisely:<p>    | combine_errors <code class="code">Ok a1; ...; Ok an</code> = Ok <code class="code">a1; ...; an</code>
     | combine_errors <code class="code">...; Error e1; ...; Error en; ...</code>
-    |   = Error (Error.of_list <code class="code">e1; ...; en</code>)</div></div>
+    |   = Error (Error.of_list <code class="code">e1; ...; en</code>)</p></div></div>
 <div class="info"><div class="info"><code class="code">combine_errors_unit</code> returns <code class="code">Ok</code> if every element in <code class="code">ts</code> is <code class="code">Ok ()</code>, else it
     returns <code class="code">Error</code> with all the errors in <code class="code">ts</code>, like <code class="code">combine_errors</code>.</div></div>
 </div>

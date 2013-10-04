@@ -1,10 +1,10 @@
-<div class="ocaml_toplevel_module"><div class="info">Socket service creation<br/> A socket service object is an encapsulation of a user-defined processor
- for a list of sockets.</div>
+<div class="ocaml_toplevel_module"><div class="info">Socket service creation<p> A socket service object is an encapsulation of a user-defined processor
+ for a list of sockets.</p></div>
 <pre><span class="VALcreate_socket_service"><span class="keyword">val</span> create_socket_service</span> : <code class="type">Netplex_types.processor -&gt;
 Netplex_types.socket_service_config -&gt; Netplex_types.socket_service</code></pre><div class="info"><div class="info">Create the socket service (usually only internally used)</div></div>
 <pre><span class="VALcreate_server_socket"><span class="keyword">val</span> create_server_socket</span> : <code class="type">string -&gt;
 Netplex_types.protocol -&gt; Netplex_types.extended_address -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></pre><div class="info"><div class="info"><code class="code">create_server_socket service_name proto addr</code>: Creates a server socket
-      as specified in <code class="code">proto</code> for the address <code class="code">addr</code> and returns it.<br/>      Addresses of type <code class="code">`Container</code> are not supported.</div></div>
+      as specified in <code class="code">proto</code> for the address <code class="code">addr</code> and returns it.<p>      Addresses of type <code class="code">`Container</code> are not supported.</p></div></div>
 <pre><span class="VALclose_server_socket"><span class="keyword">val</span> close_server_socket</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; unit</code></pre><div class="info"><div class="info">Closes a socket as opened with <code class="code">create_server_socket</code></div></div>
 <pre><span class="VALany_file_client_connector"><span class="keyword">val</span> any_file_client_connector</span> : <code class="type">string -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=connector">Rpc_client.connector</a></code></pre><div class="info"><div class="info">Interprets a file name as connector for a local RPC service. The
       file must either be a Unix Domain socket, or it must be a text

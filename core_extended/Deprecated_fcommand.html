@@ -1,18 +1,18 @@
 <div class="ocaml_toplevel_module"><div class="info">DEPRECATED: use Core.Std.Command instead</div>
 <div class="info"><div class="info">This module is a wrapper around Command that allows you to
-    do away with accumulators. Here's an example:<br/>    Fcommand.cmd ~summary:&quot;Frobnicate something&quot;
+    do away with accumulators. Here's an example:<p>    Fcommand.cmd ~summary:&quot;Frobnicate something&quot;
       Fcommand.(
         flag &quot;-n&quot; (required int) ~doc:&quot;N number of times to frobnicate&quot;
         ++ anon (args &quot;item&quot; string))
-      (fun n items -&gt; ...)</div></div>
+      (fun n items -&gt; ...)</p></div></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">('main_in, 'main_out) </code>t</span> </pre><div class="info"><div class="info"><code class="code">('main_in, 'main_out) t</code> is a type of composable command-line
-    specifications.<br/>    Every combinator for building <code class="code">t</code>-values is polymorphic in
+    specifications.<p>    Every combinator for building <code class="code">t</code>-values is polymorphic in
     <code class="code">'main_out</code>.  In the final specification expected by <code class="code">cmd</code> used
     to construct a command, <code class="code">'main_out</code> is specialized to <code class="code">unit</code>).
     Various primitive specifications add parameters one at a time,
-    so the resulting type of <code class="code">main</code> is<br/>      <code class="code">arg1 -&gt; ... -&gt; argN -&gt; unit</code><br/>    It may help to think of <code class="code">('a, 'b) t</code> as a function space <code class="code">'a -&gt; 'b</code>
+    so the resulting type of <code class="code">main</code> is</p><p>      <code class="code">arg1 -&gt; ... -&gt; argN -&gt; unit</code></p><p>    It may help to think of <code class="code">('a, 'b) t</code> as a function space <code class="code">'a -&gt; 'b</code>
     embellished with extra information about how to parse command line,
-    including documentation about what various flags are for.</div></div>
+    including documentation about what various flags are for.</p></div></div>
 <div class="info"><div class="info">argument parsing</div></div>
 <pre><span class="TYPEparse"><span class="keyword">type</span> <code class="type">'a </code>parse</span> = <code class="type">string -&gt; 'a</code></pre>
 <pre><span class="VALstring"><span class="keyword">val</span> string</span> : <code class="type">string <a href="?package=core_extended&amp;module=Deprecated_fcommand&amp;type=parse">parse</a></code></pre>
@@ -55,7 +55,7 @@
     specified by <code class="code">spec2</code> in the eventual main function.</div></div>
 <pre><span class="VALeither"><span class="keyword">val</span> either</span> : <code class="type">string -&gt; ('a option -&gt; 'b, 'a option -&gt; 'a option -&gt; 'b) <a href="?package=core_extended&amp;module=Deprecated_fcommand&amp;type=t">t</a></code></pre>
 <pre><span class="VALstep"><span class="keyword">val</span> step</span> : <code class="type">('m1 -&gt; 'm2) -&gt; ('m1, 'm2) <a href="?package=core_extended&amp;module=Deprecated_fcommand&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">step</code> allows you to transform the way parameters are applied. For
-    example, if you want labelled arguments, you can do:<br/>    Fcommand.cmd ~summary:&quot;...&quot;
+    example, if you want labelled arguments, you can do:<p>    Fcommand.cmd ~summary:&quot;...&quot;
       Fcommand.(
         step (fun main x y z -&gt; main ~x ~y ~z)
         ++ flag &quot;-x&quot; (optional string) ~doc:&quot;...&quot;
@@ -64,7 +64,7 @@
       )
       (fun ~x ~y ~z -&gt;
         ...
-      )</div></div>
+      )</p></div></div>
 <div class="info"><div class="info">constructing the command we've specified</div></div>
 <pre><span class="VALcmd"><span class="keyword">val</span> cmd</span> : <code class="type">summary:string -&gt;
 ?readme:(unit -&gt; string) -&gt;

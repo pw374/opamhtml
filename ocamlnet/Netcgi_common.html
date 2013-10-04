@@ -1,8 +1,8 @@
-<div class="ocaml_toplevel_module"><div class="info">Functions to develop new connectors.<br/> The following module is provided as a set of helper functions to
+<div class="ocaml_toplevel_module"><div class="info">Functions to develop new connectors.<p> The following module is provided as a set of helper functions to
  define new connectors.  As a normal user of <code class="code">Netcgi</code>, <b>you should
- not use this module</b>.</div>
+ not use this module</b>.</p></div>
 <div class="info"><div class="info">The goal of this module is to factor out common routines to easily
-    set up new connectors.  Here is the normal flow of operations:<br/>    - You start by reading the request environment properties as well
+    set up new connectors.  Here is the normal flow of operations:<p>    - You start by reading the request environment properties as well
     as the input header.  Often both are undistinguished and provided
     through some sort of meta-variables.  The function
      <a href="#Netcgi_common.update_props_inheader">Netcgi_common.update_props_inheader</a> helps you to sort them and
@@ -11,15 +11,15 @@
     connector.  Then,  <a href="#Netcgi_common.cgi_environment">Netcgi_common.cgi_environment</a> can create an
     environment object for you.  If <code class="code">stderr</code> output is not appropriate
     (e.g. ot is not redirected to the server log), you need to
-    override <code class="code">#log_error</code>.<br/>    - From the environment object and arguments,  <a href="#Netcgi_common.cgi">Netcgi_common.cgi</a>
+    override <code class="code">#log_error</code>.</p><p>    - From the environment object and arguments,  <a href="#Netcgi_common.cgi">Netcgi_common.cgi</a>
     creates a CGI object.  Often, arguments are read from the
     environment <code class="code">#cgi_query_string</code> (in case of GET) or from an input
     channel (in case of POST).   <a href="#Netcgi_common.cgi_with_args">Netcgi_common.cgi_with_args</a> handles
     this for you: it requires a  <a href="#Netchannels.in_obj_channel">Netchannels.in_obj_channel</a> from
-    which the arguments are read (only used in the case of POST).<br/>    -  <a href="#Netcgi_common.exn_handler_default">Netcgi_common.exn_handler_default</a> provides a default error
+    which the arguments are read (only used in the case of POST).</p><p>    -  <a href="#Netcgi_common.exn_handler_default">Netcgi_common.exn_handler_default</a> provides a default error
     page for uncaught exceptions.  It also allows the user to pass his
-    own exception handler that has precedence on the default one.<br/>    To see this schema in use, we recommend you have a look to the
-    implementation of the CGI connector because it is very simple.</div></div>
+    own exception handler that has precedence on the default one.</p><p>    To see this schema in use, we recommend you have a look to the
+    implementation of the CGI connector because it is very simple.</p></div></div>
 <div class="info"><div class="info"><h2 id="2_TITLE">Arguments</h2></div></div>
 <pre><span class="TYPErepresentation"><span class="keyword">type</span> representation</span> = <code class="type">[ `MIME of <a href="?package=ocamlnet&amp;module=Netmime&amp;type=mime_message">Netmime.mime_message</a> | `Simple of <a href="?package=ocamlnet&amp;module=Netmime&amp;type=mime_body">Netmime.mime_body</a> ]</code></pre>
 <pre><span class="TYPEstore"><span class="keyword">type</span> store</span> = <code class="type">[ `File of string | `Memory ]</code></pre>
@@ -95,11 +95,11 @@
 	fields are used.  For better browser compatibility, if
 	&quot;Set-cookie2&quot; (RFC 2965) is issued, then a &quot;Set-cookie&quot;
 	precedes (declaring the same cookie with a limited number of
-	options). <br/>        <b>Deprecated name.</b> Use  <a href="#Nethttp.Header.set_set_cookie_ct">Nethttp.Header.set_set_cookie_ct</a>.</div></div>
-<pre><span class="VALget"><span class="keyword">val</span> get</span> : <code class="type">#<a href="?package=ocamlnet&amp;module=Netmime&amp;class=mime_header">Netmime.mime_header</a> -&gt; <a href="?package=ocamlnet&amp;module=Netcgi_common.Cookie&amp;type=t">t</a> list</code></pre><div class="info"><div class="info">Decode the cookie header, may they be version 0 or 1.  <br/>        <b>Deprecated name.</b> Use  <a href="#Nethttp.Header.get_cookie_ct">Nethttp.Header.get_cookie_ct</a>.</div></div>
-<pre><span class="VALof_record"><span class="keyword">val</span> of_record</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Nethttp&amp;type=cookie">Nethttp.cookie</a> -&gt; <a href="?package=ocamlnet&amp;module=Netcgi_common.Cookie&amp;type=t">t</a></code></pre><div class="info"><div class="info">Conversion from the deprecated style of cookie.<br/>        <b>Deprecated name.</b> Use  <a href="#Nethttp.Cookie.of_netscape_cookie">Nethttp.Cookie.of_netscape_cookie</a>.</div></div>
+	options). <p>        <b>Deprecated name.</b> Use  <a href="#Nethttp.Header.set_set_cookie_ct">Nethttp.Header.set_set_cookie_ct</a>.</p></div></div>
+<pre><span class="VALget"><span class="keyword">val</span> get</span> : <code class="type">#<a href="?package=ocamlnet&amp;module=Netmime&amp;class=mime_header">Netmime.mime_header</a> -&gt; <a href="?package=ocamlnet&amp;module=Netcgi_common.Cookie&amp;type=t">t</a> list</code></pre><div class="info"><div class="info">Decode the cookie header, may they be version 0 or 1.  <p>        <b>Deprecated name.</b> Use  <a href="#Nethttp.Header.get_cookie_ct">Nethttp.Header.get_cookie_ct</a>.</p></div></div>
+<pre><span class="VALof_record"><span class="keyword">val</span> of_record</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Nethttp&amp;type=cookie">Nethttp.cookie</a> -&gt; <a href="?package=ocamlnet&amp;module=Netcgi_common.Cookie&amp;type=t">t</a></code></pre><div class="info"><div class="info">Conversion from the deprecated style of cookie.<p>        <b>Deprecated name.</b> Use  <a href="#Nethttp.Cookie.of_netscape_cookie">Nethttp.Cookie.of_netscape_cookie</a>.</p></div></div>
 <pre><span class="VALto_record"><span class="keyword">val</span> to_record</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netcgi_common.Cookie&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Nethttp&amp;type=cookie">Nethttp.cookie</a></code></pre><div class="info"><div class="info">Conversion to the deprecated style of cookie (some parameters
-        are dropped).<br/>        <b>Deprecated name.</b> Use  <a href="#Nethttp.Cookie.to_netscape_cookie">Nethttp.Cookie.to_netscape_cookie</a>.</div></div></div></div>
+        are dropped).<p>        <b>Deprecated name.</b> Use  <a href="#Nethttp.Cookie.to_netscape_cookie">Nethttp.Cookie.to_netscape_cookie</a>.</p></div></div></div></div>
 <div class="info"><div class="info"><h2 id="2_TITLE">Environment</h2></div></div>
 <pre><code><span class="TYPEconfig"><span class="keyword">type</span> config</span> = {</code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTconfig.tmp_directory">tmp_directory</span> : <code class="type">string</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTconfig.tmp_prefix">tmp_prefix</span> : <code class="type">string</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTconfig.permitted_http_methods">permitted_http_methods</span> : <code class="type">[ `DELETE | `GET | `HEAD | `POST | `PUT ] list</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTconfig.permitted_input_content_types">permitted_input_content_types</span> : <code class="type">string list</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTconfig.input_content_length_limit">input_content_length_limit</span> : <code class="type">int</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTconfig.max_arguments">max_arguments</span> : <code class="type">int</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTconfig.workarounds">workarounds</span> : <code class="type">[ `Backslash_bug
@@ -131,17 +131,17 @@
     are lowercase in order to apply a fix to the MSIE Content-Type
     bug.  Also remember that the separator is '-', not '_'.  Both
     requirements will be stafisfied if you use
-     <a href="#Netcgi_common.update_props_inheader">Netcgi_common.update_props_inheader</a> to build <code class="code">input_header</code>.<br/>    <b>Notes:</b> The header is kept into variables and
+     <a href="#Netcgi_common.update_props_inheader">Netcgi_common.update_props_inheader</a> to build <code class="code">input_header</code>.<p>    <b>Notes:</b> The header is kept into variables and
     <code class="code">#send_output_header</code> sents it directly to <code class="code">out_obj</code>.  This has
-    several advantages:<br/>    - It is possible to change header fields at every moment before
+    several advantages:</p><p>    - It is possible to change header fields at every moment before
     the commitment happens. For example, it is possible to set the
     content-length field which is normally only known just at the
-    time of the commit operation.<br/>    - The <code class="code">environment</code> object can process the header; for example
-    it can fix header fields.<br/>    - It is simpler to connect to environments which transport the
+    time of the commit operation.</p><p>    - The <code class="code">environment</code> object can process the header; for example
+    it can fix header fields.</p><p>    - It is simpler to connect to environments which transport the
     header in non-standard ways.  Example: Assume that the
     environment is the web server process (e.g. we are an Apache
     module).  Typically the header must be stored in different
-    structures than the body of the message.</div></div></div></div><div class="ocaml_class_content"><pre><span class="VALheader_not_sent"><span class="keyword">val</span> <span class="keyword">mutable</span> header_not_sent</span> : <code class="code">bool</code></pre>
+    structures than the body of the message.</p></div></div></div></div><div class="ocaml_class_content"><pre><span class="VALheader_not_sent"><span class="keyword">val</span> <span class="keyword">mutable</span> header_not_sent</span> : <code class="code">bool</code></pre>
 <div class="info"><div class="info"><code class="code">true</code> iff the output headers have not been sent.
 	<code class="code">#send_output_header</code> must set it to false once it did its
 	job.</div></div>
@@ -253,12 +253,12 @@
     return a header).  For standard cases, when POST and PUT arguments
     are available through a <code class="code">Netchannels.in_obj_channel</code>, we recommend
     you use  <a href="#Netcgi_common.cgi_with_args">Netcgi_common.cgi_with_args</a> that will parse the
-    arguments for you and check preconditions.<br/>    Remark: You may think that the argument <code class="code">meth</code> is superfluous as
+    arguments for you and check preconditions.<p>    Remark: You may think that the argument <code class="code">meth</code> is superfluous as
     it can be deduced from <code class="code">env#cgi_request_method</code>.  While it is true
     for <code class="code">`DELETE</code>, <code class="code">`GET</code>, <code class="code">`HEAD</code> and <code class="code">`POST</code>, the <code class="code">`PUT</code> takes a
      <a href="#Netcgi_common.cgi_argument">Netcgi_common.cgi_argument</a> parameter.  Setting correctly this
     parameter and decoding <code class="code">env#cgi_request_method</code> is done for you by
-     <a href="#Netcgi_common.cgi_with_args">Netcgi_common.cgi_with_args</a>.</div></div><div class="ocaml_class_content"><pre><span class="METHODargument"><span class="keyword">method</span> argument</span> : <code class="code">string -&gt; <a href="?package=ocamlnet&amp;module=Netcgi_common&amp;type=cgi_argument">cgi_argument</a></code></pre>
+     <a href="#Netcgi_common.cgi_with_args">Netcgi_common.cgi_with_args</a>.</p></div></div><div class="ocaml_class_content"><pre><span class="METHODargument"><span class="keyword">method</span> argument</span> : <code class="code">string -&gt; <a href="?package=ocamlnet&amp;module=Netcgi_common&amp;type=cgi_argument">cgi_argument</a></code></pre>
 
 <pre><span class="METHODargument_value"><span class="keyword">method</span> argument_value</span> : <code class="code">?default:string -&gt; string -&gt; string</code></pre>
 
@@ -316,9 +316,9 @@
 <pre><span class="EXCEPTIONHTTP"><span class="keyword">exception</span> HTTP</span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Nethttp&amp;type=http_status">Nethttp.http_status</a> * string</code></pre><div class="info"><div class="info">Exception raised by various functions of this library to return
       to the user agent an appropriate error page with the specified
       http-status (this exception must be caught by the connector and
-      a default answer sent).<br/>      The string is a description of the cause of the error.<br/>      This exception is for use by connectors only, users should deal
+      a default answer sent).<p>      The string is a description of the cause of the error.</p><p>      This exception is for use by connectors only, users should deal
       with the exceptions in their code by generating a response with
-      the usual <code class="code">#set_header</code> and <code class="code">#out_channel</code> of  <a href="#Netcgi.cgi">Netcgi.cgi</a>.</div></div>
+      the usual <code class="code">#set_header</code> and <code class="code">#out_channel</code> of  <a href="#Netcgi.cgi">Netcgi.cgi</a>.</p></div></div>
 <pre><span class="VALexn_handler_default"><span class="keyword">val</span> exn_handler_default</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netcgi_common&amp;type=cgi_environment">cgi_environment</a> -&gt;
 exn_handler:(<a href="?package=ocamlnet&amp;module=Netcgi_common&amp;type=cgi_environment">cgi_environment</a> -&gt; (unit -&gt; unit) -&gt; unit) -&gt;
 finally:(unit -&gt; unit) -&gt; (unit -&gt; exn option) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">exn_handler_default env ~exn_handler ~finally run_cgi</code> will
@@ -331,10 +331,10 @@ finally:(unit -&gt; unit) -&gt; (unit -&gt; exn option) -&gt; unit</code></pre><
       the output channel of <code class="code">env</code>.  Note that the default handler
       treats <code class="code">HTTP</code> exceptions specially -- for example, the response
       to <code class="code">HTTP(`Method_not_allowed,...)</code>  includes an &quot;Allow&quot; header
-      (as mandated by HTTP/1.1);...<br/>      Note that, regardless of the value of <code class="code">default_exn_handler</code>, the
+      (as mandated by HTTP/1.1);...<p>      Note that, regardless of the value of <code class="code">default_exn_handler</code>, the
       <code class="code">Exit</code> exception is always caught and treated like an
-      acceptable early termination (thus produces no error page).<br/>      Whether <code class="code">run_cgi</code> terminates normally or by an exception,
-      <code class="code">finally()</code> is executed last.<br/>      Sometimes, you want that some &quot;special&quot; exceptions (for example
+      acceptable early termination (thus produces no error page).</p><p>      Whether <code class="code">run_cgi</code> terminates normally or by an exception,
+      <code class="code">finally()</code> is executed last.</p><p>      Sometimes, you want that some &quot;special&quot; exceptions (for example
       exceptions internal to the connector) CANNOT to be caught by
       <code class="code">exn_handler</code>.  In this case, <code class="code">run_cgi()</code> catches the exception,
       say <code class="code">e</code>, and returns it as <code class="code">Some e</code>.  The exception <code class="code">e</code> will &quot;go
@@ -342,19 +342,19 @@ finally:(unit -&gt; unit) -&gt; (unit -&gt; exn option) -&gt; unit</code></pre><
       the default handler.  Therefore, you must take care that it is
       handled by the surrounding code or your connector may die
       without an error message.  Of course, <code class="code">run_cgi</code> must return
-      <code class="code">None</code> if no &quot;special&quot; exception is raised.<br/>      REMARK: Stricly speaking, <code class="code">exn_handler env run_cgi</code> is obviously
+      <code class="code">None</code> if no &quot;special&quot; exception is raised.</p><p>      REMARK: Stricly speaking, <code class="code">exn_handler env run_cgi</code> is obviously
       not possible because the return type of <code class="code">run_cgi</code> is not <code class="code">unit</code>
-      but you can ignore that to understand what this function does.</div></div>
+      but you can ignore that to understand what this function does.</p></div></div>
 <pre><span class="VALerror_page"><span class="keyword">val</span> error_page</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netcgi_common&amp;type=cgi_environment">cgi_environment</a> -&gt;
 <a href="?package=ocamlnet&amp;module=Nethttp&amp;type=http_status">Nethttp.http_status</a> -&gt;
 (string * string list) list -&gt; string -&gt; string -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">error_page env status fields msg detail</code>: Logs an error message and
-      outputs an error page via <code class="code">env</code>.<br/>      <code class="code">status</code> is the status of the error page, e.g. <code class="code">`Internal_server_error</code>.
-      <code class="code">fields</code> are put into the response header of the error page.<br/>      <code class="code">msg</code> occurs in the log message and in the error page, and should
+      outputs an error page via <code class="code">env</code>.<p>      <code class="code">status</code> is the status of the error page, e.g. <code class="code">`Internal_server_error</code>.
+      <code class="code">fields</code> are put into the response header of the error page.</p><p>      <code class="code">msg</code> occurs in the log message and in the error page, and should
       be a concise description without linefeeds. <code class="code">detail</code> is only
       printed to the error page, and may be longer than this, and may
-      also include HTML markup.</div></div>
-<div class="info"><div class="info"><h2 id="2_TITLE">Useful functions</h2><br/>    The following functions are used in several connectors and are
-    gouped here for convenience.</div></div>
+      also include HTML markup.</p></div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Useful functions</h2><p>    The following functions are used in several connectors and are
+    gouped here for convenience.</p></div></div>
 <pre><span class="VALupdate_props_inheader"><span class="keyword">val</span> update_props_inheader</span> : <code class="type">string * string -&gt;
 (string * string) list * (string * string) list -&gt;
 (string * string) list * (string * string) list</code></pre><div class="info"><div class="info"><code class="code">update_props_inheader (name, value) (props, inheader)</code> returns

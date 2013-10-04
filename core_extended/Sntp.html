@@ -3,7 +3,7 @@
 ?port:int -&gt;
 string -&gt;
 [ `Error of <a href="?package=core&amp;module=Std.Exn&amp;type=t">Core.Std.Exn.t</a> | `Offset of <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a> | `Timeout ]</code></pre><div class="info"><div class="info"><code class="code">query hostname</code> returns the difference between the clock on the
-  local host and the clock on the host specified by <code class="code">hostname</code>.<br/>  If the remote host is down or not running an (S)NTP service this
+  local host and the clock on the host specified by <code class="code">hostname</code>.<p>  If the remote host is down or not running an (S)NTP service this
   call will `Timeout.  Other errors, including some classes of resolution
-  or network will raise an exception, which will be returned as `Error.</div></div>
+  or network will raise an exception, which will be returned as `Error.</p></div></div>
 </div>

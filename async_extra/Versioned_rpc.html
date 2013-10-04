@@ -4,30 +4,30 @@
   over time to use different types at different versions.  Three scenarios
   are supported
     <ul><li>Both <i>caller</i> and <i>callee</i> cooperate to decide which version to use, each
-          one being able to use some subset of all possible versions.<br/>          The proto-typical example of this scenario is when two systems developed
+          one being able to use some subset of all possible versions.<p>          The proto-typical example of this scenario is when two systems developed
           independently with their rpc types defined in some shared library which has yet
           another independent rollout schedule.  In this case one may roll out a new rpc
           version (V) in the shared library (L) and then the caller and callee systems can
           each upgrade to the new version of L supporting version V at their own pace,
           with version V only being exercised once both caller and callee have upgraded.
-      </li><li>The <i>callee</i> is responsible for managing versions and
-          callers need not bother themselves with any versions.<br/>          The proto-typical example of this scenario is an assistant
+      </p></li><li>The <i>callee</i> is responsible for managing versions and
+          callers need not bother themselves with any versions.<p>          The proto-typical example of this scenario is an assistant
           from one system calling out the commander of another system
           In this scenario, the assistants each know a single version
           of the rpc to call and the commander has to implement them
           all.
-      </li><li>The <i>caller</i> is responsible for managing versions and
+      </p></li><li>The <i>caller</i> is responsible for managing versions and
           dispatches to callees that are written in a version-oblivious
-          way.<br/>          The proto-typical example of this scenario is a commander that
+          way.<p>          The proto-typical example of this scenario is a commander that
           needs to call out to many assistants for that same system.
           In this scenario, the assistants each implement a single
           version of the rpc and the commander has to take this into
           account.
-      </li></ul><br/>  In each scenario, it is desirable that the party responsible for
+      </p></li></ul><p>  In each scenario, it is desirable that the party responsible for
   managing versions be coded largely in terms of a single &quot;master&quot;
   version of the types involved, with all necessary type conversions
   relegated to a single module.  <code class="code">Versioned_rpc</code> is intended for
-  implementing such a module.<br/>  Type coercions into and out of the model go in the directions indicated
+  implementing such a module.</p><p>  Type coercions into and out of the model go in the directions indicated
   by the following diagram:
   <span class="verbatim">
        Caller converts                 Callee converts
@@ -42,7 +42,7 @@
       Q ---&gt;-- Q2 --&gt; R2 --&gt;-- R    Q2 --&gt;-- Q --&gt; R ---&gt;-- R2
        \                      /             /       \
         `--&gt;-- Q3 --&gt; R3 --&gt;-'      Q3 --&gt;-'         `--&gt;-- R3
-  </span></div></div>
+  </span></p></div></div>
 <div class="ocaml_module sig" name="Menu"><pre><span class="keyword">module</span> <a href="?package=async_extra&amp;module=Versioned_rpc.Menu">Menu</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
 <pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">a directory of supported rpc names and versions.</div></div>
 <pre><span class="VALadd"><span class="keyword">val</span> add</span> : <code class="type">'s <a href="?package=async_extra&amp;module=Rpc.Implementation&amp;type=t">Rpc.Implementation.t</a> list -&gt; 's <a href="?package=async_extra&amp;module=Rpc.Implementation&amp;type=t">Rpc.Implementation.t</a> list</code></pre><div class="info"><div class="info"><code class="code">add impls</code> extends a list of rpc implementations with an additional
@@ -86,8 +86,8 @@
 <pre><span class="TYPEquery"><span class="keyword">type</span> query</span> </pre>
 <pre><span class="TYPEresponse"><span class="keyword">type</span> response</span> </pre>
 <pre><span class="TYPEerror"><span class="keyword">type</span> error</span> </pre>
-<div class="info"><div class="info">multi-version dispatch<br/>          The return type varies slightly from <code class="code">Rpc.Pipe_rpc.dispatch</code> to make it clear
-          that conversion of each individual element in the returned pipe may fail.</div></div>
+<div class="info"><div class="info">multi-version dispatch<p>          The return type varies slightly from <code class="code">Rpc.Pipe_rpc.dispatch</code> to make it clear
+          that conversion of each individual element in the returned pipe may fail.</p></div></div>
 <pre><span class="VALdeprecated_dispatch_multi"><span class="keyword">val</span> deprecated_dispatch_multi</span> : <code class="type">version:int -&gt;
 <a href="?package=async_extra&amp;module=Rpc.Connection&amp;type=t">Rpc.Connection.t</a> -&gt;
 <a href="?package=async_extra&amp;module=Versioned_rpc.Caller_converts.Pipe_rpc.S&amp;type=query">query</a> -&gt;
@@ -174,7 +174,7 @@
       versioning schemes in such a way that one can smoothly add a new version of the rpc
       to a shared library, and it doesn't matter whether the callee or caller upgrades to
       the latest version of the shared library first, the new version will not be
-      exercised until both sides support it.<br/>      <pre class="codepre"><code class="code">
+      exercised until both sides support it.<p>      </p><code class="code">
                       (conv)   (conv)                          (conv)   (conv)
                       caller   callee                          callee   caller
                       |        |                               |        |
@@ -184,7 +184,7 @@
                   \---&gt;-- Q2 --&gt;---\           |           /---&gt;-- R2 --&gt;---/
                    \                \          |          /                /
                     `-&gt;-- Q3 --&gt;---- Q.callee --&gt; R.callee ----&gt;-- R3 --&gt;-'
-      </code></pre></div></div>
+      </code></div></div>
 <div class="ocaml_module sig" name="Plain"><pre><span class="keyword">module</span> <a href="?package=async_extra&amp;module=Versioned_rpc.Both_convert.Plain">Plain</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
 <div class="ocaml_module sig" name="S"><pre><span class="keyword">module type</span> <a href="?package=async_extra&amp;module=Versioned_rpc.Both_convert.Plain.S">S</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
 <pre><span class="TYPEcaller_query"><span class="keyword">type</span> caller_query</span> </pre>

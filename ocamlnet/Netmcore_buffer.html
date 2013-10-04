@@ -1,22 +1,22 @@
-<div class="ocaml_toplevel_module"><div class="info">Shared buffer<br/>    One can add more data to the end of the buffer, and one can
-    remove data from the beginning of the buffer.<br/>    Additions and deletions of data are atomic, and are strictly
+<div class="ocaml_toplevel_module"><div class="info">Shared buffer<p>    One can add more data to the end of the buffer, and one can
+    remove data from the beginning of the buffer.</p><p>    Additions and deletions of data are atomic, and are strictly
     serialized. Read accesses can occur in parallel, and can even
     overlap with modifications (to some degree). It is, however,
     ensured that reads do not see the parallel modification, i.e.
     reads always base on the state from the beginning of the read
-    operation.<br/>    It is not excluded that additions can be executed in parallel. If
+    operation.</p><p>    It is not excluded that additions can be executed in parallel. If
     done this way, it is guaranteed that the effects of parallel
     additions are the same as if they were executed in a serial
     way. In particular, if an addition operation returns, this
     addition and all parallel additions affecting preceding index
     positions must be done. (The current implementation does not
-    attempt this optimization.)<br/>    Index positions are &quot;eternal&quot;, i.e. the index position of a
+    attempt this optimization.)</p><p>    Index positions are &quot;eternal&quot;, i.e. the index position of a
     byte does not change when preceding bytes are deleted. Instead,
     a deletion merely advances the start index of the valid data
     (which is not necessarily 0). This model is more consistent
-    with parallel modifications.<br/>    On 32 bit platforms it can happen that index positions wrap
+    with parallel modifications.</p><p>    On 32 bit platforms it can happen that index positions wrap
     around (at 1G). The position following <code class="code">max_int</code> is 0. The
-    length is restricted to <code class="code">max_int-bsize</code> on these platforms.</div>
+    length is restricted to <code class="code">max_int-bsize</code> on these platforms.</p></div>
 <pre><span class="TYPEbuffer"><span class="keyword">type</span> <code class="type">'h </code>buffer</span> </pre><div class="info"><div class="info">A buffer with a header of type <code class="code">'h</code></div></div>
 <pre><span class="TYPEbuffer_descr"><span class="keyword">type</span> <code class="type">'h </code>buffer_descr</span> </pre><div class="info"><div class="info">The marshallable buffer descriptor</div></div>
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; int -&gt; 'h -&gt; 'h <a href="?package=ocamlnet&amp;module=Netmcore_buffer&amp;type=buffer">buffer</a></code></pre><div class="info"><div class="info"><code class="code">create pool bsize h</code>: Creates a buffer in <code class="code">pool</code> with a block
@@ -36,8 +36,8 @@
 <pre><span class="VALaccess"><span class="keyword">val</span> access</span> : <code class="type">'h <a href="?package=ocamlnet&amp;module=Netmcore_buffer&amp;type=buffer">buffer</a> -&gt; int -&gt; (string -&gt; int -&gt; int -&gt; 'a) -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">access b pos f</code>: Gets access to the internal string backing the
       byte at position <code class="code">pos</code>. The function <code class="code">f</code> is called as <code class="code">f s k n</code>
       so that <code class="code">s.[k]</code> is the requested byte at <code class="code">pos</code>. The number <code class="code">n</code>
-      is the number of valid bytes in the string.<br/>      During the execution of <code class="code">f</code> the string <code class="code">s</code> is pinned and cannot be
-      deleted by the garbage collector.</div></div>
+      is the number of valid bytes in the string.<p>      During the execution of <code class="code">f</code> the string <code class="code">s</code> is pinned and cannot be
+      deleted by the garbage collector.</p></div></div>
 <pre><span class="VALadd_string"><span class="keyword">val</span> add_string</span> : <code class="type">'h <a href="?package=ocamlnet&amp;module=Netmcore_buffer&amp;type=buffer">buffer</a> -&gt; string -&gt; unit</code></pre><div class="info"><div class="info">Adds a string to the end of the buffer</div></div>
 <pre><span class="VALadd_sub_string"><span class="keyword">val</span> add_sub_string</span> : <code class="type">'h <a href="?package=ocamlnet&amp;module=Netmcore_buffer&amp;type=buffer">buffer</a> -&gt; string -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">Adds a sub string to the end of the buffer</div></div>
 <pre><span class="VALadd_sub_memory"><span class="keyword">val</span> add_sub_memory</span> : <code class="type">'h <a href="?package=ocamlnet&amp;module=Netmcore_buffer&amp;type=buffer">buffer</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">Netsys_mem.memory</a> -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">Adds a sub memory buffer to the end of the buffer</div></div>

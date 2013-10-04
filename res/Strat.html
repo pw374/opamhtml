@@ -5,13 +5,13 @@
 <pre><span class="VALgrow"><span class="keyword">val</span> grow</span> : <code class="type"><a href="?package=res&amp;module=Strat.T&amp;type=t">t</a> -&gt; int -&gt; int</code></pre><div class="info"><div class="info"><code class="code">grow strat new_len</code> <b>Returns</b> the new real length of some contiguous
       datastructure using strategy <code class="code">strat</code> given new virtual length
       <code class="code">new_len</code>.  The user should then use this new real length to resize
-      the datastructure.<br/>      Be careful, the new (real) length <b>must</b> be larger than the new
-      virtual length, otherwise your program will crash!</div></div>
+      the datastructure.<p>      Be careful, the new (real) length <b>must</b> be larger than the new
+      virtual length, otherwise your program will crash!</p></div></div>
 <pre><span class="VALshrink"><span class="keyword">val</span> shrink</span> : <code class="type"><a href="?package=res&amp;module=Strat.T&amp;type=t">t</a> -&gt; real_len:int -&gt; new_len:int -&gt; int</code></pre><div class="info"><div class="info"><code class="code">shrink strat ~real_len ~new_len</code> <b>Returns</b> the new real length
       of a resizable datastructure given its current real length
       <code class="code">real_len</code> and its required new virtual length <code class="code">new_len</code>
       wrt. strategy <code class="code">strat</code>.  The user should then use this new real
       length to resize the datastructure.  If <code class="code">-1</code> is returned, it is
-      not necessary to resize.<br/>      Be careful, the new (real) length <b>must</b> be larger than the new
-      (virtual) length, otherwise your program may crash!</div></div></div></div>
+      not necessary to resize.<p>      Be careful, the new (real) length <b>must</b> be larger than the new
+      (virtual) length, otherwise your program may crash!</p></div></div></div></div>
 </div>

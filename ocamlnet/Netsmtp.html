@@ -6,7 +6,7 @@
 <pre><span class="VALtcp_port"><span class="keyword">val</span> tcp_port</span> : <code class="type">int</code></pre><div class="info"><div class="info">default TCP port for SMTP</div></div>
 <div class="info"><div class="info">The class <code class="code">client</code> implements the SMTP protocol.  Client objects are created
  by
- <pre class="codepre"><code class="code"> new client in_ch out_ch</code></pre>
+ <code class="code"> new client in_ch out_ch</code>
  where <code class="code">in_ch</code> is an input channel representing the input direction of the
  TCP stream, and where <code class="code">out_ch</code> is an output channel representing the output
  direction of the TCP stream.</div></div>
@@ -20,8 +20,8 @@
 <pre><span class="METHODrcpt"><span class="keyword">method</span> rcpt</span> : <code class="code">string -&gt; unit</code></pre>
 <div class="info"><div class="info">Performs a RCPT TO command.  the <code class="code">string</code> argument is one of the mail
  address the mail has to be sent to.  You have to use that function for
- each recipient of the mail.<br/> If the server returns a 551 error (user relocated, see RFC 2821, section
- 3.4), the relocated adress is silently used, and the error is not raised</div></div>
+ each recipient of the mail.<p> If the server returns a 551 error (user relocated, see RFC 2821, section
+ 3.4), the relocated adress is silently used, and the error is not raised</p></div></div>
 <pre><span class="METHODdata"><span class="keyword">method</span> data</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netchannels&amp;type=in_obj_channel">Netchannels.in_obj_channel</a> -&gt; unit</code></pre>
 <div class="info"><div class="info">This method really send the mail.
  Do not issue that command without having used <code class="code">mail</code> once, and at least

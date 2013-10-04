@@ -21,8 +21,8 @@
       <code class="code">f k</code> is run, and the copy of the result is written to the
       position. The header is set to the copy of <code class="code">h</code>.</div></div>
 <pre><span class="VALgrow"><span class="keyword">val</span> grow</span> : <code class="type">('e, 'a) <a href="?package=ocamlnet&amp;module=Netmcore_array&amp;type=sarray">sarray</a> -&gt; int -&gt; 'e -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">grow sa n x</code>: Grows the array to <code class="code">n</code> elements. The new elements
-      are initialized to a (single) copy of <code class="code">x</code>.<br/>      If <code class="code">n</code> is smaller than the current length, the function will do
-      nothing, and keep the length.</div></div>
+      are initialized to a (single) copy of <code class="code">x</code>.<p>      If <code class="code">n</code> is smaller than the current length, the function will do
+      nothing, and keep the length.</p></div></div>
 <pre><span class="VALset"><span class="keyword">val</span> set</span> : <code class="type">('e, 'a) <a href="?package=ocamlnet&amp;module=Netmcore_array&amp;type=sarray">sarray</a> -&gt; int -&gt; 'e -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">set sa k x</code>: Sets the <code class="code">k-th</code> element of the array <code class="code">sa</code> to a
       deep copy of <code class="code">x</code>.</div></div>
 <pre><span class="VALget_ro"><span class="keyword">val</span> get_ro</span> : <code class="type">('e, 'a) <a href="?package=ocamlnet&amp;module=Netmcore_array&amp;type=sarray">sarray</a> -&gt; int -&gt; 'e</code></pre><div class="info"><div class="info"><code class="code">get_ro sa k</code>: Gets the <code class="code">k</code>-th element of the shared array <code class="code">sa</code>.
@@ -41,24 +41,24 @@
 <pre><span class="VALheap"><span class="keyword">val</span> heap</span> : <code class="type">('a, 'b) <a href="?package=ocamlnet&amp;module=Netmcore_array&amp;type=sarray">sarray</a> -&gt; <a href="?package=ocaml&amp;module=Obj&amp;type=t">Obj.t</a> <a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=heap">Netmcore_heap.heap</a></code></pre><div class="info"><div class="info">Return the backing heap structure</div></div>
 <pre><span class="VALdescr_of_sarray"><span class="keyword">val</span> descr_of_sarray</span> : <code class="type">('e, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_array&amp;type=sarray">sarray</a> -&gt; ('e, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_array&amp;type=sarray_descr">sarray_descr</a></code></pre><div class="info"><div class="info">Returns the descriptor</div></div>
 <pre><span class="VALsarray_of_descr"><span class="keyword">val</span> sarray_of_descr</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netmcore&amp;type=res_id">Netmcore.res_id</a> -&gt; ('e, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_array&amp;type=sarray_descr">sarray_descr</a> -&gt; ('e, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_array&amp;type=sarray">sarray</a></code></pre><div class="info"><div class="info">Look up the buffer for this descriptor</div></div>
-<div class="info"><div class="info"><h3 id="3_TITLE">Mutating header fields</h3><br/>    Special care has to be taken when mutating header fields. The header
+<div class="info"><div class="info"><h3 id="3_TITLE">Mutating header fields</h3><p>    Special care has to be taken when mutating header fields. The header
     must completely live in the same heap. For adding new values, one
-    has to use  <a href="#Netmcore_heap.modify">Netmcore_heap.modify</a>. Example for a header of type:<br/>    <pre class="codepre"><code class="code">
+    has to use  <a href="#Netmcore_heap.modify">Netmcore_heap.modify</a>. Example for a header of type:</p><p>    </p><code class="code">
     type header =
       { mutable n : int;
         mutable name : string
       }
-    </code></pre><br/>    Here, the field <code class="code">n</code> can be directly assigned because an <code class="code">int</code>
-    is always an unboxed value. So,<br/>    <pre class="codepre"><code class="code">
+    </code><p>    Here, the field <code class="code">n</code> can be directly assigned because an <code class="code">int</code>
+    is always an unboxed value. So,</p><p>    </p><code class="code">
     h.n &lt;- new_value
-    </code></pre><br/>    is legal. However, strings are heap-allocated. For an assignment
-    to <code class="code">name</code> we need to use  <a href="#Netmcore_heap.modify">Netmcore_heap.modify</a>, as in<br/>    <pre class="codepre"><code class="code">
+    </code><p>    is legal. However, strings are heap-allocated. For an assignment
+    to <code class="code">name</code> we need to use  <a href="#Netmcore_heap.modify">Netmcore_heap.modify</a>, as in</p><p>    </p><code class="code">
     Netmcore_heap.modify
       (Netmcore_array.heap sa)
       (fun mutator -&gt;
         h.name &lt;- Netmcore_heap.add mutator new_value
       )
-    </code></pre><br/>    The function  <a href="#Netmcore_heap.add">Netmcore_heap.add</a> pushes a copy of the <code class="code">new_value</code>
-    to the heap, and this allows us to do the assignment.<br/>    During  <a href="#Netcore_heap.modify">Netcore_heap.modify</a> certain operations are prohibited
-    because they would cause a deadlock:<ul><li><code class="code">grow</code></li><li><code class="code">set</code></li><li><code class="code">get_p</code></li><li><code class="code">get_c</code></li></ul>    (This may be relaxed in a future version.)</div></div>
+    </code><p>    The function  <a href="#Netmcore_heap.add">Netmcore_heap.add</a> pushes a copy of the <code class="code">new_value</code>
+    to the heap, and this allows us to do the assignment.</p><p>    During  <a href="#Netcore_heap.modify">Netcore_heap.modify</a> certain operations are prohibited
+    because they would cause a deadlock:</p><ul><li><code class="code">grow</code></li><li><code class="code">set</code></li><li><code class="code">get_p</code></li><li><code class="code">get_c</code></li></ul>    (This may be relaxed in a future version.)</div></div>
 </div>

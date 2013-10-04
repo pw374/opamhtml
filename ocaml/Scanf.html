@@ -1,23 +1,23 @@
 <div class="ocaml_toplevel_module"><div class="info">Formatted input functions.</div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Introduction</h6></div></div>
 <div class="info"><div class="info"><div class="h7">Functional input with format strings</div></div></div>
-<div class="info"><div class="info">The module <code class="code">Scanf</code> provides formatted input functions or <em>scanners</em>.<br/>    The formatted input functions can read from any kind of input, including
+<div class="info"><div class="info">The module <code class="code">Scanf</code> provides formatted input functions or <em>scanners</em>.<p>    The formatted input functions can read from any kind of input, including
     strings, files, or anything that can return characters. The more general
     source of characters is named a <em>formatted input channel</em> (or <em>    scanning buffer</em>) and has type  <a href="#Scanning.in_channel">Scanning.in_channel</a>. The more general
     formatted input function reads from any scanning buffer and is named
-    <code class="code">bscanf</code>.<br/>    Generally speaking, the formatted input functions have 3 arguments:<ul><li>the first argument is a source of characters for the input,</li><li>the second argument is a format string that specifies the values to
+    <code class="code">bscanf</code>.</p><p>    Generally speaking, the formatted input functions have 3 arguments:</p><ul><li>the first argument is a source of characters for the input,</li><li>the second argument is a format string that specifies the values to
       read,</li><li>the third argument is a <em>receiver function</em> that is applied to the
       values read.</li></ul>    Hence, a typical call to the formatted input function  <a href="#Scanf.bscanf">Scanf.bscanf</a> is
-    <code class="code">bscanf ic fmt f</code>, where:<br/>    - <code class="code">ic</code> is a source of characters (typically a <em>    formatted input channel</em> with type  <a href="#Scanning.in_channel">Scanning.in_channel</a>),<br/>    - <code class="code">fmt</code> is a format string (the same format strings as those used to print
-    material with module  <a href="#Printf">Printf</a> or  <a href="#Format">Format</a>),<br/>    - <code class="code">f</code> is a function that has as many arguments as the number of values to
-    read in the input.</div></div>
+    <code class="code">bscanf ic fmt f</code>, where:<p>    - <code class="code">ic</code> is a source of characters (typically a <em>    formatted input channel</em> with type  <a href="#Scanning.in_channel">Scanning.in_channel</a>),</p><p>    - <code class="code">fmt</code> is a format string (the same format strings as those used to print
+    material with module  <a href="#Printf">Printf</a> or  <a href="#Format">Format</a>),</p><p>    - <code class="code">f</code> is a function that has as many arguments as the number of values to
+    read in the input.</p></div></div>
 <div class="info"><div class="info"><div class="h7">A simple example</div></div></div>
 <div class="info"><div class="info">As suggested above, the expression <code class="code">bscanf ic &quot;%d&quot; f</code> reads a decimal
-    integer <code class="code">n</code> from the source of characters <code class="code">ic</code> and returns <code class="code">f n</code>.<br/>    For instance,<br/>    - if we use <code class="code">stdin</code> as the source of characters ( <a href="#Scanning.stdin">Scanning.stdin</a> is
-    the predefined formatted input channel that reads from standard input),<br/>    - if we define the receiver <code class="code">f</code> as <code class="code">let f x = x + 1</code>,<br/>    then <code class="code">bscanf Scanning.stdin &quot;%d&quot; f</code> reads an integer <code class="code">n</code> from the
+    integer <code class="code">n</code> from the source of characters <code class="code">ic</code> and returns <code class="code">f n</code>.<p>    For instance,</p><p>    - if we use <code class="code">stdin</code> as the source of characters ( <a href="#Scanning.stdin">Scanning.stdin</a> is
+    the predefined formatted input channel that reads from standard input),</p><p>    - if we define the receiver <code class="code">f</code> as <code class="code">let f x = x + 1</code>,</p><p>    then <code class="code">bscanf Scanning.stdin &quot;%d&quot; f</code> reads an integer <code class="code">n</code> from the
     standard input and returns <code class="code">f n</code> (that is <code class="code">n + 1</code>). Thus, if we
     evaluate <code class="code">bscanf stdin &quot;%d&quot; f</code>, and then enter <code class="code">41</code> at the
-    keyboard, we get <code class="code">42</code> as the final result.</div></div>
+    keyboard, we get <code class="code">42</code> as the final result.</p></div></div>
 <div class="info"><div class="info"><div class="h7">Formatted input as a functional feature</div></div></div>
 <div class="info"><div class="info">The OCaml scanning facility is reminiscent of the corresponding C feature.
     However, it is also largely different, simpler, and yet more powerful:
@@ -41,24 +41,24 @@
 <pre><span class="TYPEscanbuf"><span class="keyword">type</span> scanbuf</span> = <code class="type"><a href="?package=ocaml&amp;module=Scanf.Scanning&amp;type=in_channel">in_channel</a></code></pre><div class="info"><div class="info">The type of scanning buffers. A scanning buffer is the source from which a
     formatted input function gets characters. The scanning buffer holds the
     current state of the scan, plus a function to get the next char from the
-    input, and a token buffer to store the string matched so far.<br/>    Note: a scanning action may often require to examine one character in
+    input, and a token buffer to store the string matched so far.<p>    Note: a scanning action may often require to examine one character in
     advance; when this 'lookahead' character does not belong to the token
     read, it is stored back in the scanning buffer and becomes the next
-    character yet to be read.</div></div>
+    character yet to be read.</p></div></div>
 <pre><span class="VALstdin"><span class="keyword">val</span> stdin</span> : <code class="type"><a href="?package=ocaml&amp;module=Scanf.Scanning&amp;type=in_channel">in_channel</a></code></pre><div class="info"><div class="info">The standard input notion for the <code class="code">Scanf</code> module.
     <code class="code">Scanning.stdin</code> is the formatted input channel attached to
-    <code class="code">Pervasives.stdin</code>.<br/>    Note: in the interactive system, when input is read from <code class="code">stdin</code>, the
+    <code class="code">Pervasives.stdin</code>.<p>    Note: in the interactive system, when input is read from <code class="code">stdin</code>, the
     newline character that triggers the evaluation is incorporated in the
     input; thus, the scanning specifications must properly skip this
     additional newline character (for instance, simply add a <code class="code">'\n'</code> as the
-    last character of the format string). <b>Since</b> 3.12.0</div></div>
+    last character of the format string).</p> <b>Since</b> 3.12.0</div></div>
 <pre><span class="TYPEfile_name"><span class="keyword">type</span> file_name</span> = <code class="type">string</code></pre><div class="info"><div class="info">A convenient alias to designate a file name. <b>Since</b> 4.00.0</div></div>
 <pre><span class="VALopen_in"><span class="keyword">val</span> open_in</span> : <code class="type"><a href="?package=ocaml&amp;module=Scanf.Scanning&amp;type=file_name">file_name</a> -&gt; <a href="?package=ocaml&amp;module=Scanf.Scanning&amp;type=in_channel">in_channel</a></code></pre><div class="info"><div class="info"><code class="code">Scanning.open_in fname</code> returns a formatted input channel for bufferized
-    reading in text mode from file <code class="code">fname</code>.<br/>    Note:
+    reading in text mode from file <code class="code">fname</code>.<p>    Note:
     <code class="code">open_in</code> returns a formatted input channel that efficiently reads
     characters in large chunks; in contrast, <code class="code">from_channel</code> below returns
     formatted input channels that must read one character at a time, leading
-    to a much slower scanning rate. <b>Since</b> 3.12.0</div></div>
+    to a much slower scanning rate.</p> <b>Since</b> 3.12.0</div></div>
 <pre><span class="VALopen_in_bin"><span class="keyword">val</span> open_in_bin</span> : <code class="type"><a href="?package=ocaml&amp;module=Scanf.Scanning&amp;type=file_name">file_name</a> -&gt; <a href="?package=ocaml&amp;module=Scanf.Scanning&amp;type=in_channel">in_channel</a></code></pre><div class="info"><div class="info"><code class="code">Scanning.open_in_bin fname</code> returns a formatted input channel for
     bufferized reading in binary mode from file <code class="code">fname</code>. <b>Since</b> 3.12.0</div></div>
 <pre><span class="VALclose_in"><span class="keyword">val</span> close_in</span> : <code class="type"><a href="?package=ocaml&amp;module=Scanf.Scanning&amp;type=in_channel">in_channel</a> -&gt; unit</code></pre><div class="info"><div class="info">Closes the <code class="code">Pervasives.in_channel</code> associated with the given
@@ -70,8 +70,8 @@
     Reading starts from the first character in the string.
     The end-of-input condition is set when the end of the string is reached.</div></div>
 <pre><span class="VALfrom_function"><span class="keyword">val</span> from_function</span> : <code class="type">(unit -&gt; char) -&gt; <a href="?package=ocaml&amp;module=Scanf.Scanning&amp;type=in_channel">in_channel</a></code></pre><div class="info"><div class="info"><code class="code">Scanning.from_function f</code> returns a formatted input channel with the
-    given function as its reading method.<br/>    When scanning needs one more character, the given function is called.<br/>    When the function has no more character to provide, it <em>must</em> signal an
-    end-of-input condition by raising the exception <code class="code">End_of_file</code>.</div></div>
+    given function as its reading method.<p>    When scanning needs one more character, the given function is called.</p><p>    When the function has no more character to provide, it <em>must</em> signal an
+    end-of-input condition by raising the exception <code class="code">End_of_file</code>.</p></div></div>
 <pre><span class="VALfrom_channel"><span class="keyword">val</span> from_channel</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a> -&gt; <a href="?package=ocaml&amp;module=Scanf.Scanning&amp;type=in_channel">in_channel</a></code></pre><div class="info"><div class="info"><code class="code">Scanning.from_channel ic</code> returns a formatted input channel which reads
     from the regular input channel <code class="code">ic</code> argument, starting at the current
     reading position.</div></div>
@@ -90,14 +90,14 @@
     precisely, if <code class="code">scan</code> is some formatted input function, then <code class="code">scan
     ic fmt f</code> applies <code class="code">f</code> to the arguments specified by the format
     string <code class="code">fmt</code>, when <code class="code">scan</code> has read those arguments from the
-    formatted input channel <code class="code">ic</code>.<br/>    For instance, the <code class="code">scanf</code> function below has type <code class="code">('a, 'b, 'c, 'd)
+    formatted input channel <code class="code">ic</code>.<p>    For instance, the <code class="code">scanf</code> function below has type <code class="code">('a, 'b, 'c, 'd)
     scanner</code>, since it is a formatted input function that reads from
     <code class="code">Scanning.stdin</code>: <code class="code">scanf fmt f</code> applies <code class="code">f</code> to the arguments specified by
-    <code class="code">fmt</code>, reading those arguments from <code class="code">Pervasives.stdin</code> as expected.<br/>    If the format <code class="code">fmt</code> has some <code class="code">%r</code> indications, the corresponding input
+    <code class="code">fmt</code>, reading those arguments from <code class="code">Pervasives.stdin</code> as expected.</p><p>    If the format <code class="code">fmt</code> has some <code class="code">%r</code> indications, the corresponding input
     functions must be provided before the receiver <code class="code">f</code> argument. For
     instance, if <code class="code">read_elem</code> is an input function for values of type <code class="code">t</code>,
     then <code class="code">bscanf ic &quot;%r;&quot; read_elem f</code> reads a value <code class="code">v</code> of type <code class="code">t</code> followed
-    by a <code class="code">';'</code> character, and returns <code class="code">f v</code>. <b>Since</b> 3.10.0</div></div>
+    by a <code class="code">';'</code> character, and returns <code class="code">f v</code>.</p> <b>Since</b> 3.10.0</div></div>
 <pre><span class="EXCEPTIONScan_failure"><span class="keyword">exception</span> Scan_failure</span> <span class="keyword">of</span> <code class="type">string</code></pre><div class="info"><div class="info">The exception that formatted input functions raise when the input cannot
     be read according to the given format.</div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">The general formatted input function</h6></div></div>
@@ -107,9 +107,9 @@
     The result of this call to <code class="code">f</code> is returned as the result of the entire
     <code class="code">bscanf</code> call.
     For instance, if <code class="code">f</code> is the function <code class="code">fun s i -&gt; i + 1</code>, then
-    <code class="code">Scanf.sscanf &quot;x=  1&quot; &quot;%s = %i&quot; f</code> returns <code class="code">2</code>.<br/>    Arguments <code class="code">r1</code> to <code class="code">rN</code> are user-defined input functions that read the
+    <code class="code">Scanf.sscanf &quot;x=  1&quot; &quot;%s = %i&quot; f</code> returns <code class="code">2</code>.<p>    Arguments <code class="code">r1</code> to <code class="code">rN</code> are user-defined input functions that read the
     argument corresponding to the <code class="code">%r</code> conversions specified in the format
-    string.</div></div>
+    string.</p></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Format string description</h6></div></div>
 <div class="info"><div class="info">The format string is a character string which contains three types of
     objects:<ul><li>plain characters, which are simply matched with the characters of the
@@ -127,16 +127,16 @@
     string matches <em>any number</em> of tab, space, line feed and carriage
     return characters. Similarly, a line feed character in the format string
     matches either a single line feed or a carriage return followed by a line
-    feed.<br/>    Matching <em>any</em> amount of whitespace, a space in the format string
+    feed.<p>    Matching <em>any</em> amount of whitespace, a space in the format string
     also matches no amount of whitespace at all; hence, the call <code class="code">bscanf ib
     &quot;Price = %d $&quot; (fun p -&gt; p)</code> succeeds and returns <code class="code">1</code> when reading an
     input with various whitespace in it, such as <code class="code">Price = 1 $</code>,
-    <code class="code">Price  =  1    $</code>, or even <code class="code">Price=1$</code>.</div></div>
+    <code class="code">Price  =  1    $</code>, or even <code class="code">Price=1$</code>.</p></div></div>
 <div class="info"><div class="info"><div class="h7">Conversion specifications in format strings</div></div></div>
 <div class="info"><div class="info">Conversion specifications consist in the <code class="code">%</code> character, followed by
     an optional flag, an optional field width, and followed by one or
     two conversion characters. The conversion characters and their
-    meanings are:<br/>    - <code class="code">d</code>: reads an optionally signed decimal integer.<ul><li><code class="code">i</code>: reads an optionally signed integer
+    meanings are:<p>    - <code class="code">d</code>: reads an optionally signed decimal integer.</p><ul><li><code class="code">i</code>: reads an optionally signed integer
       (usual input conventions for decimal (<code class="code">0-9</code>+), hexadecimal
        (<code class="code">0x[0-9a-f]+</code> and <code class="code">0X[0-9A-F]+</code>), octal (<code class="code">0o[0-7]+</code>), and binary
        (<code class="code">0b[0-1]+</code>) notations are understood).</li><li><code class="code">u</code>: reads an unsigned decimal integer.</li><li><code class="code">x</code> or <code class="code">X</code>: reads an unsigned hexadecimal integer (<code class="code">[0-9a-fA-F]+</code>).</li><li><code class="code">o</code>: reads an unsigned octal integer (<code class="code">[0-7]+</code>).</li><li><code class="code">s</code>: reads a string argument that spreads as much as possible, until the
@@ -193,24 +193,24 @@
       extraneous argument: conversion <code class="code">%_\( fmt %\)</code> reads a format string
       <code class="code">rf</code> and then behaves the same as format string <code class="code">rf</code>.  Hence, if <code class="code">s</code> is
       the string <code class="code">&quot;\&quot;%4d\&quot;1234.00&quot;</code>, then <code class="code">Scanf.sscanf s &quot;%_(%i%)&quot;</code> is
-      simply equivalent to <code class="code">Scanf.sscanf &quot;1234.00&quot; &quot;%4d&quot;</code>.<br/>    - <code class="code">l</code>: returns the number of lines read so far.<ul><li><code class="code">n</code>: returns the number of characters read so far.</li><li><code class="code">N</code> or <code class="code">L</code>: returns the number of tokens read so far.</li><li><code class="code">!</code>: matches the end of input condition.</li><li><code class="code">%</code>: matches one <code class="code">%</code> character in the input.</li><li><code class="code">@</code>: matches one <code class="code">@</code> character in the input.</li><li><code class="code">,</code>: does nothing.</li></ul>    Following the <code class="code">%</code> character that introduces a conversion, there may be
+      simply equivalent to <code class="code">Scanf.sscanf &quot;1234.00&quot; &quot;%4d&quot;</code>.<p>    - <code class="code">l</code>: returns the number of lines read so far.</p><ul><li><code class="code">n</code>: returns the number of characters read so far.</li><li><code class="code">N</code> or <code class="code">L</code>: returns the number of tokens read so far.</li><li><code class="code">!</code>: matches the end of input condition.</li><li><code class="code">%</code>: matches one <code class="code">%</code> character in the input.</li><li><code class="code">@</code>: matches one <code class="code">@</code> character in the input.</li><li><code class="code">,</code>: does nothing.</li></ul>    Following the <code class="code">%</code> character that introduces a conversion, there may be
     the special flag <code class="code">_</code>: the conversion that follows occurs as usual,
     but the resulting value is discarded.
     For instance, if <code class="code">f</code> is the function <code class="code">fun i -&gt; i + 1</code>, and <code class="code">s</code> is the
-    string <code class="code">&quot;x = 1&quot;</code>, then <code class="code">Scanf.sscanf s &quot;%_s = %i&quot; f</code> returns <code class="code">2</code>.<br/>    The field width is composed of an optional integer literal
+    string <code class="code">&quot;x = 1&quot;</code>, then <code class="code">Scanf.sscanf s &quot;%_s = %i&quot; f</code> returns <code class="code">2</code>.<p>    The field width is composed of an optional integer literal
     indicating the maximal width of the token to read.
     For instance, <code class="code">%6d</code> reads an integer, having at most 6 decimal digits;
     <code class="code">%4f</code> reads a float with at most 4 characters; and <code class="code">%8[\\000-\\255]</code>
     returns the next 8 characters (or all the characters still available,
-    if fewer than 8 characters are available in the input).<br/>    Notes:<br/>    - as mentioned above, a <code class="code">%s</code> conversion always succeeds, even if there is
-      nothing to read in the input: in this case, it simply returns <code class="code">&quot;&quot;</code>.<br/>    - in addition to the relevant digits, <code class="code">'_'</code> characters may appear
+    if fewer than 8 characters are available in the input).</p><p>    Notes:</p><p>    - as mentioned above, a <code class="code">%s</code> conversion always succeeds, even if there is
+      nothing to read in the input: in this case, it simply returns <code class="code">&quot;&quot;</code>.</p><p>    - in addition to the relevant digits, <code class="code">'_'</code> characters may appear
     inside numbers (this is reminiscent to the usual OCaml lexical
     conventions). If stricter scanning is desired, use the range
-    conversion facility instead of the number conversions.<br/>    - the <code class="code">scanf</code> facility is not intended for heavy duty lexical
+    conversion facility instead of the number conversions.</p><p>    - the <code class="code">scanf</code> facility is not intended for heavy duty lexical
     analysis and parsing. If it appears not expressive enough for your
     needs, several alternative exists: regular expressions (module
     <code class="code">Str</code>), stream parsers, <code class="code">ocamllex</code>-generated lexers,
-    <code class="code">ocamlyacc</code>-generated parsers.</div></div>
+    <code class="code">ocamlyacc</code>-generated parsers.</p></div></div>
 <div class="info"><div class="info"><div class="h7">Scanning indications in format strings</div></div></div>
 <div class="info"><div class="info">Scanning indications appear just after the string conversions <code class="code">%s</code>
     and <code class="code">%[ range ]</code> to delimit the end of the token. A scanning
@@ -220,10 +220,10 @@
     character is encountered, the string token spreads as much as
     possible. For instance, <code class="code">&quot;%s@\t&quot;</code> reads a string up to the next
     tab character or to the end of input. If a <code class="code">@</code> character appears
-    anywhere else in the format string, it is treated as a plain character.<br/>    Note:<br/>    - As usual in format strings, <code class="code">%</code> and <code class="code">@</code> characters must be escaped
+    anywhere else in the format string, it is treated as a plain character.<p>    Note:</p><p>    - As usual in format strings, <code class="code">%</code> and <code class="code">@</code> characters must be escaped
     using <code class="code">%%</code> and <code class="code">%@</code>; this rule still holds within range specifications
     and scanning indications.
-    For instance, <code class="code">&quot;%s@%%&quot;</code> reads a string up to the next <code class="code">%</code> character.<ul><li>The scanning indications introduce slight differences in the syntax of
+    For instance, <code class="code">&quot;%s@%%&quot;</code> reads a string up to the next <code class="code">%</code> character.</p><ul><li>The scanning indications introduce slight differences in the syntax of
     <code class="code">Scanf</code> format strings, compared to those used for the <code class="code">Printf</code>
     module. However, the scanning indications are similar to those used in
     the <code class="code">Format</code> module; hence, when producing formatted text to be scanned
@@ -234,18 +234,18 @@
 </li></ul></div></div>
 <div class="info"><div class="info"><div class="h7">Exceptions during scanning</div></div></div>
 <div class="info"><div class="info">Scanners may raise the following exceptions when the input cannot be read
-    according to the format string:<br/>    - Raise <code class="code">Scanf.Scan_failure</code> if the input does not match the format.<br/>    - Raise <code class="code">Failure</code> if a conversion to a number is not possible.<br/>    - Raise <code class="code">End_of_file</code> if the end of input is encountered while some more
-      characters are needed to read the current conversion specification.<br/>    - Raise <code class="code">Invalid_argument</code> if the format string is invalid.<br/>    Note:<br/>    - as a consequence, scanning a <code class="code">%s</code> conversion never raises exception
+    according to the format string:<p>    - Raise <code class="code">Scanf.Scan_failure</code> if the input does not match the format.</p><p>    - Raise <code class="code">Failure</code> if a conversion to a number is not possible.</p><p>    - Raise <code class="code">End_of_file</code> if the end of input is encountered while some more
+      characters are needed to read the current conversion specification.</p><p>    - Raise <code class="code">Invalid_argument</code> if the format string is invalid.</p><p>    Note:</p><p>    - as a consequence, scanning a <code class="code">%s</code> conversion never raises exception
     <code class="code">End_of_file</code>: if the end of input is reached the conversion succeeds and
-    simply returns the characters read so far, or <code class="code">&quot;&quot;</code> if none were ever read.</div></div>
+    simply returns the characters read so far, or <code class="code">&quot;&quot;</code> if none were ever read.</p></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Specialised formatted input functions</h6></div></div>
-<pre><span class="VALfscanf"><span class="keyword">val</span> fscanf</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a> -&gt; ('a, 'b, 'c, 'd) <a href="?package=ocaml&amp;module=Scanf&amp;type=scanner">scanner</a></code></pre><div class="info"><div class="info">Same as  <a href="#Scanf.bscanf">Scanf.bscanf</a>, but reads from the given regular input channel.<br/>    Warning: since all formatted input functions operate from a <em>formatted
+<pre><span class="VALfscanf"><span class="keyword">val</span> fscanf</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a> -&gt; ('a, 'b, 'c, 'd) <a href="?package=ocaml&amp;module=Scanf&amp;type=scanner">scanner</a></code></pre><div class="info"><div class="info">Same as  <a href="#Scanf.bscanf">Scanf.bscanf</a>, but reads from the given regular input channel.<p>    Warning: since all formatted input functions operate from a <em>formatted
     input channel</em>, be aware that each <code class="code">fscanf</code> invocation will operate with a
     formatted input channel reading from the given channel. This extra level
     of bufferization can lead to a strange scanning behaviour if you use low
     level primitives on the channel (reading characters, seeking the reading
-    position, and so on).<br/>    As a consequence, never mix direct low level reading and high level
-    scanning from the same regular input channel.</div></div>
+    position, and so on).</p><p>    As a consequence, never mix direct low level reading and high level
+    scanning from the same regular input channel.</p></div></div>
 <pre><span class="VALsscanf"><span class="keyword">val</span> sscanf</span> : <code class="type">string -&gt; ('a, 'b, 'c, 'd) <a href="?package=ocaml&amp;module=Scanf&amp;type=scanner">scanner</a></code></pre><div class="info"><div class="info">Same as  <a href="#Scanf.bscanf">Scanf.bscanf</a>, but reads from the given string.</div></div>
 <pre><span class="VALscanf"><span class="keyword">val</span> scanf</span> : <code class="type">('a, 'b, 'c, 'd) <a href="?package=ocaml&amp;module=Scanf&amp;type=scanner">scanner</a></code></pre><div class="info"><div class="info">Same as  <a href="#Scanf.bscanf">Scanf.bscanf</a>, but reads from the predefined formatted input
     channel  <a href="#Scanf.Scanning.stdin">Scanf.Scanning.stdin</a> that is connected to <code class="code">Pervasives.stdin</code>.</div></div>

@@ -14,15 +14,15 @@
 <pre><span class="VALnormalize_path"><span class="keyword">val</span> normalize_path</span> : <code class="type">string list -&gt; string list</code></pre>
 <pre><span class="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">string -&gt; string -&gt; int</code></pre><div class="info"><div class="info">Filename.compare is a comparison that normalizes filenames (&quot;./a&quot; = &quot;a&quot;), uses a more
     human ready algorithm based on <code class="code">String.collate</code> (&quot;rfc02.txt &gt; rfc1.txt&quot;) and
-    extenstions (&quot;a.c&quot; &gt; &quot;a.h&quot;).<br/>    It is a total comparison on normalized filenames.</div></div>
+    extenstions (&quot;a.c&quot; &gt; &quot;a.h&quot;).<p>    It is a total comparison on normalized filenames.</p></div></div>
 <pre><span class="VALwith_open_temp_file"><span class="keyword">val</span> with_open_temp_file</span> : <code class="type">?in_dir:string -&gt;
 ?write:(<a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a> -&gt; unit) -&gt;
 f:(string -&gt; 'a) -&gt; string -&gt; string -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">with_open_temp_file ~write ~f prefix suffix</code> create a temporary file; runs <code class="code">write</code> on
     its <code class="code">out_channel</code> and then <code class="code">f</code> on the resulting file. The file is removed once <code class="code">f</code> is
     done running.</div></div>
 <pre><span class="VALwith_temp_dir"><span class="keyword">val</span> with_temp_dir</span> : <code class="type">?in_dir:string -&gt; string -&gt; string -&gt; f:(string -&gt; 'a) -&gt; 'a</code></pre><div class="info"><div class="info">Runs <code class="code">f</code> with a temporary dir as option and removes the directory afterwards.</div></div>
-<pre><span class="VALis_parent"><span class="keyword">val</span> is_parent</span> : <code class="type">string -&gt; string -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">is_parent dir1 dir2</code> returns <code class="code">true</code> if <code class="code">dir1</code> is a parent of <code class="code">dir2</code><br/>    Note: This function is context independent, use <code class="code">expand</code> if you want to consider
-    relatives paths from a given point.<br/>    In particular:<ul><li>A directory is always the parent of itself.</li><li>The root is the parent of any directory</li><li>An absolute path is never the parent of relative one and vice versa.</li><li><code class="code">&quot;../../a&quot;</code> is never the parent of <code class="code">&quot;.&quot;</code> even if this could be true given
+<pre><span class="VALis_parent"><span class="keyword">val</span> is_parent</span> : <code class="type">string -&gt; string -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">is_parent dir1 dir2</code> returns <code class="code">true</code> if <code class="code">dir1</code> is a parent of <code class="code">dir2</code><p>    Note: This function is context independent, use <code class="code">expand</code> if you want to consider
+    relatives paths from a given point.</p><p>    In particular:</p><ul><li>A directory is always the parent of itself.</li><li>The root is the parent of any directory</li><li>An absolute path is never the parent of relative one and vice versa.</li><li><code class="code">&quot;../../a&quot;</code> is never the parent of <code class="code">&quot;.&quot;</code> even if this could be true given
      form the current working directory.
 </li></ul></div></div>
 </div>

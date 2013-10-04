@@ -4,19 +4,19 @@
 <div class="info"><div class="info"><h2 id="2_TITLE">Pathname resolution</h2></div></div>
 <pre><span class="VALrealpath"><span class="keyword">val</span> realpath</span> : <code class="type">string -&gt; string</code></pre><div class="info"><div class="info"><code class="code">realpath path</code> <b>Raises</b> <code>Unix_error</code> on errors.<br/> <b>Returns</b> the canonicalized absolute pathname of <code class="code">path</code>.</div></div>
 <pre><span class="VALis_posix_pathname_component"><span class="keyword">val</span> is_posix_pathname_component</span> : <code class="type">string -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">is_posix_pathname_component f</code> <b>Returns</b> true if <code class="code">f</code> is a valid filename in a POSIX compliant OS (a path
-   component and not a full path).<br/>   http://www.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap03.html#tag_03_169</div></div>
-<div class="info"><div class="info"><code class="code">temp_file ?perm ?in_dir_name prefix suffix</code><br/>    Returns the name of a fresh temporary file in the temporary directory. The base name
+   component and not a full path).<p>   http://www.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap03.html#tag_03_169</p></div></div>
+<div class="info"><div class="info"><code class="code">temp_file ?perm ?in_dir_name prefix suffix</code><p>    Returns the name of a fresh temporary file in the temporary directory. The base name
     of the temporary file is formed by concatenating prefix, then a 6-digit hex number,
     then suffix. The temporary file is created empty. The file is guaranteed to be fresh,
-    i.e. not already existing in the directory.<div class="parameters"><div class="param_info"><code class="code">in_dir</code> : the directory in which to create the temporary file.  The default is
+    i.e. not already existing in the directory.</p><div class="parameters"><div class="param_info"><code class="code">in_dir</code> : the directory in which to create the temporary file.  The default is
     <code class="code">temp_dir_name</code></div><div class="param_info"><code class="code">perm</code> : the permission of the temporary file. The default value is <code class="code">0o600</code>
-    (readable and writable only by the file owner)<br/>    Note that prefix and suffix will be changed when necessary to make the final filename
-    valid POSIX.<br/>    <code class="code">temp_dir</code> is the same as <code class="code">temp_file</code> but creates a temporary directory.</div></div></div></div>
+    (readable and writable only by the file owner)<p>    Note that prefix and suffix will be changed when necessary to make the final filename
+    valid POSIX.</p><p>    <code class="code">temp_dir</code> is the same as <code class="code">temp_file</code> but creates a temporary directory.</p></div></div></div></div>
 <pre><span class="VALtemp_file"><span class="keyword">val</span> temp_file</span> : <code class="type">?perm:int -&gt; ?in_dir:string -&gt; string -&gt; string -&gt; string</code></pre>
 <pre><span class="VALtemp_dir"><span class="keyword">val</span> temp_dir</span> : <code class="type">?perm:int -&gt; ?in_dir:string -&gt; string -&gt; string -&gt; string</code></pre>
-<pre><span class="VALtemp_dir_name"><span class="keyword">val</span> temp_dir_name</span> : <code class="type">string</code></pre><div class="info"><div class="info">The name of the temporary directory:<br/>    Under Unix, the value of the <code class="code">TMPDIR</code> environment variable, or &quot;/tmp&quot; if the variable
-    is not set.<br/>    Under Windows, the value of the <code class="code">TEMP</code> environment variable, or &quot;.&quot;  if the variable
-    is not set.</div></div>
+<pre><span class="VALtemp_dir_name"><span class="keyword">val</span> temp_dir_name</span> : <code class="type">string</code></pre><div class="info"><div class="info">The name of the temporary directory:<p>    Under Unix, the value of the <code class="code">TMPDIR</code> environment variable, or &quot;/tmp&quot; if the variable
+    is not set.</p><p>    Under Windows, the value of the <code class="code">TEMP</code> environment variable, or &quot;.&quot;  if the variable
+    is not set.</p></div></div>
 <pre><span class="VALopen_temp_file"><span class="keyword">val</span> open_temp_file</span> : <code class="type">?perm:int -&gt;
 ?in_dir:string -&gt; string -&gt; string -&gt; string * <a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a></code></pre><div class="info"><div class="info">Same as  <a href="#Core_filename.temp_file">Core_filename.temp_file</a>, but returns both the name of a fresh
     temporary file, and an output channel opened (atomically) on
@@ -49,21 +49,21 @@
    end with the suffix <code class="code">suff</code>.</div></div>
 <pre><span class="VALchop_extension"><span class="keyword">val</span> chop_extension</span> : <code class="type">string -&gt; string</code></pre><div class="info"><div class="info">Return the given file name without its extension. The extension
    is the shortest suffix starting with a period and not including
-   a directory separator, <code class="code">.xyz</code> for instance.<br/>   Raise <code class="code">Invalid_argument</code> if the given name does not contain
-   an extension.</div></div>
+   a directory separator, <code class="code">.xyz</code> for instance.<p>   Raise <code class="code">Invalid_argument</code> if the given name does not contain
+   an extension.</p></div></div>
 <pre><span class="VALsplit_extension"><span class="keyword">val</span> split_extension</span> : <code class="type">string -&gt; string * string option</code></pre><div class="info"><div class="info"><code class="code">split_extension fn</code> return the portion of the filename before the
     extension and the (optional) extension.
     Example:
     split_extension &quot;/foo/my_file&quot; = (&quot;/foo/my_file&quot;, None)
     split_extension &quot;/foo/my_file.txt&quot; = (&quot;/foo/my_file&quot;, Some &quot;txt&quot;)
     split_extension &quot;/home/c.falls/my_file&quot; = (&quot;/home/c.falls/my_file&quot;, None)</div></div>
-<pre><span class="VALbasename"><span class="keyword">val</span> basename</span> : <code class="type">string -&gt; string</code></pre><div class="info"><div class="info">Respects the posix semantic.<br/>   Split a file name into directory name / base file name.
+<pre><span class="VALbasename"><span class="keyword">val</span> basename</span> : <code class="type">string -&gt; string</code></pre><div class="info"><div class="info">Respects the posix semantic.<p>   Split a file name into directory name / base file name.
    <code class="code">concat (dirname name) (basename name)</code> returns a file name
    which is equivalent to <code class="code">name</code>. Moreover, after setting the
    current directory to <code class="code">dirname name</code> (with  <a href="#Sys.chdir">Sys.chdir</a>),
    references to <code class="code">basename name</code> (which is a relative file name)
-   designate the same file as <code class="code">name</code> before the call to  <a href="#Sys.chdir">Sys.chdir</a>.<br/>   The result is not specified if the argument is not a valid file name
-   (for example, under Unix if there is a NUL character in the string).</div></div>
+   designate the same file as <code class="code">name</code> before the call to  <a href="#Sys.chdir">Sys.chdir</a>.</p><p>   The result is not specified if the argument is not a valid file name
+   (for example, under Unix if there is a NUL character in the string).</p></div></div>
 <pre><span class="VALdirname"><span class="keyword">val</span> dirname</span> : <code class="type">string -&gt; string</code></pre><div class="info"><div class="info">See  <a href="#Filename.basename">Filename.basename</a>.</div></div>
 <pre><span class="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">string -&gt; string * string</code></pre><div class="info"><div class="info"><code class="code">split filename</code> returns (dirname filename, basename filename)</div></div>
 <pre><span class="VALparts"><span class="keyword">val</span> parts</span> : <code class="type">string -&gt; string list</code></pre><div class="info"><div class="info"><code class="code">parts filename</code> returns a list of path components in order.  For instance:

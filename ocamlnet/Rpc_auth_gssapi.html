@@ -11,7 +11,7 @@
 ?user_name_format:<a href="?package=ocamlnet&amp;module=Rpc_auth_gssapi&amp;type=user_name_format">user_name_format</a> -&gt;
 ?seq_number_window:int -&gt;
 <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=gss_api">Netgssapi.gss_api</a> -&gt; <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">Netgssapi.oid</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=auth_method">Rpc_server.auth_method</a></code></pre><div class="info"><div class="info">Creates an authentication method from a GSS-API interface.
-      The OID selects the desired authentication method.<br/>      Options:<ul><li><code class="code">require_privacy</code>: Whether the messages must be
+      The OID selects the desired authentication method.<p>      Options:</p><ul><li><code class="code">require_privacy</code>: Whether the messages must be
         encrypted. If not enabled, the server also accepts non-encrypted
         messages that are authenticated via GSS-API.</li><li><code class="code">require_integrity</code>: Whether integrity checksums must be
         included. If not enabled, the server also accepts non-signed
@@ -32,7 +32,7 @@
 ?integrity:<a href="?package=ocamlnet&amp;module=Rpc_auth_gssapi&amp;type=support_level">support_level</a> -&gt;
 ?user_name_interpretation:<a href="?package=ocamlnet&amp;module=Rpc_auth_gssapi&amp;type=user_name_interpretation">user_name_interpretation</a> -&gt;
 <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=gss_api">Netgssapi.gss_api</a> -&gt; <a href="?package=ocamlnet&amp;module=Netgssapi&amp;type=oid">Netgssapi.oid</a> -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=auth_method">Rpc_client.auth_method</a></code></pre><div class="info"><div class="info">Creates an authentication method from a GSS-API interface.
-      The OID selects the desired authentication method.<br/>      Options:<ul><li><code class="code">privacy</code>: Selects whether messages are encrypted. If <code class="code">`Required</code>,
+      The OID selects the desired authentication method.<p>      Options:</p><ul><li><code class="code">privacy</code>: Selects whether messages are encrypted. If <code class="code">`Required</code>,
         the authentication method fails if the GSS-API does not support
         encryption, and it enables encryption if GSS-API supports it.
         If <code class="code">`If_possible</code> encryption is enabled if GSS-API supports it

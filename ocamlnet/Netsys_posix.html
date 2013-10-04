@@ -12,9 +12,9 @@
       file descriptor</div></div>
 <pre><span class="VALfdopendir"><span class="keyword">val</span> fdopendir</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=dir_handle">Unix.dir_handle</a></code></pre><div class="info"><div class="info">Make a directory handle from a file descriptor. The descriptor
       is then &quot;owned&quot; by the directory handle, and will be closed by
-      <code class="code">Unix.closedir</code>.<br/>      This function is useful in conjunction with  <a href="#Netsys_posix.openat">Netsys_posix.openat</a>
-      to read directories relative to a parent directory.<br/>      This is a recent addition to the POSIX standard; be prepared to
-      get <code class="code">Invalid_argument</code> because it is unavailable.</div></div>
+      <code class="code">Unix.closedir</code>.<p>      This function is useful in conjunction with  <a href="#Netsys_posix.openat">Netsys_posix.openat</a>
+      to read directories relative to a parent directory.</p><p>      This is a recent addition to the POSIX standard; be prepared to
+      get <code class="code">Invalid_argument</code> because it is unavailable.</p></div></div>
 <pre><span class="VALrealpath"><span class="keyword">val</span> realpath</span> : <code class="type">string -&gt; string</code></pre><div class="info"><div class="info">Returns a pathname pointing to the same filesystem object so that
       the pathname does not include &quot;.&quot; or &quot;..&quot; or symbolic links.</div></div>
 <pre><span class="VALgetpgid"><span class="keyword">val</span> getpgid</span> : <code class="type">int -&gt; int</code></pre><div class="info"><div class="info">Return the process group ID of the process with the passed PID.
@@ -25,8 +25,8 @@
 <pre><span class="VALsetpgid"><span class="keyword">val</span> setpgid</span> : <code class="type">int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">setpgid pid pgid</code>: Set the process group ID of the process <code class="code">pid</code>
  to <code class="code">pgid</code>. If <code class="code">pid = 0</code>, the process group ID of the current process
  is changed. If <code class="code">pgid = 0</code>, as process group ID the process ID of the
- process referenced by <code class="code">pid</code> is used.<br/> It is only possible for a process to join a process group if both
- belong to the same session.</div></div>
+ process referenced by <code class="code">pid</code> is used.<p> It is only possible for a process to join a process group if both
+ belong to the same session.</p></div></div>
 <pre><span class="VALsetpgrp"><span class="keyword">val</span> setpgrp</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info">Same as <code class="code">setpgid 0 0</code>: A new process group ID is created, and the
  current process becomes its sole member.</div></div>
 <pre><span class="VALtcgetpgrp"><span class="keyword">val</span> tcgetpgrp</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; int</code></pre><div class="info"><div class="info">Return the process group ID of the foreground process group of
@@ -46,17 +46,17 @@
 <pre><span class="VALtty_read_password"><span class="keyword">val</span> tty_read_password</span> : <code class="type">?tty:<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; string -&gt; string</code></pre><div class="info"><div class="info"><code class="code">tty_read_password prompt</code>: If <code class="code">tty</code> is a terminal, the <code class="code">prompt</code>
       is printed, and a password is read from the terminal (echo off).
       If <code class="code">tty</code> is not a terminal, no <code class="code">prompt</code> is printed, and just a
-      line is read from the <code class="code">tty</code> descriptor (non-interactive case).<br/>      <code class="code">tty</code> defaults to <code class="code">Unix.stdin</code>. If this function is used in a
+      line is read from the <code class="code">tty</code> descriptor (non-interactive case).<p>      <code class="code">tty</code> defaults to <code class="code">Unix.stdin</code>. If this function is used in a
       program where stdin is not redirected, and the program is started
       in a terminal, it will read the password with prompt and 
       echo disabled. If stdin is redirected, it is assumed that the program is
-      used in a script, and the password is piped into it.<br/>      Use in conjunction with <code class="code">with_tty</code> to ensure that <code class="code">tty</code> is
+      used in a script, and the password is piped into it.</p><p>      Use in conjunction with <code class="code">with_tty</code> to ensure that <code class="code">tty</code> is
       the terminal even if a redirection is in effect, e.g.
-      <pre class="codepre"><code class="code"> with_tty (fun tty -&gt; tty_read_password ~tty prompt) </code></pre><br/>      Raises <code class="code">Sys.Break</code> if the user triggers SIGINT (i.e. presses
-      CTRL-C) to abort the input of a password.</div></div>
-<pre><span class="VALposix_openpt"><span class="keyword">val</span> posix_openpt</span> : <code class="type">bool -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></pre><div class="info"><div class="info"><code class="code">posix_openpt noctty</code>: Opens an unused PTY master.<br/>      <code class="code">noctty</code>: If true, the descriptor will not become the controlling
-      terminal.<br/>      If this function is not provided by the OS, an emulation is used.<br/>      On some OS, System V style PTY's are unavailable (but they get
-      rare).</div></div>
+      </p><code class="code"> with_tty (fun tty -&gt; tty_read_password ~tty prompt) </code><p>      Raises <code class="code">Sys.Break</code> if the user triggers SIGINT (i.e. presses
+      CTRL-C) to abort the input of a password.</p></div></div>
+<pre><span class="VALposix_openpt"><span class="keyword">val</span> posix_openpt</span> : <code class="type">bool -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></pre><div class="info"><div class="info"><code class="code">posix_openpt noctty</code>: Opens an unused PTY master.<p>      <code class="code">noctty</code>: If true, the descriptor will not become the controlling
+      terminal.</p><p>      If this function is not provided by the OS, an emulation is used.</p><p>      On some OS, System V style PTY's are unavailable (but they get
+      rare).</p></div></div>
 <pre><span class="VALgrantpt"><span class="keyword">val</span> grantpt</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; unit</code></pre><div class="info"><div class="info">Grant access to this PTY</div></div>
 <pre><span class="VALunlockpt"><span class="keyword">val</span> unlockpt</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; unit</code></pre><div class="info"><div class="info">Unlock a PTY master/slave pair</div></div>
 <pre><span class="VALptsname"><span class="keyword">val</span> ptsname</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; string</code></pre><div class="info"><div class="info">Get the name of the slave PTY</div></div>
@@ -139,11 +139,11 @@ string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.f
 <pre><span class="VALpoll"><span class="keyword">val</span> poll</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=poll_array">poll_array</a> -&gt; int -&gt; float -&gt; int</code></pre><div class="info"><div class="info"><code class="code">poll a n tmo</code>: Poll for the events of the cells 0 to <code class="code">n-1</code> of 
       poll array <code class="code">a</code>, and set the <code class="code">poll_act_events</code> member of all cells.
       Wait for at most <code class="code">tmo</code> seconds (a negative value means there is
-      no timeout). Returns the number of ready file descriptors.<br/>      On platforms without native support for <code class="code">poll</code> the function is
+      no timeout). Returns the number of ready file descriptors.<p>      On platforms without native support for <code class="code">poll</code> the function is
       emulated using <code class="code">Unix.select</code>. Note, however, that there is a
       performance penalty for the emulation, and that the output
       flags <code class="code">poll_error_result</code>, <code class="code">poll_hangup_result</code>, and
-      <code class="code">poll_invalid_result</code> are not emulated.</div></div>
+      <code class="code">poll_invalid_result</code> are not emulated.</p></div></div>
 <pre><span class="VALrestarting_poll"><span class="keyword">val</span> restarting_poll</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=poll_array">poll_array</a> -&gt; int -&gt; float -&gt; int</code></pre><div class="info"><div class="info">A wrapper around <code class="code">poll</code> that handles the <code class="code">EINTR</code> condition</div></div>
 <pre><span class="VALpoll_single"><span class="keyword">val</span> poll_single</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; bool -&gt; bool -&gt; bool -&gt; float -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">poll_single fd rd wr pri tmo</code>: Polls a single descriptor for the
       events given by <code class="code">rd</code>, <code class="code">wr</code>, and <code class="code">pri</code>. In <code class="code">tmo</code> the timeout can be
@@ -164,26 +164,26 @@ string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.f
 <pre><span class="VALconst_nval_event"><span class="keyword">val</span> const_nval_event</span> : <code class="type">int</code></pre>
 <div class="info"><div class="info"><h1 id="1_TITLE">Event aggregation</h1></div></div>
 <div class="info"><div class="info">Support for &quot;high-speed&quot; poll implementations. Currently, only
-    <code class="code">epoll</code> for Linux is supported.<br/>    The model exhibited in this API is the smallest common denominator
+    <code class="code">epoll</code> for Linux is supported.<p>    The model exhibited in this API is the smallest common denominator
     of Linux epoll, BSD kqueue, and Solaris ports. The <code class="code">event_aggregator</code>
     represents the set of monitored event sources. There is, so far,
     only one source, namely file descriptors, i.e. one can check whether
     a descriptor is readable or writable (like <code class="code">poll</code>). The source can
-    be added to the <code class="code">event_aggregator</code> to monitor the source.<br/>    By calling <code class="code">poll_event_sources</code> one can determine sources that
-    are currently active (i.e. in signalling state). <br/>    It is undefined what happens when a file descriptor is closed while
-    being member of the aggregator.</div></div>
+    be added to the <code class="code">event_aggregator</code> to monitor the source.</p><p>    By calling <code class="code">poll_event_sources</code> one can determine sources that
+    are currently active (i.e. in signalling state). </p><p>    It is undefined what happens when a file descriptor is closed while
+    being member of the aggregator.</p></div></div>
 <pre><span class="TYPEevent_aggregator"><span class="keyword">type</span> event_aggregator</span> </pre>
 <pre><span class="TYPEevent_source"><span class="keyword">type</span> event_source</span> </pre>
 <pre><span class="VALhave_event_aggregation"><span class="keyword">val</span> have_event_aggregation</span> : <code class="type">unit -&gt; bool</code></pre><div class="info"><div class="info">Whether there is an implementation for this OS</div></div>
 <pre><span class="VALcreate_event_aggregator"><span class="keyword">val</span> create_event_aggregator</span> : <code class="type">bool -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=event_aggregator">event_aggregator</a></code></pre><div class="info"><div class="info"><code class="code">create_event_aggregator is_interruptible</code>: Creates a new aggregator,
-      and allocates the required OS resources.<br/>      If <code class="code">is_interruptible</code>, the aggregator can be interrupted from a
-      different thread. See <code class="code">interrupt_event_aggregator</code> below.</div></div>
+      and allocates the required OS resources.<p>      If <code class="code">is_interruptible</code>, the aggregator can be interrupted from a
+      different thread. See <code class="code">interrupt_event_aggregator</code> below.</p></div></div>
 <pre><span class="VALdestroy_event_aggregator"><span class="keyword">val</span> destroy_event_aggregator</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=event_aggregator">event_aggregator</a> -&gt; unit</code></pre><div class="info"><div class="info">Frees all OS resources</div></div>
 <pre><span class="VALfd_event_source"><span class="keyword">val</span> fd_event_source</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=poll_req_events">poll_req_events</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=event_source">event_source</a></code></pre><div class="info"><div class="info">Wraps a file descriptor as event_source, and monitors the
-      events in <code class="code">poll_req_events</code>.<br/>      The <code class="code">event_source</code> contains
+      events in <code class="code">poll_req_events</code>.<p>      The <code class="code">event_source</code> contains
       state about the relation to the aggregator, and because of this,
       the <code class="code">event_source</code> should only be used together with one aggregator
-      (at a time).</div></div>
+      (at a time).</p></div></div>
 <pre><span class="VALmodify_fd_event_source"><span class="keyword">val</span> modify_fd_event_source</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=event_source">event_source</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=poll_req_events">poll_req_events</a> -&gt; unit</code></pre><div class="info"><div class="info">Modifies the set of events monitored at this event source</div></div>
 <pre><span class="VALget_fd_of_event_source"><span class="keyword">val</span> get_fd_of_event_source</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=event_source">event_source</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></pre><div class="info"><div class="info">Get the file descriptor wrapped by this event source</div></div>
 <pre><span class="VALact_events_of_event_source"><span class="keyword">val</span> act_events_of_event_source</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=event_source">event_source</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=poll_act_events">poll_act_events</a></code></pre><div class="info"><div class="info">Return the actual events of the source. This is updated when
@@ -194,7 +194,7 @@ string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.f
       aggregator is interruptible, and this function interrupts it. The
       effect is that a currently running <code class="code">poll_event_sources</code>, or, if
       it is not running, the next invocation of <code class="code">poll_event_sources</code> 
-      returns immediately.<br/>      If the aggregator is not interruptible, this function is a NOP.</div></div>
+      returns immediately.<p>      If the aggregator is not interruptible, this function is a NOP.</p></div></div>
 <pre><span class="VALpush_event_updates"><span class="keyword">val</span> push_event_updates</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=event_aggregator">event_aggregator</a> -&gt; unit</code></pre><div class="info"><div class="info">Pushes all modifications of the sources to the kernel</div></div>
 <pre><span class="VALpoll_event_sources"><span class="keyword">val</span> poll_event_sources</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=event_aggregator">event_aggregator</a> -&gt; float -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=event_source">event_source</a> list</code></pre><div class="info"><div class="info"><code class="code">poll_event_sources ea tmo</code>: First, all modifications are pushed
       to the kernel, and polling is set up to get events. If no events
@@ -202,9 +202,9 @@ string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.f
       (or endlessly if negative) for events. The function returns only a
       limited number of events at a time. It is allowed that the function 
       returns fewer events than are currently in signalled state, even
-      none.<br/>      Call the function with <code class="code">tmo=0.0</code> for non-blocking behavior.<br/>      Note that this is the &quot;level-triggered&quot; behavior: If a source
+      none.<p>      Call the function with <code class="code">tmo=0.0</code> for non-blocking behavior.</p><p>      Note that this is the &quot;level-triggered&quot; behavior: If a source
       remains active it will be reported again by the next <code class="code">poll_event_sources</code>,
-      just as <code class="code">poll</code> would do.</div></div>
+      just as <code class="code">poll</code> would do.</p></div></div>
 <pre><span class="VALevent_aggregator_fd"><span class="keyword">val</span> event_aggregator_fd</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=event_aggregator">event_aggregator</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></pre><div class="info"><div class="info">Returns the underlying file descriptor. It is implementation-defined
       whether this descriptor can also be polled for events. Generally,
       you should run <code class="code">push_event_updates</code> before polling from the descriptor.</div></div>
@@ -213,9 +213,9 @@ string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.f
     for doing real work. The following functions
     allow it to register a handler that is run in the forked child
     process. Note that this is done by the O'caml code calling <code class="code">fork</code>,
-    and not via the POSIX <code class="code">atfork()</code> facility.<br/>    The handler should release OS resources like file descriptors that
-    are by default shared with the parent process.<br/>    The handler are not invoked when the only purpose of the <code class="code">fork</code> is
-    to <code class="code">exec</code> a different process.</div></div>
+    and not via the POSIX <code class="code">atfork()</code> facility.<p>    The handler should release OS resources like file descriptors that
+    are by default shared with the parent process.</p><p>    The handler are not invoked when the only purpose of the <code class="code">fork</code> is
+    to <code class="code">exec</code> a different process.</p></div></div>
 <div class="ocaml_class sig" name="post_fork_handler"><pre><span class="TYPEpost_fork_handler"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;class=post_fork_handler">post_fork_handler</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">A <code class="code">post_fork_handler</code> is a named function <code class="code">unit -&gt; unit</code></div></div><div class="ocaml_class_content"><pre><span class="METHODname"><span class="keyword">method</span> name</span> : <code class="code">string</code></pre>
 
 <pre><span class="METHODrun"><span class="keyword">method</span> run</span> : <code class="code">unit -&gt; unit</code></pre>
@@ -248,16 +248,16 @@ string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.f
 ?env:string array -&gt; ?no_posix_spawn:bool -&gt; string -&gt; string array -&gt; int</code></pre><div class="info"><div class="info"><code class="code">spawn cmd args</code>: Fork the process and exec <code class="code">cmd</code> which gets the
       arguments <code class="code">args</code>. On success, the PID of the new process is returned.
       This function does not wait for the completion of the process; use
-      <code class="code">Unix.waitpid</code> for this purpose.<br/>      - <code class="code">chdir</code>: If set, the new process starts with this working directory
-        (this is done before anything else)<ul><li><code class="code">pg</code>: If set, the new process will be a member of this process group</li><li><code class="code">fd_actions</code>: If set, these descriptor actions are executed 
+      <code class="code">Unix.waitpid</code> for this purpose.<p>      - <code class="code">chdir</code>: If set, the new process starts with this working directory
+        (this is done before anything else)</p><ul><li><code class="code">pg</code>: If set, the new process will be a member of this process group</li><li><code class="code">fd_actions</code>: If set, these descriptor actions are executed 
         sequentially</li><li><code class="code">sig_actions</code>: If set, these signal actions are executed sequentially</li><li><code class="code">env</code>: If set, the process gets this environment instead of the
         current one</li><li><code class="code">no_posix_spawn</code>: If set, the <code class="code">posix_spawn</code> family of library
         functions is not used to spawn even if possible, and always a
         <code class="code">fork/exec</code> approach is taken. This may be slower, but there is
         normally better error reporting.</li></ul>      Any exceptions in the subprocess are detected, and reported. However,
       if <code class="code">Fda_close_ignore</code> leads to <code class="code">EBADF</code> for a descriptor, this error is
-      ignored.<br/>      If <code class="code">pg=Pg_new_fg_group</code>, one should include <code class="code">Sig_ignore Sys.sigttou</code>
-      in <code class="code">sig_actions</code>.<br/>      There are two implementations for <code class="code">spawn</code>: One calls <code class="code">fork</code> and <code class="code">exec</code>
+      ignored.<p>      If <code class="code">pg=Pg_new_fg_group</code>, one should include <code class="code">Sig_ignore Sys.sigttou</code>
+      in <code class="code">sig_actions</code>.</p><p>      There are two implementations for <code class="code">spawn</code>: One calls <code class="code">fork</code> and <code class="code">exec</code>
       directly, and one uses the <code class="code">posix_spawn</code> family of library functions.
       The latter is faster on certain conditions, but this is very OS-specific.
       A number of features are not supported by <code class="code">posix_spawn</code> and will force
@@ -267,14 +267,14 @@ string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.f
       and it is hard to predict which spawn calls can actually be accelerated.
       The tendency, though, is that recent OS have sped up <code class="code">posix_spawn</code>
       so far possible (e.g. by using <code class="code">vfork</code> internally, or even by making
-      <code class="code">posix_spawn</code> a system call).</div></div>
+      <code class="code">posix_spawn</code> a system call).</p></div></div>
 <div class="info"><div class="info"><h1 id="1_TITLE">Notification via file descriptor events</h1></div></div>
 <div class="info"><div class="info">Often, it is advantageous to report asynchronous events via
     file descriptors. On Linux, this is available via the <code class="code">eventfd</code>
-    system call. On other platforms, pipes are used for emulation.<br/>    A <code class="code">not_event</code> can have two states: off and on. Initially, the
+    system call. On other platforms, pipes are used for emulation.<p>    A <code class="code">not_event</code> can have two states: off and on. Initially, the
     <code class="code">not_event</code> is off. By signalling it, the state changes to on,
     and the underlying real file descriptor becomes readable.
-    By consuming the event, the state is switched back to off.<br/>    Note that a similar API exists for Win32: See  <a href="#Netsys_win32.w32_event">Netsys_win32.w32_event</a>.</div></div>
+    By consuming the event, the state is switched back to off.</p><p>    Note that a similar API exists for Win32: See  <a href="#Netsys_win32.w32_event">Netsys_win32.w32_event</a>.</p></div></div>
 <pre><span class="TYPEnot_event"><span class="keyword">type</span> not_event</span> </pre>
 <pre><span class="VALcreate_event"><span class="keyword">val</span> create_event</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=not_event">not_event</a></code></pre><div class="info"><div class="info">Creates a new event file descriptor.</div></div>
 <pre><span class="VALset_nonblock_event"><span class="keyword">val</span> set_nonblock_event</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=not_event">not_event</a> -&gt; unit</code></pre><div class="info"><div class="info">Sets the event fd to non-blocking mode</div></div>
@@ -287,7 +287,7 @@ string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.f
 <pre><span class="VALconsume_event"><span class="keyword">val</span> consume_event</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=not_event">not_event</a> -&gt; unit</code></pre><div class="info"><div class="info">Consumes the event, and switches the event fd to off again.
       If the event fd is not signalled, the function blocks until
       it gets signalled (in blocking mode), or it raises <code class="code">EAGAIN</code>
-      or <code class="code">EWOULDBLOCK</code> (in non-blocking mode).<br/>      This is effectively an atomic &quot;wait-and-reset&quot; operation.</div></div>
+      or <code class="code">EWOULDBLOCK</code> (in non-blocking mode).<p>      This is effectively an atomic &quot;wait-and-reset&quot; operation.</p></div></div>
 <pre><span class="VALdestroy_event"><span class="keyword">val</span> destroy_event</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=not_event">not_event</a> -&gt; unit</code></pre><div class="info"><div class="info">Releases the OS resources. Note that there can be a hidden second
       file descriptor, so closing the descriptor returned by <code class="code">get_event_fd</code>
       is not sufficient.</div></div>
@@ -306,16 +306,16 @@ string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.f
       into the watch list. If <code class="code">pgid &gt; 0</code>, the process group ID is
       <code class="code">pgid</code> (for <code class="code">killpg_subprocess</code> and <code class="code">killpg_all_subprocesses</code>).
       The <code class="code">kill_flag</code> controls the process selection of
-      <code class="code">kill_all_subprocesses</code> and <code class="code">killpg_all_subprocesses</code>.<br/>      The returned descriptor <code class="code">fd</code> is open for reading and
+      <code class="code">kill_all_subprocesses</code> and <code class="code">killpg_all_subprocesses</code>.<p>      The returned descriptor <code class="code">fd</code> is open for reading and
       will indicate EOF when the subprocess is terminated. Via <code class="code">ws</code>
       it is possible to query information about the subprocess. The
       installed signal handler will <code class="code">wait</code> for the subprocess and
-      put the process status into <code class="code">ws</code>.<br/>      The caller has to close <code class="code">fd</code> after the termination is signaled.</div></div>
+      put the process status into <code class="code">ws</code>.</p><p>      The caller has to close <code class="code">fd</code> after the termination is signaled.</p></div></div>
 <pre><span class="VALignore_subprocess"><span class="keyword">val</span> ignore_subprocess</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=watched_subprocess">watched_subprocess</a> -&gt; unit</code></pre><div class="info"><div class="info">Changes the arrangement so that the termination of the subprocess
       is no longer reported by the file descriptor. The file descriptor
       indicates EOF immediately (and can be closed by the caller).
       Nevertheless, the signal handler still <code class="code">wait</code>s for the subprocess
-      to avoid zombies.<br/>      Any further access to <code class="code">ws</code> will fail.</div></div>
+      to avoid zombies.<p>      Any further access to <code class="code">ws</code> will fail.</p></div></div>
 <pre><span class="VALforget_subprocess"><span class="keyword">val</span> forget_subprocess</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=watched_subprocess">watched_subprocess</a> -&gt; unit</code></pre><div class="info"><div class="info">Frees OS resources. Any further access to the <code class="code">ws</code> will fail.</div></div>
 <pre><span class="VALget_subprocess_status"><span class="keyword">val</span> get_subprocess_status</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=watched_subprocess">watched_subprocess</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=process_status">Unix.process_status</a> option</code></pre><div class="info"><div class="info">If the subprocess is terminated, this function returns the status.
       Otherwise <code class="code">None</code> is returned</div></div>
@@ -335,24 +335,24 @@ string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.f
     . The signal is sent to a process group if there are still watched
       subprocesses
       belonging to the group, and if either the <code class="code">kill_flag</code> of any of the 
-      subprocesses process was set to <code class="code">true</code>, or <code class="code">override</code> is <code class="code">true</code>.<br/>      Never throws an exception if the signal handler is installed.</div></div>
+      subprocesses process was set to <code class="code">true</code>, or <code class="code">override</code> is <code class="code">true</code>.<p>      Never throws an exception if the signal handler is installed.</p></div></div>
 <pre><span class="VALinstall_subprocess_handler"><span class="keyword">val</span> install_subprocess_handler</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info">Installs a SIGCHLD handler for watching subprocesses. Note that only
       processes are <code class="code">wait</code>ed for that are registered with 
-      <code class="code">watch_subprocess</code>.<br/>      The handler works both in the single-threaded and the multi-threaded
+      <code class="code">watch_subprocess</code>.<p>      The handler works both in the single-threaded and the multi-threaded
       case. <code class="code">install_subprocess_handler</code> can safely called several times.
       The handler is installed every time the function is called, but the
-      required data structures are only initialized at the first call.</div></div>
+      required data structures are only initialized at the first call.</p></div></div>
 <pre><span class="VALregister_subprocess_handler"><span class="keyword">val</span> register_subprocess_handler</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info">Uses the  <a href="#Netsys_signal">Netsys_signal</a> framework to manage the installation of
-      the SIGCHLD handler.<br/>      This is the preferred method of installing the SIGCHLD handler.</div></div>
+      the SIGCHLD handler.<p>      This is the preferred method of installing the SIGCHLD handler.</p></div></div>
 <div class="info"><div class="info"><b>Further notes.</b></div></div>
 <div class="info"><div class="info">The subprocess handler and <code class="code">fork()</code>: The subprocess handler uses
       pipes for notification, and because of this it is sensitive to
       unpredicted duplicates of the pipe descriptors. <code class="code">fork()</code> duplicates
       these pipe descriptors. If nothing is done about this issue, it
       can happen that the notification does not work anymore as it relies
-      on detecting closed pipes.<br/>      If <code class="code">fork()</code> is immediately followed by <code class="code">exec()</code> (as it is done
+      on detecting closed pipes.<p>      If <code class="code">fork()</code> is immediately followed by <code class="code">exec()</code> (as it is done
       to run subcommands), the problem does not occur, because the relevant
-      descriptors are closed at <code class="code">exec()</code> time.<br/>      If <code class="code">fork()</code> is used to start worker processes, however, we have
+      descriptors are closed at <code class="code">exec()</code> time.</p><p>      If <code class="code">fork()</code> is used to start worker processes, however, we have
       to be careful. The descriptors need to be closed, so that the
       parent can continue to monitor subprocesses, and to allow the worker
       processes to use this mechanism. This module defines post fork
@@ -360,7 +360,7 @@ string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.f
       cleans the descriptors up. All user code has to do is to call
       <code class="code">run_post_fork_handlers</code> immediately after <code class="code">fork()</code> has spawned
       the new child, from the new child. This completely resets
-      everything.</div></div>
+      everything.</p></div></div>
 <div class="info"><div class="info">The subprocess handler and multi-threading: The handler has been
       carefully designed, and works even in multi-threaded programs.
       However, one should know that multi-threading and <code class="code">fork()</code> do not
@@ -404,7 +404,7 @@ string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.f
       <code class="code">facility</code></div></div>
 <pre><span class="VALcloselog"><span class="keyword">val</span> closelog</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info">Closes the log stream</div></div>
 <div class="info"><div class="info">Usually, the log stream is redirected to syslog by either:<ul><li>setting <code class="code">Netlog.current_logger</code> to <code class="code">syslog facility</code>, e.g.
-      <pre class="codepre"><code class="code"> Netlog.current_logger := Netsys_posix.syslog `User </code></pre></li><li>using the Netplex class for sending message to syslog (XXX)
+      <code class="code"> Netlog.current_logger := Netsys_posix.syslog `User </code></li><li>using the Netplex class for sending message to syslog (XXX)
  </li></ul></div></div>
 <div class="info"><div class="info"><h1 id="1_TITLE">Sync</h1></div></div>
 <pre><span class="VALfsync"><span class="keyword">val</span> fsync</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; unit</code></pre><div class="info"><div class="info">Sync data and metadata to disk</div></div>
@@ -413,7 +413,7 @@ string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.f
 <div class="info"><div class="info"><h1 id="1_TITLE">Sending file descriptors over Unix domain sockets</h1></div></div>
 <div class="info"><div class="info">These functions can be used to send file descriptors from one process
     to another one. The descriptor <code class="code">sock</code> must be a connected 
-    Unix domain socket.<br/>    The functionality backing this is non-standard but widely available.<br/>    <b>Not yet implemented, but spec exists.</b></div></div>
+    Unix domain socket.<p>    The functionality backing this is non-standard but widely available.</p><p>    <b>Not yet implemented, but spec exists.</b></p></div></div>
 <div class="info"><div class="info"><h1 id="1_TITLE">Optional POSIX functions</h1></div></div>
 <pre><span class="VALhave_fadvise"><span class="keyword">val</span> have_fadvise</span> : <code class="type">unit -&gt; bool</code></pre><div class="info"><div class="info">Returns whether the OS supports the fadvise POSIX option</div></div>
 <pre><code><span class="TYPEadvice"><span class="keyword">type</span> advice</span> = </code></pre><table class="typetable">
@@ -432,15 +432,15 @@ string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.f
 <pre><span class="VALshm_open"><span class="keyword">val</span> shm_open</span> : <code class="type">string -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=shm_open_flag">shm_open_flag</a> list -&gt; int -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></pre><div class="info"><div class="info">Opens a shared memory object. The first arg is the name of the
  object. The name must begin with a slash, but there must be no
  further slash in it (e.g. &quot;/sample&quot;). The second arg are the
- open flags. The third arg are the permission bits.<br/> The open flags are interpreted as follows:<ul><li><code class="code">SHM_O_RDONLY</code>: Open the object for read access</li><li><code class="code">SHM_O_RDWR</code>: Open the object for read-write access</li><li><code class="code">SHM_O_CREAT</code>: Create the object if it does not exist</li><li><code class="code">SHM_O_EXCL</code>: If <code class="code">SHM_O_CREAT</code> was also specified, and a an object
+ open flags. The third arg are the permission bits.<p> The open flags are interpreted as follows:</p><ul><li><code class="code">SHM_O_RDONLY</code>: Open the object for read access</li><li><code class="code">SHM_O_RDWR</code>: Open the object for read-write access</li><li><code class="code">SHM_O_CREAT</code>: Create the object if it does not exist</li><li><code class="code">SHM_O_EXCL</code>: If <code class="code">SHM_O_CREAT</code> was also specified, and a an object
    with the given name already exists, return an error
    (<code class="code">Unix.EEXIST</code>).</li><li><code class="code">SHM_O_TRUNC</code>: If the object already exists, truncate it to 
-   zero bytes</li></ul> One of <code class="code">SHM_O_RDONLY</code> or <code class="code">SHM_O_RDWR</code> must be given.<br/> On success, the function returns a file descriptor representing the
+   zero bytes</li></ul> One of <code class="code">SHM_O_RDONLY</code> or <code class="code">SHM_O_RDWR</code> must be given.<p> On success, the function returns a file descriptor representing the
  object. To access the object, one has to memory-map this file
  use one of the <code class="code">map_file</code> functions in the <code class="code">Bigarray</code>
- module, or in  <a href="#Netsys_mem">Netsys_mem</a>). Use <code class="code">Unix.ftruncate</code> to resize the object.<br/> Note that it is unspecified whether this file pops up somewhere
- in the file system, and if so, where.<br/> If a system error occurs, the function raises a <code class="code">Unix.Unix_error</code>
- exception.</div></div>
+ module, or in  <a href="#Netsys_mem">Netsys_mem</a>). Use <code class="code">Unix.ftruncate</code> to resize the object.</p><p> Note that it is unspecified whether this file pops up somewhere
+ in the file system, and if so, where.</p><p> If a system error occurs, the function raises a <code class="code">Unix.Unix_error</code>
+ exception.</p></div></div>
 <pre><span class="VALshm_unlink"><span class="keyword">val</span> shm_unlink</span> : <code class="type">string -&gt; unit</code></pre><div class="info"><div class="info">Unlinks the name for a shared memory object</div></div>
 <pre><span class="VALshm_create"><span class="keyword">val</span> shm_create</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> * string</code></pre><div class="info"><div class="info"><code class="code">let (fd,name) = shm_create prefix size</code>: Creates an shm object
       with a unique name. The name has the passed <code class="code">prefix</code>. The <code class="code">prefix</code>
@@ -465,7 +465,7 @@ string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.f
 <pre><span class="VALsem_open"><span class="keyword">val</span> sem_open</span> : <code class="type">string -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=sem_open_flag">sem_open_flag</a> list -&gt; int -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=named_semaphore">named_semaphore</a></code></pre><div class="info"><div class="info"><code class="code">sem_open name flags mode init_value</code>: Opens a named semaphore
       which is optionally created. Sempahore names usually begin with
       a slash followed by a single name component (not containing a
-      further slash).<br/>      Interpretation of <code class="code">flags</code>:<ul><li><code class="code">SEM_O_CREAT</code>: The semaphore is created if not yet existing.
+      further slash).<p>      Interpretation of <code class="code">flags</code>:</p><ul><li><code class="code">SEM_O_CREAT</code>: The semaphore is created if not yet existing.
         The <code class="code">mode</code> and <code class="code">init_value</code> are interpreted if the creation
         actually occurs. <code class="code">mode</code> is the permission of the semaphore.
         <code class="code">init_value</code> is the (non-negative) initial value, up to
@@ -492,15 +492,15 @@ string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.f
       The memory region must already have been initialized.</div></div>
 <div class="info"><div class="info"><b>Operations.</b></div></div>
 <pre><span class="VALsem_getvalue"><span class="keyword">val</span> sem_getvalue</span> : <code class="type">'kind <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=semaphore">semaphore</a> -&gt; int</code></pre><div class="info"><div class="info">Returns the value of the semaphore. If the value is bigger than
-      what can be represented as <code class="code">int</code>, an <code class="code">EINVAL</code> error is returned.<br/>      The returned value is non-negative - if the underlying POSIX
-      function reports a negative value zero is returned instead.<br/>      Unavailable on MacOS.</div></div>
+      what can be represented as <code class="code">int</code>, an <code class="code">EINVAL</code> error is returned.<p>      The returned value is non-negative - if the underlying POSIX
+      function reports a negative value zero is returned instead.</p><p>      Unavailable on MacOS.</p></div></div>
 <pre><span class="VALsem_post"><span class="keyword">val</span> sem_post</span> : <code class="type">'kind <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=semaphore">semaphore</a> -&gt; unit</code></pre><div class="info"><div class="info">Unlocks the semaphore (increases the value by 1)</div></div>
 <pre><code><span class="TYPEsem_wait_behavior"><span class="keyword">type</span> sem_wait_behavior</span> = </code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsem_wait_behavior.SEM_WAIT_BLOCK"><span class="constructor">SEM_WAIT_BLOCK</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsem_wait_behavior.SEM_WAIT_NONBLOCK"><span class="constructor">SEM_WAIT_NONBLOCK</span></span></code></td></tr></table>
 <pre><span class="VALsem_wait"><span class="keyword">val</span> sem_wait</span> : <code class="type">'kind <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=semaphore">semaphore</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=sem_wait_behavior">sem_wait_behavior</a> -&gt; unit</code></pre><div class="info"><div class="info">Locks the semaphore (decreases the value by 1). If the semaphore
       value is already zero, and <code class="code">SEM_WAIT_BLOCK</code> is given, the function
       waits until another process or thread posts. If <code class="code">SEM_WAIT_NONBLOCK</code>
-      the error <code class="code">EAGAIN</code> is returned.<br/>      <code class="code">sem_wait</code> may be interrupted by signals.</div></div>
+      the error <code class="code">EAGAIN</code> is returned.<p>      <code class="code">sem_wait</code> may be interrupted by signals.</p></div></div>
 <div class="info"><div class="info"><h2 id="sem_not">Semaphores and notification</h2></div></div>
 <div class="info"><div class="info"><b>Not yet implemented.</b></div></div>
 <div class="info"><div class="info"><h1 id="1_TITLE">Locales</h1></div></div>
@@ -509,15 +509,15 @@ string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.f
 <pre><span class="VALquery_langinfo"><span class="keyword">val</span> query_langinfo</span> : <code class="type">string -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=langinfo">langinfo</a></code></pre><div class="info"><div class="info"><code class="code">query_langinfo locale</code>: Temporarily sets the passed <code class="code">locale</code> and
       determines the language attributes. After that the orignal locale is
       restored. Pass &quot;&quot; as <code class="code">locale</code> to get the locale requested in the
-      environment.<br/>      The value for &quot;&quot; is cached.</div></div>
+      environment.<p>      The value for &quot;&quot; is cached.</p></div></div>
 <div class="info"><div class="info"><h1 id="1_TITLE">Clocks</h1></div></div>
 <div class="info"><div class="info">Support for clocks can be assumed to exist on all current POSIX
     systems.</div></div>
 <pre><span class="TYPEtimespec"><span class="keyword">type</span> timespec</span> = <code class="type">float * int</code></pre><div class="info"><div class="info"><code class="code">(t,t_nanos)</code>: Specifies a time by a base time <code class="code">t</code> to which the
-	nanoseconds <code class="code">t_nanos</code> are added.<br/>	If this pair is returned by a function <code class="code">t</code> will always be integral.
+	nanoseconds <code class="code">t_nanos</code> are added.<p>	If this pair is returned by a function <code class="code">t</code> will always be integral.
 	If a pair is passed to a function, it does not matter whether this
 	is the case or not, but using integral values for <code class="code">t</code> ensure
-	maximum precision.</div></div>
+	maximum precision.</p></div></div>
 <pre><span class="VALnanosleep"><span class="keyword">val</span> nanosleep</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=timespec">timespec</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=timespec">timespec</a> <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">nanosleep t t_rem</code>: Sleeps for <code class="code">t</code> seconds. The sleep can either be
       finished, or the sleep can be interrupted by a signal. In the
       latter case, the function will raise <code class="code">EÍNTR</code>, and write to <code class="code">t_rem</code>
@@ -529,7 +529,7 @@ string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.f
 <pre><span class="VALclock_settime"><span class="keyword">val</span> clock_settime</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=clock">clock</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=timespec">timespec</a> -&gt; unit</code></pre><div class="info"><div class="info">Set the time of this clock</div></div>
 <pre><span class="VALclock_getres"><span class="keyword">val</span> clock_getres</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=clock">clock</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=timespec">timespec</a></code></pre><div class="info"><div class="info">Get the resolution of this clock</div></div>
 <pre><span class="VALclock_getcpuclockid"><span class="keyword">val</span> clock_getcpuclockid</span> : <code class="type">int -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=clock_id">clock_id</a></code></pre><div class="info"><div class="info">Return the ID of a clock that counts the CPU seconds of the given
-      process. Pass the PID or 0 for the current process.<br/>      This function is not supported on all OS.</div></div>
+      process. Pass the PID or 0 for the current process.<p>      This function is not supported on all OS.</p></div></div>
 <div class="info"><div class="info"><h1 id="1_TITLE">POSIX timers</h1></div></div>
 <pre><span class="TYPEposix_timer"><span class="keyword">type</span> posix_timer</span> </pre>
 <pre><code><span class="TYPEtimer_expiration"><span class="keyword">type</span> timer_expiration</span> = </code></pre><table class="typetable">
@@ -538,19 +538,19 @@ string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.f
 <pre><span class="VALtimer_create"><span class="keyword">val</span> timer_create</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=clock">clock</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=timer_expiration">timer_expiration</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=posix_timer">posix_timer</a></code></pre><div class="info"><div class="info">Create a new timer that will report expiration as given by the arg:<ul><li><code class="code">TEXP_NONE</code>: no notification</li><li><code class="code">TEXP_EVENT e</code>: the <code class="code">not_event</code> <code class="code">e</code> is signalled</li><li><code class="code">TEXP_EVENT_CREATE</code>: a special <code class="code">not_event</code> is created for the timer.
         (Get the event via <code class="code">timer_event</code>, see below.)</li><li><code class="code">TEXP_SIGNAL n</code>: the signal <code class="code">n</code> is sent to the process</li></ul>      Note that <code class="code">TEXP_EVENT_CREATE</code> is much faster on Linux than
       <code class="code">TEXP_EVENT</code>, because it can be avoided to start a new thread
-      whenever the timer expires. Instead, the timerfd machinery is used.<br/>      <code class="code">TEXP_EVENT</code> and <code class="code">TEXP_EVENT_CREATE</code> are only supported on systems
-      with pthreads.</div></div>
-<pre><span class="VALtimer_settime"><span class="keyword">val</span> timer_settime</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=posix_timer">posix_timer</a> -&gt; bool -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=timespec">timespec</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=timespec">timespec</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">timer_settime tm abstime interval value</code>:<br/>      If <code class="code">value=(0.0,0)</code>, the timer is stopped.<br/>      If <code class="code">value</code> is a positive time, the timer is started (or the timeout
+      whenever the timer expires. Instead, the timerfd machinery is used.<p>      <code class="code">TEXP_EVENT</code> and <code class="code">TEXP_EVENT_CREATE</code> are only supported on systems
+      with pthreads.</p></div></div>
+<pre><span class="VALtimer_settime"><span class="keyword">val</span> timer_settime</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=posix_timer">posix_timer</a> -&gt; bool -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=timespec">timespec</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=timespec">timespec</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">timer_settime tm abstime interval value</code>:<p>      If <code class="code">value=(0.0,0)</code>, the timer is stopped.</p><p>      If <code class="code">value</code> is a positive time, the timer is started (or the timeout
       is changed if it is already started).  If <code class="code">abstime</code>, <code class="code">value</code> is
       interpreted as the absolute point in time of the expiration.
-      Otherwise <code class="code">value</code> sets the number of seconds until the expiration.<br/>      If <code class="code">interval</code> is positive, the started timer will repeat to expire
+      Otherwise <code class="code">value</code> sets the number of seconds until the expiration.</p><p>      If <code class="code">interval</code> is positive, the started timer will repeat to expire
       after this many seconds once it has expired for the first time.
-      If <code class="code">interval=(0.0,0)</code>, the timer is a one-shot timer.</div></div>
+      If <code class="code">interval=(0.0,0)</code>, the timer is a one-shot timer.</p></div></div>
 <pre><span class="VALtimer_gettime"><span class="keyword">val</span> timer_gettime</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=posix_timer">posix_timer</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=timespec">timespec</a></code></pre><div class="info"><div class="info">Returns the number of seconds until the expiration, or <code class="code">(0.0,0)</code>
       if the timer is off</div></div>
 <pre><span class="VALtimer_delete"><span class="keyword">val</span> timer_delete</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=posix_timer">posix_timer</a> -&gt; unit</code></pre><div class="info"><div class="info">Deletes the timer</div></div>
 <pre><span class="VALtimer_event"><span class="keyword">val</span> timer_event</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=posix_timer">posix_timer</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=not_event">not_event</a></code></pre><div class="info"><div class="info">Returns the notification event for the timer styles <code class="code">TEXP_EVENT</code> and
-      <code class="code">TEXP_EVENT_CREATE</code>.<br/>      Note that the latter type of event does not allow to call <code class="code">set_event</code>.</div></div>
+      <code class="code">TEXP_EVENT_CREATE</code>.<p>      Note that the latter type of event does not allow to call <code class="code">set_event</code>.</p></div></div>
 <div class="info"><div class="info">Intentionally there is no wrapper for <code class="code">timer_getoverrun</code>.
     Additional overruns can occur because of the further processing
     of the notifications: The OCaml runtime can merge signals,
@@ -561,8 +561,8 @@ string -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.f
 <div class="info"><div class="info"><h1 id="1_TITLE">Linux I/O Priorities</h1></div></div>
 <div class="info"><div class="info">These system calls are only available on Linux since kernel 2.6.13,
     and not even on every architecture. i386, x86_64, ia64, and PPC are
-    known to work. <br/>    Per-process I/O priorities are currently only supported by the
-    CFQ I/O scheduler.</div></div>
+    known to work. <p>    Per-process I/O priorities are currently only supported by the
+    CFQ I/O scheduler.</p></div></div>
 <pre><span class="VALhave_ioprio"><span class="keyword">val</span> have_ioprio</span> : <code class="type">unit -&gt; bool</code></pre><div class="info"><div class="info">Returns <code class="code">true</code> if the system call <code class="code">ioprio_get</code> is supported</div></div>
 <pre><code><span class="TYPEioprio_target"><span class="keyword">type</span> ioprio_target</span> = </code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTioprio_target.Ioprio_process"><span class="constructor">Ioprio_process</span></span> <span class="keyword">of</span> <code class="type">int</code></code></td><td class="typefieldcomment" align="left"><div class="info">A single process</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTioprio_target.Ioprio_pgrp"><span class="constructor">Ioprio_pgrp</span></span> <span class="keyword">of</span> <code class="type">int</code></code></td><td class="typefieldcomment" align="left"><div class="info">A process group</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTioprio_target.Ioprio_user"><span class="constructor">Ioprio_user</span></span> <span class="keyword">of</span> <code class="type">int</code></code></td><td class="typefieldcomment" align="left"><div class="info">All processes owned by this user</div></td></tr></table>

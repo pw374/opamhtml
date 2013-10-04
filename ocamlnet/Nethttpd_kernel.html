@@ -1,21 +1,21 @@
-<div class="ocaml_toplevel_module"><div class="info"><h1 id="1_TITLE">The protocol kernel of the HTTP daemon</h1><br/> This module mainly defines the <code class="code">http_protocol</code> class which implements the
+<div class="ocaml_toplevel_module"><div class="info"><h1 id="1_TITLE">The protocol kernel of the HTTP daemon</h1><p> This module mainly defines the <code class="code">http_protocol</code> class which implements the
  exchange of messages with a HTTP client. The request messages are represented
  as sequence of <code class="code">req_token</code> values. The response is encapsulated in a separate
  <code class="code">http_response</code> class. The contents of the response are represented as sequence
- of <code class="code">resp_token</code> values.</div>
+ of <code class="code">resp_token</code> values.</p></div>
 <pre><span class="TYPEfatal_error"><span class="keyword">type</span> fatal_error</span> = <code class="type">[ `Broken_pipe
 | `Broken_pipe_ignore
 | `Message_too_long
 | `Server_error
 | `Timeout
 | `Unix_error of <a href="?package=ocaml&amp;module=Unix&amp;type=error">Unix.error</a> ]</code></pre><div class="info"><div class="info">These are the serious protocol violations after that the daemon stops
- any further processing.<br/> Note that <code class="code">`Timeout</code> refers to a timeout in the middle of a request.
+ any further processing.<p> Note that <code class="code">`Timeout</code> refers to a timeout in the middle of a request.
  <code class="code">`Broken_pipe_ignore</code> is the &quot;harmless&quot; version of <code class="code">`Broken_pipe</code>
- (see <code class="code">config_suppress_broken_pipe</code>).<br/> Long messages are fatal because it is suspected that they are denial
+ (see <code class="code">config_suppress_broken_pipe</code>).</p><p> Long messages are fatal because it is suspected that they are denial
  of service attacks. The kernel generates <code class="code">`Message_too_long</code> only for
- long headers, not for long bodies.<br/> Fatal server errors can happen when exceptions are not properly handled.
+ long headers, not for long bodies.</p><p> Fatal server errors can happen when exceptions are not properly handled.
  As last resort the HTTP daemon closes the connection without notifying
- the client.</div></div>
+ the client.</p></div></div>
 <pre><span class="VALstring_of_fatal_error"><span class="keyword">val</span> string_of_fatal_error</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Nethttpd_kernel&amp;type=fatal_error">fatal_error</a> -&gt; string</code></pre><div class="info"><div class="info">Convert error to a string, for logging</div></div>
 <pre><span class="TYPEbad_request_error"><span class="keyword">type</span> bad_request_error</span> = <code class="type">[ `Bad_header
 | `Bad_header_field of string
@@ -57,19 +57,19 @@
     </li></ul></div></div>
 <pre><span class="EXCEPTIONSend_queue_empty"><span class="keyword">exception</span> Send_queue_empty</span></pre>
 <pre><span class="TYPEannouncement"><span class="keyword">type</span> announcement</span> = <code class="type">[ `As of string | `Ignore | `Ocamlnet | `Ocamlnet_and of string ]</code></pre><div class="info"><div class="info">See config</div></div>
-<div class="ocaml_class sig" name="http_response"><pre><span class="TYPEhttp_response"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Nethttpd_kernel&amp;class=http_response">http_response</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Encapsultation of the HTTP response for a single request</div></div><div class="ocaml_class_content"><div class="info"><div class="info">Represents the action of sending the response<br/> This class has an internal
+<div class="ocaml_class sig" name="http_response"><pre><span class="TYPEhttp_response"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Nethttpd_kernel&amp;class=http_response">http_response</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Encapsultation of the HTTP response for a single request</div></div><div class="ocaml_class_content"><div class="info"><div class="info">Represents the action of sending the response<p> This class has an internal
  queue of response tokens that are not yet processed. One can easily add
- new tokens to the end of the queue (<code class="code">send</code>). <br/> The class is responsible for determining the transfer encoding:<ul><li>When the HTTP version is 1.0, the encoding is always &quot;identity&quot;, and the
+ new tokens to the end of the queue (<code class="code">send</code>). </p><p> The class is responsible for determining the transfer encoding:</p><ul><li>When the HTTP version is 1.0, the encoding is always &quot;identity&quot;, and the
    connection will be closed after the response.</li><li>When the HTTP version is 1.1, and there is a Content-length header,
    the encoding will be selected as &quot;identity&quot;. It is checked whether the
    body has really this length. If too short, it is suggested to close
    the connection. If too long, the extra part of the message is silently
    dropped.</li><li>When the HTTP version is 1.1, and there is no Content-length header,
    the encoding will be selected as &quot;chunked&quot;.</li></ul> Currently, the <code class="code">TE</code> request header is not taken into account. The trailer
- is always empty.<br/> The following headers are set (or removed) by this class:<ul><li><code class="code">Transfer-Encoding</code></li><li><code class="code">Trailer</code></li><li><code class="code">Date</code></li><li><code class="code">Connection</code></li><li><code class="code">Upgrade</code></li><li><code class="code">Server</code> (it is appended to this field)</li></ul> Responses for HEAD requests have the special behaviour that the body is silently
+ is always empty.<p> The following headers are set (or removed) by this class:</p><ul><li><code class="code">Transfer-Encoding</code></li><li><code class="code">Trailer</code></li><li><code class="code">Date</code></li><li><code class="code">Connection</code></li><li><code class="code">Upgrade</code></li><li><code class="code">Server</code> (it is appended to this field)</li></ul> Responses for HEAD requests have the special behaviour that the body is silently
  dropped. The calculation of header fields is not affected by this. This means
- that HEAD can be easily implemented by doing the same as for GET.<br/> Responses for other requests that must not include a body must set
- <code class="code">Content-Length</code> to 0.</div></div>
+ that HEAD can be easily implemented by doing the same as for GET.<p> Responses for other requests that must not include a body must set
+ <code class="code">Content-Length</code> to 0.</p></div></div>
 <div class="info"><div class="info">These methods can be called by the content provider:</div></div>
 <pre><span class="METHODstate"><span class="keyword">method</span> state</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Nethttpd_kernel&amp;type=resp_state">resp_state</a></code></pre>
 <div class="info"><div class="info">Reports the state. The initial state is <code class="code">`Inhibited</code></div></div>
@@ -97,8 +97,8 @@
 <div class="info"><div class="info">The first token of the queue, represented as <code class="code">data_chunk</code>. Raises 
  <code class="code">Send_queue_empty</code> when there is currently no front token, or the state
  is <code class="code">`Inhibited</code>.
- If there is a front token, it will never have length 0.<br/> Note that <code class="code">Unix_error</code> exceptions can be raised when <code class="code">`Resp_action</code>
- tokens are processed.</div></div>
+ If there is a front token, it will never have length 0.<p> Note that <code class="code">Unix_error</code> exceptions can be raised when <code class="code">`Resp_action</code>
+ tokens are processed.</p></div></div>
 <pre><span class="METHODset_callback"><span class="keyword">method</span> set_callback</span> : <code class="code">(unit -&gt; unit) -&gt; unit</code></pre>
 <div class="info"><div class="info">The function will be called when either <code class="code">set_state</code> changes the state,
  or when the send queue becomes empty. Note that the callback must never
@@ -128,10 +128,10 @@
  the header (optional). The descriptor must be a file descriptor (that cannot
  block). The int64 number is the length
  of the body.  Response header fields are set as follows:<ul><li>The <code class="code">Content-Length</code> is set to the length of the string.</li><li>The <code class="code">Content-Type</code> is set to &quot;text/html&quot; unless given by the header.</li></ul> Note that <code class="code">Content-Range</code> is not set automatically, even if the file is only
- partially transferred.<br/> If the header object is passed in, these modifications are done 
- directly in this object as side effect.<br/> The function does not send the file immediately, but rather sets the <code class="code">http_response</code>
+ partially transferred.<p> If the header object is passed in, these modifications are done 
+ directly in this object as side effect.</p><p> The function does not send the file immediately, but rather sets the <code class="code">http_response</code>
  object up that the next chunk of the file is added when the send queue becomes
- empty. This file will be closed when the transfer is done.</div></div>
+ empty. This file will be closed when the transfer is done.</p></div></div>
 <pre><span class="TYPErequest_line"><span class="keyword">type</span> request_line</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Nethttp&amp;type=http_method">Nethttp.http_method</a> * <a href="?package=ocamlnet&amp;module=Nethttp&amp;type=protocol">Nethttp.protocol</a></code></pre><div class="info"><div class="info">The method (including the URI), and the HTTP version</div></div>
 <pre><span class="TYPEreq_token"><span class="keyword">type</span> req_token</span> = <code class="type">[ `Bad_request_error of <a href="?package=ocamlnet&amp;module=Nethttpd_kernel&amp;type=bad_request_error">bad_request_error</a> * <a href="?package=ocamlnet&amp;module=Nethttpd_kernel&amp;type=http_response">http_response</a>
 | `Eof
@@ -189,14 +189,14 @@
    </li></ul></div></div>
 <div class="ocaml_class ident" name="modify_http_protocol_config" path="?package=ocamlnet&amp;module=Nethttpd_kernel&amp;class=http_protocol_config"><pre><span class="TYPEmodify_http_protocol_config"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Nethttpd_kernel&amp;class=modify_http_protocol_config">modify_http_protocol_config</a></span> : <code class="type">int option -&gt; int option -&gt; int option -&gt; int option -&gt; int option -&gt; <a href="?package=ocamlnet&amp;module=Nethttpd_kernel&amp;type=announcement">announcement</a> option -&gt; bool option -&gt; <a href="?package=ocamlnet&amp;module=Nethttpd_kernel&amp;type=http_protocol_config">http_protocol_config</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Nethttpd_kernel&amp;class=http_protocol_config">http_protocol_config</a></pre><div class="info"><div class="info">Modifies the passed config object as specified by the optional
       arguments</div></div></div>
-<div class="ocaml_class sig" name="http_protocol"><pre><span class="TYPEhttp_protocol"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Nethttpd_kernel&amp;class=http_protocol">http_protocol</a></span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; #<a href="?package=ocamlnet&amp;module=Nethttpd_kernel&amp;class=http_protocol_config">http_protocol_config</a> -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">The core event loop of the HTTP daemon</div></div><div class="ocaml_class_content"><div class="info"><div class="info">Exchange of HTTP messages<br/> In <code class="code">fd</code> one must pass the already connected socket. It must be in non-
- blocking mode.<br/> How to use this class: Basically, one invokes <code class="code">cycle</code> until the whole
+<div class="ocaml_class sig" name="http_protocol"><pre><span class="TYPEhttp_protocol"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Nethttpd_kernel&amp;class=http_protocol">http_protocol</a></span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; #<a href="?package=ocamlnet&amp;module=Nethttpd_kernel&amp;class=http_protocol_config">http_protocol_config</a> -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">The core event loop of the HTTP daemon</div></div><div class="ocaml_class_content"><div class="info"><div class="info">Exchange of HTTP messages<p> In <code class="code">fd</code> one must pass the already connected socket. It must be in non-
+ blocking mode.</p><p> How to use this class: Basically, one invokes <code class="code">cycle</code> until the whole
  message exchange on <code class="code">fd</code> is processed. <code class="code">cycle</code> receives data from the
- socket and sends data to the socket. There are two internal queues:<br/> The receive queue stores parts of received requests as <code class="code">req_token</code>.
- One can take values from the front of this queue by calling <code class="code">receive</code>.<br/> The response queue stores <code class="code">http_response</code> objects. Each of the objects
+ socket and sends data to the socket. There are two internal queues:</p><p> The receive queue stores parts of received requests as <code class="code">req_token</code>.
+ One can take values from the front of this queue by calling <code class="code">receive</code>.</p><p> The response queue stores <code class="code">http_response</code> objects. Each of the objects
  corresponds to a request that was received before. This queue is handled
  fully automatically, but one can watch its length to see whether all responses
- are actually transmitted over the wire.<br/> The basic algorithm to process messages is:<br/> <pre class="codepre"><code class="code">
+ are actually transmitted over the wire.</p><p> The basic algorithm to process messages is:</p><p> </p><code class="code">
  let rec next_token () =
    if proto # recv_queue_len = 0 then (
      proto # cycle ();
@@ -227,33 +227,33 @@
    proto # cycle ();
  done;
  proto # shutdown()
- </code></pre><br/> See the file <code class="code">tests/easy_daemon.ml</code> for a complete implementation of this.<br/> As one can see, it is essential to watch the lengths of the queues in order
- to figure out what has happened during <code class="code">cycle</code>.<br/> When the body of the request is empty, <code class="code">`Req_body</code> tokens are omitted.
+ </code><p> See the file <code class="code">tests/easy_daemon.ml</code> for a complete implementation of this.</p><p> As one can see, it is essential to watch the lengths of the queues in order
+ to figure out what has happened during <code class="code">cycle</code>.</p><p> When the body of the request is empty, <code class="code">`Req_body</code> tokens are omitted.
  Note that for requests like <code class="code">GET</code> that always have an empty body, it is
  still possible that an errorneous client sends a body, and that <code class="code">`Req_body</code>
- tokens arrive. One must accept and ignore these tokens.<br/> Error handling: For serious errors, the connection is immediately aborted.
+ tokens arrive. One must accept and ignore these tokens.</p><p> Error handling: For serious errors, the connection is immediately aborted.
  In this case, <code class="code">receive</code> returns a <code class="code">`Fatal_error</code> token. Note that the
- queued responses cannot be sent! An example of this is <code class="code">`Broken_pipe</code>.<br/> There is a large class of non-serious errors, esp. format errors
+ queued responses cannot be sent! An example of this is <code class="code">`Broken_pipe</code>.</p><p> There is a large class of non-serious errors, esp. format errors
  in the header and body. It is typical of these errors that one cannot determine
  the end of the request properly. For this reason, the daemon stops reading
  further data from the request, but the response queue is still delivered.
  For these errors, <code class="code">receive</code> returns a <code class="code">`Bad_request_error</code> token.
  This token contains a <code class="code">http_response</code> object that must be filled with a
- 400 error response.</div></div>
+ 400 error response.</p></div></div>
 <pre><span class="METHODcycle"><span class="keyword">method</span> cycle</span> : <code class="code">?block:float -&gt; unit -&gt; unit</code></pre>
 <div class="info"><div class="info">Looks at the file descriptor. If there is data to read from the descriptor,
  and there is free space in the input buffer, additional data is read into
  the buffer. It is also tried to interpret the new data as <code class="code">req_token</code>s,
- and if possible, new <code class="code">req_token</code>s are appended to the receive queue.<br/> If the response queue has objects, and there is really data one can send,
+ and if possible, new <code class="code">req_token</code>s are appended to the receive queue.<p> If the response queue has objects, and there is really data one can send,
  and if the socket allows one to send data, it is tried to send as much
- data as possible.<br/> The option <code class="code">block</code> (default: 0) can be set to wait until data
+ data as possible.</p><p> The option <code class="code">block</code> (default: 0) can be set to wait until data
  can be exchanged with the socket. This avoids busy waiting. The number
  is the duration in seconds to wait until the connection times out
  (0 means not to wait at all, -1 means to wait infinitely). When a timeout
  happens, and there is nothing to send, and the last request was fully
  processed, <code class="code">receive</code> will simply return <code class="code">`Timeout</code> (i.e. when 
  <code class="code">waiting_for_next_message</code> is <code class="code">true</code>). Otherwise, the
- fatal error <code class="code">`Timeout</code> is generated.</div></div>
+ fatal error <code class="code">`Timeout</code> is generated.</p></div></div>
 <pre><span class="METHODreceive"><span class="keyword">method</span> receive</span> : <code class="code">unit -&gt; <a href="?package=ocamlnet&amp;module=Nethttpd_kernel&amp;type=req_token">req_token</a></code></pre>
 <div class="info"><div class="info">Returns the first <code class="code">req_token</code> from the receive queue. Raises
  <code class="code">Recv_queue_empty</code> when the queue is empty (= has no new data)</div></div>
@@ -304,8 +304,8 @@
 <div class="info"><div class="info">For testing: returns a list of tokens indicating into which cases the program
  ran.</div></div></div></div>
 <div class="ocaml_class sig" name="lingering_close"><pre><span class="TYPElingering_close"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Nethttpd_kernel&amp;class=lingering_close">lingering_close</a></span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; (unit -&gt; unit) option -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Closes a file descriptor using the &quot;lingering close&quot; algorithm.
-    The optional <code class="code">preclose</code> function is called just before <code class="code">Unix.close</code>.</div></div><div class="ocaml_class_content"><div class="info"><div class="info">Closes a file descriptor using the &quot;lingering close&quot; algorithm<br/> Usage:
- <pre class="codepre"><code class="code"> while lc # lingering do lc # cycle ~block:true () done </code></pre></div></div>
+    The optional <code class="code">preclose</code> function is called just before <code class="code">Unix.close</code>.</div></div><div class="ocaml_class_content"><div class="info"><div class="info">Closes a file descriptor using the &quot;lingering close&quot; algorithm<p> Usage:
+ </p><code class="code"> while lc # lingering do lc # cycle ~block:true () done </code></div></div>
 <pre><span class="METHODcycle"><span class="keyword">method</span> cycle</span> : <code class="code">?block:bool -&gt; unit -&gt; unit</code></pre>
 <div class="info"><div class="info">Reads data from the file descriptor until EOF or until a fixed timeout
  is over. Finally, the descriptor is closed. If <code class="code">block</code> is set, the method

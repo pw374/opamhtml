@@ -1,20 +1,20 @@
-<div class="ocaml_toplevel_module"><div class="info">Threading model:<br/>    Only one thread is running Async code at a time.  This is enforced by a single lock in
+<div class="ocaml_toplevel_module"><div class="info">Threading model:<p>    Only one thread is running Async code at a time.  This is enforced by a single lock in
     Async's scheduler data structure.  There are any number of threads running code
     without holding the lock that get data from the outside world and want to affect the
     Async world.  They do this by calling <code class="code">Thread_safe.run_in_async*</code>, which acquires the
     lock, does a computation (e.g. fills an ivar), and then runs a &quot;cycle&quot; of Async
-    computations.</div>
+    computations.</p></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type"><a href="?package=async_unix&amp;module=Raw_scheduler&amp;type=t">Raw_scheduler.t</a></code></pre>
 <pre><span class="VALt"><span class="keyword">val</span> t</span> : <code class="type">unit -&gt; <a href="?package=async_unix&amp;module=Scheduler&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">t ()</code> returns the async scheduler.  If the scheduler hasn't been created yet, this
     will create it and acquire the async lock.</div></div>
 <pre><span class="VALgo"><span class="keyword">val</span> go</span> : <code class="type">?raise_unhandled_exn:bool -&gt; unit -&gt; <a href="?package=core&amp;module=Std&amp;type=never_returns">Core.Std.never_returns</a></code></pre><div class="info"><div class="info"><code class="code">go ?raise_unhandled_exn ()</code> passes control to Async, at which point Async starts
     running handlers, one by one without interruption, until there are no more handlers to
     run.  When Async is out of handlers it blocks until the outside world schedules more
-    of them.  Because of this, Async programs do not exit until <code class="code">shutdown</code> is called.<br/>    <code class="code">go ()</code> calls <code class="code">handle_signal Sys.sigpipe</code>, which causes the SIGPIPE signal to be
-    ignored.  Low-level syscalls (e.g. write) still raise EPIPE.<br/>    If any async job raises an unhandled exception that is not handled by any monitor,
+    of them.  Because of this, Async programs do not exit until <code class="code">shutdown</code> is called.<p>    <code class="code">go ()</code> calls <code class="code">handle_signal Sys.sigpipe</code>, which causes the SIGPIPE signal to be
+    ignored.  Low-level syscalls (e.g. write) still raise EPIPE.</p><p>    If any async job raises an unhandled exception that is not handled by any monitor,
     async execution ceases.  Then, by default, async pretty prints the exception, and
     exits with status 1.  If you don't want this, pass <code class="code">~raise_unhandled_exn:true</code>, which
-    will cause the unhandled exception to be raised to the caller of <code class="code">go ()</code>.</div></div>
+    will cause the unhandled exception to be raised to the caller of <code class="code">go ()</code>.</p></div></div>
 <pre><span class="VALgo_main"><span class="keyword">val</span> go_main</span> : <code class="type">?raise_unhandled_exn:bool -&gt;
 ?file_descr_watcher:<a href="?package=async_unix&amp;module=Import.Config.File_descr_watcher&amp;type=t">Import.Config.File_descr_watcher.t</a> -&gt;
 ?max_num_open_file_descrs:int -&gt;
@@ -89,33 +89,33 @@
     then start the async scheduler.</div></div>
 <pre><span class="VALadd_busy_poller"><span class="keyword">val</span> add_busy_poller</span> : <code class="type">(unit -&gt; [ `Continue_polling | `Stop_polling of 'a ]) -&gt; 'a <a href="?package=async_unix&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre><div class="info"><div class="info">Async supports &quot;busy polling&quot;, which runs a thread that busy loops running
     user-supplied polling functions.  The busy-loop thread is distinct from async's
-    scheduler thread.<br/>    Busy polling is useful for a situation like a shared-memory ringbuffer being used for
+    scheduler thread.<p>    Busy polling is useful for a situation like a shared-memory ringbuffer being used for
     IPC.  One can poll the ringbuffer with a busy poller, and then when data is detected,
-    fill some ivar that causes async code to handle the data.<br/>    <code class="code">add_busy_poller poll</code> adds <code class="code">poll</code> to the busy loop.  <code class="code">poll</code> will be called
+    fill some ivar that causes async code to handle the data.</p><p>    <code class="code">add_busy_poller poll</code> adds <code class="code">poll</code> to the busy loop.  <code class="code">poll</code> will be called
     continuously, once per iteration of the busy loop, until it returns <code class="code">`Stop_polling a</code>
     at which point the result of <code class="code">add_busy_poller</code> will become determined.  <code class="code">poll</code> will
     hold the async lock while running, so it is fine to do ordinary async operations,
     e.g. fill an ivar.  The busy loop will run an ordinary async cycle if any of the
-    pollers add jobs.<br/>    <code class="code">poll</code> will run in monitor in effect when <code class="code">add_busy_poller</code> was called; exceptions
+    pollers add jobs.</p><p>    <code class="code">poll</code> will run in monitor in effect when <code class="code">add_busy_poller</code> was called; exceptions
     raised by <code class="code">poll</code> will be sent asynchronously to that monitor.  If <code class="code">poll</code> raises, it
-    will still be run on subsequent iterations of the busy loop.</div></div>
+    will still be run on subsequent iterations of the busy loop.</p></div></div>
 <pre><span class="VALhandle_thread_pool_stuck"><span class="keyword">val</span> handle_thread_pool_stuck</span> : <code class="type">(<a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a> -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">handle_thread_pool_stuck f</code> causes <code class="code">f</code> to run whenever async detects its thread pool
     is stuck (i.e. hasn't completed a job for over a second and has no available threads).
     Async checks every second.  By default, if thread pool has been stuck for less than
     60s, async will <code class="code">eprintf</code> a message.  If more than 60s, async will send an exception
     to the main monitor, which will abort the program unless there is a custom handler for
-    the main monitor.<br/>    Calling <code class="code">handle_thread_pool_stuck</code> replaces whatever behavior was previously there.</div></div>
+    the main monitor.<p>    Calling <code class="code">handle_thread_pool_stuck</code> replaces whatever behavior was previously there.</p></div></div>
 <pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type"><a href="?package=async_unix&amp;module=Scheduler&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
 <div class="info"><div class="info"><code class="code">t ()</code> returns the async scheduler.  If the scheduler hasn't been created yet, this
     will create it and acquire the async lock.</div></div>
 <div class="info"><div class="info"><code class="code">go ?raise_unhandled_exn ()</code> passes control to Async, at which point Async starts
     running handlers, one by one without interruption, until there are no more handlers to
     run.  When Async is out of handlers it blocks until the outside world schedules more
-    of them.  Because of this, Async programs do not exit until <code class="code">shutdown</code> is called.<br/>    <code class="code">go ()</code> calls <code class="code">handle_signal Sys.sigpipe</code>, which causes the SIGPIPE signal to be
-    ignored.  Low-level syscalls (e.g. write) still raise EPIPE.<br/>    If any async job raises an unhandled exception that is not handled by any monitor,
+    of them.  Because of this, Async programs do not exit until <code class="code">shutdown</code> is called.<p>    <code class="code">go ()</code> calls <code class="code">handle_signal Sys.sigpipe</code>, which causes the SIGPIPE signal to be
+    ignored.  Low-level syscalls (e.g. write) still raise EPIPE.</p><p>    If any async job raises an unhandled exception that is not handled by any monitor,
     async execution ceases.  Then, by default, async pretty prints the exception, and
     exits with status 1.  If you don't want this, pass <code class="code">~raise_unhandled_exn:true</code>, which
-    will cause the unhandled exception to be raised to the caller of <code class="code">go ()</code>.</div></div>
+    will cause the unhandled exception to be raised to the caller of <code class="code">go ()</code>.</p></div></div>
 <div class="info"><div class="info">default is <code class="code">false</code></div></div>
 <div class="info"><div class="info"><code class="code">go_main</code> is like <code class="code">go</code>, except that one supplies a <code class="code">main</code> function that will be run to
     initialize the async computation, and that <code class="code">go_main</code> will fail if any async has been
@@ -186,20 +186,20 @@
     then start the async scheduler.</div></div>
 <div class="info"><div class="info">Async supports &quot;busy polling&quot;, which runs a thread that busy loops running
     user-supplied polling functions.  The busy-loop thread is distinct from async's
-    scheduler thread.<br/>    Busy polling is useful for a situation like a shared-memory ringbuffer being used for
+    scheduler thread.<p>    Busy polling is useful for a situation like a shared-memory ringbuffer being used for
     IPC.  One can poll the ringbuffer with a busy poller, and then when data is detected,
-    fill some ivar that causes async code to handle the data.<br/>    <code class="code">add_busy_poller poll</code> adds <code class="code">poll</code> to the busy loop.  <code class="code">poll</code> will be called
+    fill some ivar that causes async code to handle the data.</p><p>    <code class="code">add_busy_poller poll</code> adds <code class="code">poll</code> to the busy loop.  <code class="code">poll</code> will be called
     continuously, once per iteration of the busy loop, until it returns <code class="code">`Stop_polling a</code>
     at which point the result of <code class="code">add_busy_poller</code> will become determined.  <code class="code">poll</code> will
     hold the async lock while running, so it is fine to do ordinary async operations,
     e.g. fill an ivar.  The busy loop will run an ordinary async cycle if any of the
-    pollers add jobs.<br/>    <code class="code">poll</code> will run in monitor in effect when <code class="code">add_busy_poller</code> was called; exceptions
+    pollers add jobs.</p><p>    <code class="code">poll</code> will run in monitor in effect when <code class="code">add_busy_poller</code> was called; exceptions
     raised by <code class="code">poll</code> will be sent asynchronously to that monitor.  If <code class="code">poll</code> raises, it
-    will still be run on subsequent iterations of the busy loop.</div></div>
+    will still be run on subsequent iterations of the busy loop.</p></div></div>
 <div class="info"><div class="info"><code class="code">handle_thread_pool_stuck f</code> causes <code class="code">f</code> to run whenever async detects its thread pool
     is stuck (i.e. hasn't completed a job for over a second and has no available threads).
     Async checks every second.  By default, if thread pool has been stuck for less than
     60s, async will <code class="code">eprintf</code> a message.  If more than 60s, async will send an exception
     to the main monitor, which will abort the program unless there is a custom handler for
-    the main monitor.<br/>    Calling <code class="code">handle_thread_pool_stuck</code> replaces whatever behavior was previously there.</div></div>
+    the main monitor.<p>    Calling <code class="code">handle_thread_pool_stuck</code> replaces whatever behavior was previously there.</p></div></div>
 </div>

@@ -35,14 +35,14 @@
     2.</div></div>
 <pre><span class="VALretry_until_no_eintr"><span class="keyword">val</span> retry_until_no_eintr</span> : <code class="type">(unit -&gt; 'a) -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">retry_until_no_eintr f</code> returns <code class="code">f ()</code> unless <code class="code">f ()</code> fails with <code class="code">EINTR</code>; in which
     case <code class="code">f ()</code> is run again until it raises a different error or returns a value.</div></div>
-<div class="info"><div class="info"><h6 id="6_TITLE">Access to the process environment</h6><br/>    If you're looking for <code class="code">getenv</code>, that's in the Sys module.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Access to the process environment</h6><p>    If you're looking for <code class="code">getenv</code>, that's in the Sys module.</p></div></div>
 <pre><span class="VALenvironment"><span class="keyword">val</span> environment</span> : <code class="type">unit -&gt; string array</code></pre><div class="info"><div class="info">Return the process environment, as an array of strings
     with the format ``variable=value''.</div></div>
 <pre><span class="VALputenv"><span class="keyword">val</span> putenv</span> : <code class="type">key:string -&gt; data:string -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">Unix.putenv ~key ~data</code> sets the value associated to a
    variable in the process environment.
    <code class="code">key</code> is the name of the environment variable,
    and <code class="code">data</code> its new associated value.</div></div>
-<pre><span class="VALunsetenv"><span class="keyword">val</span> unsetenv</span> : <code class="type">string -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">unsetenv name</code> deletes the variable <code class="code">name</code> from the environment.<br/>   EINVAL <code class="code">name</code> contained an ’=’ or an '\000' character.</div></div>
+<pre><span class="VALunsetenv"><span class="keyword">val</span> unsetenv</span> : <code class="type">string -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">unsetenv name</code> deletes the variable <code class="code">name</code> from the environment.<p>   EINVAL <code class="code">name</code> contained an ’=’ or an '\000' character.</p></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Process handling</h6></div></div>
 <div class="ocaml_module sig" name="Exit"><pre><span class="keyword">module</span> <a href="?package=core&amp;module=Core_unix.Exit">Exit</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">The termination status of a process.</div></div><div class="ocaml_module_content">
 <pre><span class="TYPEerror"><span class="keyword">type</span> error</span> = <code class="type">[ `Exit_non_zero of int ]</code></pre>
@@ -89,8 +89,8 @@ args:string list -&gt;
 ?use_path:bool -&gt; ?env:string list -&gt; unit -&gt; <a href="?package=core_kernel&amp;module=Std&amp;type=never_returns">Core_kernel.Std.never_returns</a></code></pre><div class="info"><div class="info"><code class="code">exec ~prog ~args ?search_path ?env</code> execs <code class="code">prog</code> with <code class="code">args</code>.  If <code class="code">use_path = true</code>
     (the default) and <code class="code">prog</code> doesn't contain a slash, then <code class="code">exec</code> searches the PATH
     environment variable for <code class="code">prog</code>.  If <code class="code">env</code> is supplied, it is used as the environment
-    when <code class="code">prog</code> is executed.<br/>    The first element in args should be the program itself; the correct way to call <code class="code">exec</code>
-    is:<br/>      exec ~prog ~args:<code class="code"> prog; arg1; arg2; ...</code> ()</div></div>
+    when <code class="code">prog</code> is executed.<p>    The first element in args should be the program itself; the correct way to call <code class="code">exec</code>
+    is:</p><p>      exec ~prog ~args:<code class="code"> prog; arg1; arg2; ...</code> ()</p></div></div>
 <pre><span class="VALfork_exec"><span class="keyword">val</span> fork_exec</span> : <code class="type">prog:string -&gt;
 args:string list -&gt;
 ?use_path:bool -&gt; ?env:string list -&gt; unit -&gt; <a href="?package=core_kernel&amp;module=Std.Pid&amp;type=t">Core_kernel.Std.Pid.t</a></code></pre><div class="info"><div class="info"><code class="code">fork_exec ~prog ~args ?use_path ?env ()</code> forks and execs <code class="code">prog</code> with <code class="code">args</code> in the
@@ -101,9 +101,9 @@ args:string list -&gt;
     that wait on a process to exit (normally or via a signal) or be stopped by a signal
     (if <code class="code">untraced</code> is used).  The <code class="code">wait_on</code> argument specifies which processes to wait on.
     The <code class="code">nohang</code> variants return <code class="code">None</code> immediately if no such process exists.  If
-    <code class="code">nohang</code> is not used, <code class="code">waitpid</code> will block until one of the desired processes exits.<br/>    The non-nohang variants have a <code class="code">restart</code> flag with (default true) that causes the
+    <code class="code">nohang</code> is not used, <code class="code">waitpid</code> will block until one of the desired processes exits.<p>    The non-nohang variants have a <code class="code">restart</code> flag with (default true) that causes the
     system call to be retried upon EAGAIN|EINTR.  The nohang variants do not have this
-    flag because they don't block.</div></div>
+    flag because they don't block.</p></div></div>
 <pre><span class="TYPEwait_on"><span class="keyword">type</span> wait_on</span> = <code class="type">[ `Any
 | `Group of <a href="?package=core_kernel&amp;module=Std.Pid&amp;type=t">Core_kernel.Std.Pid.t</a>
 | `My_group
@@ -146,11 +146,11 @@ args:string list -&gt;
       type; however, it uses Core's <code class="code">Flags</code> approach and the underlying integer bitmask
       representation, and so interoperates more smoothly with C.</div></div>
 <div class="ocaml_include ident" path="?package=core_kernel&amp;module=Std.Flags.S" items="[]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core_kernel&amp;module=Std.Flags.S">Core_kernel.Std.Flags.S</a></code> with type t := <a href="?package=core&amp;module=Core_unix.Open_flags&amp;type=t">t</a></code></pre></div>
-<pre><span class="VALrdonly"><span class="keyword">val</span> rdonly</span> : <code class="type"><a href="?package=core&amp;module=Core_unix.Open_flags&amp;type=t">t</a></code></pre><div class="info"><div class="info">access mode.<br/>      These three flags are not individual bits like flags usually are.  The access mode
+<pre><span class="VALrdonly"><span class="keyword">val</span> rdonly</span> : <code class="type"><a href="?package=core&amp;module=Core_unix.Open_flags&amp;type=t">t</a></code></pre><div class="info"><div class="info">access mode.<p>      These three flags are not individual bits like flags usually are.  The access mode
       is represented by the lower two bits of the <code class="code">Open_flags.t</code>.  A particular
       <code class="code">Open_flags.t</code> should include exactly one access mode.  Combining different
       <code class="code">Open_flags.t</code>'s using flags operations (e.g <code class="code">+</code>) is only sensible if they have the
-      same access mode.</div></div>
+      same access mode.</p></div></div>
 <pre><span class="VALwronly"><span class="keyword">val</span> wronly</span> : <code class="type"><a href="?package=core&amp;module=Core_unix.Open_flags&amp;type=t">t</a></code></pre>
 <pre><span class="VALrdwr"><span class="keyword">val</span> rdwr</span> : <code class="type"><a href="?package=core&amp;module=Core_unix.Open_flags&amp;type=t">t</a></code></pre>
 <pre><span class="VALcreat"><span class="keyword">val</span> creat</span> : <code class="type"><a href="?package=core&amp;module=Core_unix.Open_flags&amp;type=t">t</a></code></pre><div class="info"><div class="info">creation</div></div>
@@ -165,11 +165,11 @@ args:string list -&gt;
 <pre><span class="VALcan_read"><span class="keyword">val</span> can_read</span> : <code class="type"><a href="?package=core&amp;module=Core_unix.Open_flags&amp;type=t">t</a> -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">can_read t</code> iff <code class="code">t</code> has <code class="code">rdonly</code> or <code class="code">rdwr</code></div></div>
 <pre><span class="VALcan_write"><span class="keyword">val</span> can_write</span> : <code class="type"><a href="?package=core&amp;module=Core_unix.Open_flags&amp;type=t">t</a> -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">can_read t</code> iff <code class="code">t</code> has <code class="code">wronly</code> or <code class="code">rdwr</code></div></div>
 <pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type"><a href="?package=core&amp;module=Core_unix.Open_flags&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
-<div class="info"><div class="info">access mode.<br/>      These three flags are not individual bits like flags usually are.  The access mode
+<div class="info"><div class="info">access mode.<p>      These three flags are not individual bits like flags usually are.  The access mode
       is represented by the lower two bits of the <code class="code">Open_flags.t</code>.  A particular
       <code class="code">Open_flags.t</code> should include exactly one access mode.  Combining different
       <code class="code">Open_flags.t</code>'s using flags operations (e.g <code class="code">+</code>) is only sensible if they have the
-      same access mode.</div></div>
+      same access mode.</p></div></div>
 <div class="info"><div class="info">creation</div></div>
 <div class="info"><div class="info"><code class="code">can_read t</code> iff <code class="code">t</code> has <code class="code">rdonly</code> or <code class="code">rdwr</code></div></div>
 <div class="info"><div class="info"><code class="code">can_read t</code> iff <code class="code">t</code> has <code class="code">wronly</code> or <code class="code">rdwr</code></div></div></div></div>
@@ -189,10 +189,10 @@ string -&gt; mode:<a href="?package=core&amp;module=Core_unix&amp;type=open_flag
 <pre><span class="VALwrite"><span class="keyword">val</span> write</span> : <code class="type">?pos:int -&gt; ?len:int -&gt; <a href="?package=core&amp;module=Core_unix.File_descr&amp;type=t">File_descr.t</a> -&gt; buf:string -&gt; int</code></pre><div class="info"><div class="info"><code class="code">write fd buff ofs len</code> writes <code class="code">len</code> characters to descriptor
     <code class="code">fd</code>, taking them from string <code class="code">buff</code>, starting at position <code class="code">ofs</code>
     in string <code class="code">buff</code>. Return the number of characters actually
-    written.<br/>    When an error is reported some characters might have already been
+    written.<p>    When an error is reported some characters might have already been
     written.  Use <code class="code">single_write</code> instead to ensure that this is not the
-    case.<br/>    WARNING: write is an interruptible call and has no way to handle
-    EINTR properly. You should most probably be using single write.</div></div>
+    case.</p><p>    WARNING: write is an interruptible call and has no way to handle
+    EINTR properly. You should most probably be using single write.</p></div></div>
 <pre><span class="VALsingle_write"><span class="keyword">val</span> single_write</span> : <code class="type">?restart:bool -&gt; ?pos:int -&gt; ?len:int -&gt; <a href="?package=core&amp;module=Core_unix.File_descr&amp;type=t">File_descr.t</a> -&gt; buf:string -&gt; int</code></pre><div class="info"><div class="info">Same as <code class="code">write</code> but ensures that all errors are reported and
    that no character has ever been written when an error is reported.</div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Interfacing with the standard input/output library</h6></div></div>
@@ -650,15 +650,15 @@ addr:<a href="?package=core&amp;module=Core_unix&amp;type=sockaddr">sockaddr</a>
 <div class="ocaml_module sig" name="Host"><pre><span class="keyword">module</span> <a href="?package=core&amp;module=Core_unix.Host">Host</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
 <pre><code><span class="TYPEt"><span class="keyword">type</span> t</span> = {</code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTt.name">name</span> : <code class="type">string</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTt.aliases">aliases</span> : <code class="type">string array</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTt.family">family</span> : <code class="type"><a href="?package=core&amp;module=Core_unix.Protocol_family&amp;type=t">Protocol_family.t</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTt.addresses">addresses</span> : <code class="type"><a href="?package=core&amp;module=Core_unix.Inet_addr&amp;type=t">Inet_addr.t</a> array</code>;</code></td></tr><tr><td>}</td></tr></table><div class="info"><div class="info">Structure of entries in the <code class="code">hosts</code> database.</div></div>
-<pre><span class="VALgetbyname"><span class="keyword">val</span> getbyname</span> : <code class="type">string -&gt; <a href="?package=core&amp;module=Core_unix.Host&amp;type=t">t</a> option</code></pre><div class="info"><div class="info">Find an entry in <code class="code">hosts</code> with the given name.<br/>      NOTE: This function is not thread safe with certain versions of winbind using &quot;wins&quot;
-      name resolution.</div></div>
+<pre><span class="VALgetbyname"><span class="keyword">val</span> getbyname</span> : <code class="type">string -&gt; <a href="?package=core&amp;module=Core_unix.Host&amp;type=t">t</a> option</code></pre><div class="info"><div class="info">Find an entry in <code class="code">hosts</code> with the given name.<p>      NOTE: This function is not thread safe with certain versions of winbind using &quot;wins&quot;
+      name resolution.</p></div></div>
 <pre><span class="VALgetbyname_exn"><span class="keyword">val</span> getbyname_exn</span> : <code class="type">string -&gt; <a href="?package=core&amp;module=Core_unix.Host&amp;type=t">t</a></code></pre>
 <pre><span class="VALgetbyaddr"><span class="keyword">val</span> getbyaddr</span> : <code class="type"><a href="?package=core&amp;module=Core_unix.Inet_addr&amp;type=t">Inet_addr.t</a> -&gt; <a href="?package=core&amp;module=Core_unix.Host&amp;type=t">t</a> option</code></pre><div class="info"><div class="info">Find an entry in <code class="code">hosts</code> with the given address.</div></div>
 <pre><span class="VALgetbyaddr_exn"><span class="keyword">val</span> getbyaddr_exn</span> : <code class="type"><a href="?package=core&amp;module=Core_unix.Inet_addr&amp;type=t">Inet_addr.t</a> -&gt; <a href="?package=core&amp;module=Core_unix.Host&amp;type=t">t</a></code></pre>
 <pre><span class="VALhave_address_in_common"><span class="keyword">val</span> have_address_in_common</span> : <code class="type"><a href="?package=core&amp;module=Core_unix.Host&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Core_unix.Host&amp;type=t">t</a> -&gt; bool</code></pre>
 <pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type"><a href="?package=core&amp;module=Core_unix.Host&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
-<div class="info"><div class="info">Find an entry in <code class="code">hosts</code> with the given name.<br/>      NOTE: This function is not thread safe with certain versions of winbind using &quot;wins&quot;
-      name resolution.</div></div>
+<div class="info"><div class="info">Find an entry in <code class="code">hosts</code> with the given name.<p>      NOTE: This function is not thread safe with certain versions of winbind using &quot;wins&quot;
+      name resolution.</p></div></div>
 <div class="info"><div class="info">Find an entry in <code class="code">hosts</code> with the given address.</div></div></div></div>
 <div class="ocaml_module sig" name="Protocol"><pre><span class="keyword">module</span> <a href="?package=core&amp;module=Core_unix.Protocol">Protocol</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
 <pre><code><span class="TYPEt"><span class="keyword">type</span> t</span> = {</code></pre><table class="typetable">
@@ -692,7 +692,7 @@ addr:<a href="?package=core&amp;module=Core_unix&amp;type=sockaddr">sockaddr</a>
     records describing socket parameters and addresses suitable for
     communicating with the given host and service.  The empty list is
     returned if the host or service names are unknown, or the constraints
-    expressed in <code class="code">opts</code> cannot be satisfied.<br/>    <code class="code">host</code> is either a host name or the string representation of an IP
+    expressed in <code class="code">opts</code> cannot be satisfied.<p>    <code class="code">host</code> is either a host name or the string representation of an IP
     address.  <code class="code">host</code> can be given as the empty string; in this case,
     the ``any'' address or the ``loopback'' address are used,
     depending whether <code class="code">opts</code> contains <code class="code">AI_PASSIVE</code>.
@@ -701,7 +701,7 @@ addr:<a href="?package=core&amp;module=Core_unix&amp;type=sockaddr">sockaddr</a>
     in this case, the port field of the returned addresses is set to 0.
     <code class="code">opts</code> is a possibly empty list of options that allows the caller
     to force a particular socket domain (e.g. IPv6 only, or IPv4 only)
-    or a particular socket type (e.g. TCP only or UDP only).</div></div>
+    or a particular socket type (e.g. TCP only or UDP only).</p></div></div>
 <pre><code><span class="TYPEname_info"><span class="keyword">type</span> name_info</span> = {</code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTname_info.ni_hostname">ni_hostname</span> : <code class="type">string</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">Name or IP address of host</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTname_info.ni_service">ni_service</span> : <code class="type">string</code>;</code></td></tr><tr><td>}</td></tr></table><div class="info"><div class="info">Host and service information returned by  <a href="#Unix.getnameinfo">Unix.getnameinfo</a>.</div><div class="info">Name of service or port number</div></div>
 <pre><code><span class="TYPEgetnameinfo_option"><span class="keyword">type</span> getnameinfo_option</span> = </code></pre><table class="typetable">
@@ -1191,14 +1191,14 @@ pat:string -&gt; string -&gt; bool</code></pre>
     2.</div></div>
 <div class="info"><div class="info"><code class="code">retry_until_no_eintr f</code> returns <code class="code">f ()</code> unless <code class="code">f ()</code> fails with <code class="code">EINTR</code>; in which
     case <code class="code">f ()</code> is run again until it raises a different error or returns a value.</div></div>
-<div class="info"><div class="info"><h6 id="6_TITLE">Access to the process environment</h6><br/>    If you're looking for <code class="code">getenv</code>, that's in the Sys module.</div></div>
+<div class="info"><div class="info"><h6 id="6_TITLE">Access to the process environment</h6><p>    If you're looking for <code class="code">getenv</code>, that's in the Sys module.</p></div></div>
 <div class="info"><div class="info">Return the process environment, as an array of strings
     with the format ``variable=value''.</div></div>
 <div class="info"><div class="info"><code class="code">Unix.putenv ~key ~data</code> sets the value associated to a
    variable in the process environment.
    <code class="code">key</code> is the name of the environment variable,
    and <code class="code">data</code> its new associated value.</div></div>
-<div class="info"><div class="info"><code class="code">unsetenv name</code> deletes the variable <code class="code">name</code> from the environment.<br/>   EINVAL <code class="code">name</code> contained an ’=’ or an '\000' character.</div></div>
+<div class="info"><div class="info"><code class="code">unsetenv name</code> deletes the variable <code class="code">name</code> from the environment.<p>   EINVAL <code class="code">name</code> contained an ’=’ or an '\000' character.</p></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Process handling</h6></div></div>
 <div class="info"><div class="info">The termination status of a process.</div></div>
 <div class="info"><div class="info"><code class="code">of_unix</code> assumes that any signal numbers in the incoming value are O'Caml internal
@@ -1208,8 +1208,8 @@ pat:string -&gt; string -&gt; bool</code></pre>
 <div class="info"><div class="info"><code class="code">exec ~prog ~args ?search_path ?env</code> execs <code class="code">prog</code> with <code class="code">args</code>.  If <code class="code">use_path = true</code>
     (the default) and <code class="code">prog</code> doesn't contain a slash, then <code class="code">exec</code> searches the PATH
     environment variable for <code class="code">prog</code>.  If <code class="code">env</code> is supplied, it is used as the environment
-    when <code class="code">prog</code> is executed.<br/>    The first element in args should be the program itself; the correct way to call <code class="code">exec</code>
-    is:<br/>      exec ~prog ~args:<code class="code"> prog; arg1; arg2; ...</code> ()</div></div>
+    when <code class="code">prog</code> is executed.<p>    The first element in args should be the program itself; the correct way to call <code class="code">exec</code>
+    is:</p><p>      exec ~prog ~args:<code class="code"> prog; arg1; arg2; ...</code> ()</p></div></div>
 <div class="info"><div class="info"><code class="code">fork_exec ~prog ~args ?use_path ?env ()</code> forks and execs <code class="code">prog</code> with <code class="code">args</code> in the
     child process, returning the child pid to the parent.</div></div>
 <div class="info"><div class="info"><code class="code">fork ()</code> forks a new process.  The return value indicates whether we are continuing
@@ -1218,9 +1218,9 @@ pat:string -&gt; string -&gt; bool</code></pre>
     that wait on a process to exit (normally or via a signal) or be stopped by a signal
     (if <code class="code">untraced</code> is used).  The <code class="code">wait_on</code> argument specifies which processes to wait on.
     The <code class="code">nohang</code> variants return <code class="code">None</code> immediately if no such process exists.  If
-    <code class="code">nohang</code> is not used, <code class="code">waitpid</code> will block until one of the desired processes exits.<br/>    The non-nohang variants have a <code class="code">restart</code> flag with (default true) that causes the
+    <code class="code">nohang</code> is not used, <code class="code">waitpid</code> will block until one of the desired processes exits.<p>    The non-nohang variants have a <code class="code">restart</code> flag with (default true) that causes the
     system call to be retried upon EAGAIN|EINTR.  The nohang variants do not have this
-    flag because they don't block.</div></div>
+    flag because they don't block.</p></div></div>
 <pre><span class="VALwait_on_of_sexp"><span class="keyword">val</span> wait_on_of_sexp</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; <a href="?package=core&amp;module=Core_unix&amp;type=wait_on">wait_on</a></code></pre>
 <pre><span class="VAL__wait_on_of_sexp__"><span class="keyword">val</span> __wait_on_of_sexp__</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; <a href="?package=core&amp;module=Core_unix&amp;type=wait_on">wait_on</a></code></pre>
 <pre><span class="VALsexp_of_wait_on"><span class="keyword">val</span> sexp_of_wait_on</span> : <code class="type"><a href="?package=core&amp;module=Core_unix&amp;type=wait_on">wait_on</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
@@ -1256,11 +1256,11 @@ pat:string -&gt; string -&gt; bool</code></pre>
       open-file-descriptor table.  It deals with the same thing as OCaml's <code class="code">open_flag</code>
       type; however, it uses Core's <code class="code">Flags</code> approach and the underlying integer bitmask
       representation, and so interoperates more smoothly with C.</div></div>
-<div class="info"><div class="info">access mode.<br/>      These three flags are not individual bits like flags usually are.  The access mode
+<div class="info"><div class="info">access mode.<p>      These three flags are not individual bits like flags usually are.  The access mode
       is represented by the lower two bits of the <code class="code">Open_flags.t</code>.  A particular
       <code class="code">Open_flags.t</code> should include exactly one access mode.  Combining different
       <code class="code">Open_flags.t</code>'s using flags operations (e.g <code class="code">+</code>) is only sensible if they have the
-      same access mode.</div></div>
+      same access mode.</p></div></div>
 <div class="info"><div class="info">creation</div></div>
 <div class="info"><div class="info"><code class="code">can_read t</code> iff <code class="code">t</code> has <code class="code">rdonly</code> or <code class="code">rdwr</code></div></div>
 <div class="info"><div class="info"><code class="code">can_read t</code> iff <code class="code">t</code> has <code class="code">wronly</code> or <code class="code">rdwr</code></div></div>
@@ -1279,10 +1279,10 @@ pat:string -&gt; string -&gt; bool</code></pre>
 <div class="info"><div class="info"><code class="code">write fd buff ofs len</code> writes <code class="code">len</code> characters to descriptor
     <code class="code">fd</code>, taking them from string <code class="code">buff</code>, starting at position <code class="code">ofs</code>
     in string <code class="code">buff</code>. Return the number of characters actually
-    written.<br/>    When an error is reported some characters might have already been
+    written.<p>    When an error is reported some characters might have already been
     written.  Use <code class="code">single_write</code> instead to ensure that this is not the
-    case.<br/>    WARNING: write is an interruptible call and has no way to handle
-    EINTR properly. You should most probably be using single write.</div></div>
+    case.</p><p>    WARNING: write is an interruptible call and has no way to handle
+    EINTR properly. You should most probably be using single write.</p></div></div>
 <div class="info"><div class="info">Same as <code class="code">write</code> but ensures that all errors are reported and
    that no character has ever been written when an error is reported.</div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Interfacing with the standard input/output library</h6></div></div>
@@ -1652,8 +1652,8 @@ with sexp                      that have data present, and for how long
 <div class="info"><div class="info"><h6 id="6_TITLE">Host and protocol databases</h6></div></div>
 <div class="info"><div class="info">Return the name of the local host.</div></div>
 <div class="info"><div class="info">Structure of entries in the <code class="code">hosts</code> database.</div></div>
-<div class="info"><div class="info">Find an entry in <code class="code">hosts</code> with the given name.<br/>      NOTE: This function is not thread safe with certain versions of winbind using &quot;wins&quot;
-      name resolution.</div></div>
+<div class="info"><div class="info">Find an entry in <code class="code">hosts</code> with the given name.<p>      NOTE: This function is not thread safe with certain versions of winbind using &quot;wins&quot;
+      name resolution.</p></div></div>
 <div class="info"><div class="info">Find an entry in <code class="code">hosts</code> with the given address.</div></div>
 <div class="info"><div class="info">Structure of entries in the <code class="code">protocols</code> database.</div></div>
 <div class="info"><div class="info">Find an entry in <code class="code">protocols</code> with the given name.</div></div>
@@ -1669,7 +1669,7 @@ with sexp                      that have data present, and for how long
     records describing socket parameters and addresses suitable for
     communicating with the given host and service.  The empty list is
     returned if the host or service names are unknown, or the constraints
-    expressed in <code class="code">opts</code> cannot be satisfied.<br/>    <code class="code">host</code> is either a host name or the string representation of an IP
+    expressed in <code class="code">opts</code> cannot be satisfied.<p>    <code class="code">host</code> is either a host name or the string representation of an IP
     address.  <code class="code">host</code> can be given as the empty string; in this case,
     the ``any'' address or the ``loopback'' address are used,
     depending whether <code class="code">opts</code> contains <code class="code">AI_PASSIVE</code>.
@@ -1678,7 +1678,7 @@ with sexp                      that have data present, and for how long
     in this case, the port field of the returned addresses is set to 0.
     <code class="code">opts</code> is a possibly empty list of options that allows the caller
     to force a particular socket domain (e.g. IPv6 only, or IPv4 only)
-    or a particular socket type (e.g. TCP only or UDP only).</div></div>
+    or a particular socket type (e.g. TCP only or UDP only).</p></div></div>
 <pre><span class="VALname_info_of_sexp"><span class="keyword">val</span> name_info_of_sexp</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; <a href="?package=core&amp;module=Core_unix&amp;type=name_info">name_info</a></code></pre><div class="info"><div class="info">Host and service information returned by  <a href="#Unix.getnameinfo">Unix.getnameinfo</a>.</div></div>
 <pre><span class="VALsexp_of_name_info"><span class="keyword">val</span> sexp_of_name_info</span> : <code class="type"><a href="?package=core&amp;module=Core_unix&amp;type=name_info">name_info</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre><div class="info"><div class="info">Name of service or port number</div></div>
 <pre><span class="VALgetnameinfo_option_of_sexp"><span class="keyword">val</span> getnameinfo_option_of_sexp</span> : <code class="type"><a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a> -&gt; <a href="?package=core&amp;module=Core_unix&amp;type=getnameinfo_option">getnameinfo_option</a></code></pre><div class="info"><div class="info">Options to  <a href="#Unix.getnameinfo">Unix.getnameinfo</a>.</div></div>

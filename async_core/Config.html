@@ -1,9 +1,9 @@
-<div class="ocaml_toplevel_module"><div class="info">Settings that globally affect the behavior of async.<br/>    These can be set by setting an environment variable, <code class="code">ASYNC_CONFIG</code>, to a sexp
+<div class="ocaml_toplevel_module"><div class="info">Settings that globally affect the behavior of async.<p>    These can be set by setting an environment variable, <code class="code">ASYNC_CONFIG</code>, to a sexp
     representation of the config.  Also, setting <code class="code">ASYNC_CONFIG</code> to an invalid sexp
     (e.g. the empty string), will cause your program to print to stderr a usage message
     describing how to configure <code class="code">ASYNC_CONFIG</code>, and exit nonzero.  For example, the
-    following shell command should print the usage message:<br/>    <span class="verbatim">      ASYNC_CONFIG= foo.exe
-    </span></div>
+    following shell command should print the usage message:</p><p>    <span class="verbatim">      ASYNC_CONFIG= foo.exe
+    </span></p></div>
 <div class="ocaml_module ident" name="Epoll_max_ready_events" path="?package=core&amp;module=Std.Validated"><pre><span class="keyword">module</span> <a href="?package=async_core&amp;module=Config.Epoll_max_ready_events">Epoll_max_ready_events</a> : <code class="type"><code class="code"><a href="?package=core&amp;module=Std.Validated">Core.Std.Validated</a></code> with type raw := int</code></pre></div>
 <div class="ocaml_module ident" name="Max_inter_cycle_timeout" path="?package=core&amp;module=Std.Validated"><pre><span class="keyword">module</span> <a href="?package=async_core&amp;module=Config.Max_inter_cycle_timeout">Max_inter_cycle_timeout</a> : <code class="type"><code class="code"><a href="?package=core&amp;module=Std.Validated">Core.Std.Validated</a></code> with type raw := <a href="?package=core&amp;module=Std.Time.Span&amp;type=t">Core.Std.Time.Span.t</a></code></pre></div>
 <div class="ocaml_module ident" name="Max_num_open_file_descrs" path="?package=core&amp;module=Std.Validated"><pre><span class="keyword">module</span> <a href="?package=async_core&amp;module=Config.Max_num_open_file_descrs">Max_num_open_file_descrs</a> : <code class="type"><code class="code"><a href="?package=core&amp;module=Std.Validated">Core.Std.Validated</a></code> with type raw := int</code></pre></div>

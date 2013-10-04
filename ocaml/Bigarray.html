@@ -1,9 +1,9 @@
-<div class="ocaml_toplevel_module"><div class="info">Large, multi-dimensional, numerical arrays.<br/>   This module implements multi-dimensional arrays of integers and
+<div class="ocaml_toplevel_module"><div class="info">Large, multi-dimensional, numerical arrays.<p>   This module implements multi-dimensional arrays of integers and
    floating-point numbers, thereafter referred to as 'big arrays'.
    The implementation allows efficient sharing of large numerical
-   arrays between OCaml code and C or Fortran numerical libraries.<br/>   Concerning the naming conventions, users of this module are encouraged
+   arrays between OCaml code and C or Fortran numerical libraries.</p><p>   Concerning the naming conventions, users of this module are encouraged
    to do <code class="code">open Bigarray</code> in their source, then refer to array types and
-   operations via short dot notation, e.g. <code class="code">Array1.t</code> or <code class="code">Array2.sub</code>.<br/>   Big arrays support all the OCaml ad-hoc polymorphic operations:<ul><li>comparisons (<code class="code">=</code>, <code class="code">&lt;&gt;</code>, <code class="code">&lt;=</code>, etc, as well as  <a href="#Pervasives.compare">Pervasives.compare</a>);</li><li>hashing (module <code class="code">Hash</code>);</li><li>and structured input-output (the functions from the
+   operations via short dot notation, e.g. <code class="code">Array1.t</code> or <code class="code">Array2.sub</code>.</p><p>   Big arrays support all the OCaml ad-hoc polymorphic operations:</p><ul><li>comparisons (<code class="code">=</code>, <code class="code">&lt;&gt;</code>, <code class="code">&lt;=</code>, etc, as well as  <a href="#Pervasives.compare">Pervasives.compare</a>);</li><li>hashing (module <code class="code">Hash</code>);</li><li>and structured input-output (the functions from the
       <a href="#Marshal">Marshal</a> module, as well as  <a href="#Pervasives.output_value">Pervasives.output_value</a>
      and  <a href="#Pervasives.input_value">Pervasives.input_value</a>).
 </li></ul></div>
@@ -37,12 +37,12 @@
    a big array whose elements are of kind <code class="code">float32_elt</code> contains
    32-bit single precision floats, but reading or writing one of
    its elements from OCaml uses the OCaml type <code class="code">float</code>, which is
-   64-bit double precision floats.<br/>   The abstract type <code class="code">('a, 'b) kind</code> captures this association
+   64-bit double precision floats.<p>   The abstract type <code class="code">('a, 'b) kind</code> captures this association
    of an OCaml type <code class="code">'a</code> for values read or written in the big array,
    and of an element kind <code class="code">'b</code> which represents the actual contents
    of the big array.  The following predefined values of type
    <code class="code">kind</code> list all possible associations of OCaml types with
-   element kinds:</div></div>
+   element kinds:</p></div></div>
 <pre><span class="VALfloat32"><span class="keyword">val</span> float32</span> : <code class="type">(float, <a href="?package=ocaml&amp;module=Bigarray&amp;type=float32_elt">float32_elt</a>) <a href="?package=ocaml&amp;module=Bigarray&amp;type=kind">kind</a></code></pre><div class="info"><div class="info">See  <a href="#Bigarray.char">Bigarray.char</a>.</div></div>
 <pre><span class="VALfloat64"><span class="keyword">val</span> float64</span> : <code class="type">(float, <a href="?package=ocaml&amp;module=Bigarray&amp;type=float64_elt">float64_elt</a>) <a href="?package=ocaml&amp;module=Bigarray&amp;type=kind">kind</a></code></pre><div class="info"><div class="info">See  <a href="#Bigarray.char">Bigarray.char</a>.</div></div>
 <pre><span class="VALcomplex32"><span class="keyword">val</span> complex32</span> : <code class="type">(<a href="?package=ocaml&amp;module=Complex&amp;type=t">Complex.t</a>, <a href="?package=ocaml&amp;module=Bigarray&amp;type=complex32_elt">complex32_elt</a>) <a href="?package=ocaml&amp;module=Bigarray&amp;type=kind">kind</a></code></pre><div class="info"><div class="info">See  <a href="#Bigarray.char">Bigarray.char</a>.</div></div>
@@ -74,31 +74,31 @@
 <pre><span class="TYPEfortran_layout"><span class="keyword">type</span> fortran_layout</span> </pre><div class="info"><div class="info">To facilitate interoperability with existing C and Fortran code,
    this library supports two different memory layouts for big arrays,
    one compatible with the C conventions,
-   the other compatible with the Fortran conventions.<br/>   In the C-style layout, array indices start at 0, and
+   the other compatible with the Fortran conventions.<p>   In the C-style layout, array indices start at 0, and
    multi-dimensional arrays are laid out in row-major format.
    That is, for a two-dimensional array, all elements of
    row 0 are contiguous in memory, followed by all elements of
    row 1, etc.  In other terms, the array elements at <code class="code">(x,y)</code>
-   and <code class="code">(x, y+1)</code> are adjacent in memory.<br/>   In the Fortran-style layout, array indices start at 1, and
+   and <code class="code">(x, y+1)</code> are adjacent in memory.</p><p>   In the Fortran-style layout, array indices start at 1, and
    multi-dimensional arrays are laid out in column-major format.
    That is, for a two-dimensional array, all elements of
    column 0 are contiguous in memory, followed by all elements of
    column 1, etc.  In other terms, the array elements at <code class="code">(x,y)</code>
-   and <code class="code">(x+1, y)</code> are adjacent in memory.<br/>   Each layout style is identified at the type level by the
-   abstract types  <a href="#Bigarray.c_layout">Bigarray.c_layout</a> and <code class="code">fortran_layout</code> respectively.</div></div>
+   and <code class="code">(x+1, y)</code> are adjacent in memory.</p><p>   Each layout style is identified at the type level by the
+   abstract types  <a href="#Bigarray.c_layout">Bigarray.c_layout</a> and <code class="code">fortran_layout</code> respectively.</p></div></div>
 <pre><span class="TYPElayout"><span class="keyword">type</span> <code class="type">'a </code>layout</span> </pre><div class="info"><div class="info">The type <code class="code">'a layout</code> represents one of the two supported
    memory layouts: C-style if <code class="code">'a</code> is  <a href="#Bigarray.c_layout">Bigarray.c_layout</a>, Fortran-style
    if <code class="code">'a</code> is  <a href="#Bigarray.fortran_layout">Bigarray.fortran_layout</a>.</div></div>
-<div class="info"><div class="info"><div class="h7">Supported layouts</div><br/>   The abstract values <code class="code">c_layout</code> and <code class="code">fortran_layout</code> represent
-   the two supported layouts at the level of values.</div></div>
+<div class="info"><div class="info"><div class="h7">Supported layouts</div><p>   The abstract values <code class="code">c_layout</code> and <code class="code">fortran_layout</code> represent
+   the two supported layouts at the level of values.</p></div></div>
 <pre><span class="VALc_layout"><span class="keyword">val</span> c_layout</span> : <code class="type"><a href="?package=ocaml&amp;module=Bigarray&amp;type=c_layout">c_layout</a> <a href="?package=ocaml&amp;module=Bigarray&amp;type=layout">layout</a></code></pre>
 <pre><span class="VALfortran_layout"><span class="keyword">val</span> fortran_layout</span> : <code class="type"><a href="?package=ocaml&amp;module=Bigarray&amp;type=fortran_layout">fortran_layout</a> <a href="?package=ocaml&amp;module=Bigarray&amp;type=layout">layout</a></code></pre>
 <div class="info"><div class="info"><h6 id="6_TITLE">Generic arrays (of arbitrarily many dimensions)</h6></div></div>
 <div class="ocaml_module sig" name="Genarray"><pre><span class="keyword">module</span> <a href="?package=ocaml&amp;module=Bigarray.Genarray">Genarray</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
 <pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b, 'c) </code>t</span> </pre><div class="info"><div class="info">The type <code class="code">Genarray.t</code> is the type of big arrays with variable
      numbers of dimensions.  Any number of dimensions between 1 and 16
-     is supported.<br/>     The three type parameters to <code class="code">Genarray.t</code> identify the array element
-     kind and layout, as follows:<ul><li>the first parameter, <code class="code">'a</code>, is the OCaml type for accessing array
+     is supported.<p>     The three type parameters to <code class="code">Genarray.t</code> identify the array element
+     kind and layout, as follows:</p><ul><li>the first parameter, <code class="code">'a</code>, is the OCaml type for accessing array
        elements (<code class="code">float</code>, <code class="code">int</code>, <code class="code">int32</code>, <code class="code">int64</code>, <code class="code">nativeint</code>);</li><li>the second parameter, <code class="code">'b</code>, is the actual kind of array elements
        (<code class="code">float32_elt</code>, <code class="code">float64_elt</code>, <code class="code">int8_signed_elt</code>, <code class="code">int8_unsigned_elt</code>,
        etc);</li><li>the third parameter, <code class="code">'c</code>, identifies the array layout
@@ -113,13 +113,13 @@
      <code class="code">fortran_layout</code>).  The <code class="code">dimensions</code> parameter is an array of
      integers that indicate the size of the big array in each dimension.
      The length of <code class="code">dimensions</code> determines the number of dimensions
-     of the bigarray.<br/>     For instance, <code class="code">Genarray.create int32 c_layout [|4;6;8|]</code>
+     of the bigarray.<p>     For instance, <code class="code">Genarray.create int32 c_layout [|4;6;8|]</code>
      returns a fresh big array of 32-bit integers, in C layout,
      having three dimensions, the three dimensions being 4, 6 and 8
-     respectively.<br/>     Big arrays returned by <code class="code">Genarray.create</code> are not initialized:
-     the initial values of array elements is unspecified.<br/>     <code class="code">Genarray.create</code> raises <code class="code">Invalid_argument</code> if the number of dimensions
+     respectively.</p><p>     Big arrays returned by <code class="code">Genarray.create</code> are not initialized:
+     the initial values of array elements is unspecified.</p><p>     <code class="code">Genarray.create</code> raises <code class="code">Invalid_argument</code> if the number of dimensions
      is not in the range 1 to 16 inclusive, or if one of the dimensions
-     is negative.</div></div>
+     is negative.</p></div></div>
 <pre><span class="VALnum_dims"><span class="keyword">val</span> num_dims</span> : <code class="type">('a, 'b, 'c) <a href="?package=ocaml&amp;module=Bigarray.Genarray&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">Return the number of dimensions of the given big array.</div></div>
 <pre><span class="VALdims"><span class="keyword">val</span> dims</span> : <code class="type">('a, 'b, 'c) <a href="?package=ocaml&amp;module=Bigarray.Genarray&amp;type=t">t</a> -&gt; int array</code></pre><div class="info"><div class="info"><code class="code">Genarray.dims a</code> returns all dimensions of the big array <code class="code">a</code>,
      as an array of integers of length <code class="code">Genarray.num_dims a</code>.</div></div>
@@ -134,27 +134,27 @@
 <pre><span class="VALget"><span class="keyword">val</span> get</span> : <code class="type">('a, 'b, 'c) <a href="?package=ocaml&amp;module=Bigarray.Genarray&amp;type=t">t</a> -&gt; int array -&gt; 'a</code></pre><div class="info"><div class="info">Read an element of a generic big array.
      <code class="code">Genarray.get a [|i1; ...; iN|]</code> returns the element of <code class="code">a</code>
      whose coordinates are <code class="code">i1</code> in the first dimension, <code class="code">i2</code> in
-     the second dimension, ..., <code class="code">iN</code> in the <code class="code">N</code>-th dimension.<br/>     If <code class="code">a</code> has C layout, the coordinates must be greater or equal than 0
+     the second dimension, ..., <code class="code">iN</code> in the <code class="code">N</code>-th dimension.<p>     If <code class="code">a</code> has C layout, the coordinates must be greater or equal than 0
      and strictly less than the corresponding dimensions of <code class="code">a</code>.
      If <code class="code">a</code> has Fortran layout, the coordinates must be greater or equal
      than 1 and less or equal than the corresponding dimensions of <code class="code">a</code>.
      Raise <code class="code">Invalid_argument</code> if the array <code class="code">a</code> does not have exactly <code class="code">N</code>
-     dimensions, or if the coordinates are outside the array bounds.<br/>     If <code class="code">N &gt; 3</code>, alternate syntax is provided: you can write
+     dimensions, or if the coordinates are outside the array bounds.</p><p>     If <code class="code">N &gt; 3</code>, alternate syntax is provided: you can write
      <code class="code">a.{i1, i2, ..., iN}</code> instead of <code class="code">Genarray.get a [|i1; ...; iN|]</code>.
      (The syntax <code class="code">a.{...}</code> with one, two or three coordinates is
      reserved for accessing one-, two- and three-dimensional arrays
-     as described below.)</div></div>
+     as described below.)</p></div></div>
 <pre><span class="VALset"><span class="keyword">val</span> set</span> : <code class="type">('a, 'b, 'c) <a href="?package=ocaml&amp;module=Bigarray.Genarray&amp;type=t">t</a> -&gt; int array -&gt; 'a -&gt; unit</code></pre><div class="info"><div class="info">Assign an element of a generic big array.
      <code class="code">Genarray.set a [|i1; ...; iN|] v</code> stores the value <code class="code">v</code> in the
      element of <code class="code">a</code> whose coordinates are <code class="code">i1</code> in the first dimension,
-     <code class="code">i2</code> in the second dimension, ..., <code class="code">iN</code> in the <code class="code">N</code>-th dimension.<br/>     The array <code class="code">a</code> must have exactly <code class="code">N</code> dimensions, and all coordinates
+     <code class="code">i2</code> in the second dimension, ..., <code class="code">iN</code> in the <code class="code">N</code>-th dimension.<p>     The array <code class="code">a</code> must have exactly <code class="code">N</code> dimensions, and all coordinates
      must lie inside the array bounds, as described for <code class="code">Genarray.get</code>;
-     otherwise, <code class="code">Invalid_argument</code> is raised.<br/>     If <code class="code">N &gt; 3</code>, alternate syntax is provided: you can write
+     otherwise, <code class="code">Invalid_argument</code> is raised.</p><p>     If <code class="code">N &gt; 3</code>, alternate syntax is provided: you can write
      <code class="code">a.{i1, i2, ..., iN} &lt;- v</code> instead of
      <code class="code">Genarray.set a [|i1; ...; iN|] v</code>.
      (The syntax <code class="code">a.{...} &lt;- v</code> with one, two or three coordinates is
      reserved for updating one-, two- and three-dimensional arrays
-     as described below.)</div></div>
+     as described below.)</p></div></div>
 <pre><span class="VALsub_left"><span class="keyword">val</span> sub_left</span> : <code class="type">('a, 'b, <a href="?package=ocaml&amp;module=Bigarray&amp;type=c_layout">c_layout</a>) <a href="?package=ocaml&amp;module=Bigarray.Genarray&amp;type=t">t</a> -&gt; int -&gt; int -&gt; ('a, 'b, <a href="?package=ocaml&amp;module=Bigarray&amp;type=c_layout">c_layout</a>) <a href="?package=ocaml&amp;module=Bigarray.Genarray&amp;type=t">t</a></code></pre><div class="info"><div class="info">Extract a sub-array of the given big array by restricting the
      first (left-most) dimension.  <code class="code">Genarray.sub_left a ofs len</code>
      returns a big array with the same number of dimensions as <code class="code">a</code>,
@@ -165,10 +165,10 @@
      storage space.  In other terms, the element at coordinates
      <code class="code">[|i1; ...; iN|]</code> of the sub-array is identical to the
      element at coordinates <code class="code">[|i1+ofs; ...; iN|]</code> of the original
-     array <code class="code">a</code>.<br/>     <code class="code">Genarray.sub_left</code> applies only to big arrays in C layout.
+     array <code class="code">a</code>.<p>     <code class="code">Genarray.sub_left</code> applies only to big arrays in C layout.
      Raise <code class="code">Invalid_argument</code> if <code class="code">ofs</code> and <code class="code">len</code> do not designate
      a valid sub-array of <code class="code">a</code>, that is, if <code class="code">ofs &lt; 0</code>, or <code class="code">len &lt; 0</code>,
-     or <code class="code">ofs + len &gt; Genarray.nth_dim a 0</code>.</div></div>
+     or <code class="code">ofs + len &gt; Genarray.nth_dim a 0</code>.</p></div></div>
 <pre><span class="VALsub_right"><span class="keyword">val</span> sub_right</span> : <code class="type">('a, 'b, <a href="?package=ocaml&amp;module=Bigarray&amp;type=fortran_layout">fortran_layout</a>) <a href="?package=ocaml&amp;module=Bigarray.Genarray&amp;type=t">t</a> -&gt; int -&gt; int -&gt; ('a, 'b, <a href="?package=ocaml&amp;module=Bigarray&amp;type=fortran_layout">fortran_layout</a>) <a href="?package=ocaml&amp;module=Bigarray.Genarray&amp;type=t">t</a></code></pre><div class="info"><div class="info">Extract a sub-array of the given big array by restricting the
      last (right-most) dimension.  <code class="code">Genarray.sub_right a ofs len</code>
      returns a big array with the same number of dimensions as <code class="code">a</code>,
@@ -179,10 +179,10 @@
      storage space.  In other terms, the element at coordinates
      <code class="code">[|i1; ...; iN|]</code> of the sub-array is identical to the
      element at coordinates <code class="code">[|i1; ...; iN+ofs|]</code> of the original
-     array <code class="code">a</code>.<br/>     <code class="code">Genarray.sub_right</code> applies only to big arrays in Fortran layout.
+     array <code class="code">a</code>.<p>     <code class="code">Genarray.sub_right</code> applies only to big arrays in Fortran layout.
      Raise <code class="code">Invalid_argument</code> if <code class="code">ofs</code> and <code class="code">len</code> do not designate
      a valid sub-array of <code class="code">a</code>, that is, if <code class="code">ofs &lt; 1</code>, or <code class="code">len &lt; 0</code>,
-     or <code class="code">ofs + len &gt; Genarray.nth_dim a (Genarray.num_dims a - 1)</code>.</div></div>
+     or <code class="code">ofs + len &gt; Genarray.nth_dim a (Genarray.num_dims a - 1)</code>.</p></div></div>
 <pre><span class="VALslice_left"><span class="keyword">val</span> slice_left</span> : <code class="type">('a, 'b, <a href="?package=ocaml&amp;module=Bigarray&amp;type=c_layout">c_layout</a>) <a href="?package=ocaml&amp;module=Bigarray.Genarray&amp;type=t">t</a> -&gt; int array -&gt; ('a, 'b, <a href="?package=ocaml&amp;module=Bigarray&amp;type=c_layout">c_layout</a>) <a href="?package=ocaml&amp;module=Bigarray.Genarray&amp;type=t">t</a></code></pre><div class="info"><div class="info">Extract a sub-array of lower dimension from the given big array
      by fixing one or several of the first (left-most) coordinates.
      <code class="code">Genarray.slice_left a [|i1; ... ; iM|]</code> returns the 'slice'
@@ -192,9 +192,9 @@
      <code class="code">[|j1; ...; j(N-M)|]</code> in the slice is identical to the element
      at coordinates <code class="code">[|i1; ...; iM; j1; ...; j(N-M)|]</code> in the original
      array <code class="code">a</code>.  No copying of elements is involved: the slice and
-     the original array share the same storage space.<br/>     <code class="code">Genarray.slice_left</code> applies only to big arrays in C layout.
+     the original array share the same storage space.<p>     <code class="code">Genarray.slice_left</code> applies only to big arrays in C layout.
      Raise <code class="code">Invalid_argument</code> if <code class="code">M &gt;= N</code>, or if <code class="code">[|i1; ... ; iM|]</code>
-     is outside the bounds of <code class="code">a</code>.</div></div>
+     is outside the bounds of <code class="code">a</code>.</p></div></div>
 <pre><span class="VALslice_right"><span class="keyword">val</span> slice_right</span> : <code class="type">('a, 'b, <a href="?package=ocaml&amp;module=Bigarray&amp;type=fortran_layout">fortran_layout</a>) <a href="?package=ocaml&amp;module=Bigarray.Genarray&amp;type=t">t</a> -&gt; int array -&gt; ('a, 'b, <a href="?package=ocaml&amp;module=Bigarray&amp;type=fortran_layout">fortran_layout</a>) <a href="?package=ocaml&amp;module=Bigarray.Genarray&amp;type=t">t</a></code></pre><div class="info"><div class="info">Extract a sub-array of lower dimension from the given big array
      by fixing one or several of the last (right-most) coordinates.
      <code class="code">Genarray.slice_right a [|i1; ... ; iM|]</code> returns the 'slice'
@@ -204,9 +204,9 @@
      <code class="code">[|j1; ...; j(N-M)|]</code> in the slice is identical to the element
      at coordinates <code class="code">[|j1; ...; j(N-M); i1; ...; iM|]</code> in the original
      array <code class="code">a</code>.  No copying of elements is involved: the slice and
-     the original array share the same storage space.<br/>     <code class="code">Genarray.slice_right</code> applies only to big arrays in Fortran layout.
+     the original array share the same storage space.<p>     <code class="code">Genarray.slice_right</code> applies only to big arrays in Fortran layout.
      Raise <code class="code">Invalid_argument</code> if <code class="code">M &gt;= N</code>, or if <code class="code">[|i1; ... ; iM|]</code>
-     is outside the bounds of <code class="code">a</code>.</div></div>
+     is outside the bounds of <code class="code">a</code>.</p></div></div>
 <pre><span class="VALblit"><span class="keyword">val</span> blit</span> : <code class="type">('a, 'b, 'c) <a href="?package=ocaml&amp;module=Bigarray.Genarray&amp;type=t">t</a> -&gt; ('a, 'b, 'c) <a href="?package=ocaml&amp;module=Bigarray.Genarray&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Copy all elements of a big array in another big array.
      <code class="code">Genarray.blit src dst</code> copies all elements of <code class="code">src</code> into
      <code class="code">dst</code>.  Both arrays <code class="code">src</code> and <code class="code">dst</code> must have the same number of
@@ -228,30 +228,30 @@
      the file descriptor <code class="code">fd</code> (as opened previously with
      <code class="code">Unix.openfile</code>, for example).  The optional <code class="code">pos</code> parameter
      is the byte offset in the file of the data being mapped;
-     it defaults to 0 (map from the beginning of the file).<br/>     If <code class="code">shared</code> is <code class="code">true</code>, all modifications performed on the array
+     it defaults to 0 (map from the beginning of the file).<p>     If <code class="code">shared</code> is <code class="code">true</code>, all modifications performed on the array
      are reflected in the file.  This requires that <code class="code">fd</code> be opened
      with write permissions.  If <code class="code">shared</code> is <code class="code">false</code>, modifications
      performed on the array are done in memory only, using
      copy-on-write of the modified pages; the underlying file is not
-     affected.<br/>     <code class="code">Genarray.map_file</code> is much more efficient than reading
+     affected.</p><p>     <code class="code">Genarray.map_file</code> is much more efficient than reading
      the whole file in a big array, modifying that big array,
-     and writing it afterwards.<br/>     To adjust automatically the dimensions of the big array to
+     and writing it afterwards.</p><p>     To adjust automatically the dimensions of the big array to
      the actual size of the file, the major dimension (that is,
      the first dimension for an array with C layout, and the last
      dimension for an array with Fortran layout) can be given as
      <code class="code">-1</code>.  <code class="code">Genarray.map_file</code> then determines the major dimension
      from the size of the file.  The file must contain an integral
      number of sub-arrays as determined by the non-major dimensions,
-     otherwise <code class="code">Failure</code> is raised.<br/>     If all dimensions of the big array are given, the file size is
+     otherwise <code class="code">Failure</code> is raised.</p><p>     If all dimensions of the big array are given, the file size is
      matched against the size of the big array.  If the file is larger
      than the big array, only the initial portion of the file is
      mapped to the big array.  If the file is smaller than the big
      array, the file is automatically grown to the size of the big array.
-     This requires write permissions on <code class="code">fd</code>.<br/>     Array accesses are bounds-checked, but the bounds are determined by
+     This requires write permissions on <code class="code">fd</code>.</p><p>     Array accesses are bounds-checked, but the bounds are determined by
      the initial call to <code class="code">map_file</code>. Therefore, you should make sure no
      other process modifies the mapped file while you're accessing it,
      or a SIGBUS signal may be raised. This happens, for instance, if the
-     file is shrinked.</div></div></div></div>
+     file is shrinked.</p></div></div></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">One-dimensional arrays</h6></div></div>
 <div class="ocaml_module sig" name="Array1"><pre><span class="keyword">module</span> <a href="?package=ocaml&amp;module=Bigarray.Array1">Array1</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">One-dimensional arrays. The <code class="code">Array1</code> structure provides operations
    similar to those of

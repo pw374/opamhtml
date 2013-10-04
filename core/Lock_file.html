@@ -1,6 +1,6 @@
 <div class="ocaml_toplevel_module"><div class="info">Mutual exclusion between processes using flock and lockf.  A file is
-    considered locked if either of these mechanisms works.<br/>    These locks are OS-level but are Local (will not work across computers
-    even if they mount the same directory).</div>
+    considered locked if either of these mechanisms works.<p>    These locks are OS-level but are Local (will not work across computers
+    even if they mount the same directory).</p></div>
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">?message:string -&gt;
 ?close_on_exec:bool -&gt; ?unlink_on_exit:bool -&gt; string -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">create ?close_on_exec ?message path</code> tries to create a file at <code class="code">path</code> containing the
     text <code class="code">message</code>, which defaults to the pid of the locking process.  It returns true on
@@ -25,15 +25,15 @@
     the file given to the create call and a new file &lt;filename&gt;.nfs_lock.  This link call
     is atomic (in that it succeeds or fails) across all systems that have the same
     filesystem mounted.  The link file must be cleaned up on program exit (normally
-    accomplished by an at_exit handler, but see caveats below).<br/>    There are a few caveats compared to local file locks:<br/>    - These calls require the locker to have write access to the directory containing the
-      file being locked.<br/>    - Unlike a normal flock call the lock may not be removed when the calling program
-      exits (in particular if it is killed with SIGKILL).</div></div><div class="ocaml_module_content">
+    accomplished by an at_exit handler, but see caveats below).<p>    There are a few caveats compared to local file locks:</p><p>    - These calls require the locker to have write access to the directory containing the
+      file being locked.</p><p>    - Unlike a normal flock call the lock may not be removed when the calling program
+      exits (in particular if it is killed with SIGKILL).</p></div></div><div class="ocaml_module_content">
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">?message:string -&gt; string -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">create ?message path</code> tries to create and lock the file at <code class="code">path</code> by creating a hard
       link to <code class="code">path</code>.nfs_lock.  The contents of <code class="code">path</code> will be replaced with a sexp
-      containing the caller's hostname and pid, and the optional <code class="code">message</code>.<br/>      Efforts will be made to release this lock when the calling program exits. But there
+      containing the caller's hostname and pid, and the optional <code class="code">message</code>.<p>      Efforts will be made to release this lock when the calling program exits. But there
       is no guarantee that this will occur under some types of program crash. If the
       program crashes without removing the lock file an attempt will be made to clean up
-      on restart by checking the hostname and pid stored in the lockfile.</div></div>
+      on restart by checking the hostname and pid stored in the lockfile.</p></div></div>
 <pre><span class="VALcreate_exn"><span class="keyword">val</span> create_exn</span> : <code class="type">?message:string -&gt; string -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">create_exn ?message path</code> like create, but throws an exception when it fails to
       obtain the lock</div></div>
 <pre><span class="VALblocking_create"><span class="keyword">val</span> blocking_create</span> : <code class="type">?message:string -&gt; string -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">blocking_create ?message path</code> like create, but sleeps for 1 second between lock

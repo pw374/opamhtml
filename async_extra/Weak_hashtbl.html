@@ -5,7 +5,7 @@
     <code class="code">Weak_hashtbl</code> in Async prevents users from making this mistake.  Unlike (OCaml's)
     <code class="code">Weak.Make</code>, which also describes itself as a &quot;weak hashtable,&quot; <code class="code">Weak_hashtbl</code> gives a
     dictionary style structure.  In fact, OCaml's Weak.Make may better be described as a
-    weak set.<br/>    There's a tricky type of bug one can write with this module, e.g.:<br/>    <pre class="codepre"><code class="code">
+    weak set.<p>    There's a tricky type of bug one can write with this module, e.g.:</p><p>    </p><code class="code">
       type t =
         { foo : string
         ; bar : float Incr.t
@@ -17,8 +17,8 @@
           (... some function that computes a t...))
         in
         t.bar
-    </code></pre><br/>    At this point, the value associated with <code class="code">key</code> is unreachable (since all we did with it
-    was project out field bar), so it may disappear from the table at any time.</div>
+    </code><p>    At this point, the value associated with <code class="code">key</code> is unreachable (since all we did with it
+    was project out field bar), so it may disappear from the table at any time.</p></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b) </code>t</span> </pre>
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">'a <a href="?package=core&amp;module=Std.Hashtbl.Hashable&amp;type=t">Core.Std.Hashtbl.Hashable.t</a> -&gt; ('a, 'b) <a href="?package=async_extra&amp;module=Weak_hashtbl&amp;type=t">t</a></code></pre>
 <pre><span class="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a, 'b) <a href="?package=async_extra&amp;module=Weak_hashtbl&amp;type=t">t</a> -&gt; 'a -&gt; 'b <a href="?package=core&amp;module=Std.Heap_block&amp;type=t">Core.Std.Heap_block.t</a> option</code></pre>

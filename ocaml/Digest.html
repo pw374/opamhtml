@@ -1,10 +1,10 @@
-<div class="ocaml_toplevel_module"><div class="info">MD5 message digest.<br/>   This module provides functions to compute 128-bit 'digests' of
+<div class="ocaml_toplevel_module"><div class="info">MD5 message digest.<p>   This module provides functions to compute 128-bit 'digests' of
    arbitrary-length strings or files. The digests are of cryptographic
    quality: it is very hard, given a digest, to forge a string having
    that digest. The algorithm used is MD5. This module should not be
    used for secure and sensitive cryptographic applications. For these
    kind of applications more recent and stronger cryptographic
-   primitives should be used instead.</div>
+   primitives should be used instead.</p></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type">string</code></pre><div class="info"><div class="info">The type of digests: 16-character strings.</div></div>
 <pre><span class="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="?package=ocaml&amp;module=Digest&amp;type=t">t</a> -&gt; <a href="?package=ocaml&amp;module=Digest&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">The comparison function for 16-character digest, with the same
     specification as  <a href="#Pervasives.compare">Pervasives.compare</a> and the implementation

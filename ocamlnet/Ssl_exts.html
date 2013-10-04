@@ -8,7 +8,7 @@
 <pre><span class="VALsingle_shutdown"><span class="keyword">val</span> single_shutdown</span> : <code class="type"><a href="?package=ssl&amp;module=Ssl&amp;type=socket">Ssl.socket</a> -&gt; unit</code></pre><div class="info"><div class="info">Corresponds to SSL_shutdown: Closes one half of the SSL connection. 
  If called for the first time, a &quot;close notify&quot; alert is sent to the
  peer. If called for the second time, it is waited until the
- peer's &quot;close notify&quot; alert arrives.<br/> Use <code class="code">get_shutdown</code> to check what <code class="code">single_shutdown</code> will do.</div></div>
+ peer's &quot;close notify&quot; alert arrives.<p> Use <code class="code">get_shutdown</code> to check what <code class="code">single_shutdown</code> will do.</p></div></div>
 <pre><span class="VALsingle_read"><span class="keyword">val</span> single_read</span> : <code class="type"><a href="?package=ssl&amp;module=Ssl&amp;type=socket">Ssl.socket</a> -&gt; string -&gt; int -&gt; int -&gt; int</code></pre><div class="info"><div class="info">Deprecated. Is now identical to Ssl.read,</div></div>
 <pre><span class="VALsingle_write"><span class="keyword">val</span> single_write</span> : <code class="type"><a href="?package=ssl&amp;module=Ssl&amp;type=socket">Ssl.socket</a> -&gt; string -&gt; int -&gt; int -&gt; int</code></pre><div class="info"><div class="info">Deprecated. Is now identical to Ssl.write</div></div>
 <pre><code><span class="TYPEssl_mode"><span class="keyword">type</span> ssl_mode</span> = {</code></pre><table class="typetable">

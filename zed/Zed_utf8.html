@@ -105,9 +105,9 @@
 <pre><span class="VALstrip"><span class="keyword">val</span> strip</span> : <code class="type">?predicate:(<a href="?package=camomile&amp;module=CamomileLibrary.UChar&amp;type=t">CamomileLibrary.UChar.t</a> -&gt; bool) -&gt; <a href="?package=zed&amp;module=Zed_utf8&amp;type=t">t</a> -&gt; <a href="?package=zed&amp;module=Zed_utf8&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">strip ?predicate text</code> returns <code class="code">text</code> without its firsts and
       lasts characters that match <code class="code">predicate</code>. <code class="code">predicate</code> default to
       testing whether the given character has the <code class="code">`White_Space</code>
-      unicode property. For example:<br/>      <pre class="codepre"><code class="code">
+      unicode property. For example:<p>      </p><code class="code">
         strip &quot;\n  foo\n  &quot; = &quot;foo&quot;
-      </code></pre></div></div>
+      </code></div></div>
 <pre><span class="VALlstrip"><span class="keyword">val</span> lstrip</span> : <code class="type">?predicate:(<a href="?package=camomile&amp;module=CamomileLibrary.UChar&amp;type=t">CamomileLibrary.UChar.t</a> -&gt; bool) -&gt; <a href="?package=zed&amp;module=Zed_utf8&amp;type=t">t</a> -&gt; <a href="?package=zed&amp;module=Zed_utf8&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">lstrip ?predicate text</code> is the same as  <a href="#strip">strip</a> but it only
       removes characters at the left of <code class="code">text</code>.</div></div>
 <pre><span class="VALrstrip"><span class="keyword">val</span> rstrip</span> : <code class="type">?predicate:(<a href="?package=camomile&amp;module=CamomileLibrary.UChar&amp;type=t">CamomileLibrary.UChar.t</a> -&gt; bool) -&gt; <a href="?package=zed&amp;module=Zed_utf8&amp;type=t">t</a> -&gt; <a href="?package=zed&amp;module=Zed_utf8&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">lstrip ?predicate text</code> is the same as  <a href="#strip">strip</a> but it only

@@ -1,4 +1,4 @@
-<div class="ocaml_toplevel_module"><div class="info">Internal auxiliary functions <br/> This is an internal module.</div>
+<div class="ocaml_toplevel_module"><div class="info">Internal auxiliary functions <p> This is an internal module.</p></div>
 <div class="ocaml_module sig" name="KMP"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netaux.KMP">KMP</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
 <pre><span class="TYPEpattern"><span class="keyword">type</span> pattern</span> </pre>
 <pre><span class="VALmake_pattern"><span class="keyword">val</span> make_pattern</span> : <code class="type">string -&gt; <a href="?package=ocamlnet&amp;module=Netaux.KMP&amp;type=pattern">pattern</a></code></pre>
@@ -8,7 +8,7 @@
  (Performance reasons.)</div></div>
 <pre><span class="VALint_series"><span class="keyword">val</span> int_series</span> : <code class="type">int array -&gt; int -&gt; int array -&gt; int -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">int_series src srcpos dst dstpos len n</code>:
  Computes for every <code class="code">i</code>, <code class="code">0 &lt;= i &lt; len</code>:
- <code class="code">dst.(dstpos+i) = n + SUM(j=0..(i-1): src.(srcpos+j)) </code><br/> It is expected that <code class="code">src == dst</code> implies <code class="code">srcpos &gt;= dstpos</code>.</div></div>
+ <code class="code">dst.(dstpos+i) = n + SUM(j=0..(i-1): src.(srcpos+j)) </code><p> It is expected that <code class="code">src == dst</code> implies <code class="code">srcpos &gt;= dstpos</code>.</p></div></div>
 <pre><span class="VALint_blit_ref"><span class="keyword">val</span> int_blit_ref</span> : <code class="type">(int array -&gt; int -&gt; int array -&gt; int -&gt; int -&gt; unit) <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre>
 <pre><span class="VALint_series_ref"><span class="keyword">val</span> int_series_ref</span> : <code class="type">(int array -&gt; int -&gt; int array -&gt; int -&gt; int -&gt; int -&gt; unit) <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a></code></pre></div></div>
 </div>

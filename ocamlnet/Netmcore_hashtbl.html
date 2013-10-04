@@ -50,8 +50,8 @@
    The order in which the bindings are passed to <code class="code">f</code> is unspecified.
    However, if the table contains several bindings for the same key,
    they are passed to <code class="code">f</code> in reverse order of introduction, that is,
-   the most recent binding is passed first.<br/>    The table cannot be modified while <code class="code">iter</code> is running. Any attempt
-    will result in a deadlock.</div></div>
+   the most recent binding is passed first.<p>    The table cannot be modified while <code class="code">iter</code> is running. Any attempt
+    will result in a deadlock.</p></div></div>
 <pre><span class="VALlength"><span class="keyword">val</span> length</span> : <code class="type">('a, 'b, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_hashtbl&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info"><code class="code">Hashtbl.length tbl</code> returns the number of bindings in <code class="code">tbl</code>.
    Multiple bindings are counted multiply, so <code class="code">Hashtbl.length</code>
    gives the number of times <code class="code">Hashtbl.iter</code> calls its first argument.</div></div>

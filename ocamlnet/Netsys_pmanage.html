@@ -30,8 +30,8 @@
 <pre><span class="VALpmanage"><span class="keyword">val</span> pmanage</span> : <code class="type">string -&gt; <a href="?package=ocamlnet&amp;module=Netsys_pmanage&amp;type=pmanage">pmanage</a></code></pre><div class="info"><div class="info">Create a new manager for persistent kernel objects. The data is stored
       in a text file whose path is passed to this function. If the file already
       exists, it is opened and used. If the file does not exist yet, an
-      empty manager will be created.<br/>      This function can be safely used from several threads and several
-      processes.</div></div>
+      empty manager will be created.<p>      This function can be safely used from several threads and several
+      processes.</p></div></div>
 <pre><span class="VALfake_pmanage"><span class="keyword">val</span> fake_pmanage</span> : <code class="type">unit -&gt; <a href="?package=ocamlnet&amp;module=Netsys_pmanage&amp;type=pmanage">pmanage</a></code></pre><div class="info"><div class="info">A pseudo manager that does not save anything to a text file</div></div>
 <pre><span class="VALunlink_this"><span class="keyword">val</span> unlink_this</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_pmanage&amp;type=pm_obj">pm_obj</a> -&gt; unit</code></pre><div class="info"><div class="info">Unlinks this object</div></div>
 </div>

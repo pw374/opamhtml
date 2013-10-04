@@ -3,13 +3,13 @@
     They are very useful for counting the number of uses of a shared
     resource, and allow the identification of the first use (so the resource
     must be made available at all), and the last use (the resource can be
-    released).<br/>    This implementation works in both multi-processing and
+    released).<p>    This implementation works in both multi-processing and
     multi-threading netplex environments. It is, however, not very
     fast, because the counters live in the controller, and the
     increment/decrement operations are realized by RPC's. It is good
     enough when these operations are only infrequently called, e.g. in
-    the post-start and pre-finish processor callbacks.<br/>    This interface is designed so that a later re-implementation with
-    POSIX semaphores is relatively straight-forward.<br/>    <b>Thread safety:</b> Full. The functions can be called from any thread.</div></div>
+    the post-start and pre-finish processor callbacks.</p><p>    This interface is designed so that a later re-implementation with
+    POSIX semaphores is relatively straight-forward.</p><p>    <b>Thread safety:</b> Full. The functions can be called from any thread.</p></div></div>
 <pre><span class="VALplugin"><span class="keyword">val</span> plugin</span> : <code class="type">Netplex_types.plugin</code></pre><div class="info"><div class="info">To enable semaphores, call the controller's <code class="code">add_plugin</code> method 
       with this object as argument. This can e.g. be done in the
       <code class="code">post_add_hook</code> of the processor.</div></div>
@@ -18,36 +18,36 @@
      <a href="#Netplex_cenv.Not_in_container_thread">Netplex_cenv.Not_in_container_thread</a> is raised.</div></div>
 <pre><span class="VALincrement"><span class="keyword">val</span> increment</span> : <code class="type">string -&gt; int64</code></pre><div class="info"><div class="info">Increment the named semaphore by 1, and return the new value.
       If the semaphore does not exist yet, it is created with an initial
-      value of 0, which is then incremented. <br/>      Semaphore names are global to the whole netplex system. By convention,
+      value of 0, which is then incremented. <p>      Semaphore names are global to the whole netplex system. By convention,
       these names are formed like <code class="code">&quot;service_name.local_name&quot;</code>, i.e. they
-      are prefixed by the socket service to which they refer.</div></div>
+      are prefixed by the socket service to which they refer.</p></div></div>
 <pre><span class="VALdecrement"><span class="keyword">val</span> decrement</span> : <code class="type">?wait:bool -&gt; string -&gt; int64</code></pre><div class="info"><div class="info">Decrement the named semaphore by 1, and return the new value.
       Semaphore values cannot become negative. If the value is already 0,
       it is not decremented anymore if <code class="code">wait = false</code>. However, (-1)
-      is then returned nevertheless.<br/>      If the value is already 0 and <code class="code">wait=true</code>, the operation waits until
+      is then returned nevertheless.<p>      If the value is already 0 and <code class="code">wait=true</code>, the operation waits until
       the value exceeds 0, and when this happens, the semaphore is then
       decremented again. If several waiters exist, only one waiter gets
-      the chance to decrement.</div></div>
+      the chance to decrement.</p></div></div>
 <pre><span class="VALget"><span class="keyword">val</span> get</span> : <code class="type">string -&gt; int64</code></pre><div class="info"><div class="info">Get the value of the named semaphore. Useful e.g. for monitoring
       the semaphore. If the semaphore does not exist, a value of 0 is
-      returned.<br/>      <code class="code">get</code> can also be invoked from the controller process.</div></div>
+      returned.<p>      <code class="code">get</code> can also be invoked from the controller process.</p></div></div>
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">?protected:bool -&gt; string -&gt; int64 -&gt; bool</code></pre><div class="info"><div class="info">Create the semaphore with this initial value. Returns <code class="code">true</code> if the
-      creation is successful, and <code class="code">false</code> if the semaphore already existed.<br/>      If <code class="code">protected</code>, the semaphore
+      creation is successful, and <code class="code">false</code> if the semaphore already existed.<p>      If <code class="code">protected</code>, the semaphore
       is automatically decremented by some value when the container
       calling this function terminates. This value is <code class="code">pi - d</code> where
       <code class="code">pi</code> is the number of increments and <code class="code">d</code> is the number
-      of (successful) decrements requested by the container.<br/>      A semaphore needs not to be explicitly created by calling <code class="code">create</code>.
+      of (successful) decrements requested by the container.</p><p>      A semaphore needs not to be explicitly created by calling <code class="code">create</code>.
       It is automatically created at the first use time with a value of 0
-      and <code class="code">protected=true</code>.<br/>      <code class="code">create</code> can also be invoked from the controller process.</div></div>
+      and <code class="code">protected=true</code>.</p><p>      <code class="code">create</code> can also be invoked from the controller process.</p></div></div>
 <pre><span class="VALdestroy"><span class="keyword">val</span> destroy</span> : <code class="type">string -&gt; unit</code></pre><div class="info"><div class="info">Destroy this semaphore. Any waiting <code class="code">decrement</code> will immediately
-      get (-1L).<br/>      Note that there is no protection against unintended re-creation
-      after <code class="code">destroy</code>.<br/>      <code class="code">destroy</code> can also be invoked from the controller process.</div></div>
+      get (-1L).<p>      Note that there is no protection against unintended re-creation
+      after <code class="code">destroy</code>.</p><p>      <code class="code">destroy</code> can also be invoked from the controller process.</p></div></div>
 <pre><span class="VALctrl_increment"><span class="keyword">val</span> ctrl_increment</span> : <code class="type">string -&gt; Netplex_types.container_id -&gt; int64</code></pre><div class="info"><div class="info">Increment the named semaphore from controller context, substituting
       an increment from a container (e.g. a container that terminated
       or is otherwise no longer able to do so). In this
       case the ID of the container needs to be passed</div></div>
-<div class="info"><div class="info">Example (code fragment):<br/>    Override the processor callbacks as follows to count the number of
-    containers for the service:<br/>  <pre class="codepre"><code class="code"> 
+<div class="info"><div class="info">Example (code fragment):<p>    Override the processor callbacks as follows to count the number of
+    containers for the service:</p><p>  </p><code class="code"> 
     method post_add_hook sockserv ctrl =
       ctrl # add_plugin Netplex_semaphore.plugin
 
@@ -64,5 +64,5 @@
         Netplex_semaphore.decrement sem_name in
       if n=0 then
         prerr_endline &quot;Last container&quot;
-   </code></pre></div></div>
+   </code></div></div>
 </div>

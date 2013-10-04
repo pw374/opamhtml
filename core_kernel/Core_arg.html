@@ -1,5 +1,5 @@
-<div class="ocaml_toplevel_module"><div class="info">Parsing of command line arguments.<br/>   This module provides a general mechanism for extracting options and
-   arguments from the command line to the program.<br/>   Syntax of command lines:
+<div class="ocaml_toplevel_module"><div class="info">Parsing of command line arguments.<p>   This module provides a general mechanism for extracting options and
+   arguments from the command line to the program.</p><p>   Syntax of command lines:
     A keyword is a character string starting with a <code class="code">-</code>.
     An option is a keyword alone or followed by an argument.
     The types of keywords are: <code class="code">Unit</code>, <code class="code">Bool</code>, <code class="code">Set</code>, <code class="code">Clear</code>,
@@ -9,7 +9,7 @@
     keyword takes the remainder of the command line as arguments.
     Every other keyword takes the following word on the command line
     as argument.
-    Arguments not preceded by a keyword are called anonymous arguments.<br/>   Examples (<code class="code">cmd</code> is assumed to be the command name):<ul><li>  <code class="code">cmd -flag           </code>(a unit option)</li><li>  <code class="code">cmd -int 1          </code>(an int option with argument <code class="code">1</code>)</li><li>  <code class="code">cmd -string foobar  </code>(a string option with argument <code class="code">&quot;foobar&quot;</code>)</li><li>  <code class="code">cmd -float 12.34    </code>(a float option with argument <code class="code">12.34</code>)</li><li>  <code class="code">cmd a b c           </code>(three anonymous arguments: <code class="code">&quot;a&quot;</code>, <code class="code">&quot;b&quot;</code>, and <code class="code">&quot;c&quot;</code>)</li><li>  <code class="code">cmd a b -- c d      </code>(two anonymous arguments and a rest option with
+    Arguments not preceded by a keyword are called anonymous arguments.</p><p>   Examples (<code class="code">cmd</code> is assumed to be the command name):</p><ul><li>  <code class="code">cmd -flag           </code>(a unit option)</li><li>  <code class="code">cmd -int 1          </code>(an int option with argument <code class="code">1</code>)</li><li>  <code class="code">cmd -string foobar  </code>(a string option with argument <code class="code">&quot;foobar&quot;</code>)</li><li>  <code class="code">cmd -float 12.34    </code>(a float option with argument <code class="code">12.34</code>)</li><li>  <code class="code">cmd a b c           </code>(three anonymous arguments: <code class="code">&quot;a&quot;</code>, <code class="code">&quot;b&quot;</code>, and <code class="code">&quot;c&quot;</code>)</li><li>  <code class="code">cmd a b -- c d      </code>(two anonymous arguments and a rest option with
                            two arguments)
 </li></ul></div>
 <pre><span class="TYPEspec"><span class="keyword">type</span> spec</span> = <code class="type"><a href="?package=ocaml&amp;module=Arg&amp;type=spec">Arg.spec</a></code></pre><table class="typetable">
@@ -30,12 +30,12 @@
     <code class="code">doc</code> is a one-line description of this option.
     <code class="code">anon_fun</code> is called on anonymous arguments.
     The functions in <code class="code">spec</code> and <code class="code">anon_fun</code> are called in the same order
-    as their arguments appear on the command line.<br/>    If an error occurs, <code class="code">Arg.parse</code> exits the program, after printing
-    to standard error an error message as follows:<ul><li>  The reason for the error: unknown option, invalid or missing argument, etc.</li><li>  <code class="code">usage_msg</code></li><li>  The list of options, each followed by the corresponding <code class="code">doc</code> string.</li></ul>    For the user to be able to specify anonymous arguments starting with a
-    <code class="code">-</code>, include for example <code class="code">(&quot;-&quot;, String anon_fun, doc)</code> in <code class="code">speclist</code>.<br/>    By default, <code class="code">parse</code> recognizes two unit options, <code class="code">-help</code> and <code class="code">--help</code>,
+    as their arguments appear on the command line.<p>    If an error occurs, <code class="code">Arg.parse</code> exits the program, after printing
+    to standard error an error message as follows:</p><ul><li>  The reason for the error: unknown option, invalid or missing argument, etc.</li><li>  <code class="code">usage_msg</code></li><li>  The list of options, each followed by the corresponding <code class="code">doc</code> string.</li></ul>    For the user to be able to specify anonymous arguments starting with a
+    <code class="code">-</code>, include for example <code class="code">(&quot;-&quot;, String anon_fun, doc)</code> in <code class="code">speclist</code>.<p>    By default, <code class="code">parse</code> recognizes two unit options, <code class="code">-help</code> and <code class="code">--help</code>,
     which will print to standard output <code class="code">usage_msg</code> and the list of
     options, and exit the program.  You can override this behaviour
-    by specifying your own <code class="code">-help</code> and <code class="code">--help</code> options in <code class="code">speclist</code>.</div></div>
+    by specifying your own <code class="code">-help</code> and <code class="code">--help</code> options in <code class="code">speclist</code>.</p></div></div>
 <pre><span class="VALparse_argv"><span class="keyword">val</span> parse_argv</span> : <code class="type">?current:int <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a> -&gt;
 string array -&gt; (<a href="?package=core_kernel&amp;module=Core_arg&amp;type=key">key</a> * <a href="?package=core_kernel&amp;module=Core_arg&amp;type=spec">spec</a> * <a href="?package=core_kernel&amp;module=Core_arg&amp;type=doc">doc</a>) list -&gt; <a href="?package=core_kernel&amp;module=Core_arg&amp;type=anon_fun">anon_fun</a> -&gt; <a href="?package=core_kernel&amp;module=Core_arg&amp;type=usage_msg">usage_msg</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">Arg.parse_argv ~current args speclist anon_fun usage_msg</code> parses
   the array <code class="code">args</code> as if it were the command line.  It uses and updates

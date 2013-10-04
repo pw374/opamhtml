@@ -7,12 +7,12 @@
  program.</div></div>
 <pre><span class="VALcall"><span class="keyword">val</span> call</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rpc_simple_client&amp;type=t">t</a> -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_value">Xdr.xdr_value</a> -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_value">Xdr.xdr_value</a></code></pre><div class="info"><div class="info"><code class="code">call simple_client procedure_name procedure_arg</code>:
  Call the procedure with the given name and the given argument. Returns
- the result of the procedure on success; otherwise raises an exception.<br/> Note that it is possible that the connection is aborted and the
+ the result of the procedure on success; otherwise raises an exception.<p> Note that it is possible that the connection is aborted and the
  client is reset. In this case <code class="code">call</code> raises an exception but it is
  currently difficult to recognize this case.
  Other reasons may be that the server refuses the call (e.g. because
- of missing authentication).<br/> Frequent exceptions:<br/> - <code class="code">Rpc.Rpc_server condition</code>:  The server did not like the call;
-                                the 'condition' explains why<ul><li><code class="code">Rpc.Rpc_cannot_unpack reason</code>:  Got a badly formatted message.</li><li><code class="code">Rpc_client.Message_lost</code>:   The stream ended before there was any
+ of missing authentication).</p><p> Frequent exceptions:</p><p> - <code class="code">Rpc.Rpc_server condition</code>:  The server did not like the call;
+                                the 'condition' explains why</p><ul><li><code class="code">Rpc.Rpc_cannot_unpack reason</code>:  Got a badly formatted message.</li><li><code class="code">Rpc_client.Message_lost</code>:   The stream ended before there was any
                                 reply (perhaps not even the call could
                                 be sent over the stream)</li><li><code class="code">Rpc_client.Message_timeout</code>: There was no reply for the specified
                                 period of time</li><li><code class="code">Rpc_client.Communication_error x</code>:

@@ -9,7 +9,7 @@
 <pre><span class="VALtcp_port"><span class="keyword">val</span> tcp_port</span> : <code class="type">int</code></pre><div class="info"><div class="info">Default TCP port for POP version 3</div></div>
 <div class="ocaml_class sig" name="client"><pre><span class="TYPEclient"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netpop&amp;class=client">client</a></span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netchannels&amp;type=out_obj_channel">Netchannels.out_obj_channel</a> -&gt; <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=in_obj_channel">Netchannels.in_obj_channel</a> -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">The class <code class="code">client</code> implements the POP3 protocol. Client objects
  are created by
- <pre class="codepre"><code class="code"> new client in_ch out_ch </code></pre>
+ <code class="code"> new client in_ch out_ch </code>
  where <code class="code">in_ch</code> is an input channel representing the input direction of
  the TCP stream, and where <code class="code">out_ch</code> is an output channel representing
  the output direction of the TCP stream.</div></div><div class="ocaml_class_content"><pre><span class="METHODstate"><span class="keyword">method</span> state</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netpop&amp;type=state">state</a></code></pre>

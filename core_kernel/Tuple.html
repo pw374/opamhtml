@@ -41,13 +41,13 @@ cmp3:('c -&gt; 'c -&gt; int) -&gt; ('a, 'b, 'c) <a href="?package=core_kernel&am
 ('b -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a>) -&gt;
 ('c -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a>) -&gt; ('a, 'b, 'c) <a href="?package=core_kernel&amp;module=Tuple.T3&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre></div></div>
 <div class="info"><div class="info">These functors allow users to write:
-  <pre class="codepre"><code class="code">
+  <code class="code">
    module Foo = struct
      include Tuple.Make       (String) (Int)
      include Tuple.Comparable (String) (Int)
      include Tuple.Hashable   (String) (Int)
    end
-  </code></pre></div></div>
+  </code></div></div>
 <div class="ocaml_module sig" name="Make"><pre><span class="keyword">module</span> <a href="?package=core_kernel&amp;module=Tuple.Make">Make</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">T1</code><code class="code"> : </code><code class="code">sig</code> .. <code class="code">end</code><code class="code">) -&gt; </code><div class="sig_block"><code class="code">functor (</code><code class="code">T2</code><code class="code"> : </code><code class="code">sig</code> .. <code class="code">end</code><code class="code">) -&gt; </code><code class="code">sig</code> .. <code class="code">end</code></div></div></code></pre><div class="ocaml_module_content">
 <pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type">T1.t * T2.t</code></pre></div></div>
 <div class="ocaml_module sig" name="Comparable_sexpable"><pre><span class="keyword">module type</span> <a href="?package=core_kernel&amp;module=Tuple.Comparable_sexpable">Comparable_sexpable</a> = <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
@@ -64,17 +64,17 @@ cmp3:('c -&gt; 'c -&gt; int) -&gt; ('a, 'b, 'c) <a href="?package=core_kernel&am
 <div class="ocaml_module ident" name="Hashable" path="?package=core_kernel&amp;module=Tuple.Hashable_sexpable"><pre><span class="keyword">module</span> <a href="?package=core_kernel&amp;module=Tuple.Hashable">Hashable</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">S1</code><code class="code"> : </code><code class="code"><a href="?package=core_kernel&amp;module=Tuple.Hashable_sexpable">Hashable_sexpable</a></code><code class="code">) -&gt; </code><div class="sig_block"><code class="code">functor (</code><code class="code">S2</code><code class="code"> : </code><code class="code"><a href="?package=core_kernel&amp;module=Tuple.Hashable_sexpable">Hashable_sexpable</a></code><code class="code">) -&gt; </code><code class="code"><a href="?package=core_kernel&amp;module=Tuple.Hashable_sexpable">Hashable_sexpable</a></code> with type <a href="?package=core_kernel&amp;module=Tuple.Hashable_sexpable&amp;type=t">t</a> := ident print bug</div></div></code></pre><div class="info"><div class="info">The difference between <code class="code">Hashable</code> and <code class="code">Hashable_t</code> functors is that the former's
     result type doesn't contain type <code class="code">t</code> and the latter does. Therefore, <code class="code">Hashable</code> can't
     be used to combine two pairs into 4-tuple. but <code class="code">Hashable_t</code> can. On the other hand
-    result of <code class="code">Hashable_t</code> cannot be combined with <code class="code">Comparable</code>.<br/>    example:
+    result of <code class="code">Hashable_t</code> cannot be combined with <code class="code">Comparable</code>.<p>    example:
     module Four_ints = Tuple.Hashable_t (Tuple.Hashable_t (Int)(Int))
-                                        (Tuple.Hashable_t (Int)(Int))<br/>    If instead we used <code class="code">Hashable</code> compiler would complain that the input to outer functor
-    doesn't have type <code class="code">t</code>.<br/>    On the other hand:
+                                        (Tuple.Hashable_t (Int)(Int))</p><p>    If instead we used <code class="code">Hashable</code> compiler would complain that the input to outer functor
+    doesn't have type <code class="code">t</code>.</p><p>    On the other hand:
     module Foo = struct
       type t = String.t * Int.t
       include Tuple.Comparable (String.t) (Int)
       include Tuple.Hashable (String.t) (Int)
-    end<br/>    If we used <code class="code">Hashable_t</code> above, compiler would compile that we have two types <code class="code">t</code>
-    defined.<br/>    Unfortunately, it is not possible to define just one functor that could be used in
-    both cases.</div></div></div>
+    end</p><p>    If we used <code class="code">Hashable_t</code> above, compiler would compile that we have two types <code class="code">t</code>
+    defined.</p><p>    Unfortunately, it is not possible to define just one functor that could be used in
+    both cases.</p></div></div></div>
 <div class="ocaml_module ident" name="Hashable_t" path="?package=core_kernel&amp;module=Tuple.Hashable_sexpable"><pre><span class="keyword">module</span> <a href="?package=core_kernel&amp;module=Tuple.Hashable_t">Hashable_t</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">S1</code><code class="code"> : </code><code class="code"><a href="?package=core_kernel&amp;module=Tuple.Hashable_sexpable">Hashable_sexpable</a></code><code class="code">) -&gt; </code><div class="sig_block"><code class="code">functor (</code><code class="code">S2</code><code class="code"> : </code><code class="code"><a href="?package=core_kernel&amp;module=Tuple.Hashable_sexpable">Hashable_sexpable</a></code><code class="code">) -&gt; </code><code class="code"><a href="?package=core_kernel&amp;module=Tuple.Hashable_sexpable">Hashable_sexpable</a></code> with type <a href="?package=core_kernel&amp;module=Tuple.Hashable_sexpable&amp;type=t">t</a> = ident print bug</div></div></code></pre></div>
 <div class="ocaml_module ident" name="Sexpable" path="?package=core_kernel&amp;module=Sexpable.S"><pre><span class="keyword">module</span> <a href="?package=core_kernel&amp;module=Tuple.Sexpable">Sexpable</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">S1</code><code class="code"> : </code><code class="code"><a href="?package=core_kernel&amp;module=Sexpable.S">Sexpable.S</a></code><code class="code">) -&gt; </code><div class="sig_block"><code class="code">functor (</code><code class="code">S2</code><code class="code"> : </code><code class="code"><a href="?package=core_kernel&amp;module=Sexpable.S">Sexpable.S</a></code><code class="code">) -&gt; </code><code class="code"><a href="?package=core_kernel&amp;module=Sexpable.S">Sexpable.S</a></code> with type t := ident print bug</div></div></code></pre></div>
 </div>

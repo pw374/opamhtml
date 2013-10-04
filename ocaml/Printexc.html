@@ -32,20 +32,20 @@
     printer.  The printer should return <code class="code">None</code> or raise an exception
     if it does not know how to convert the passed exception, and <code class="code">Some
     s</code> with <code class="code">s</code> the resulting string if it can convert the passed
-    exception. Exceptions raised by the printer are ignored.<br/>    When converting an exception into a string, the printers will be invoked
+    exception. Exceptions raised by the printer are ignored.<p>    When converting an exception into a string, the printers will be invoked
     in the reverse order of their registrations, until a printer returns
     a <code class="code">Some s</code> value (if no such printer exists, the runtime will use a
-    generic printer).<br/>    When using this mechanism, one should be aware that an exception backtrace
+    generic printer).</p><p>    When using this mechanism, one should be aware that an exception backtrace
     is attached to the thread that saw it raised, rather than to the exception
     itself. Practically, it means that the code related to <code class="code">fn</code> should not use
-    the backtrace if it has itself raised an exception before. <b>Since</b> 3.11.2</div></div>
+    the backtrace if it has itself raised an exception before.</p> <b>Since</b> 3.11.2</div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Raw backtraces</h6></div></div>
 <pre><span class="TYPEraw_backtrace"><span class="keyword">type</span> raw_backtrace</span> </pre>
 <div class="info"><div class="info">The abstract type <code class="code">backtrace</code> stores exception backtraces in
     a low-level format, instead of directly exposing them as string as
-    the <code class="code">get_backtrace()</code> function does.<br/>    This allows to pay the performance overhead of representation
+    the <code class="code">get_backtrace()</code> function does.<p>    This allows to pay the performance overhead of representation
     conversion and formatting only at printing time, which is useful
-    if you want to record more backtrace than you actually print.</div></div>
+    if you want to record more backtrace than you actually print.</p></div></div>
 <pre><span class="VALget_raw_backtrace"><span class="keyword">val</span> get_raw_backtrace</span> : <code class="type">unit -&gt; <a href="?package=ocaml&amp;module=Printexc&amp;type=raw_backtrace">raw_backtrace</a></code></pre>
 <pre><span class="VALprint_raw_backtrace"><span class="keyword">val</span> print_raw_backtrace</span> : <code class="type"><a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a> -&gt; <a href="?package=ocaml&amp;module=Printexc&amp;type=raw_backtrace">raw_backtrace</a> -&gt; unit</code></pre>
 <pre><span class="VALraw_backtrace_to_string"><span class="keyword">val</span> raw_backtrace_to_string</span> : <code class="type"><a href="?package=ocaml&amp;module=Printexc&amp;type=raw_backtrace">raw_backtrace</a> -&gt; string</code></pre>

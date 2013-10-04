@@ -64,9 +64,9 @@
       provided that <code class="code">project x</code> returns a pair consisting of
         1. a <code class="code">'a</code>-value extracted from the <code class="code">'b</code>-value <code class="code">x</code>, and
         2. a function for rebuilding a modified <code class="code">'b</code>-value from
-           the modified <code class="code">'a</code>-value resulting from processing the flag.<br/>      The intended use pattern for <code class="code">lift</code> is when <code class="code">'b</code> is a record type
+           the modified <code class="code">'a</code>-value resulting from processing the flag.<p>      The intended use pattern for <code class="code">lift</code> is when <code class="code">'b</code> is a record type
       with a field <code class="code">foo</code> of type <code class="code">'a</code> and <code class="code">project</code> is
-        <code class="code">fun r -&gt; (r.foo, (fun foo' -&gt; { r with foo = foo' }))</code></div></div>
+        <code class="code">fun r -&gt; (r.foo, (fun foo' -&gt; { r with foo = foo' }))</code></p></div></div>
 <pre><span class="VALlift_unit"><span class="keyword">val</span> lift_unit</span> : <code class="type">unit <a href="?package=core_extended&amp;module=Deprecated_command.Flag&amp;type=t">t</a> -&gt; 'any <a href="?package=core_extended&amp;module=Deprecated_command.Flag&amp;type=t">t</a></code></pre>
 <pre><span class="VALto_spec"><span class="keyword">val</span> to_spec</span> : <code class="type">('accum -&gt; 'accum) <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a> -&gt;
 'accum <a href="?package=core_extended&amp;module=Deprecated_command.Flag&amp;type=t">t</a> -&gt; ('c, 'c) <a href="?package=core&amp;module=Std.Command.Spec&amp;type=t">Core.Std.Command.Spec.t</a></code></pre>
@@ -143,8 +143,8 @@ summary:string -&gt;
 usage_arg:string -&gt; flags:unit <a href="?package=core_extended&amp;module=Deprecated_command.Flag&amp;type=t">Flag.t</a> list -&gt; (unit -&gt; unit) -&gt; <a href="?package=core_extended&amp;module=Deprecated_command&amp;type=t">t</a></code></pre>
 <pre><span class="VALgroup"><span class="keyword">val</span> group</span> : <code class="type">summary:string -&gt; ?readme:(unit -&gt; string) -&gt; (string * <a href="?package=core_extended&amp;module=Deprecated_command&amp;type=t">t</a>) list -&gt; <a href="?package=core_extended&amp;module=Deprecated_command&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">group ~summary [...; (name_i, t_i); ...]</code> is an aggregate command
     that dispatches to one of the named sub-commands.  A <code class="code">&quot;help&quot;</code>
-    sub-command will also be generated for the group.<br/>    The name cannot contain underscores, however passing <code class="code">allow_underscores=true</code> into run
-    will parse underscores as dashes on the command line.</div></div>
+    sub-command will also be generated for the group.<p>    The name cannot contain underscores, however passing <code class="code">allow_underscores=true</code> into run
+    will parse underscores as dashes on the command line.</p></div></div>
 <pre><span class="TYPEwith_run_flags"><span class="keyword">type</span> <code class="type">'a </code>with_run_flags</span> = <code class="type">?version:string -&gt;
 ?build_info:string -&gt;
 ?argv:string list -&gt;
@@ -160,7 +160,7 @@ usage_arg:string -&gt; flags:unit <a href="?package=core_extended&amp;module=Dep
 <pre><span class="VALprint_version"><span class="keyword">val</span> print_version</span> : <code class="type">?version:string -&gt; unit -&gt; unit</code></pre></div></div>
 <div class="ocaml_module sig" name="Annotated_field"><pre><span class="keyword">module</span> <a href="?package=core_extended&amp;module=Deprecated_command.Annotated_field">Annotated_field</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">This module is intended to help in using pa_fields to easily generate
    Command.t's when you have a record type each field of which you would
-   like specified as a command line argument.<br/>   An example is as follows:<br/><pre class="codepre"><code class="code">module M = struct
+   like specified as a command line argument.<p>   An example is as follows:</p><code class="code">module M = struct
   type t = {
     field1 : int;
     field2 : float;
@@ -190,7 +190,7 @@ usage_arg:string -&gt; flags:unit <a href="?package=core_extended&amp;module=Dep
         ~field3:(get bool_of_string)
         ~field4:(get_opt ident)
     )
-    ~main:(fun _ -&gt; assert false)</code></pre>
+    ~main:(fun _ -&gt; assert false)</code>
 end</div></div><div class="ocaml_module_content">
 <pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre>
 <pre><span class="TYPEaccum"><span class="keyword">type</span> accum</span> </pre>

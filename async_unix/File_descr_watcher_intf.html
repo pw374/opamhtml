@@ -1,10 +1,10 @@
 <div class="ocaml_toplevel_module">
 <div class="info"><div class="info"><code class="code">File_descr_watcher_intf.S</code> provides an API for for watching a set of file descriptors
-    to see if they are ready for reading or writing.<br/>    We have two implementations, one using epoll, and one using select.<br/>    None of the functions need to be thread-safe, with the exception of
+    to see if they are ready for reading or writing.<p>    We have two implementations, one using epoll, and one using select.</p><p>    None of the functions need to be thread-safe, with the exception of
     <code class="code">thread_safe_check</code>.  So that implementations can easily do non-thread-safe actions,
-    checking for ready I/O is always done in three steps:<br/>    1. <code class="code">pre_check</code>, while holding the async lock
+    checking for ready I/O is always done in three steps:</p><p>    1. <code class="code">pre_check</code>, while holding the async lock
     2. <code class="code">thread_safe_check</code>, while not holding the async lock
-    3. <code class="code">post_check</code>, while holding the async lock</div></div>
+    3. <code class="code">post_check</code>, while holding the async lock</p></div></div>
 <div class="ocaml_module sig" name="Post"><pre><span class="keyword">module</span> <a href="?package=async_unix&amp;module=File_descr_watcher_intf.Post">Post</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
 <pre><code><span class="TYPEt"><span class="keyword">type</span> t</span> = {</code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTt.ready">ready</span> : <code class="type"><a href="?package=async_unix&amp;module=Import.File_descr&amp;type=t">Import.File_descr.t</a> list</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTt.bad">bad</span> : <code class="type"><a href="?package=async_unix&amp;module=Import.File_descr&amp;type=t">Import.File_descr.t</a> list</code>;</code></td></tr><tr><td>}</td></tr></table>
@@ -25,7 +25,7 @@
 <div class="ocaml_include ident" path="?package=core&amp;module=Std.Invariant.S" items="[]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core&amp;module=Std.Invariant.S">Core.Std.Invariant.S</a></code> with type t := <a href="?package=async_unix&amp;module=File_descr_watcher_intf.S&amp;type=t">t</a></code></pre></div>
 <pre><span class="VALbackend"><span class="keyword">val</span> backend</span> : <code class="type"><a href="?package=async_unix&amp;module=Import.Config.File_descr_watcher&amp;type=t">Import.Config.File_descr_watcher.t</a></code></pre>
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">num_file_descrs:int -&gt; <a href="?package=async_unix&amp;module=File_descr_watcher_intf.S&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create ~num_file_descrs</code> creates a new file-descr-watcher that is able to watch
-      file descriptors in <pre class="codepre"><code class="code"> [0, num_file_descrs) </code></pre>.</div></div>
+      file descriptors in <code class="code"> [0, num_file_descrs) </code>.</div></div>
 <pre><span class="VALset"><span class="keyword">val</span> set</span> : <code class="type"><a href="?package=async_unix&amp;module=File_descr_watcher_intf.S&amp;type=t">t</a> -&gt; <a href="?package=async_unix&amp;module=Import.File_descr&amp;type=t">Import.File_descr.t</a> -&gt; bool <a href="?package=async_unix&amp;module=Read_write&amp;type=t">Read_write.t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">set</code> alters the map of file descriptors being watched.  It will take effect on the
       next call to <code class="code">thread_safe_check</code>.  Calling <code class="code">set fd</code> with <code class="code">{ read = false, write =
       false }</code> removes <code class="code">fd</code> from the map.</div></div>
@@ -51,7 +51,7 @@
       for read, as per <code class="code">set</code>.  Similarly for write.</div></div>
 <pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type"><a href="?package=async_unix&amp;module=File_descr_watcher_intf.S&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
 <div class="info"><div class="info"><code class="code">create ~num_file_descrs</code> creates a new file-descr-watcher that is able to watch
-      file descriptors in <pre class="codepre"><code class="code"> [0, num_file_descrs) </code></pre>.</div></div>
+      file descriptors in <code class="code"> [0, num_file_descrs) </code>.</div></div>
 <div class="info"><div class="info"><code class="code">set</code> alters the map of file descriptors being watched.  It will take effect on the
       next call to <code class="code">thread_safe_check</code>.  Calling <code class="code">set fd</code> with <code class="code">{ read = false, write =
       false }</code> removes <code class="code">fd</code> from the map.</div></div>
@@ -70,17 +70,17 @@
 
 
 <div class="info"><div class="info"><code class="code">File_descr_watcher_intf.S</code> provides an API for for watching a set of file descriptors
-    to see if they are ready for reading or writing.<br/>    We have two implementations, one using epoll, and one using select.<br/>    None of the functions need to be thread-safe, with the exception of
+    to see if they are ready for reading or writing.<p>    We have two implementations, one using epoll, and one using select.</p><p>    None of the functions need to be thread-safe, with the exception of
     <code class="code">thread_safe_check</code>.  So that implementations can easily do non-thread-safe actions,
-    checking for ready I/O is always done in three steps:<br/>    1. <code class="code">pre_check</code>, while holding the async lock
+    checking for ready I/O is always done in three steps:</p><p>    1. <code class="code">pre_check</code>, while holding the async lock
     2. <code class="code">thread_safe_check</code>, while not holding the async lock
-    3. <code class="code">post_check</code>, while holding the async lock</div></div>
+    3. <code class="code">post_check</code>, while holding the async lock</p></div></div>
 <div class="info"><div class="info">A file-descr-watcher is essentially a map from <code class="code">File_descr.t</code> to <code class="code">bool
       Read_write.t</code>, which defines the set of file descriptors being watched, and for each
       file descriptor, whether it is being watched for read, write, or both.  If a file
       descriptor is not being watched for either, it is not in the map.</div></div>
 <div class="info"><div class="info"><code class="code">create ~num_file_descrs</code> creates a new file-descr-watcher that is able to watch
-      file descriptors in <pre class="codepre"><code class="code"> [0, num_file_descrs) </code></pre>.</div></div>
+      file descriptors in <code class="code"> [0, num_file_descrs) </code>.</div></div>
 <div class="info"><div class="info"><code class="code">set</code> alters the map of file descriptors being watched.  It will take effect on the
       next call to <code class="code">thread_safe_check</code>.  Calling <code class="code">set fd</code> with <code class="code">{ read = false, write =
       false }</code> removes <code class="code">fd</code> from the map.</div></div>

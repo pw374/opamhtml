@@ -1,8 +1,8 @@
 <div class="ocaml_toplevel_module"><div class="info">Some helpers for en/decoding XDR faster</div>
 <pre><span class="VALs_read_int4_64_unsafe"><span class="keyword">val</span> s_read_int4_64_unsafe</span> : <code class="type">string -&gt; int -&gt; int</code></pre><div class="info"><div class="info">For 64 bit platforms only: Decodes 4 bytes at this string position
-      as a signed 32 bit int in network byte order<br/>      There is no index bounds check!</div></div>
+      as a signed 32 bit int in network byte order<p>      There is no index bounds check!</p></div></div>
 <pre><span class="VALs_write_int4_64_unsafe"><span class="keyword">val</span> s_write_int4_64_unsafe</span> : <code class="type">string -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">For 64 bit platforms only: Encodes 4 bytes at this string position
-      as a signed 32 bit int in network byte order<br/>      There is no index bounds check!</div></div>
+      as a signed 32 bit int in network byte order<p>      There is no index bounds check!</p></div></div>
 <pre><span class="VALs_read_string_array_unsafe"><span class="keyword">val</span> s_read_string_array_unsafe</span> : <code class="type">string -&gt; int -&gt; int -&gt; int32 -&gt; string array -&gt; int</code></pre><div class="info"><div class="info"><code class="code">let pos' = s_read_string_array s pos len max a</code>: 
       Decodes the XDR repr of an array of strings <b>without</b> length field.
       The array must start at <code class="code">pos</code> in <code class="code">s</code>, and may have up to <code class="code">len</code> bytes.
@@ -10,6 +10,6 @@
       Returns in <code class="code">pos'</code> the position of the first
       byte after the array. It is checked whether
       the array is represented within the allowed <code class="code">len</code> bytes. If not,
-      <code class="code">pos'=-1</code> will be returned, together with an empty array.<br/>      <code class="code">max</code> is the maximum length of the string elements. <code class="code">max</code> is
-      unsigned. If this is violated, <code class="code">pos'=-2</code> will be returned.</div></div>
+      <code class="code">pos'=-1</code> will be returned, together with an empty array.<p>      <code class="code">max</code> is the maximum length of the string elements. <code class="code">max</code> is
+      unsigned. If this is violated, <code class="code">pos'=-2</code> will be returned.</p></div></div>
 </div>

@@ -3,9 +3,9 @@
 <div class="ocaml_include ident" path="?package=core_kernel&amp;module=Container.S1" items="[]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core_kernel&amp;module=Container.S1">Container.S1</a></code> with type t := 'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a></code></pre></div>
 <div class="ocaml_include ident" path="?package=core_kernel&amp;module=Monad.S" items="[&quot;Monad_infix&quot;]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core_kernel&amp;module=Monad.S">Monad.S</a></code> with type t := 'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a></code></pre></div>
 <pre><span class="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">of_list</code> is the identity function.  It is useful so that the <code class="code">List</code> module matches
-    the same signature that other container modules do, namely:<br/>    <pre class="codepre"><code class="code">
+    the same signature that other container modules do, namely:<p>    </p><code class="code">
       val of_list : 'a List.t -&gt; 'a t
-    </code></pre></div></div>
+    </code></div></div>
 <pre><span class="VALnth"><span class="keyword">val</span> nth</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; int -&gt; 'a option</code></pre>
 <pre><span class="VALnth_exn"><span class="keyword">val</span> nth_exn</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; int -&gt; 'a</code></pre><div class="info"><div class="info">Return the <code class="code">n</code>-th element of the given list.
     The first element (head of the list) is at position 0.
@@ -51,9 +51,9 @@
     function must return 0 if its arguments compare as equal, a positive integer if the
     first is greater, and a negative integer if the first is smaller (see Array.sort for a
     complete specification).  For example,  <a href="#Pervasives.compare">Pervasives.compare</a> is a suitable comparison
-    function.<br/>    The current implementation uses Merge Sort. It runs in constant heap space and
-    logarithmic stack space.<br/>    Presently, the sort is stable, meaning that two equal elements in the input will be in
-    the same order in the output.</div></div>
+    function.<p>    The current implementation uses Merge Sort. It runs in constant heap space and
+    logarithmic stack space.</p><p>    Presently, the sort is stable, meaning that two equal elements in the input will be in
+    the same order in the output.</p></div></div>
 <pre><span class="VALstable_sort"><span class="keyword">val</span> stable_sort</span> : <code class="type">cmp:('a -&gt; 'a -&gt; int) -&gt; 'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a></code></pre><div class="info"><div class="info">Same as sort, but guaranteed to be stable</div></div>
 <pre><span class="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; cmp:('a -&gt; 'a -&gt; int) -&gt; 'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a></code></pre><div class="info"><div class="info">Merge two lists: assuming that <code class="code">l1</code> and <code class="code">l2</code> are sorted according to the comparison
     function <code class="code">cmp</code>, <code class="code">merge cmp l1 l2</code> will return a sorted list containting all the
@@ -101,10 +101,10 @@
 <pre><span class="VALreduce"><span class="keyword">val</span> reduce</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; f:('a -&gt; 'a -&gt; 'a) -&gt; 'a option</code></pre>
 <pre><span class="VALgroup"><span class="keyword">val</span> group</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; break:('a -&gt; 'a -&gt; bool) -&gt; 'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">group l ~break</code> returns a list of lists (i.e., groups) whose concatenation is
     equal to the original list.  Each group is broken where break returns true on
-    a pair of successive elements.<br/>    Example<br/>    group ~break:(&lt;&gt;) <code class="code">'M';'i';'s';'s';'i';'s';'s';'i';'p';'p';'i'</code> -&gt;<br/>    <code class="code">['M'];['i'];['s';'s'];['i'];['s';'s'];['i'];['p';'p'];['i']</code></div></div>
+    a pair of successive elements.<p>    Example</p><p>    group ~break:(&lt;&gt;) <code class="code">'M';'i';'s';'s';'i';'s';'s';'i';'p';'p';'i'</code> -&gt;</p><p>    <code class="code">['M'];['i'];['s';'s'];['i'];['s';'s'];['i'];['p';'p'];['i']</code></p></div></div>
 <pre><span class="VALgroupi"><span class="keyword">val</span> groupi</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; break:(int -&gt; 'a -&gt; 'a -&gt; bool) -&gt; 'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a></code></pre><div class="info"><div class="info">This is just like group, except that you get the index in the original list of the
-    current element along with the two elements.<br/>    Example, group the chars of Mississippi into triples<br/>    groupi ~break:(fun i _ _ -&gt; i mod 3 = 0)
-    <code class="code">'M';'i';'s';'s';'i';'s';'s';'i';'p';'p';'i'</code> -&gt;<br/>    <code class="code">['M'; 'i'; 's']; ['s'; 'i'; 's']; ['s'; 'i'; 'p']; ['p'; 'i']</code></div></div>
+    current element along with the two elements.<p>    Example, group the chars of Mississippi into triples</p><p>    groupi ~break:(fun i _ _ -&gt; i mod 3 = 0)
+    <code class="code">'M';'i';'s';'s';'i';'s';'s';'i';'p';'p';'i'</code> -&gt;</p><p>    <code class="code">['M'; 'i'; 's']; ['s'; 'i'; 's']; ['s'; 'i'; 'p']; ['p'; 'i']</code></p></div></div>
 <pre><span class="VALlast"><span class="keyword">val</span> last</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; 'a option</code></pre><div class="info"><div class="info">The final element of a list.  The _exn version raises Invalid_argument on the empty
     list.</div></div>
 <pre><span class="VALlast_exn"><span class="keyword">val</span> last_exn</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; 'a</code></pre>
@@ -171,17 +171,17 @@
 <pre><span class="VALcons"><span class="keyword">val</span> cons</span> : <code class="type">'a -&gt; 'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a></code></pre>
 <pre><span class="VALcartesian_product"><span class="keyword">val</span> cartesian_product</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; 'b <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; ('a * 'b) <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a></code></pre>
 <pre><span class="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">f:('a -&gt; string) -&gt; 'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; string</code></pre>
-<pre><span class="VALpermute"><span class="keyword">val</span> permute</span> : <code class="type">?random_state:<a href="?package=core_kernel&amp;module=Core_random.State&amp;type=t">Core_random.State.t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">permute ?random_state t</code> returns a permutation of <code class="code">t</code>.<br/>    <code class="code">permute</code> side affects <code class="code">random_state</code> by repeated calls to <code class="code">Random.State.int</code>.
-    If <code class="code">random_state</code> is not supplied, <code class="code">permute</code> uses <code class="code">Random.State.default</code>.</div></div>
+<pre><span class="VALpermute"><span class="keyword">val</span> permute</span> : <code class="type">?random_state:<a href="?package=core_kernel&amp;module=Core_random.State&amp;type=t">Core_random.State.t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">permute ?random_state t</code> returns a permutation of <code class="code">t</code>.<p>    <code class="code">permute</code> side affects <code class="code">random_state</code> by repeated calls to <code class="code">Random.State.int</code>.
+    If <code class="code">random_state</code> is not supplied, <code class="code">permute</code> uses <code class="code">Random.State.default</code>.</p></div></div>
 <pre><span class="VALis_sorted"><span class="keyword">val</span> is_sorted</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; compare:('a -&gt; 'a -&gt; int) -&gt; bool</code></pre>
 <pre><span class="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; cmp:('a -&gt; 'a -&gt; int) -&gt; int</code></pre><div class="info"><div class="info">lexicographic</div></div>
 <pre><span class="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; equal:('a -&gt; 'a -&gt; bool) -&gt; bool</code></pre>
 <div class="ocaml_module sig" name="Infix"><pre><span class="keyword">module</span> <a href="?package=core_kernel&amp;module=Core_list.Infix">Infix</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
 <pre><span class="VAL(@)"><span class="keyword">val</span> (@)</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a></code></pre></div></div>
 <pre><span class="VALtranspose"><span class="keyword">val</span> transpose</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> option</code></pre><div class="info"><div class="info"><code class="code">transpose m</code> transposes the rows and columns of the matrix <code class="code">m</code>,
-    considered as either a row of column lists or (dually) a column of row lists.<br/>    Example,<br/>    transpose <code class="code">[1;2;3];[4;5;6]</code> = <code class="code">[1;4];[2;5];[3;6]</code><br/>    On non-empty rectangular matrices, <code class="code">transpose</code> is an involution
+    considered as either a row of column lists or (dually) a column of row lists.<p>    Example,</p><p>    transpose <code class="code">[1;2;3];[4;5;6]</code> = <code class="code">[1;4];[2;5];[3;6]</code></p><p>    On non-empty rectangular matrices, <code class="code">transpose</code> is an involution
     (i.e., <code class="code">transpose (transpose m) = m</code>).  Transpose returns None when called
-    on lists of lists with non-uniform lengths.</div></div>
+    on lists of lists with non-uniform lengths.</p></div></div>
 <pre><span class="VALtranspose_exn"><span class="keyword">val</span> transpose_exn</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">transpose_exn</code> transposes the rows and columns of its argument, throwing exception if
     the list is not rectangular.</div></div>
 <pre><span class="VALintersperse"><span class="keyword">val</span> intersperse</span> : <code class="type">'a list -&gt; sep:'a -&gt; 'a list</code></pre><div class="info"><div class="info"><code class="code">intersperse xs ~sep</code> places <code class="code">sep</code> between adjacent elements of <code class="code">xs</code>.
@@ -199,9 +199,9 @@
 <pre><span class="VALbin_write_t_"><span class="keyword">val</span> bin_write_t_</span> : <code class="type">'a <a href="?package=bin_prot&amp;module=Unsafe_write_c&amp;type=writer">Bin_prot.Unsafe_write_c.writer</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> <a href="?package=bin_prot&amp;module=Unsafe_write_c&amp;type=writer">Bin_prot.Unsafe_write_c.writer</a></code></pre>
 <pre><span class="VALbin_writer_t"><span class="keyword">val</span> bin_writer_t</span> : <code class="type">'a <a href="?package=bin_prot&amp;module=Type_class&amp;type=writer">Bin_prot.Type_class.writer</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Core_list&amp;type=t">t</a> <a href="?package=bin_prot&amp;module=Type_class&amp;type=writer">Bin_prot.Type_class.writer</a></code></pre>
 <div class="info"><div class="info"><code class="code">of_list</code> is the identity function.  It is useful so that the <code class="code">List</code> module matches
-    the same signature that other container modules do, namely:<br/>    <pre class="codepre"><code class="code">
+    the same signature that other container modules do, namely:<p>    </p><code class="code">
       val of_list : 'a List.t -&gt; 'a t
-    </code></pre></div></div>
+    </code></div></div>
 <div class="info"><div class="info">Return the <code class="code">n</code>-th element of the given list.
     The first element (head of the list) is at position 0.
     Raise <code class="code">Failure &quot;nth&quot;</code> if the list is too short.
@@ -243,9 +243,9 @@
     function must return 0 if its arguments compare as equal, a positive integer if the
     first is greater, and a negative integer if the first is smaller (see Array.sort for a
     complete specification).  For example,  <a href="#Pervasives.compare">Pervasives.compare</a> is a suitable comparison
-    function.<br/>    The current implementation uses Merge Sort. It runs in constant heap space and
-    logarithmic stack space.<br/>    Presently, the sort is stable, meaning that two equal elements in the input will be in
-    the same order in the output.</div></div>
+    function.<p>    The current implementation uses Merge Sort. It runs in constant heap space and
+    logarithmic stack space.</p><p>    Presently, the sort is stable, meaning that two equal elements in the input will be in
+    the same order in the output.</p></div></div>
 <div class="info"><div class="info">Same as sort, but guaranteed to be stable</div></div>
 <div class="info"><div class="info">Merge two lists: assuming that <code class="code">l1</code> and <code class="code">l2</code> are sorted according to the comparison
     function <code class="code">cmp</code>, <code class="code">merge cmp l1 l2</code> will return a sorted list containting all the
@@ -285,10 +285,10 @@
     It fails on the empty list.  Tail recursive.</div></div>
 <div class="info"><div class="info"><code class="code">group l ~break</code> returns a list of lists (i.e., groups) whose concatenation is
     equal to the original list.  Each group is broken where break returns true on
-    a pair of successive elements.<br/>    Example<br/>    group ~break:(&lt;&gt;) <code class="code">'M';'i';'s';'s';'i';'s';'s';'i';'p';'p';'i'</code> -&gt;<br/>    <code class="code">['M'];['i'];['s';'s'];['i'];['s';'s'];['i'];['p';'p'];['i']</code></div></div>
+    a pair of successive elements.<p>    Example</p><p>    group ~break:(&lt;&gt;) <code class="code">'M';'i';'s';'s';'i';'s';'s';'i';'p';'p';'i'</code> -&gt;</p><p>    <code class="code">['M'];['i'];['s';'s'];['i'];['s';'s'];['i'];['p';'p'];['i']</code></p></div></div>
 <div class="info"><div class="info">This is just like group, except that you get the index in the original list of the
-    current element along with the two elements.<br/>    Example, group the chars of Mississippi into triples<br/>    groupi ~break:(fun i _ _ -&gt; i mod 3 = 0)
-    <code class="code">'M';'i';'s';'s';'i';'s';'s';'i';'p';'p';'i'</code> -&gt;<br/>    <code class="code">['M'; 'i'; 's']; ['s'; 'i'; 's']; ['s'; 'i'; 'p']; ['p'; 'i']</code></div></div>
+    current element along with the two elements.<p>    Example, group the chars of Mississippi into triples</p><p>    groupi ~break:(fun i _ _ -&gt; i mod 3 = 0)
+    <code class="code">'M';'i';'s';'s';'i';'s';'s';'i';'p';'p';'i'</code> -&gt;</p><p>    <code class="code">['M'; 'i'; 's']; ['s'; 'i'; 's']; ['s'; 'i'; 'p']; ['p'; 'i']</code></p></div></div>
 <div class="info"><div class="info">The final element of a list.  The _exn version raises Invalid_argument on the empty
     list.</div></div>
 <div class="info"><div class="info"><code class="code">remove_consecutive_duplicates</code>. The same list with consecutive duplicates removed.
@@ -332,13 +332,13 @@
     lists.</div></div>
 <div class="info"><div class="info">Same as <code class="code">concat</code> but faster and without preserving any ordering (ie for lists that are
     essentially viewed as multi-sets.</div></div>
-<div class="info"><div class="info"><code class="code">permute ?random_state t</code> returns a permutation of <code class="code">t</code>.<br/>    <code class="code">permute</code> side affects <code class="code">random_state</code> by repeated calls to <code class="code">Random.State.int</code>.
-    If <code class="code">random_state</code> is not supplied, <code class="code">permute</code> uses <code class="code">Random.State.default</code>.</div></div>
+<div class="info"><div class="info"><code class="code">permute ?random_state t</code> returns a permutation of <code class="code">t</code>.<p>    <code class="code">permute</code> side affects <code class="code">random_state</code> by repeated calls to <code class="code">Random.State.int</code>.
+    If <code class="code">random_state</code> is not supplied, <code class="code">permute</code> uses <code class="code">Random.State.default</code>.</p></div></div>
 <div class="info"><div class="info">lexicographic</div></div>
 <div class="info"><div class="info"><code class="code">transpose m</code> transposes the rows and columns of the matrix <code class="code">m</code>,
-    considered as either a row of column lists or (dually) a column of row lists.<br/>    Example,<br/>    transpose <code class="code">[1;2;3];[4;5;6]</code> = <code class="code">[1;4];[2;5];[3;6]</code><br/>    On non-empty rectangular matrices, <code class="code">transpose</code> is an involution
+    considered as either a row of column lists or (dually) a column of row lists.<p>    Example,</p><p>    transpose <code class="code">[1;2;3];[4;5;6]</code> = <code class="code">[1;4];[2;5];[3;6]</code></p><p>    On non-empty rectangular matrices, <code class="code">transpose</code> is an involution
     (i.e., <code class="code">transpose (transpose m) = m</code>).  Transpose returns None when called
-    on lists of lists with non-uniform lengths.</div></div>
+    on lists of lists with non-uniform lengths.</p></div></div>
 <div class="info"><div class="info"><code class="code">transpose_exn</code> transposes the rows and columns of its argument, throwing exception if
     the list is not rectangular.</div></div>
 <div class="info"><div class="info"><code class="code">intersperse xs ~sep</code> places <code class="code">sep</code> between adjacent elements of <code class="code">xs</code>.

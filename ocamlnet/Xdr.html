@@ -2,32 +2,32 @@
 <div class="info"><div class="info">This module supports the &quot;external data representation&quot;, or XDR
  for short. XDR is a means to pack structured values as strings and
  it serves to transport such values across character streams even
- between computers with different architectures.<br/> XDR values must be formed according to an XDR type. Such types are
+ between computers with different architectures.<p> XDR values must be formed according to an XDR type. Such types are
  usually written in a notation that is close to the C notation of
  structured types. There are some important details where XDR is
- better than C:<ul><li>direct support for strings</li><li>arrays may have fixed or variable length</li><li>unions must have a discriminator</li><li>no pointers. The notation <code class="code">*t</code> is allowed, but means something
+ better than C:</p><ul><li>direct support for strings</li><li>arrays may have fixed or variable length</li><li>unions must have a discriminator</li><li>no pointers. The notation <code class="code">*t</code> is allowed, but means something
    different, namely &quot;t option&quot; in O'Caml notation.</li><li>recursive types are possible and behave like recursive types in
    O'Caml. For example,
-   <pre class="codepre"><code class="code">
+   <code class="code">
      struct *list {
        int value;
        next list;
      }
-   </code></pre>
+   </code>
    is a list of integer values and equivalent to
-   <pre class="codepre"><code class="code">
+   <code class="code">
      type intlist = intlist_el option
       and intlist_el = { value : int; next : intlist }
-   </code></pre></li></ul> See RFC 1014 for details about XDR.<br/> This module defines:<ul><li>XDR types</li><li>XDR type terms</li><li>XDR type systems</li><li>XDR type term systems</li></ul> In &quot;type terms&quot; you can see the components from which the type has been
+   </code></li></ul> See RFC 1014 for details about XDR.<p> This module defines:</p><ul><li>XDR types</li><li>XDR type terms</li><li>XDR type systems</li><li>XDR type term systems</li></ul> In &quot;type terms&quot; you can see the components from which the type has been
  formed, while a &quot;type&quot; is an opaque representation that has been checked
- and for that some preprocessing has been done.<br/> A &quot;type system&quot; is a collection of several types that have names and that
+ and for that some preprocessing has been done.<p> A &quot;type system&quot; is a collection of several types that have names and that
  can refer to previously defined types (i.e. a sequence of &quot;typedef&quot;s).
- As with simple types, there is an extensive and an opaque representation.<br/> A typical way of using this module is to define an &quot;XDR type term system&quot;
+ As with simple types, there is an extensive and an opaque representation.</p><p> A typical way of using this module is to define an &quot;XDR type term system&quot;
  by simply writing an O'Caml expression. After that, this system is validated
  and you get the &quot;type system&quot;. From now on, you can refer to the types
  defined in the system by name and get the corresponding &quot;XDR types&quot;.
- Once you have an XDR type you can use it to pack or unpack an XDR value.</div></div>
-<div class="info"><div class="info">Terms that describe possible XDR types:<br/> - <code class="code">X_int</code>:                      integer (32 bit)<ul><li><code class="code">X_uint</code>:                     unsigned integer</li><li><code class="code">X_hyper</code>:                    hyper (64 bit signed integer)</li><li><code class="code">X_uhyper</code>:                   unsigned hyper</li><li><code class="code">X_enum [x1,i1; ...]</code>:        <code class="code">enum { x1 = i1, ... }</code></li><li><code class="code">X_float</code>:                    float (32 bit fp number)</li><li><code class="code">X_double</code>:                   double (64 bit fp number)</li><li><code class="code">X_opaque_fixed n</code>:           <code class="code">opaque[n]</code></li><li><code class="code">X_opaque n</code>:                 <code class="code">opaque&lt;n&gt;</code></li><li><code class="code">X_string n</code>:                 <code class="code">string&lt;n&gt;</code></li><li><code class="code">X_mstring(name,n)</code>:          <code class="code">_managed string&lt;n&gt;</code> (see below)</li><li><code class="code">X_array_fixed (t,n)</code>:        <code class="code">t[n]</code></li><li><code class="code">X_array (t,n)</code>:              <code class="code">t&lt;n&gt;</code></li><li><code class="code">X_struct [x1,t1;...]</code>:       <code class="code">struct { t1 x1; ...}</code></li><li><code class="code">X_union_over_int
+ Once you have an XDR type you can use it to pack or unpack an XDR value.</p></div></div>
+<div class="info"><div class="info">Terms that describe possible XDR types:<p> - <code class="code">X_int</code>:                      integer (32 bit)</p><ul><li><code class="code">X_uint</code>:                     unsigned integer</li><li><code class="code">X_hyper</code>:                    hyper (64 bit signed integer)</li><li><code class="code">X_uhyper</code>:                   unsigned hyper</li><li><code class="code">X_enum [x1,i1; ...]</code>:        <code class="code">enum { x1 = i1, ... }</code></li><li><code class="code">X_float</code>:                    float (32 bit fp number)</li><li><code class="code">X_double</code>:                   double (64 bit fp number)</li><li><code class="code">X_opaque_fixed n</code>:           <code class="code">opaque[n]</code></li><li><code class="code">X_opaque n</code>:                 <code class="code">opaque&lt;n&gt;</code></li><li><code class="code">X_string n</code>:                 <code class="code">string&lt;n&gt;</code></li><li><code class="code">X_mstring(name,n)</code>:          <code class="code">_managed string&lt;n&gt;</code> (see below)</li><li><code class="code">X_array_fixed (t,n)</code>:        <code class="code">t[n]</code></li><li><code class="code">X_array (t,n)</code>:              <code class="code">t&lt;n&gt;</code></li><li><code class="code">X_struct [x1,t1;...]</code>:       <code class="code">struct { t1 x1; ...}</code></li><li><code class="code">X_union_over_int
      ([n1,t1;...], None)</code>:       <code class="code">union switch(int) {case n1: t1; ...}</code></li><li><code class="code">X_union_over_int
      ([n1,t1;...], Some t)</code>:     <code class="code">union switch(int) {case n1: t1; ...; default t}</code></li><li><code class="code">X_union_over_uint
      ([n1,t1;...], None)</code>:       <code class="code">union switch(unsigned int) {case n1: t1; ...}</code></li><li><code class="code">X_union_over_uint
@@ -37,13 +37,13 @@
                                  where e is an enumeration type</li><li><code class="code">X_union_over_enum
      (e, [n1,t1;...], Some t)</code>:  <code class="code">union switch(e) {case n1:t1; ...; default t}</code>
                                  where e is an enumeration type</li><li><code class="code">X_void</code>:                     void</li></ul> The <code class="code">X_type</code> constructor is only useful for types interpreted relative to
- a type system. Then it refers to a named type in this system.<br/> The <code class="code">X_param</code> constructor includes a reference to an arbitrary type
+ a type system. Then it refers to a named type in this system.<p> The <code class="code">X_param</code> constructor includes a reference to an arbitrary type
  which must first be given when packing or unpacking values.
  (A &quot;lazy&quot; type reference.) Additionally, the values for parameters
- may be encrypted or decrypted.<br/> Example how to define a recursive type:<br/> <code class="code">X_rec (&quot;a&quot;, X_array ( X_struct [&quot;value&quot;, X_int; &quot;next&quot;, X_refer &quot;a&quot;], 1))</code><br/> <b>Managed strings</b> are represented as <code class="code">X_mstring(name,n)</code>. The <code class="code">name</code> refers
+ may be encrypted or decrypted.</p><p> Example how to define a recursive type:</p><p> <code class="code">X_rec (&quot;a&quot;, X_array ( X_struct [&quot;value&quot;, X_int; &quot;next&quot;, X_refer &quot;a&quot;], 1))</code></p><p> <b>Managed strings</b> are represented as <code class="code">X_mstring(name,n)</code>. The <code class="code">name</code> refers
  to the preferred factory for managed strings (needs to be passed to the
  XDR unpacker). Values for managed strings are objects of type
-  <a href="#Xdr_mstring.mstring">Xdr_mstring.mstring</a>.<br/> The term <code class="code">X_direct(t,read,write,size)</code> is generated by ocamlrpcgen at 
+  <a href="#Xdr_mstring.mstring">Xdr_mstring.mstring</a>.</p><p> The term <code class="code">X_direct(t,read,write,size)</code> is generated by ocamlrpcgen at 
  positions
  suitable for direct mapping. In this case, the XDR byte representation is
  directly mapped to the final Ocaml value bypassing the intermediate
@@ -57,7 +57,7 @@
  exception <code class="code">x</code> is written to string <code class="code">s</code> at position <code class="code">cursor</code>. Like for
  <code class="code">read</code> the cursor is advanced by the number of written bytes. There
  must be enough space in <code class="code">s</code>. The function <code class="code">size</code> can be used to determine
- the number of written bytes beforehand.</div></div>
+ the number of written bytes beforehand.</p></div></div>
 <pre><code><span class="TYPExdr_type_term"><span class="keyword">type</span> xdr_type_term</span> = </code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTxdr_type_term.X_int"><span class="constructor">X_int</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTxdr_type_term.X_uint"><span class="constructor">X_uint</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTxdr_type_term.X_hyper"><span class="constructor">X_hyper</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTxdr_type_term.X_uhyper"><span class="constructor">X_uhyper</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTxdr_type_term.X_enum"><span class="constructor">X_enum</span></span> <span class="keyword">of</span> <code class="type">(string * <a href="?package=ocamlnet&amp;module=Rtypes&amp;type=int4">Rtypes.int4</a>) list</code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTxdr_type_term.X_float"><span class="constructor">X_float</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTxdr_type_term.X_double"><span class="constructor">X_double</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTxdr_type_term.X_opaque_fixed"><span class="constructor">X_opaque_fixed</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a></code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTxdr_type_term.X_opaque"><span class="constructor">X_opaque</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a></code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTxdr_type_term.X_string"><span class="constructor">X_string</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a></code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTxdr_type_term.X_mstring"><span class="constructor">X_mstring</span></span> <span class="keyword">of</span> <code class="type">string * <a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a></code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTxdr_type_term.X_array_fixed"><span class="constructor">X_array_fixed</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type_term">xdr_type_term</a> * <a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a></code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTxdr_type_term.X_array"><span class="constructor">X_array</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type_term">xdr_type_term</a> * <a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a></code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTxdr_type_term.X_struct"><span class="constructor">X_struct</span></span> <span class="keyword">of</span> <code class="type">(string * <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type_term">xdr_type_term</a>) list</code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTxdr_type_term.X_union_over_int"><span class="constructor">X_union_over_int</span></span> <span class="keyword">of</span> <code class="type">(<a href="?package=ocamlnet&amp;module=Rtypes&amp;type=int4">Rtypes.int4</a> * <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type_term">xdr_type_term</a>) list * <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type_term">xdr_type_term</a> option</code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTxdr_type_term.X_union_over_uint"><span class="constructor">X_union_over_uint</span></span> <span class="keyword">of</span> <code class="type">(<a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a> * <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type_term">xdr_type_term</a>) list * <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type_term">xdr_type_term</a> option</code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTxdr_type_term.X_union_over_enum"><span class="constructor">X_union_over_enum</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type_term">xdr_type_term</a> * (string * <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type_term">xdr_type_term</a>) list * <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type_term">xdr_type_term</a> option</code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTxdr_type_term.X_void"><span class="constructor">X_void</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTxdr_type_term.X_type"><span class="constructor">X_type</span></span> <span class="keyword">of</span> <code class="type">string</code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTxdr_type_term.X_param"><span class="constructor">X_param</span></span> <span class="keyword">of</span> <code class="type">string</code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTxdr_type_term.X_rec"><span class="constructor">X_rec</span></span> <span class="keyword">of</span> <code class="type">string * <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type_term">xdr_type_term</a></code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTxdr_type_term.X_refer"><span class="constructor">X_refer</span></span> <span class="keyword">of</span> <code class="type">string</code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTxdr_type_term.X_direct"><span class="constructor">X_direct</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type_term">xdr_type_term</a> * string -&gt; int <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a> -&gt; int -&gt; exn * exn -&gt; string -&gt; int <a href="?package=ocaml&amp;module=Pervasives&amp;type=ref">Pervasives.ref</a> -&gt; unit * exn -&gt; int</code></code></td></tr></table>
 <pre><span class="TYPExdr_type"><span class="keyword">type</span> xdr_type</span> </pre><div class="info"><div class="info">This is the validated version of <code class="code">xdr_type_term</code>. Note that it does not
@@ -128,7 +128,7 @@
 <pre><span class="VALvalidate_xdr_type"><span class="keyword">val</span> validate_xdr_type</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type_term">xdr_type_term</a> -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type">xdr_type</a></code></pre>
 <pre><span class="VALvalidate_xdr_type_system"><span class="keyword">val</span> validate_xdr_type_system</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type_term_system">xdr_type_term_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type_system">xdr_type_system</a></code></pre>
 <pre><span class="VALparams"><span class="keyword">val</span> params</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type">xdr_type</a> -&gt; string list</code></pre><div class="info"><div class="info">return the <code class="code">X_param</code> parameters contained in the type</div></div>
-<div class="info"><div class="info">Get the unvalidated version back:<br/> - Note that <code class="code">X_type</code> constructions are always resolved</div></div>
+<div class="info"><div class="info">Get the unvalidated version back:<p> - Note that <code class="code">X_type</code> constructions are always resolved</p></div></div>
 <pre><span class="VALxdr_type_term"><span class="keyword">val</span> xdr_type_term</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type">xdr_type</a> -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type_term">xdr_type_term</a></code></pre>
 <pre><span class="VALxdr_type_term_system"><span class="keyword">val</span> xdr_type_term_system</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type_system">xdr_type_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type_term_system">xdr_type_term_system</a></code></pre>
 <div class="info"><div class="info">You can expand any type term relative to a (validated) type system.
@@ -143,14 +143,14 @@
  argument of this function is a list of parameter instances. Note that
  all parameters must be instantiated to compare a value with a type
  and that the parameters instances are not allowed to have parameters
- themselves.<br/> Encrypted parameters are not supported here.</div></div>
+ themselves.<p> Encrypted parameters are not supported here.</p></div></div>
 <div class="info"><div class="info"><h2 id="2_TITLE">Packing and unpacking</h2></div></div>
 <div class="info"><div class="info"><code class="code">pack_xdr_value v t p print</code>: Serialize v into a string conforming to
    the XDR standard where v matches t. In p the parameter instances are
    given. All parameters must be given, and the parameters must not contain
    parameters themselves. The fourth argument, print, is a function
    which is evaluated for the pieces of the resultant string. You can use
-   pack_xdr_value_as_string to get the whole string at once.<br/> <code class="code">unpack_xdr_value s t p</code>: Unserialize a string to a value
+   pack_xdr_value_as_string to get the whole string at once.<p> <code class="code">unpack_xdr_value s t p</code>: Unserialize a string to a value
    matching t. If this operation fails you get an Xdr_format
    exception explaining what the reason for the failure is.
    Mostly the cause for failures is that t isn't the type
@@ -160,17 +160,17 @@
    If you get such an error this normally still means that
    the value is not of the expected type, because these limits
    have no practical meaning (they are still higher than the
-   usable address space).</div></div>
+   usable address space).</p></div></div>
 <div class="info"><div class="info"><b>Encryption:</b> The <code class="code">encode</code> and <code class="code">decode</code> functions can be used
  to encrypt/decrypt parameters (placeholders in the type marked with
  <code class="code">X_param pname</code> for a parameter name <code class="code">pname</code>). The <code class="code">encode</code> argument
- may list for each parameter an encoding function:<br/> <pre class="codepre"><code class="code"> encode = [ pname1, encoder1; pname2, encoder2; ... ] </code></pre><br/> The functions <code class="code">encoder</code> are called with the XDR-packed parameter value,
- and return the encrypted value.<br/> Likewise, the <code class="code">decode</code> argument may list for each parameter a decoding
- function:<br/> <pre class="codepre"><code class="code"> decode = [ pname1, decoder1; pname2, decoder2; ... ] </code></pre><br/> The call style of the decoder functions is a bit more complicated, though.
- They are called as<br/> <pre class="codepre"><code class="code"> let (xdr_s, n) = decoder s pos len </code></pre><br/> meaning that the <code class="code">decoder</code> starts decoding at position <code class="code">pos</code> of string <code class="code">s</code>,
+ may list for each parameter an encoding function:<p> </p><code class="code"> encode = [ pname1, encoder1; pname2, encoder2; ... ] </code><p> The functions <code class="code">encoder</code> are called with the XDR-packed parameter value,
+ and return the encrypted value.</p><p> Likewise, the <code class="code">decode</code> argument may list for each parameter a decoding
+ function:</p><p> </p><code class="code"> decode = [ pname1, decoder1; pname2, decoder2; ... ] </code><p> The call style of the decoder functions is a bit more complicated, though.
+ They are called as</p><p> </p><code class="code"> let (xdr_s, n) = decoder s pos len </code><p> meaning that the <code class="code">decoder</code> starts decoding at position <code class="code">pos</code> of string <code class="code">s</code>,
  and that at most <code class="code">len</code> bytes can be decoded. It returns the decoded
  string <code class="code">xdr_s</code> (which is then unpacked), and in <code class="code">n</code> the number of
- consumed input bytes is returned.<br/> Exceptions raised in encoders or decoders fall through unmodified.</div></div>
+ consumed input bytes is returned.</p><p> Exceptions raised in encoders or decoders fall through unmodified.</p></div></div>
 <pre><span class="TYPEencoder"><span class="keyword">type</span> encoder</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring">Xdr_mstring.mstring</a> list -&gt; <a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring">Xdr_mstring.mstring</a> list</code></pre><div class="info"><div class="info">see text above</div></div>
 <pre><span class="TYPEdecoder"><span class="keyword">type</span> decoder</span> = <code class="type">string -&gt; int -&gt; int -&gt; string * int</code></pre><div class="info"><div class="info">see text above</div></div>
 <pre><span class="VALpack_xdr_value"><span class="keyword">val</span> pack_xdr_value</span> : <code class="type">?encode:(string * <a href="?package=ocamlnet&amp;module=Xdr&amp;type=encoder">encoder</a>) list -&gt;
@@ -178,19 +178,19 @@
 <pre><span class="VALpack_xdr_value_as_string"><span class="keyword">val</span> pack_xdr_value_as_string</span> : <code class="type">?rm:bool -&gt;
 ?encode:(string * <a href="?package=ocamlnet&amp;module=Xdr&amp;type=encoder">encoder</a>) list -&gt;
 <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_value">xdr_value</a> -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type">xdr_type</a> -&gt; (string * <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type">xdr_type</a>) list -&gt; string</code></pre><div class="info"><div class="info">rm: If true, four null bytes are prepended to the string for the
-        record mark<br/>      Changed in Ocamlnet-3.3: these functions raise <code class="code">Xdr_failure</code> in
-      case of errors.</div></div>
+        record mark<p>      Changed in Ocamlnet-3.3: these functions raise <code class="code">Xdr_failure</code> in
+      case of errors.</p></div></div>
 <pre><span class="VALpack_xdr_value_as_mstrings"><span class="keyword">val</span> pack_xdr_value_as_mstrings</span> : <code class="type">?encode:(string * <a href="?package=ocamlnet&amp;module=Xdr&amp;type=encoder">encoder</a>) list -&gt;
-<a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_value">xdr_value</a> -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type">xdr_type</a> -&gt; (string * <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type">xdr_type</a>) list -&gt; <a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring">Xdr_mstring.mstring</a> list</code></pre><div class="info"><div class="info">The concatanated mstrings are the packed representation<br/>      Changed in Ocamlnet-3.3: this function raises <code class="code">Xdr_failure</code> in
-      case of errors.</div></div>
+<a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_value">xdr_value</a> -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type">xdr_type</a> -&gt; (string * <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type">xdr_type</a>) list -&gt; <a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring">Xdr_mstring.mstring</a> list</code></pre><div class="info"><div class="info">The concatanated mstrings are the packed representation<p>      Changed in Ocamlnet-3.3: this function raises <code class="code">Xdr_failure</code> in
+      case of errors.</p></div></div>
 <pre><span class="TYPExdr_value_version"><span class="keyword">type</span> xdr_value_version</span> = <code class="type">[ `Ocamlrpcgen | `V1 | `V2 | `V3 | `V4 ]</code></pre><div class="info"><div class="info">Selects which version of <code class="code">xdr_value</code> is returned by <code class="code">unpack_xdr_value</code>.
       During the development of Ocamlnet several incompatible changes were
       made, but by selecting a certain version these changes can be hidden
-      from the caller.<br/>      - <code class="code">`V1</code>: This version refers to the original <code class="code">xdr_value</code> definition,
+      from the caller.<p>      - <code class="code">`V1</code>: This version refers to the original <code class="code">xdr_value</code> definition,
         which only included <code class="code">XV_int</code>, <code class="code">XV_uint</code>, <code class="code">XV_hyper</code>, <code class="code">XV_uhyper</code>,
         <code class="code">XV_enum</code>, <code class="code">XV_float</code>, <code class="code">XV_double</code>, <code class="code">XV_opaque</code>, <code class="code">XV_string</code>,
         <code class="code">XV_array</code>, <code class="code">XV_struct</code>, <code class="code">XV_union_over_int</code>, <code class="code">XV_union_over_uint</code>,
-        <code class="code">XV_union_over_enum</code>, and <code class="code">XV_void</code>.<ul><li><code class="code">`V2</code>: This version is available since the <code class="code">rpc-0.4</code> distribution,
+        <code class="code">XV_union_over_enum</code>, and <code class="code">XV_void</code>.</p><ul><li><code class="code">`V2</code>: This version is available since the <code class="code">rpc-0.4</code> distribution,
         and added the tags <code class="code">XV_enum_fast</code>, <code class="code">XV_struct_fast</code>, and
         <code class="code">XV_union_over_enum_fast</code>.</li><li><code class="code">`V3</code>: In Ocamlnet-3.0 the tag <code class="code">XV_array_of_string_fast</code> was added.</li><li><code class="code">`V4</code>: In Ocamlnet-3.5 the tag <code class="code">XV_direct</code> was added.</li><li><code class="code">`Ocamlrpcgen</code>: This refers to the version that must be used if the
         returned <code class="code">xdr_value</code> is processed by code generated with <code class="code">ocamlrpcgen</code>.</li></ul>      The default is still <code class="code">`V1</code>, for ultimate backward compatibility.
@@ -212,16 +212,16 @@ string -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type">xdr_ty
 ?xv_version:<a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_value_version">xdr_value_version</a> -&gt;
 ?decode:(string * <a href="?package=ocamlnet&amp;module=Xdr&amp;type=decoder">decoder</a>) list -&gt;
 string -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type">xdr_type</a> -&gt; (string * <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_type">xdr_type</a>) list -&gt; <a href="?package=ocamlnet&amp;module=Xdr&amp;type=xdr_value">xdr_value</a> * int</code></pre><div class="info"><div class="info"><code class="code">prefix</code>: whether it is ok that the string is longer than the message
-   (default: false)<br/> <code class="code">mstring_factories</code>: when a <code class="code">T_mstring(name,_)</code> type is found, the
+   (default: false)<p> <code class="code">mstring_factories</code>: when a <code class="code">T_mstring(name,_)</code> type is found, the
  factory is looked up in this hash table under <code class="code">name</code>, and if this
  fails under the name <code class="code">&quot;*&quot;</code>. If there is no such
- factory, unpacking fails! (Default: empty table.)<br/> <code class="code">xv_version</code>: Selects a certain version of the returned <code class="code">xdr_value</code>
+ factory, unpacking fails! (Default: empty table.)</p><p> <code class="code">xv_version</code>: Selects a certain version of the returned <code class="code">xdr_value</code>
  terms. See  <a href="#Xdr.xdr_value_version">Xdr.xdr_value_version</a> for details. Set this to
  <code class="code">`Ocamlrpcgen</code> if you decode the <code class="code">xdr_value</code> with ocamlrpcgen-generated
- decoders.<br/> <code class="code">fast</code>: Setting this to true is a deprecated way to set
- <code class="code">xv_version=`Ocamlrpcgen</code>.<br/> The variant <code class="code">unpack_xdr_value_l</code> returns not only the decoded value,
- but also the actual length in bytes.<br/> The exceptions <code class="code">Xdr_format</code> and <code class="code">Xdr_format_message_too_long</code> may
- be raised.</div></div>
+ decoders.</p><p> <code class="code">fast</code>: Setting this to true is a deprecated way to set
+ <code class="code">xv_version=`Ocamlrpcgen</code>.</p><p> The variant <code class="code">unpack_xdr_value_l</code> returns not only the decoded value,
+ but also the actual length in bytes.</p><p> The exceptions <code class="code">Xdr_format</code> and <code class="code">Xdr_format_message_too_long</code> may
+ be raised.</p></div></div>
 <pre><span class="VALget_string_decoration_size"><span class="keyword">val</span> get_string_decoration_size</span> : <code class="type">int -&gt; <a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a> -&gt; int</code></pre>
 <pre><span class="VALsizefn_string"><span class="keyword">val</span> sizefn_string</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a> -&gt; string -&gt; int</code></pre>
 <pre><span class="VALsizefn_mstring"><span class="keyword">val</span> sizefn_mstring</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Rtypes&amp;type=uint4">Rtypes.uint4</a> -&gt; <a href="?package=ocamlnet&amp;module=Xdr_mstring&amp;type=mstring">Xdr_mstring.mstring</a> -&gt; int</code></pre>

@@ -15,16 +15,16 @@ exn -&gt;
 string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=multiplex_controller">Uq_engines.multiplex_controller</a></code></pre>
 </div></div>
 <pre><span class="VALhttps_transport_channel_type"><span class="keyword">val</span> https_transport_channel_type</span> : <code class="type">?verify:(<a href="?package=ssl&amp;module=Ssl&amp;type=context">Ssl.context</a> -&gt; <a href="?package=ssl&amp;module=Ssl&amp;type=socket">Ssl.socket</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; unit) -&gt;
-<a href="?package=ssl&amp;module=Ssl&amp;type=context">Ssl.context</a> -&gt; <a href="?package=ocamlnet&amp;module=Https_client&amp;type=transport_channel_type">transport_channel_type</a></code></pre><div class="info"><div class="info">Configures a TLS tunnel for this context.<br/>      The <code class="code">verify</code> callback is invoked right after connecting to the
+<a href="?package=ssl&amp;module=Ssl&amp;type=context">Ssl.context</a> -&gt; <a href="?package=ocamlnet&amp;module=Https_client&amp;type=transport_channel_type">transport_channel_type</a></code></pre><div class="info"><div class="info">Configures a TLS tunnel for this context.<p>      The <code class="code">verify</code> callback is invoked right after connecting to the
       remote socket and finishing the SSL handshake. The user can do here
       additional checks whether the peer is acceptable. If not acceptable,
-      raise an exception.</div></div>
-<div class="info"><div class="info"><h2 id="2_TITLE">How to configure a pipeline for TLS</h2><br/>    Just follow this recipe:<br/>    1. Create the <code class="code">Ssl</code> context:<br/>    <pre class="codepre"><code class="code"> Ssl.init() </code></pre><br/>    <pre class="codepre"><code class="code"> let ctx = Ssl.create_context Ssl.TLSv1 Ssl.Client_context </code></pre><br/>    2. Create the transport channel type:<br/>    <pre class="codepre"><code class="code"> let tct = Https_client.https_transport_channel_type ctx </code></pre><br/>    3. Configure the transport:<br/>    <pre class="codepre"><code class="code"> pipeline # configure_transport Http_client.https_cb_id tct </code></pre><br/>    Now all URLs starting with &quot;https://&quot; will use this transport.
+      raise an exception.</p></div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">How to configure a pipeline for TLS</h2><p>    Just follow this recipe:</p><p>    1. Create the <code class="code">Ssl</code> context:</p><p>    </p><code class="code"> Ssl.init() </code><p>    </p><code class="code"> let ctx = Ssl.create_context Ssl.TLSv1 Ssl.Client_context </code><p>    2. Create the transport channel type:</p><p>    </p><code class="code"> let tct = Https_client.https_transport_channel_type ctx </code><p>    3. Configure the transport:</p><p>    </p><code class="code"> pipeline # configure_transport Http_client.https_cb_id tct </code><p>    Now all URLs starting with &quot;https://&quot; will use this transport.
     If you need more control about the type of SSL/TLS channel, you
     can create new channel binding IDs, and configure these in addition.
     For each message needing a specific context, just set the
-    channel binding ID (method <code class="code">set_channel_binding</code> of the message).</div></div>
-<div class="info"><div class="info"><h2 id="2_TITLE">How to configure the Convenience module</h2><br/>    Just do once:<br/>    <pre class="codepre"><code class="code">
+    channel binding ID (method <code class="code">set_channel_binding</code> of the message).</p></div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">How to configure the Convenience module</h2><p>    Just do once:</p><p>    </p><code class="code">
     Ssl.init();
     Http_client.Convenience.configure_pipeline
       (fun p -&gt;
@@ -32,11 +32,11 @@ string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=
          let tct = Https_client.https_transport_channel_type ctx in
          p # configure_transport Http_client.https_cb_id tct
       )
-    </code></pre><br/>    This will enable &quot;https&quot; for the functions in  <a href="#Http_client.Convenience">Http_client.Convenience</a>,
-    e.g. <pre class="codepre"><code class="code"> let data = Http_client.Convenience.http_get &quot;https://url&quot; </code></pre></div></div>
-<div class="info"><div class="info"><h2 id="2_TITLE">How to configure  <a href="#Http_fs">Http_fs</a></h2><br/>    Just do once:<br/>    <pre class="codepre"><code class="code">
+    </code><p>    This will enable &quot;https&quot; for the functions in  <a href="#Http_client.Convenience">Http_client.Convenience</a>,
+    e.g. </p><code class="code"> let data = Http_client.Convenience.http_get &quot;https://url&quot; </code></div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">How to configure  <a href="#Http_fs">Http_fs</a></h2><p>    Just do once:</p><p>    </p><code class="code">
     Ssl.init()
-    </code></pre><br/>    and create the <code class="code">http_fs</code> object with<br/>    <pre class="codepre"><code class="code">
+    </code><p>    and create the <code class="code">http_fs</code> object with</p><p>    </p><code class="code">
     Http_fs.http_fs 
       ~config_pipeline:(
         fun p -&gt;
@@ -45,11 +45,11 @@ string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=
 	  p # configure_transport Http_client.https_cb_id tct
       )
       &quot;https://root-url&quot;
-    </code></pre></div></div>
-<div class="info"><div class="info"><h2 id="2_TITLE">Features and limitations</h2> <br/>    We only implement RFC 2618, i.e. secure connections on a separate
+    </code></div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Features and limitations</h2> <p>    We only implement RFC 2618, i.e. secure connections on a separate
     port (443 instead of 80). There is no support (yet) for RFC 2617,
-    i.e. upgrading an existing insecure connection to a secure one.<br/>    If an HTTP proxy server is configured, the TLS connection is established
-    via the CONNECT method (documented in RFC 2617).<br/>    Alternatively, it is also possible to connect via SOCKS version 5
-    proxies.<br/>    There is, so far, no support for reusing TLS sessions across connections.
-    For every connection a new TLS session is created.</div></div>
+    i.e. upgrading an existing insecure connection to a secure one.</p><p>    If an HTTP proxy server is configured, the TLS connection is established
+    via the CONNECT method (documented in RFC 2617).</p><p>    Alternatively, it is also possible to connect via SOCKS version 5
+    proxies.</p><p>    There is, so far, no support for reusing TLS sessions across connections.
+    For every connection a new TLS session is created.</p></div></div>
 </div>

@@ -1,19 +1,19 @@
 <div class="ocaml_toplevel_module"><div class="info">Process management</div>
 <div class="info"><div class="info">This modules allow you to spawn processes and communicate with them.</div></div>
 <pre><span class="TYPEcommand"><span class="keyword">type</span> command</span> = <code class="type">string * string array</code></pre><div class="info"><div class="info">A command. The first field is the name of the executable and
-        the second is the list of arguments. For example:<br/>        <pre class="codepre"><code class="code">
+        the second is the list of arguments. For example:<p>        </p><code class="code">
           (&quot;ls&quot;, [|&quot;ls&quot;; &quot;-l&quot;|])
-        </code></pre>.<br/>        Notes:<br/>        - if the name is the empty string, then the first argument
+        </code>.<p>        Notes:</p><p>        - if the name is the empty string, then the first argument
         will be used. You should specify a name only if you do not
         want the executable to be searched in the PATH. On Windows the
         only way to enable automatic seach in PATH is to pass an empty
-        name.<br/>        - it is possible to ``inline'' an argument, i.e. split it into
+        name.</p><p>        - it is possible to ``inline'' an argument, i.e. split it into
         multiple arguments. To do that prefix it with <code class="code">&quot;\000&quot;</code>. For
-        example:<br/>        <pre class="codepre"><code class="code">
+        example:</p><p>        </p><code class="code">
           (&quot;&quot;, [|&quot;echo&quot;; &quot;\000foo bar&quot;|])
-        </code></pre><br/>        is the same as:<br/>        <pre class="codepre"><code class="code">
+        </code><p>        is the same as:</p><p>        </p><code class="code">
           (&quot;&quot;, [|&quot;echo&quot;; &quot;foo&quot;; &quot;bar&quot;|])
-        </code></pre>.</div></div>
+        </code>.</div></div>
 <pre><span class="VALshell"><span class="keyword">val</span> shell</span> : <code class="type">string -&gt; <a href="?package=lwt&amp;module=Lwt_process&amp;type=command">command</a></code></pre><div class="info"><div class="info">A command executed with the shell. (with <code class="code">&quot;/bin/sh -c &lt;cmd&gt;&quot;</code> on
       Unix and <code class="code">&quot;cmd.exe /c &lt;cmd&gt;&quot;</code> on Windows).</div></div>
 <div class="info"><div class="info">All the following functions take an optionnal argument

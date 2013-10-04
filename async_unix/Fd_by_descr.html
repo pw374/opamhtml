@@ -1,5 +1,5 @@
-<div class="ocaml_toplevel_module"><div class="info"><code class="code">Fd_by_descr</code> is a table of the open <code class="code">Fd.t</code>s, indexed by file descriptor number.<br/>    In this interface, we use <code class="code">Raw_fd.t</code> rather than <code class="code">Fd.t</code> to avoid a dependency cycle,
-    because the <code class="code">Fd</code> module can't be defined yet.</div>
+<div class="ocaml_toplevel_module"><div class="info"><code class="code">Fd_by_descr</code> is a table of the open <code class="code">Fd.t</code>s, indexed by file descriptor number.<p>    In this interface, we use <code class="code">Raw_fd.t</code> rather than <code class="code">Fd.t</code> to avoid a dependency cycle,
+    because the <code class="code">Fd</code> module can't be defined yet.</p></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre>
 <div class="ocaml_include ident" path="?package=core&amp;module=Std.Invariant.S" items="[]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core&amp;module=Std.Invariant.S">Core.Std.Invariant.S</a></code> with type t := <a href="?package=async_unix&amp;module=Fd_by_descr&amp;type=t">t</a></code></pre></div>
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">num_file_descrs:int -&gt; <a href="?package=async_unix&amp;module=Fd_by_descr&amp;type=t">t</a></code></pre>

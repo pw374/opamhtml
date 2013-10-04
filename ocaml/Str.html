@@ -17,14 +17,14 @@
    case, any backslash character in the regular expression must be
    doubled to make it past the OCaml string parser. For example, the
    following expression:
-   <pre class="codepre"><code class="code"> let r = Str.regexp &quot;hello \\([A-Za-z]+\\)&quot; in
-      Str.replace_first r &quot;\\1&quot; &quot;hello world&quot; </code></pre>
-   returns the string <code class="code">&quot;world&quot;</code>.<br/>   In particular, if you want a regular expression that matches a single
+   <code class="code"> let r = Str.regexp &quot;hello \\([A-Za-z]+\\)&quot; in
+      Str.replace_first r &quot;\\1&quot; &quot;hello world&quot; </code>
+   returns the string <code class="code">&quot;world&quot;</code>.<p>   In particular, if you want a regular expression that matches a single
    backslash character, you need to quote it in the argument to <code class="code">regexp</code>
    (according to the last item of the list above) by adding a second
    backslash. Then you need to quote both backslashes (according to the
    syntax of string constants in OCaml) by doubling them again, so you
-   need to write four backslash characters: <code class="code">Str.regexp &quot;\\\\&quot;</code>.</div></div>
+   need to write four backslash characters: <code class="code">Str.regexp &quot;\\\\&quot;</code>.</p></div></div>
 <pre><span class="VALregexp_case_fold"><span class="keyword">val</span> regexp_case_fold</span> : <code class="type">string -&gt; <a href="?package=ocaml&amp;module=Str&amp;type=regexp">regexp</a></code></pre><div class="info"><div class="info">Same as <code class="code">regexp</code>, but the compiled expression will match text
     in a case-insensitive way: uppercase and lowercase letters will
     be considered equivalent.</div></div>
@@ -56,8 +56,8 @@
    functions:<ul><li> <a href="#Str.string_match">Str.string_match</a></li><li> <a href="#Str.search_forward">Str.search_forward</a></li><li> <a href="#Str.search_backward">Str.search_backward</a></li><li> <a href="#Str.string_partial_match">Str.string_partial_match</a></li><li> <a href="#Str.global_substitute">Str.global_substitute</a></li><li> <a href="#Str.substitute_first">Str.substitute_first</a>
    provided that none of the following functions was called inbetween:</li><li> <a href="#Str.global_replace">Str.global_replace</a></li><li> <a href="#Str.replace_first">Str.replace_first</a></li><li> <a href="#Str.split">Str.split</a></li><li> <a href="#Str.bounded_split">Str.bounded_split</a></li><li> <a href="#Str.split_delim">Str.split_delim</a></li><li> <a href="#Str.bounded_split_delim">Str.bounded_split_delim</a></li><li> <a href="#Str.full_split">Str.full_split</a></li><li> <a href="#Str.bounded_full_split">Str.bounded_full_split</a></li></ul>   Note: in the case of <code class="code">global_substitute</code> and <code class="code">substitute_first</code>,
    a call to <code class="code">matched_string</code> is only valid within the <code class="code">subst</code> argument,
-   not after <code class="code">global_substitute</code> or <code class="code">substitute_first</code> returns.<br/>   The user must make sure that the parameter <code class="code">s</code> is the same string
-   that was passed to the matching or searching function.</div></div>
+   not after <code class="code">global_substitute</code> or <code class="code">substitute_first</code> returns.<p>   The user must make sure that the parameter <code class="code">s</code> is the same string
+   that was passed to the matching or searching function.</p></div></div>
 <pre><span class="VALmatch_beginning"><span class="keyword">val</span> match_beginning</span> : <code class="type">unit -&gt; int</code></pre><div class="info"><div class="info"><code class="code">match_beginning()</code> returns the position of the first character
    of the substring that was matched by the last call to a matching
    or searching function (see  <a href="#Str.matched_string">Str.matched_string</a> for details).</div></div>

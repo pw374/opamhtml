@@ -1,6 +1,6 @@
 <div class="ocaml_toplevel_module"><div class="info">The Stable versions of Hashtbl, Hash_set, Map, and Set are defined here rather than in
-    their respective modules because:<br/>    1. We guarantee their serializations independent of the implementation of those modules
-    2. Given 1. it is cleaner (and still okay) to separate the code into a separate file</div>
+    their respective modules because:<p>    1. We guarantee their serializations independent of the implementation of those modules
+    2. Given 1. it is cleaner (and still okay) to separate the code into a separate file</p></div>
 <div class="ocaml_module sig" name="Set"><pre><span class="keyword">module</span> <a href="?package=core_kernel&amp;module=Stable_containers.Set">Set</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
 <div class="ocaml_module sig" name="V1"><pre><span class="keyword">module</span> <a href="?package=core_kernel&amp;module=Stable_containers.Set.V1">V1</a> : <code class="type"><div class="sig_block"><code class="code">functor (</code><code class="code">Elt</code><code class="code"> : </code><code class="code"><a href="?package=core_kernel&amp;module=Std.Comparator.S_binable">Std.Comparator.S_binable</a></code><code class="code">) -&gt; </code><code class="code">sig</code> .. <code class="code">end</code></div></code></pre><div class="ocaml_module_content">
 <pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type">(Elt.t, Elt.comparator) <a href="?package=core_kernel&amp;module=Std.Set&amp;type=t">Std.Set.t</a></code></pre>

@@ -2,15 +2,15 @@
 <div class="info"><div class="info">This module emulates a filesystem by submitting shell commands.
     For example, a directory listing is retrieved via the <code class="code">ls</code>
     utility instead of opening the directory directly. This also
-    works when logging in to a remote machine, e.g. via <code class="code">ssh</code>.<br/>    The following standard POSIX commands are used:<ul><li><code class="code">dd</code> with options <code class="code">if</code>, <code class="code">of</code>, <code class="code">bs</code>, <code class="code">skip</code>, <code class="code">conv=notrunc</code>, 
+    works when logging in to a remote machine, e.g. via <code class="code">ssh</code>.<p>    The following standard POSIX commands are used:</p><ul><li><code class="code">dd</code> with options <code class="code">if</code>, <code class="code">of</code>, <code class="code">bs</code>, <code class="code">skip</code>, <code class="code">conv=notrunc</code>, 
       and optionally <code class="code">excl</code> (the latter is a GNU extension)</li><li><code class="code">test</code> with options <code class="code">-d</code>, <code class="code">-e</code>, <code class="code">-f</code>, <code class="code">-r</code>, <code class="code">-s</code>, <code class="code">-w</code>, <code class="code">-x</code></li><li><code class="code">ls</code> with options <code class="code">-1</code>, <code class="code">-n</code>, <code class="code">-d</code>, <code class="code">-a</code>, <code class="code">-L</code></li><li><code class="code">rm</code> with options <code class="code">-r</code> and <code class="code">-f</code></li><li><code class="code">mv</code> with option <code class="code">-f</code></li><li><code class="code">ln</code> with option <code class="code">-s</code></li><li><code class="code">mkdir</code> with options <code class="code">-p</code></li><li><code class="code">rmdir</code></li><li><code class="code">cp</code> with option <code class="code">-p</code></li></ul>    In addition to this, the commands may be embedded in one-line shell
-    scripts.<br/>    Filenames with leading minus chars are not supported.<br/>    Error reporting is less accurate than for a local filesystem.<br/>    <b>Example.</b> List a directory on a remote system:<br/>    <pre class="codepre"><code class="code">
+    scripts.<p>    Filenames with leading minus chars are not supported.</p><p>    Error reporting is less accurate than for a local filesystem.</p><p>    <b>Example.</b> List a directory on a remote system:</p><p>    </p><code class="code">
       let fs = 
         Shell_fs.shell_fs 
           (Shell_fs.ssh_interpreter ~host:&quot;moon&quot; ())
       let files =
         fs # readdir [] &quot;/this/is/a/directory/on/moon&quot;
-    </code></pre></div></div>
+    </code></div></div>
 <pre><code><span class="TYPEcommand_context"><span class="keyword">type</span> command_context</span> = {</code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTcommand_context.sfs_command">sfs_command</span> : <code class="type">string</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">The command line</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTcommand_context.sfs_stdin">sfs_stdin</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Shell&amp;type=producer">Shell.producer</a></code>;</code></td><td class="typefieldcomment" align="left"><div class="info">stdin from here</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTcommand_context.sfs_stdout">sfs_stdout</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Shell&amp;type=consumer">Shell.consumer</a></code>;</code></td><td class="typefieldcomment" align="left"><div class="info">stdout goes here</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTcommand_context.sfs_stderr">sfs_stderr</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Shell&amp;type=consumer">Shell.consumer</a></code>;</code></td><td class="typefieldcomment" align="left"><div class="info">stderr goes here</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="keyword">mutable</span> <span class="TYPEELTcommand_context.sfs_status">sfs_status</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=process_status">Unix.process_status</a> option</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">The exit code is put here</div></td></tr><tr><td>}</td></tr></table>
 <pre><span class="TYPEcommand_interpreter"><span class="keyword">type</span> command_interpreter</span> </pre><div class="info"><div class="info">The interpreter runs the command, and fills in <code class="code">sfs_status</code></div></div>
@@ -30,8 +30,8 @@
 ?root:string -&gt;
 ?dd_has_excl:bool -&gt;
 ?tmp_directory:string -&gt;
-?tmp_prefix:string -&gt; <a href="?package=ocamlnet&amp;module=Shell_fs&amp;type=command_interpreter">command_interpreter</a> -&gt; <a href="?package=ocamlnet&amp;module=Shell_fs&amp;type=shell_stream_fs">shell_stream_fs</a></code></pre><div class="info"><div class="info">The shell filesystem.<br/>      - <code class="code">encoding</code>: the assumed character encoding of the filenames.
-        <code class="code">None</code> by default.<ul><li><code class="code">root</code>: the root of the file tree that is accessed. This can
+?tmp_prefix:string -&gt; <a href="?package=ocamlnet&amp;module=Shell_fs&amp;type=command_interpreter">command_interpreter</a> -&gt; <a href="?package=ocamlnet&amp;module=Shell_fs&amp;type=shell_stream_fs">shell_stream_fs</a></code></pre><div class="info"><div class="info">The shell filesystem.<p>      - <code class="code">encoding</code>: the assumed character encoding of the filenames.
+        <code class="code">None</code> by default.</p><ul><li><code class="code">root</code>: the root of the file tree that is accessed. This can
         be an absolute path, or a relative path. </li><li><code class="code">dd_has_excl</code>: whether the <code class="code">dd</code> command support &quot;conv=excl&quot;.
         Default is <code class="code">false</code>; this is a GNU extension.</li><li><code class="code">tmp_directory</code> and <code class="code">tmp_prefix</code> are only meaningful for
         the <code class="code">write_file</code> method which creates a temporary file.
@@ -40,22 +40,22 @@
     <code class="code">shell_stream_fs</code></h2></div></div>
 <pre><span class="VALexecute"><span class="keyword">val</span> execute</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Shell_fs&amp;type=command_interpreter">command_interpreter</a> -&gt; <a href="?package=ocamlnet&amp;module=Shell_fs&amp;type=command_context">command_context</a> -&gt; unit</code></pre><div class="info"><div class="info">Starts this command. It is not waited until the command is finished.
       One can either call <code class="code">wait</code> for this, or one of the adapter
-      functions below.<br/>      One can only start one command at a time.</div></div>
+      functions below.<p>      One can only start one command at a time.</p></div></div>
 <pre><span class="VALwait"><span class="keyword">val</span> wait</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Shell_fs&amp;type=command_interpreter">command_interpreter</a> -&gt; unit</code></pre><div class="info"><div class="info">Waits until the running command is finished</div></div>
 <pre><span class="VALoutput_stream_adapter"><span class="keyword">val</span> output_stream_adapter</span> : <code class="type">ci:<a href="?package=ocamlnet&amp;module=Shell_fs&amp;type=command_interpreter">command_interpreter</a> -&gt;
 close_in:(unit -&gt; unit) -&gt;
 skip:int64 -&gt; <a href="?package=ocamlnet&amp;module=Shell&amp;type=consumer">Shell.consumer</a> * <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=in_obj_channel">Netchannels.in_obj_channel</a></code></pre><div class="info"><div class="info">Arranges that the output of a shell command is made available as
-      an <code class="code">in_obj_channel</code>:<br/>      <pre class="codepre"><code class="code"> let (c, ch) = output_stream_adapter ~ci ~close_in ~skip </code></pre><br/>      The consumer <code class="code">p</code> can be used in a <code class="code">command_context</code> for either
+      an <code class="code">in_obj_channel</code>:<p>      </p><code class="code"> let (c, ch) = output_stream_adapter ~ci ~close_in ~skip </code><p>      The consumer <code class="code">p</code> can be used in a <code class="code">command_context</code> for either
       <code class="code">sfs_stdout</code> or <code class="code">sfs_stderr</code>. The channel <code class="code">ch</code> is an input
       channel, and when reading from it will return the bytes of
-      stdout or stderr.<br/>      <code class="code">close_in</code> is called as post-hook when the <code class="code">close_in</code> method of
-      <code class="code">ch</code> is called. <br/>      <code class="code">skip</code> bytes of stdout/stderr are skipped at the beginning of the
-      stream.</div></div>
+      stdout or stderr.</p><p>      <code class="code">close_in</code> is called as post-hook when the <code class="code">close_in</code> method of
+      <code class="code">ch</code> is called. </p><p>      <code class="code">skip</code> bytes of stdout/stderr are skipped at the beginning of the
+      stream.</p></div></div>
 <pre><span class="VALinput_stream_adapter"><span class="keyword">val</span> input_stream_adapter</span> : <code class="type">ci:<a href="?package=ocamlnet&amp;module=Shell_fs&amp;type=command_interpreter">command_interpreter</a> -&gt;
 close_out:(unit -&gt; unit) -&gt; <a href="?package=ocamlnet&amp;module=Shell&amp;type=producer">Shell.producer</a> * <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=out_obj_channel">Netchannels.out_obj_channel</a></code></pre><div class="info"><div class="info">Arranges that the input of a shell command is made available as
-      an <code class="code">out_obj_channel</code>:<br/>      <pre class="codepre"><code class="code"> let (p, ch) = input_stream_adapter ~ci ~close_in </code></pre><br/>      The producer <code class="code">p</code> can be used in a <code class="code">command_context</code> for 
+      an <code class="code">out_obj_channel</code>:<p>      </p><code class="code"> let (p, ch) = input_stream_adapter ~ci ~close_in </code><p>      The producer <code class="code">p</code> can be used in a <code class="code">command_context</code> for 
       <code class="code">sfs_stdin</code>. The channel <code class="code">ch</code> is an output
       channel, and bytes written to it will appear in stdin of the
-      executed command.<br/>      <code class="code">close_out</code> is called as post-hook when the <code class="code">close_out</code> method of
-      <code class="code">ch</code> is called.</div></div>
+      executed command.</p><p>      <code class="code">close_out</code> is called as post-hook when the <code class="code">close_out</code> method of
+      <code class="code">ch</code> is called.</p></div></div>
 </div>

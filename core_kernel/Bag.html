@@ -1,4 +1,4 @@
-<div class="ocaml_toplevel_module"><div class="info">Imperative set-like data structure.<br/>    Primary differences from a simple set:<br/>    - It doesn't require anything (hashable, comparable) of elements in the bag.<ul><li>Duplicates are allowed.</li><li>Addition and removal are constant time.</li></ul>    It is an error to modify a bag (<code class="code">add</code>, <code class="code">remove</code>, <code class="code">remove_one</code>, ...) during iteration
+<div class="ocaml_toplevel_module"><div class="info">Imperative set-like data structure.<p>    Primary differences from a simple set:</p><p>    - It doesn't require anything (hashable, comparable) of elements in the bag.</p><ul><li>Duplicates are allowed.</li><li>Addition and removal are constant time.</li></ul>    It is an error to modify a bag (<code class="code">add</code>, <code class="code">remove</code>, <code class="code">remove_one</code>, ...) during iteration
     (<code class="code">fold</code>, <code class="code">iter</code>, ...).</div>
 <div class="ocaml_module sig" name="Elt"><pre><span class="keyword">module</span> <a href="?package=core_kernel&amp;module=Bag.Elt">Elt</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
 <pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> </pre>
@@ -18,9 +18,9 @@
     <code class="code">remove_one</code> runs in constant time.</div></div>
 <pre><span class="VALclear"><span class="keyword">val</span> clear</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Bag&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">clear t</code> removes all elements from the bag.  <code class="code">clear</code> runs in O(1) time.</div></div>
 <pre><span class="VALfold_elt"><span class="keyword">val</span> fold_elt</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Bag&amp;type=t">t</a> -&gt; init:'b -&gt; f:('b -&gt; 'a <a href="?package=core_kernel&amp;module=Bag.Elt&amp;type=t">Elt.t</a> -&gt; 'b) -&gt; 'b</code></pre><div class="info"><div class="info"><code class="code">fold_elt t ~init ~f</code> is the same as fold, except <code class="code">f</code> is called with the
-    <code class="code">'a Elt.t</code>'s from the bag instead of the contained <code class="code">'a</code> values.<br/>    Note that like other iteration functions, it is an error to mutate <code class="code">t</code> inside the
+    <code class="code">'a Elt.t</code>'s from the bag instead of the contained <code class="code">'a</code> values.<p>    Note that like other iteration functions, it is an error to mutate <code class="code">t</code> inside the
     fold. If you'd like to call <code class="code">remove</code> on any of the <code class="code">'a Elt.t</code>'s, accumulate them here
-    and do so after <code class="code">fold_elt</code> returns.</div></div>
+    and do so after <code class="code">fold_elt</code> returns.</p></div></div>
 <pre><span class="VALiter_elt"><span class="keyword">val</span> iter_elt</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Bag&amp;type=t">t</a> -&gt; f:('a <a href="?package=core_kernel&amp;module=Bag.Elt&amp;type=t">Elt.t</a> -&gt; unit) -&gt; unit</code></pre>
 <pre><span class="VALfind_elt"><span class="keyword">val</span> find_elt</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Bag&amp;type=t">t</a> -&gt; f:('a -&gt; bool) -&gt; 'a <a href="?package=core_kernel&amp;module=Bag.Elt&amp;type=t">Elt.t</a> option</code></pre><div class="info"><div class="info"><code class="code">find_elt t ~f</code> looks at elements in the bag one-by-one until it finds one
     <code class="code">elt</code> such that <code class="code">f (Elt.value elt)</code>, in which case it returns <code class="code">Some elt</code>.
@@ -47,9 +47,9 @@
     <code class="code">remove_one</code> runs in constant time.</div></div>
 <div class="info"><div class="info"><code class="code">clear t</code> removes all elements from the bag.  <code class="code">clear</code> runs in O(1) time.</div></div>
 <div class="info"><div class="info"><code class="code">fold_elt t ~init ~f</code> is the same as fold, except <code class="code">f</code> is called with the
-    <code class="code">'a Elt.t</code>'s from the bag instead of the contained <code class="code">'a</code> values.<br/>    Note that like other iteration functions, it is an error to mutate <code class="code">t</code> inside the
+    <code class="code">'a Elt.t</code>'s from the bag instead of the contained <code class="code">'a</code> values.<p>    Note that like other iteration functions, it is an error to mutate <code class="code">t</code> inside the
     fold. If you'd like to call <code class="code">remove</code> on any of the <code class="code">'a Elt.t</code>'s, accumulate them here
-    and do so after <code class="code">fold_elt</code> returns.</div></div>
+    and do so after <code class="code">fold_elt</code> returns.</p></div></div>
 <div class="info"><div class="info"><code class="code">find_elt t ~f</code> looks at elements in the bag one-by-one until it finds one
     <code class="code">elt</code> such that <code class="code">f (Elt.value elt)</code>, in which case it returns <code class="code">Some elt</code>.
     If there is no element satisfying <code class="code">f</code>, then <code class="code">find_elt</code> returns <code class="code">None</code>.</div></div>

@@ -22,14 +22,14 @@ f:('b -&gt; 'a -&gt; [ `Continue of 'b | `Final of 'b ]) -&gt; init:'b -&gt; 'b<
 <pre><span class="VALmax_exn"><span class="keyword">val</span> max_exn</span> : <code class="type">?cmp:('a -&gt; 'a -&gt; int) -&gt; 'a list -&gt; 'a</code></pre>
 <pre><span class="VALmin_exn"><span class="keyword">val</span> min_exn</span> : <code class="type">?cmp:('a -&gt; 'a -&gt; int) -&gt; 'a list -&gt; 'a</code></pre>
 <pre><span class="VALlcs"><span class="keyword">val</span> lcs</span> : <code class="type">'a list -&gt; 'a list -&gt; 'a list</code></pre><div class="info"><div class="info">Find the longest common subsequence between two list.</div></div>
-<div class="info"><div class="info">Numbers the elements in a list by occurence:<br/>   <code class="code">[a;b;c;a;d] -&gt; [(a,0);(b,0);(c,0);(a,1);(d,0)]</code></div></div>
+<div class="info"><div class="info">Numbers the elements in a list by occurence:<p>   <code class="code">[a;b;c;a;d] -&gt; [(a,0);(b,0);(c,0);(a,1);(d,0)]</code></p></div></div>
 <pre><span class="VALnumber"><span class="keyword">val</span> number</span> : <code class="type">'a list -&gt; ('a * int) list</code></pre>
 <pre><span class="VALmultimerge"><span class="keyword">val</span> multimerge</span> : <code class="type">'a list list -&gt; 'a list</code></pre><div class="info"><div class="info">Merges several list trying to keep the order in which the elements appear.
-   The elements of the individual are not deduped.<br/>   multimerge <code class="code">[[a;b;d;a] [b;c;d]] -&gt; [a;b;c;d;a]</code></div></div>
+   The elements of the individual are not deduped.<p>   multimerge <code class="code">[[a;b;d;a] [b;c;d]] -&gt; [a;b;c;d;a]</code></p></div></div>
 <pre><span class="VALmultimerge_unique"><span class="keyword">val</span> multimerge_unique</span> : <code class="type">'a list list -&gt; 'a list</code></pre>
 <pre><span class="VALsquare"><span class="keyword">val</span> square</span> : <code class="type">?null:'v -&gt; ('k * 'v) list list -&gt; 'k list * 'v list list</code></pre><div class="info"><div class="info">Takes a list of <code class="code">`key*`value lists</code> and returns a
    header * table_body body that is obtained by splitting the lists and
-   re-oddering the terms (so that they all have the same header).<br/>   If <code class="code">null_value</code> is not specified and the rows have different keys
+   re-oddering the terms (so that they all have the same header).<p>   If <code class="code">null_value</code> is not specified and the rows have different keys
    the function will raise an exception.
    <code class="code">
    square ~null
@@ -41,7 +41,7 @@ f:('b -&gt; 'a -&gt; [ `Continue of 'b | `Final of 'b ]) -&gt; init:'b -&gt; 'b<
    [[null;a_1 ;b_1 ;null;c_1 ]
     [null;null;null;a_2 ;null]
     [a_3 ;b_3 ;c_3 ;d_3 ;e_3 ]])
-   </code></div></div>
+   </code></p></div></div>
 <pre><span class="VALsquare_unique"><span class="keyword">val</span> square_unique</span> : <code class="type">?null:'v -&gt; ('k * 'v) list list -&gt; 'k list * 'v list list</code></pre>
 <pre><span class="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">equal:('a -&gt; 'b -&gt; bool) -&gt; 'a list -&gt; 'b list -&gt; bool</code></pre>
 <pre><span class="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">cmp:('a -&gt; 'b -&gt; int) -&gt; 'a list -&gt; 'b list -&gt; int</code></pre>

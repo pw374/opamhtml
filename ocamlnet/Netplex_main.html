@@ -3,14 +3,14 @@
 <pre><span class="VALargs"><span class="keyword">val</span> args</span> : <code class="type">?defaults:<a href="?package=ocamlnet&amp;module=Netplex_main&amp;type=cmdline_config">cmdline_config</a> -&gt;
 unit -&gt; (<a href="?package=ocaml&amp;module=Arg&amp;type=key">Arg.key</a> * <a href="?package=ocaml&amp;module=Arg&amp;type=spec">Arg.spec</a> * <a href="?package=ocaml&amp;module=Arg&amp;type=doc">Arg.doc</a>) list * <a href="?package=ocamlnet&amp;module=Netplex_main&amp;type=cmdline_config">cmdline_config</a></code></pre><div class="info"><div class="info"><code class="code">let (opt_list, cmdline_cfg) = args()</code>:
  Returns <code class="code">opt_list</code> for inclusion in the <code class="code">Arg.parse</code> option list.
- The effects made available by the returned <code class="code">cmdline_cfg</code> value.<br/> The defaults (unless overridden by <code class="code">defaults</code>): The config file
+ The effects made available by the returned <code class="code">cmdline_cfg</code> value.<p> The defaults (unless overridden by <code class="code">defaults</code>): The config file
  is derived from the name of the executable (by appending <code class="code">.conf</code>
- instead of the current extension). There is no config tree.<div class="parameters"><div class="param_info"><code class="code">defaults</code> : The default argument values</div></div></div></div>
+ instead of the current extension). There is no config tree.</p><div class="parameters"><div class="param_info"><code class="code">defaults</code> : The default argument values</div></div></div></div>
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">?config_filename:string -&gt;
 ?config_tree:Netplex_types.config_tree -&gt;
-?pidfile:string option -&gt; ?foreground:bool -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_main&amp;type=cmdline_config">cmdline_config</a></code></pre><div class="info"><div class="info">Creates the command-line configuration object.<br/>      By setting <code class="code">config_tree</code> a special configuration can be injected -
+?pidfile:string option -&gt; ?foreground:bool -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Netplex_main&amp;type=cmdline_config">cmdline_config</a></code></pre><div class="info"><div class="info">Creates the command-line configuration object.<p>      By setting <code class="code">config_tree</code> a special configuration can be injected -
       the file <code class="code">config_filename</code> is not loaded in this case (but may
-      still appear in error messages)</div></div>
+      still appear in error messages)</p></div></div>
 <pre><span class="VALmodify"><span class="keyword">val</span> modify</span> : <code class="type">?config_filename:string -&gt;
 ?config_tree:Netplex_types.config_tree -&gt;
 ?pidfile:string option -&gt;
@@ -30,20 +30,20 @@ unit -&gt; (<a href="?package=ocaml&amp;module=Arg&amp;type=key">Arg.key</a> * <
 Netplex_types.parallelizer -&gt;
 Netplex_types.logger_factory list -&gt;
 Netplex_types.workload_manager_factory list -&gt;
-Netplex_types.processor_factory list -&gt; <a href="?package=ocamlnet&amp;module=Netplex_main&amp;type=cmdline_config">cmdline_config</a> -&gt; unit</code></pre><div class="info"><div class="info">Establishes a configuration and starts the Netplex daemon.<br/> If a ready-made configuration tree is included in the passed configuration
+Netplex_types.processor_factory list -&gt; <a href="?package=ocamlnet&amp;module=Netplex_main&amp;type=cmdline_config">cmdline_config</a> -&gt; unit</code></pre><div class="info"><div class="info">Establishes a configuration and starts the Netplex daemon.<p> If a ready-made configuration tree is included in the passed configuration
  it is taken as the configuration. If otherwise only the name of the
  config file is available, this file is parsed.
  Fails with <code class="code">Netplex_config.Config_error</code> when an error in the
- configuration is detected.<br/> The <code class="code">late_initializer</code> is called after the Netplex controller has been
+ configuration is detected.</p><p> The <code class="code">late_initializer</code> is called after the Netplex controller has been
  fully initialized, and before the main event loop is entered. You can
- perform here further initializations, e.g. starting helper threads.<br/> The <code class="code">config_parser</code> is by default <code class="code">Netplex_config.read_config_file</code>.
+ perform here further initializations, e.g. starting helper threads.</p><p> The <code class="code">config_parser</code> is by default <code class="code">Netplex_config.read_config_file</code>.
  You can override it by whatever parser you would like to use. The
  parser is only used if a configuration tree is unavailable, and
- the configuration needs to be loaded from a file.<br/> As side-effect, the current logger of the  <a href="#Netlog">Netlog</a> module is set
+ the configuration needs to be loaded from a file.</p><p> As side-effect, the current logger of the  <a href="#Netlog">Netlog</a> module is set
  to selected Netplex logger. Note that this setting remains active
  even after <code class="code">startup</code> returns to the caller. Also note that log messages
  submitted via  <a href="#Netlog">Netlog</a> appear as from component &quot;netplex.other&quot;
- if they are sent from outside of a container.<br/> It is changed to <code class="code">/</code> as working directory (as required for a daemon).</div></div>
+ if they are sent from outside of a container.</p><p> It is changed to <code class="code">/</code> as working directory (as required for a daemon).</p></div></div>
 <pre><span class="VALrun"><span class="keyword">val</span> run</span> : <code class="type">?config_parser:(string -&gt; Netplex_types.config_file) -&gt;
 late_initializer:(Netplex_types.config_file -&gt; Netplex_types.controller -&gt; 'a) -&gt;
 extract_result:(Netplex_types.controller -&gt; 'a -&gt; 'b) -&gt;
@@ -57,17 +57,17 @@ Netplex_types.processor_factory list -&gt; <a href="?package=ocamlnet&amp;module
       to return a result to the caller once the processes have finished
       their tasks. One consequence of this is that you cannot daemonize
       the program - it always runs in the foreground (no matter whether
-      <code class="code">-fg</code> is given or not).<br/>      <code class="code">run</code> expects that the caller passes a function <code class="code">extract_result</code>.
+      <code class="code">-fg</code> is given or not).<p>      <code class="code">run</code> expects that the caller passes a function <code class="code">extract_result</code>.
       This function is invoked once the Netplex system is done, and
       the user can extract the final result from the controller. The
-      result of <code class="code">extract_result</code> is also the result of <code class="code">run</code>.<br/>      At the moment <code class="code">extract_result</code> is invoked, the child processes are
+      result of <code class="code">extract_result</code> is also the result of <code class="code">run</code>.</p><p>      At the moment <code class="code">extract_result</code> is invoked, the child processes are
       already terminated. They should have put their result at a place
       that is in the controller, or can be reached with the help of the
-      controller. The controller functionality is still fully available.<br/>      Note that the controller is shut down as soon as <code class="code">extract_result</code>
-      returns. Further interactions with the controller are not possible.<br/>      The <code class="code">late_initializer</code> is now obligatory for typing reasons
+      controller. The controller functionality is still fully available.</p><p>      Note that the controller is shut down as soon as <code class="code">extract_result</code>
+      returns. Further interactions with the controller are not possible.</p><p>      The <code class="code">late_initializer</code> is now obligatory for typing reasons
       (so you can get the result of the <code class="code">late_initializer</code> from
-      <code class="code">extract_result</code>). If you don't need it, just return <code class="code">()</code>.<br/>      The working directory is left unchanged.</div></div>
-<div class="info"><div class="info"><h2 id="2_TITLE">Tutorial</h2><br/> The typical main program for a <code class="code">Netplex</code> server system looks like:<br/> <pre class="codepre"><code class="code"> 
+      <code class="code">extract_result</code>). If you don't need it, just return <code class="code">()</code>.</p><p>      The working directory is left unchanged.</p></div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Tutorial</h2><p> The typical main program for a <code class="code">Netplex</code> server system looks like:</p><p> </p><code class="code"> 
    let my_factories = ...
 
    let start() =
@@ -86,7 +86,7 @@ Netplex_types.processor_factory list -&gt; <a href="?package=ocamlnet&amp;module
 
    Sys.set_signal Sys.sigpipe Sys.Signal_ignore;
    start()
- </code></pre><br/> This main program enables:<ul><li>The standard command-line arguments <code class="code">-conf</code>, <code class="code">-pid</code> and <code class="code">-fg</code> are 
+ </code><p> This main program enables:</p><ul><li>The standard command-line arguments <code class="code">-conf</code>, <code class="code">-pid</code> and <code class="code">-fg</code> are 
    understood</li><li>The configuration file is parsed</li><li>The configuration can refer to all loggers and workload managers
    coming with Netplex</li><li>The parallelizer is selected: Here, it is multi-processing
    (Netplex_mp). One could also select multi-threading (Netplex_mt)</li><li>The processors defined by <code class="code">my_factories</code> are made available

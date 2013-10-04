@@ -1,16 +1,16 @@
 <div class="ocaml_toplevel_module"><div class="info">Authentication module AUTH_SYS</div>
 <div class="info"><div class="info">This module implements system authentication (AUTH_SYS, also known as
- AUTH_UNIX).<br/> ***********************************************************************
- WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING!<br/> This authentication method is insecure because it does not use any
+ AUTH_UNIX).<p> ***********************************************************************
+ WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING!</p><p> This authentication method is insecure because it does not use any
  verifier. I strongly dissuade everybody from using this authentication
  method for newly written RPC systems. I include it here only for
- compatibility with older systems.<br/> WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING!
- ***********************************************************************</div></div>
+ compatibility with older systems.</p><p> WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING!
+ ***********************************************************************</p></div></div>
 <pre><span class="TYPEidentity"><span class="keyword">type</span> identity</span> = <code class="type">[ `Effective_user | `Real_user | `This_user of int * int * int array * string ]</code></pre><div class="info"><div class="info">Specifies the user:<ul><li><code class="code">`Effective_user</code>: Take the effective user of the process</li><li><code class="code">`Real_user</code>: Take the real user of the process</li><li><code class="code">`This_user(uid,gid,sup_groups,hostname)</code>: Pretend to be
    this user
        </li></ul></div></div>
 <pre><span class="VALclient_auth_method"><span class="keyword">val</span> client_auth_method</span> : <code class="type">?identity:<a href="?package=ocamlnet&amp;module=Rpc_auth_sys&amp;type=identity">identity</a> -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_client&amp;type=auth_method">Rpc_client.auth_method</a></code></pre><div class="info"><div class="info">Pass the result of this function to <code class="code">Rpc_client.set_auth_methods</code> to
- configure client authentication.<br/> <code class="code">identity</code>: As whom the clients authenticates.</div></div>
+ configure client authentication.<p> <code class="code">identity</code>: As whom the clients authenticates.</p></div></div>
 <pre><span class="TYPEuser_name_format"><span class="keyword">type</span> user_name_format</span> = <code class="type">[ `Custom of int32 -&gt; int32 -&gt; int32 array -&gt; string -&gt; string | `Full | `UID ]</code></pre><div class="info"><div class="info">How <code class="code">Rpc_server.get_user</code> returns the user as string:<ul><li><code class="code">`Full</code>: The format includes all transmitted details:
    <code class="code">&quot;&lt;uid&gt;.&lt;gid&gt;.&lt;gid1&gt;.&lt;gid2&gt;...@&lt;hostname&gt;&quot;</code>.
    All user and group IDs are numeric. The first two numbers, &lt;uid&gt; and
@@ -23,10 +23,10 @@
 <pre><span class="VALserver_auth_method"><span class="keyword">val</span> server_auth_method</span> : <code class="type">?lookup_hostname:bool -&gt;
 ?require_privileged_port:bool -&gt;
 ?user_name_as:<a href="?package=ocamlnet&amp;module=Rpc_auth_sys&amp;type=user_name_format">user_name_format</a> -&gt; unit -&gt; <a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=auth_method">Rpc_server.auth_method</a></code></pre><div class="info"><div class="info">Pass the result of this function to <code class="code">Rpc_server.set_auth_methods</code> to
- configure authentication.<br/> <code class="code">lookup_hostname</code>: if true, the hostname contained in the credentials
-    is checked (by gethostbyname)<br/> <code class="code">require_privileged_port</code>: if true, the client must use a privileged
-    port. Note that Unix domain sockets are rejected in this mode.<br/> User name strings as formatted as specified by <code class="code">user_name_as</code>. 
- This defaults to <code class="code">`Full</code>.</div></div>
+ configure authentication.<p> <code class="code">lookup_hostname</code>: if true, the hostname contained in the credentials
+    is checked (by gethostbyname)</p><p> <code class="code">require_privileged_port</code>: if true, the client must use a privileged
+    port. Note that Unix domain sockets are rejected in this mode.</p><p> User name strings as formatted as specified by <code class="code">user_name_as</code>. 
+ This defaults to <code class="code">`Full</code>.</p></div></div>
 <pre><span class="VALparse_user_name"><span class="keyword">val</span> parse_user_name</span> : <code class="type">string -&gt; int * int * int array * string</code></pre><div class="info"><div class="info">Parses a user name as returned by <code class="code">Rpc_server.get_user</code> in conjunction
  with the AUTH_SYS authentication and <code class="code">`Full</code> formatting.
  Returns <code class="code">(uid,gid,sup_groups,hostname)</code>.1</div></div>

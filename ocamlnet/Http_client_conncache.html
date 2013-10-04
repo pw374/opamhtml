@@ -4,8 +4,8 @@
 <pre><span class="TYPEchannel_binding_id"><span class="keyword">type</span> channel_binding_id</span> = <code class="type">int</code></pre><div class="info"><div class="info">Same as in  <a href="#Http_client.channel_binding_id">Http_client.channel_binding_id</a></div></div>
 <pre><span class="TYPEconn_state"><span class="keyword">type</span> conn_state</span> = <code class="type">[ `Active of &lt;  &gt; | `Inactive of <a href="?package=ocamlnet&amp;module=Http_client_conncache&amp;type=channel_binding_id">channel_binding_id</a> ]</code></pre><div class="info"><div class="info">A TCP connection may be either <code class="code">`Inactive</code>, i.e. it is not used
  by any pipeline, or <code class="code">`Active obj</code>, i.e. it is in use by the pipeline
- <code class="code">obj</code> (this is the  <a href="#Http_client.pipeline">Http_client.pipeline</a> coerced to <code class="code">&lt; &gt;</code>).<br/> Since Ocamlnet-3.3, <code class="code">`Inactive</code> connections carry the channel binding
- ID as argument.</div></div>
+ <code class="code">obj</code> (this is the  <a href="#Http_client.pipeline">Http_client.pipeline</a> coerced to <code class="code">&lt; &gt;</code>).<p> Since Ocamlnet-3.3, <code class="code">`Inactive</code> connections carry the channel binding
+ ID as argument.</p></div></div>
 <pre><span class="TYPEpeer"><span class="keyword">type</span> peer</span> = <code class="type">[ `Direct of string * int
 | `Http_proxy of string * int
 | `Http_proxy_connect of (string * int) * (string * int)

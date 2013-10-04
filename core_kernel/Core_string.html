@@ -105,32 +105,32 @@
 <pre><span class="VALescape_gen_exn"><span class="keyword">val</span> escape_gen_exn</span> : <code class="type">escapeworthy_map:(char * char) list -&gt;
 escape_char:char -&gt; (string -&gt; string) <a href="?package=core_kernel&amp;module=Staged&amp;type=t">Staged.t</a></code></pre><div class="info"><div class="info"><code class="code">escape_gen_exn escapeworthy_map escape_char</code> returns a function that will escape a
       string <code class="code">s</code> as follows: if <code class="code">(c1,c2)</code> is in <code class="code">escapeworthy_map</code>, then all occurences of
-      <code class="code">c1</code> are replaced by <code class="code">escape_char</code> concatenated to <code class="code">c2</code>.<br/>      Raises an exception if <code class="code">escapeworthy_map</code> is not one-to-one.  If <code class="code">escape_char</code> is
-      not in <code class="code">escapeworthy_map</code>, then it will be escaped to itself.</div></div>
+      <code class="code">c1</code> are replaced by <code class="code">escape_char</code> concatenated to <code class="code">c2</code>.<p>      Raises an exception if <code class="code">escapeworthy_map</code> is not one-to-one.  If <code class="code">escape_char</code> is
+      not in <code class="code">escapeworthy_map</code>, then it will be escaped to itself.</p></div></div>
 <pre><span class="VALescape_gen"><span class="keyword">val</span> escape_gen</span> : <code class="type">escapeworthy_map:(char * char) list -&gt;
 escape_char:char -&gt; (string -&gt; string) <a href="?package=core_kernel&amp;module=Or_error&amp;type=t">Or_error.t</a></code></pre>
 <pre><span class="VALescape"><span class="keyword">val</span> escape</span> : <code class="type">escapeworthy:char list -&gt; escape_char:char -&gt; (string -&gt; string) <a href="?package=core_kernel&amp;module=Staged&amp;type=t">Staged.t</a></code></pre><div class="info"><div class="info"><code class="code">escape ~escapeworthy ~escape_char s</code> is
-      <pre class="codepre"><code class="code">
+      <code class="code">
         escape_gen_exn ~escapeworthy_map:(List.zip_exn escapeworthy escapeworthy)
           ~escape_char
-      </code></pre>.
+      </code>.
       Duplicates and <code class="code">escape_char</code> will be removed from <code class="code">escapeworthy</code>.  So, no
       exception will be raised</div></div>
 <pre><span class="VALunescape_gen_exn"><span class="keyword">val</span> unescape_gen_exn</span> : <code class="type">escapeworthy_map:(char * char) list -&gt;
 escape_char:char -&gt; (string -&gt; string) <a href="?package=core_kernel&amp;module=Staged&amp;type=t">Staged.t</a></code></pre><div class="info"><div class="info"><code class="code">unescape_gen_exn</code> is the inverse operation of <code class="code">escape_gen_exn</code>. That is,
-      <pre class="codepre"><code class="code">
+      <code class="code">
       let escape = Staged.unstage (escape_gen_exn ~escapeworthy_map ~escape_char) in
       let unescape = Staged.unstage (unescape_gen_exn ~escapeworthy_map ~escape_char) in
       assert (s = unescape (escape s))
-      </code></pre>
+      </code>
       always succeed when ~escapeworthy_map is not causing exceptions.</div></div>
 <pre><span class="VALunescape_gen"><span class="keyword">val</span> unescape_gen</span> : <code class="type">escapeworthy_map:(char * char) list -&gt;
 escape_char:char -&gt; (string -&gt; string) <a href="?package=core_kernel&amp;module=Or_error&amp;type=t">Or_error.t</a></code></pre>
 <pre><span class="VALunescape"><span class="keyword">val</span> unescape</span> : <code class="type">escape_char:char -&gt; (string -&gt; string) <a href="?package=core_kernel&amp;module=Staged&amp;type=t">Staged.t</a></code></pre><div class="info"><div class="info"><code class="code">unescape ~escape_char</code> is defined as <code class="code">unescape_gen_exn ~map:[] ~escape_char</code></div></div>
 <pre><span class="VALis_char_escaping"><span class="keyword">val</span> is_char_escaping</span> : <code class="type">string -&gt; escape_char:char -&gt; int -&gt; bool</code></pre><div class="info"><div class="info">Any char in an escaped string is either escaping, escaped or literal. For example,
       for escaped string &quot;0_a0__0&quot; with escape_char as '_', pos 1 and 4 are escaping, 2
-      and 5 are escaped, and the rest are literal<br/>      <code class="code">is_char_escaping s ~escape_char pos</code> return true if the char at <code class="code">pos</code> is escaping,
-      false otherwise.</div></div>
+      and 5 are escaped, and the rest are literal<p>      <code class="code">is_char_escaping s ~escape_char pos</code> return true if the char at <code class="code">pos</code> is escaping,
+      false otherwise.</p></div></div>
 <pre><span class="VALis_char_escaped"><span class="keyword">val</span> is_char_escaped</span> : <code class="type">string -&gt; escape_char:char -&gt; int -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">is_char_escaped s ~escape_char pos</code> return true if the char at <code class="code">pos</code> is escaped,
       false otherwise.</div></div>
 <pre><span class="VALis_char_literal"><span class="keyword">val</span> is_char_literal</span> : <code class="type">string -&gt; escape_char:char -&gt; int -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">is_literal s ~escape_char pos</code> return true if the char at <code class="code">pos</code> is not escaped or
@@ -150,11 +150,11 @@ escape_char:char -&gt; (string -&gt; string) <a href="?package=core_kernel&amp;m
 <pre><span class="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">string -&gt; on:char -&gt; escape_char:char -&gt; string list</code></pre><div class="info"><div class="info"><code class="code">split s ~escape_char ~on</code> <b>Returns</b> a list of substrings of <code class="code">s</code> that are separated by
       literal versions of <code class="code">on</code>.  Consecutive <code class="code">on</code> characters will cause multiple empty
       strings in the result.  Splitting the empty string returns a list of the empty
-      string, not the empty list.<br/>      e.g. split ~escape_char:'_' ~on:',' &quot;foo,bar_,baz&quot; = <code class="code">&quot;foo&quot;; &quot;bar_,baz&quot;</code></div></div>
+      string, not the empty list.<p>      e.g. split ~escape_char:'_' ~on:',' &quot;foo,bar_,baz&quot; = <code class="code">&quot;foo&quot;; &quot;bar_,baz&quot;</code></p></div></div>
 <pre><span class="VALsplit_on_chars"><span class="keyword">val</span> split_on_chars</span> : <code class="type">string -&gt; on:char list -&gt; escape_char:char -&gt; string list</code></pre><div class="info"><div class="info"><code class="code">split_on_chars s ~on</code> <b>Returns</b> a list of all substrings of <code class="code">s</code> that are separated by
       one of the literal chars from <code class="code">on</code>.  <code class="code">on</code> are not grouped.  So a grouping of <code class="code">on</code> in
-      the source string will produce multiple empty string splits in the result.<br/>      e.g. split_on_chars ~escape_char:'_' ~on:<code class="code">',';'|'</code> &quot;foo_|bar,baz|0&quot; -&gt;
-      <code class="code">&quot;foo_|bar&quot;; &quot;baz&quot;; &quot;0&quot;</code></div></div>
+      the source string will produce multiple empty string splits in the result.<p>      e.g. split_on_chars ~escape_char:'_' ~on:<code class="code">',';'|'</code> &quot;foo_|bar,baz|0&quot; -&gt;
+      <code class="code">&quot;foo_|bar&quot;; &quot;baz&quot;; &quot;0&quot;</code></p></div></div>
 <pre><span class="VALlsplit2"><span class="keyword">val</span> lsplit2</span> : <code class="type">string -&gt; on:char -&gt; escape_char:char -&gt; (string * string) option</code></pre>
 <pre><span class="VALlsplit2_exn"><span class="keyword">val</span> lsplit2_exn</span> : <code class="type">string -&gt; on:char -&gt; escape_char:char -&gt; string * string</code></pre>
 <pre><span class="VALrsplit2"><span class="keyword">val</span> rsplit2</span> : <code class="type">string -&gt; on:char -&gt; escape_char:char -&gt; (string * string) option</code></pre>
@@ -245,27 +245,27 @@ escape_char:char -&gt; (string -&gt; string) <a href="?package=core_kernel&amp;m
     using Pcre. Benchmark code can be found in core/benchmarks/string_escaping.ml.</div></div>
 <div class="info"><div class="info"><code class="code">escape_gen_exn escapeworthy_map escape_char</code> returns a function that will escape a
       string <code class="code">s</code> as follows: if <code class="code">(c1,c2)</code> is in <code class="code">escapeworthy_map</code>, then all occurences of
-      <code class="code">c1</code> are replaced by <code class="code">escape_char</code> concatenated to <code class="code">c2</code>.<br/>      Raises an exception if <code class="code">escapeworthy_map</code> is not one-to-one.  If <code class="code">escape_char</code> is
-      not in <code class="code">escapeworthy_map</code>, then it will be escaped to itself.</div></div>
+      <code class="code">c1</code> are replaced by <code class="code">escape_char</code> concatenated to <code class="code">c2</code>.<p>      Raises an exception if <code class="code">escapeworthy_map</code> is not one-to-one.  If <code class="code">escape_char</code> is
+      not in <code class="code">escapeworthy_map</code>, then it will be escaped to itself.</p></div></div>
 <div class="info"><div class="info"><code class="code">escape ~escapeworthy ~escape_char s</code> is
-      <pre class="codepre"><code class="code">
+      <code class="code">
         escape_gen_exn ~escapeworthy_map:(List.zip_exn escapeworthy escapeworthy)
           ~escape_char
-      </code></pre>.
+      </code>.
       Duplicates and <code class="code">escape_char</code> will be removed from <code class="code">escapeworthy</code>.  So, no
       exception will be raised</div></div>
 <div class="info"><div class="info"><code class="code">unescape_gen_exn</code> is the inverse operation of <code class="code">escape_gen_exn</code>. That is,
-      <pre class="codepre"><code class="code">
+      <code class="code">
       let escape = Staged.unstage (escape_gen_exn ~escapeworthy_map ~escape_char) in
       let unescape = Staged.unstage (unescape_gen_exn ~escapeworthy_map ~escape_char) in
       assert (s = unescape (escape s))
-      </code></pre>
+      </code>
       always succeed when ~escapeworthy_map is not causing exceptions.</div></div>
 <div class="info"><div class="info"><code class="code">unescape ~escape_char</code> is defined as <code class="code">unescape_gen_exn ~map:[] ~escape_char</code></div></div>
 <div class="info"><div class="info">Any char in an escaped string is either escaping, escaped or literal. For example,
       for escaped string &quot;0_a0__0&quot; with escape_char as '_', pos 1 and 4 are escaping, 2
-      and 5 are escaped, and the rest are literal<br/>      <code class="code">is_char_escaping s ~escape_char pos</code> return true if the char at <code class="code">pos</code> is escaping,
-      false otherwise.</div></div>
+      and 5 are escaped, and the rest are literal<p>      <code class="code">is_char_escaping s ~escape_char pos</code> return true if the char at <code class="code">pos</code> is escaping,
+      false otherwise.</p></div></div>
 <div class="info"><div class="info"><code class="code">is_char_escaped s ~escape_char pos</code> return true if the char at <code class="code">pos</code> is escaped,
       false otherwise.</div></div>
 <div class="info"><div class="info"><code class="code">is_literal s ~escape_char pos</code> return true if the char at <code class="code">pos</code> is not escaped or
@@ -281,9 +281,9 @@ escape_char:char -&gt; (string -&gt; string) <a href="?package=core_kernel&amp;m
 <div class="info"><div class="info"><code class="code">split s ~escape_char ~on</code> <b>Returns</b> a list of substrings of <code class="code">s</code> that are separated by
       literal versions of <code class="code">on</code>.  Consecutive <code class="code">on</code> characters will cause multiple empty
       strings in the result.  Splitting the empty string returns a list of the empty
-      string, not the empty list.<br/>      e.g. split ~escape_char:'_' ~on:',' &quot;foo,bar_,baz&quot; = <code class="code">&quot;foo&quot;; &quot;bar_,baz&quot;</code></div></div>
+      string, not the empty list.<p>      e.g. split ~escape_char:'_' ~on:',' &quot;foo,bar_,baz&quot; = <code class="code">&quot;foo&quot;; &quot;bar_,baz&quot;</code></p></div></div>
 <div class="info"><div class="info"><code class="code">split_on_chars s ~on</code> <b>Returns</b> a list of all substrings of <code class="code">s</code> that are separated by
       one of the literal chars from <code class="code">on</code>.  <code class="code">on</code> are not grouped.  So a grouping of <code class="code">on</code> in
-      the source string will produce multiple empty string splits in the result.<br/>      e.g. split_on_chars ~escape_char:'_' ~on:<code class="code">',';'|'</code> &quot;foo_|bar,baz|0&quot; -&gt;
-      <code class="code">&quot;foo_|bar&quot;; &quot;baz&quot;; &quot;0&quot;</code></div></div>
+      the source string will produce multiple empty string splits in the result.<p>      e.g. split_on_chars ~escape_char:'_' ~on:<code class="code">',';'|'</code> &quot;foo_|bar,baz|0&quot; -&gt;
+      <code class="code">&quot;foo_|bar&quot;; &quot;baz&quot;; &quot;0&quot;</code></p></div></div>
 </div>

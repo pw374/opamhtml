@@ -1,6 +1,6 @@
 <div class="ocaml_toplevel_module"><div class="info">Logging facility</div>
 <div class="info"><div class="info">This module provides functions to deal with logging.
-    It support:<br/>    - logging to the syslog daemon<ul><li>logging to a channel (stderr, stdout, ...)</li><li>logging to a file</li><li>logging to multiple destination at the same time
+    It support:<p>    - logging to the syslog daemon</p><ul><li>logging to a channel (stderr, stdout, ...)</li><li>logging to a file</li><li>logging to multiple destination at the same time
 </li></ul></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Types</h6></div></div>
 <pre><code><span class="TYPElevel"><span class="keyword">type</span> level</span> = </code></pre><table class="typetable">
@@ -11,45 +11,45 @@
           after a fatal error.</div></td></tr></table><div class="info"><div class="info">Type of log levels. A level determines the importance of a
     message</div></div>
 <pre><span class="TYPElogger"><span class="keyword">type</span> logger</span> </pre><div class="info"><div class="info">Type of a logger. A logger is responsible for dispatching messages
-      and storing them somewhere.<br/>      Lwt provides loggers sending log messages to a file, syslog,
-      ... but you can also create you own logger.</div></div>
+      and storing them somewhere.<p>      Lwt provides loggers sending log messages to a file, syslog,
+      ... but you can also create you own logger.</p></div></div>
 <pre><span class="TYPEsection"><span class="keyword">type</span> section</span> </pre><div class="info"><div class="info">Each logging message has a section. Sections can be used to
       structure your logs. For example you can choose different
-      loggers according to the section.<br/>      Each section carries a level, and messages with a lower log
-      level than than the section level will be dropped.<br/>      Section levels are initialised using the <code class="code">LWT_LOG</code> environment
+      loggers according to the section.<p>      Each section carries a level, and messages with a lower log
+      level than than the section level will be dropped.</p><p>      Section levels are initialised using the <code class="code">LWT_LOG</code> environment
       variable, which must contains one or more rules of the form
       <code class="code">pattern -&gt; level</code> separated by &quot;;&quot;. Where <code class="code">pattern</code> is a string
-      that may contain <code class="code">*</code>.<br/>      For example, if <code class="code">LWT_LOG</code> contains:
-      <pre class="codepre"><code class="code">
+      that may contain <code class="code">*</code>.</p><p>      For example, if <code class="code">LWT_LOG</code> contains:
+      </p><code class="code">
         access -&gt; warning;
         foo[*] -&gt; error
-      </code></pre>
+      </code>
       then the level of the section <code class="code">&quot;access&quot;</code> is  <a href="#Warning">Warning</a> and the
-      level of any section matching <code class="code">&quot;foo[*]&quot;</code> is  <a href="#Error">Error</a>.<br/>      If the pattern is omited in a rule then the pattern <code class="code">&quot;*&quot;</code> is
+      level of any section matching <code class="code">&quot;foo[*]&quot;</code> is  <a href="#Error">Error</a>.<p>      If the pattern is omited in a rule then the pattern <code class="code">&quot;*&quot;</code> is
       used instead, so <code class="code">LWT_LOG</code> may just contains <code class="code">&quot;debug&quot;</code> for
-      instance.<br/>      If <code class="code">LWT_LOG</code> is not defined then the rule <code class="code">&quot;* -&gt; notice&quot;</code> is
-      used instead.</div></div>
+      instance.</p><p>      If <code class="code">LWT_LOG</code> is not defined then the rule <code class="code">&quot;* -&gt; notice&quot;</code> is
+      used instead.</p></div></div>
 <pre><span class="VALadd_rule"><span class="keyword">val</span> add_rule</span> : <code class="type">string -&gt; <a href="?package=lwt&amp;module=Lwt_log&amp;type=level">level</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">add_rule pattern level</code> adds a rule for sections logging
       levels. The rule is added before all other rules. It takes
       effect immediatly and affect all sections for which the level
       has not been set explicitly with  <a href="#Section.set_level">Section.set_level</a>. <code class="code">pattern</code>
-      may contains <code class="code">*</code>. For example:<br/>      <pre class="codepre"><code class="code">
+      may contains <code class="code">*</code>. For example:<p>      </p><code class="code">
         Lwt_log.add_rule &quot;lwt*&quot; Lwt_log.Info
-      </code></pre></div></div>
+      </code></div></div>
 <pre><span class="VALappend_rule"><span class="keyword">val</span> append_rule</span> : <code class="type">string -&gt; <a href="?package=lwt&amp;module=Lwt_log&amp;type=level">level</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">append_rule pattern level</code> adds the given rule after all other
-      rules. For example to set the default fallback rule:<br/>      <pre class="codepre"><code class="code">
+      rules. For example to set the default fallback rule:<p>      </p><code class="code">
         Lwt_log.append_rule &quot;*&quot; Lwt_log.Info
-      </code></pre></div></div>
+      </code></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Logging functions</h6></div></div>
 <pre><span class="VALlog"><span class="keyword">val</span> log</span> : <code class="type">?exn:exn -&gt;
 ?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
 ?location:string * int * int -&gt;
-?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; level:<a href="?package=lwt&amp;module=Lwt_log&amp;type=level">level</a> -&gt; string -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">log ?section ?logger ~level message</code> logs a message.<br/>      <code class="code">section</code> defaults to  <a href="#Section.main">Section.main</a>. If <code class="code">logger</code> is not
+?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; level:<a href="?package=lwt&amp;module=Lwt_log&amp;type=level">level</a> -&gt; string -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">log ?section ?logger ~level message</code> logs a message.<p>      <code class="code">section</code> defaults to  <a href="#Section.main">Section.main</a>. If <code class="code">logger</code> is not
       specified, then the default one is used instead (see
-       <a href="#default">default</a>).<br/>      If <code class="code">exn</code> is provided, then its string representation
+       <a href="#default">default</a>).</p><p>      If <code class="code">exn</code> is provided, then its string representation
       (= <code class="code">Printexc.to_string exn</code>) will be append to the message, and if
-      possible the backtrace will also be logged.<br/>      <code class="code">location</code> contains the location of the logging directive, it is
-      of the form <code class="code">(file_name, line, column)</code>.</div></div>
+      possible the backtrace will also be logged.</p><p>      <code class="code">location</code> contains the location of the logging directive, it is
+      of the form <code class="code">(file_name, line, column)</code>.</p></div></div>
 <pre><span class="VALlog_f"><span class="keyword">val</span> log_f</span> : <code class="type">?exn:exn -&gt;
 ?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
 ?location:string * int * int -&gt;
@@ -66,7 +66,7 @@ level:<a href="?package=lwt&amp;module=Lwt_log&amp;type=level">level</a> -&gt; (
 ?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt;
 level:<a href="?package=lwt&amp;module=Lwt_log&amp;type=level">level</a> -&gt; ('a, unit, string, unit) <a href="?package=ocaml&amp;module=Pervasives&amp;type=format4">Pervasives.format4</a> -&gt; 'a</code></pre><div class="info"><div class="info">Same as  <a href="#log_f">log_f</a> but ignore the resulting thread.</div></div>
 <div class="info"><div class="info">The following functions are the same as  <a href="#log">log</a> except that their
-    name determines which level is used.<br/>    For example  <a href="#info msg">info msg</a> is the same as  <a href="#log ~level:Info msg">log ~level:Info msg</a>.</div></div>
+    name determines which level is used.<p>    For example  <a href="#info msg">info msg</a> is the same as  <a href="#log ~level:Info msg">log ~level:Info msg</a>.</p></div></div>
 <pre><span class="VALdebug"><span class="keyword">val</span> debug</span> : <code class="type">?exn:exn -&gt;
 ?section:<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt;
 ?location:string * int * int -&gt; ?logger:<a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> -&gt; string -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
@@ -167,8 +167,8 @@ level:<a href="?package=lwt&amp;module=Lwt_log&amp;type=level">level</a> -&gt; (
         default value, i.e. to the value obtained by applying
         rules.</div></div></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Log templates</h6></div></div>
-<pre><span class="TYPEtemplate"><span class="keyword">type</span> template</span> = <code class="type">string</code></pre><div class="info"><div class="info">A template is for generating log messages.<br/>        It is a string which may contains variables of the form
-        <code class="code">$(var)</code>, where <code class="code">var</code> is one of:<br/>        - <code class="code">date</code> which will be replaced with the current date<ul><li><code class="code">milliseconds</code> which will be replaced by the fractionnal part
+<pre><span class="TYPEtemplate"><span class="keyword">type</span> template</span> = <code class="type">string</code></pre><div class="info"><div class="info">A template is for generating log messages.<p>        It is a string which may contains variables of the form
+        <code class="code">$(var)</code>, where <code class="code">var</code> is one of:</p><p>        - <code class="code">date</code> which will be replaced with the current date</p><ul><li><code class="code">milliseconds</code> which will be replaced by the fractionnal part
           of the current unix time</li><li><code class="code">name</code> which will be replaced by the program name</li><li><code class="code">pid</code> which will be replaced by the pid of the program</li><li><code class="code">message</code> which will be replaced by the message emited</li><li><code class="code">level</code> which will be replaced by a string representation of
           the level</li><li><code class="code">section</code> which will be replaced by the name of the
           message's section</li><li><code class="code">loc-file</code> which will be replaced by the file name of the
@@ -193,10 +193,10 @@ close:(unit -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a
       specified. Initially, it sends messages to the standard output
       for error messages.</div></div>
 <pre><span class="VALbroadcast"><span class="keyword">val</span> broadcast</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> list -&gt; <a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a></code></pre><div class="info"><div class="info"><code class="code">broadcast loggers</code> is a logger which send messages to all the
-      given loggers.<br/>      Note: closing a broadcast logger does not close its
-      components.</div></div>
+      given loggers.<p>      Note: closing a broadcast logger does not close its
+      components.</p></div></div>
 <pre><span class="VALdispatch"><span class="keyword">val</span> dispatch</span> : <code class="type">(<a href="?package=lwt&amp;module=Lwt_log&amp;type=section">section</a> -&gt; <a href="?package=lwt&amp;module=Lwt_log&amp;type=level">level</a> -&gt; <a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a>) -&gt; <a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a></code></pre><div class="info"><div class="info"><code class="code">dispatch f</code> is a logger which dispatch logging instructions to
-      different logger according to their level and/or section.<br/>      Here is an example:<br/>      <pre class="codepre"><code class="code">
+      different logger according to their level and/or section.<p>      Here is an example:</p><p>      </p><code class="code">
         let access_logger = Lwt_log.file &quot;access.log&quot;
         and error_logger = Lwt_log.file &quot;error.log&quot; in
 
@@ -205,7 +205,7 @@ close:(unit -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a
             match Lwt_log.Section.name section, level with
               | &quot;access&quot;, _ -&gt; access_logger
               | _, Lwt_log.Error -&gt; error_logger)
-      </code></pre></div></div>
+      </code></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Predefined loggers</h6></div></div>
 <pre><span class="VALnull"><span class="keyword">val</span> null</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a></code></pre><div class="info"><div class="info">Logger which drops everything</div></div>
 <pre><span class="TYPEsyslog_facility"><span class="keyword">type</span> syslog_facility</span> = <code class="type">[ `Auth
@@ -239,12 +239,12 @@ close:(unit -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a
 <pre><span class="VALfile"><span class="keyword">val</span> file</span> : <code class="type">?template:<a href="?package=lwt&amp;module=Lwt_log&amp;type=template">template</a> -&gt;
 ?mode:[ `Append | `Truncate ] -&gt;
 ?perm:<a href="?package=ocaml&amp;module=Unix&amp;type=file_perm">Unix.file_perm</a> -&gt; file_name:string -&gt; unit -&gt; <a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a> <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">desf_file ?template ?mode ?perm ~file_name ()</code> creates an
-      logger which will write messages to <code class="code">file_name</code>.<br/>      - if <code class="code">mode = `Truncate</code> then the file is truncated and previous
-      contents will be lost.<br/>      - if <code class="code">mode = `Append</code>, new messages will be appended at the end
-      of the file<div class="parameters"><div class="param_info"><code class="code">mode</code> : defaults to <code class="code">`Append</code></div><div class="param_info"><code class="code">template</code> : defaults to <code class="code">&quot;$(date): $(section): $(message)&quot;</code></div></div></div></div>
+      logger which will write messages to <code class="code">file_name</code>.<p>      - if <code class="code">mode = `Truncate</code> then the file is truncated and previous
+      contents will be lost.</p><p>      - if <code class="code">mode = `Append</code>, new messages will be appended at the end
+      of the file</p><div class="parameters"><div class="param_info"><code class="code">mode</code> : defaults to <code class="code">`Append</code></div><div class="param_info"><code class="code">template</code> : defaults to <code class="code">&quot;$(date): $(section): $(message)&quot;</code></div></div></div></div>
 <pre><span class="VALchannel"><span class="keyword">val</span> channel</span> : <code class="type">?template:<a href="?package=lwt&amp;module=Lwt_log&amp;type=template">template</a> -&gt;
 close_mode:[ `Close | `Keep ] -&gt;
 channel:<a href="?package=lwt&amp;module=Lwt_io&amp;type=output_channel">Lwt_io.output_channel</a> -&gt; unit -&gt; <a href="?package=lwt&amp;module=Lwt_log&amp;type=logger">logger</a></code></pre><div class="info"><div class="info"><code class="code">channel ?template ~close_mode ~channel ()</code> creates a logger
-      from a channel.<br/>      If <code class="code">close_mode = `Close</code> then <code class="code">channel</code> is closed when the
-      logger is closed, otherwise it is left open.<div class="parameters"><div class="param_info"><code class="code">template</code> : defaults to <code class="code">&quot;$(name): $(section): $(message)&quot;</code></div></div></div></div>
+      from a channel.<p>      If <code class="code">close_mode = `Close</code> then <code class="code">channel</code> is closed when the
+      logger is closed, otherwise it is left open.</p><div class="parameters"><div class="param_info"><code class="code">template</code> : defaults to <code class="code">&quot;$(name): $(section): $(message)&quot;</code></div></div></div></div>
 </div>

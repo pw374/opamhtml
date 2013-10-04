@@ -5,12 +5,12 @@
 ?supported_ptypes:Netplex_types.parallelization_type list -&gt;
 name:string -&gt;
 setup:(<a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">Rpc_server.t</a> -&gt; 'a -&gt; unit) -&gt; unit -&gt; Netplex_types.processor_factory</code></pre><div class="info"><div class="info">A factory for TCP-based RPC servers. In <code class="code">name</code> the name of the processor
- is defined. This name can be referenced from the config file like:<br/> <pre class="codepre"><code class="code">
+ is defined. This name can be referenced from the config file like:<p> </p><code class="code">
     processor {
         type = &quot;the passed [name]&quot;;
         ...
     }
- </code></pre><br/> Parameters may be included in the <code class="code">processor</code> section:<ul><li><code class="code">portmapper</code>: This is a boolean parameter. If set to true,
+ </code><p> Parameters may be included in the <code class="code">processor</code> section:</p><ul><li><code class="code">portmapper</code>: This is a boolean parameter. If set to true,
    the Internet port is registered with the portmapper program.
    This will fail if there are several Internet bindings with distinct
    port numbers!</li><li><code class="code">timeout</code>: This is a float parameter. It sets the transport
@@ -21,16 +21,16 @@ setup:(<a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">Rpc_server.t
  <code class="code">configure</code> callback. The result of <code class="code">configure</code> is also passed 
  to <code class="code">setup</code> and other optional functions. The <code class="code">configure</code> function is
  called just before the service is
- added to Netplex (i.e. from the controller context).<br/> The return value of <code class="code">configure</code> can be of any type. This value
+ added to Netplex (i.e. from the controller context).<p> The return value of <code class="code">configure</code> can be of any type. This value
  exists once for every time the processor is instantiated (used) by a
  service. It is not only useful for passing configuration values
  down, but also for storing intermediate results while establishing
- the service.<br/> The <code class="code">Rpc_server.t</code> structure is created every time a new connection
+ the service.</p><p> The <code class="code">Rpc_server.t</code> structure is created every time a new connection
  is accepted. Of course, this is done from the context of the container.
  The <code class="code">Rpc_server.t</code> is created without any binding; the user must
  bind procedures in the <code class="code">setup</code> function. This can be done by calling
  <code class="code">Rpc_server.bind</code> or the ocamlrpcgen-generated function (by the
- <code class="code">-srv2</code> switch of ocamlrpcgen).<br/> For example, a minimal factory for an RPC service may look like:<br/> <pre class="codepre"><code class="code">
+ <code class="code">-srv2</code> switch of ocamlrpcgen).</p><p> For example, a minimal factory for an RPC service may look like:</p><p> </p><code class="code">
    let proc_ping () = ()     (* Trivial RPC procedure *)
 
    let my_factory() =
@@ -41,10 +41,10 @@ setup:(<a href="?package=ocamlnet&amp;module=Rpc_server&amp;type=t">Rpc_server.t
                  My_rpc_srv.bind ~proc_ping rpc
               )
        ()
- </code></pre><br/> The <code class="code">setup</code> function is also called once before a new connection is
+ </code><p> The <code class="code">setup</code> function is also called once before a new connection is
  accepted to get a list of programs and procedures. The <code class="code">Rpc_server.t</code>
  is a special one in this case, and one can test for it with the
-  <a href="#Rpc_server.is_dummy">Rpc_server.is_dummy</a> function.<div class="parameters"><div class="param_info"><code class="code">socket_config</code> : An optional function computing the socket
+  <a href="#Rpc_server.is_dummy">Rpc_server.is_dummy</a> function.</p><div class="parameters"><div class="param_info"><code class="code">socket_config</code> : An optional function computing the socket
  configuration. By default, <code class="code">Rpc_server.default_socket_config</code> is used.
  Special socket configuration would, for example, allow SSL.</div><div class="param_info"><code class="code">hooks</code> : An optional function returning the hooks to call.
  See <code class="code">Netplex_types.processor_hooks</code> for documentation.</div><div class="param_info"><code class="code">supported_ptypes</code> : Which parallelization types are supported

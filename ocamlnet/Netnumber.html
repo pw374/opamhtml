@@ -72,10 +72,10 @@
 <pre><span class="VALfp4_of_float"><span class="keyword">val</span> fp4_of_float</span> : <code class="type">float -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=fp4">fp4</a></code></pre>
 <pre><span class="VALfp8_of_float"><span class="keyword">val</span> fp8_of_float</span> : <code class="type">float -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=fp8">fp8</a></code></pre><div class="info"><div class="info">Note fp4_of_float: The same problems as in fp4_of_fp8 may arise</div></div>
 <div class="info"><div class="info"><h2 id="2_TITLE">Comparisons</h2></div></div>
-<div class="info"><div class="info">The comparisons &quot;=&quot; and &quot;&lt;&gt;&quot; work for all numbers.<br/>    For signed integers, the operators &quot;&lt;&quot;, &quot;&lt;=&quot;, &quot;&gt;&quot;, and &quot;&gt;=&quot; work, too.
+<div class="info"><div class="info">The comparisons &quot;=&quot; and &quot;&lt;&gt;&quot; work for all numbers.<p>    For signed integers, the operators &quot;&lt;&quot;, &quot;&lt;=&quot;, &quot;&gt;&quot;, and &quot;&gt;=&quot; work, too.
     The unsigned integer type use representation that are not compatible
-    with these operators, and the following functions need to be called.<br/>    For <code class="code">fp4</code> and <code class="code">fp8</code> there are no comparison functions - convert to
-    <code class="code">float</code> first and compare then.</div></div>
+    with these operators, and the following functions need to be called.</p><p>    For <code class="code">fp4</code> and <code class="code">fp8</code> there are no comparison functions - convert to
+    <code class="code">float</code> first and compare then.</p></div></div>
 <pre><span class="VALlt_uint4"><span class="keyword">val</span> lt_uint4</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a> -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a> -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">lt_uint4</code> is true iff the first value is less than the second value 
       as unsigned int</div></div>
 <pre><span class="VALle_uint4"><span class="keyword">val</span> le_uint4</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a> -&gt; <a href="?package=ocamlnet&amp;module=Netnumber&amp;type=uint4">uint4</a> -&gt; bool</code></pre>

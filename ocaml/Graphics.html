@@ -178,15 +178,15 @@
 <pre><span class="VALauto_synchronize"><span class="keyword">val</span> auto_synchronize</span> : <code class="type">bool -&gt; unit</code></pre><div class="info"><div class="info">By default, drawing takes place both on the window displayed
    on screen, and in a memory area (the 'backing store').
    The backing store image is used to re-paint the on-screen
-   window when necessary.<br/>   To avoid flicker during animations, it is possible to turn
+   window when necessary.<p>   To avoid flicker during animations, it is possible to turn
    off on-screen drawing, perform a number of drawing operations
    in the backing store only, then refresh the on-screen window
-   explicitly.<br/>   <code class="code">auto_synchronize false</code> turns on-screen drawing off.  All
+   explicitly.</p><p>   <code class="code">auto_synchronize false</code> turns on-screen drawing off.  All
    subsequent drawing commands are performed on the backing store
-   only.<br/>   <code class="code">auto_synchronize true</code> refreshes the on-screen window from
+   only.</p><p>   <code class="code">auto_synchronize true</code> refreshes the on-screen window from
    the backing store (as per <code class="code">synchronize</code>), then turns on-screen
    drawing back on.  All subsequent drawing commands are performed
-   both on screen and in the backing store.<br/>   The default drawing mode corresponds to <code class="code">auto_synchronize true</code>.</div></div>
+   both on screen and in the backing store.</p><p>   The default drawing mode corresponds to <code class="code">auto_synchronize true</code>.</p></div></div>
 <pre><span class="VALsynchronize"><span class="keyword">val</span> synchronize</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info">Synchronize the backing store and the on-screen window, by
    copying the contents of the backing store onto the graphics
    window.</div></div>

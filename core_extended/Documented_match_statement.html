@@ -1,12 +1,12 @@
 <div class="ocaml_toplevel_module"><div class="info">A <code class="code">t</code> represents a match statement where every case is documented.  You can then use it
-    in one way to extract documentation, and in another way as the underlying function.<br/>    More specifically, an <code class="code">('input,'output) t</code> represents a match statement matching things
+    in one way to extract documentation, and in another way as the underlying function.<p>    More specifically, an <code class="code">('input,'output) t</code> represents a match statement matching things
     of type <code class="code">input'</code> and producing things of type <code class="code">'output</code>. It consists of
-    <code class="code">specific_cases</code> and a <code class="code">catchall_case</code>.<br/>    The <code class="code">specific_cases</code> are straightforward:
+    <code class="code">specific_cases</code> and a <code class="code">catchall_case</code>.</p><p>    The <code class="code">specific_cases</code> are straightforward:
     <code class="code">{pattern=pattern;documentation=documentation;value=value}</code> represents
-    &quot;| pattern -&gt; value&quot;, with <code class="code">documentation</code> explaining what's going on.<br/>    The <code class="code">catchall_case</code> can be either <code class="code">`Unused x</code>, representing &quot;| _ -&gt; x&quot; with no
+    &quot;| pattern -&gt; value&quot;, with <code class="code">documentation</code> explaining what's going on.</p><p>    The <code class="code">catchall_case</code> can be either <code class="code">`Unused x</code>, representing &quot;| _ -&gt; x&quot; with no
     documentation, or <code class="code">`Used case</code>, representing &quot;| x -&gt; f x&quot;, where <code class="code">f</code> is <code class="code">case.value</code>,
     and <code class="code">case.documentation</code> explains what's going on with <code class="code">f</code>.  This is intended to allow
-    many input values to be handled uniformly without having to document each one individually.</div>
+    many input values to be handled uniformly without having to document each one individually.</p></div>
 <pre><code><span class="TYPEcase"><span class="keyword">type</span> <code class="type">('input, 'output) </code>case</span> = {</code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTcase.pattern">pattern</span> : <code class="type">'input list</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTcase.documentation">documentation</span> : <code class="type">string</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTcase.value">value</span> : <code class="type">'output</code>;</code></td></tr><tr><td>}</td></tr></table>
 <pre><code><span class="TYPEt"><span class="keyword">type</span> <code class="type">('input, 'output) </code>t</span> = {</code></pre><table class="typetable">
@@ -20,15 +20,15 @@ f:('output1 -&gt; 'output2) -&gt; ('input, unit -&gt; 'output2) <a href="?packag
 <pre><span class="VALmap_pattern"><span class="keyword">val</span> map_pattern</span> : <code class="type">('input1, 'output) <a href="?package=core_extended&amp;module=Documented_match_statement&amp;type=t">t</a> -&gt;
 f1:('input1 -&gt; 'input2) -&gt; f2:('input2 -&gt; 'input1) -&gt; ('input2, 'output) <a href="?package=core_extended&amp;module=Documented_match_statement&amp;type=t">t</a></code></pre>
 <pre><span class="VALprepend"><span class="keyword">val</span> prepend</span> : <code class="type">specific_cases:('input, unit -&gt; 'output) <a href="?package=core_extended&amp;module=Documented_match_statement&amp;type=case">case</a> list -&gt;
-('input, 'output) <a href="?package=core_extended&amp;module=Documented_match_statement&amp;type=t">t</a> -&gt; ('input, 'output) <a href="?package=core_extended&amp;module=Documented_match_statement&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">prepend ~specific_cases t</code> matches on <code class="code">specific_cases</code> before moving on to <code class="code">t</code>.<br/>    A common situation is representing
+('input, 'output) <a href="?package=core_extended&amp;module=Documented_match_statement&amp;type=t">t</a> -&gt; ('input, 'output) <a href="?package=core_extended&amp;module=Documented_match_statement&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">prepend ~specific_cases t</code> matches on <code class="code">specific_cases</code> before moving on to <code class="code">t</code>.<p>    A common situation is representing
     let f t x =
     match x with
     | `A -&gt; ...
     | `B -&gt; ...
-    | _ -&gt; <span class="SK_custom">{t with field = g t.field x}</span><br/>    which can be done by combining <code class="code">prepend</code> and <code class="code">map</code>:
+    | _ -&gt; <span class="SK_custom">{t with field = g t.field x}</span></p><p>    which can be done by combining <code class="code">prepend</code> and <code class="code">map</code>:
     let f' =
     prepend ~specific_cases:<code class="code">{pattern = `A;...};{pattern = `B;...}</code>
-    (map g' ~f:(fun h t -&gt; <span class="SK_custom">{t with field = h t.field}</span>))</div></div>
+    (map g' ~f:(fun h t -&gt; <span class="SK_custom">{t with field = h t.field}</span>))</p></div></div>
 <pre><span class="VALmatch_"><span class="keyword">val</span> match_</span> : <code class="type">('input, 'output) <a href="?package=core_extended&amp;module=Documented_match_statement&amp;type=t">t</a> -&gt; 'input -&gt; 'output</code></pre><div class="info"><div class="info"><code class="code">match_ t</code> pulls out the underlying function of <code class="code">t</code></div></div>
 <pre><span class="VALdocumentation"><span class="keyword">val</span> documentation</span> : <code class="type">('input, 'output) <a href="?package=core_extended&amp;module=Documented_match_statement&amp;type=t">t</a> -&gt;
 input_to_string:('input -&gt; string) -&gt; title:string -&gt; string list</code></pre>

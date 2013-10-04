@@ -7,11 +7,11 @@
 <pre><span class="VALmake_matrix"><span class="keyword">val</span> make_matrix</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm_geom&amp;type=size">LTerm_geom.size</a> -&gt; <a href="?package=lambda-term&amp;module=LTerm_draw&amp;type=matrix">matrix</a></code></pre><div class="info"><div class="info"><code class="code">matrix size</code> creates a matrix of the given size containing only
       blank characters.</div></div>
 <pre><span class="VALset_style"><span class="keyword">val</span> set_style</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm_draw&amp;type=point">point</a> -&gt; <a href="?package=lambda-term&amp;module=LTerm_style&amp;type=t">LTerm_style.t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">set_style point style</code> sets fields of <code class="code">point</code> according to
-      fields of <code class="code">style</code>. For example:<br/>      <pre class="codepre"><code class="code">
+      fields of <code class="code">style</code>. For example:<p>      </p><code class="code">
         set_style point { LTerm_style.none with LTerm_style.bold = Some true }
-      </code></pre><br/>      will have the following effect:<br/>      <pre class="codepre"><code class="code">
+      </code><p>      will have the following effect:</p><p>      </p><code class="code">
         point.bold &lt;- true
-      </code></pre></div></div>
+      </code></div></div>
 <pre><span class="TYPEcontext"><span class="keyword">type</span> context</span> </pre><div class="info"><div class="info">Type of contexts. A context is used for drawing.</div></div>
 <pre><span class="VALcontext"><span class="keyword">val</span> context</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm_draw&amp;type=matrix">matrix</a> -&gt; <a href="?package=lambda-term&amp;module=LTerm_geom&amp;type=size">LTerm_geom.size</a> -&gt; <a href="?package=lambda-term&amp;module=LTerm_draw&amp;type=context">context</a></code></pre><div class="info"><div class="info"><code class="code">context m s</code> creates a context from a matrix <code class="code">m</code> of size
       <code class="code">s</code>. It raises <code class="code">Invalid_argument</code> if <code class="code">s</code> is not the size of

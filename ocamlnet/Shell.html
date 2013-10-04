@@ -3,8 +3,8 @@
  are automatically installed by  <a href="#Shell_sys.install_job_handlers">Shell_sys.install_job_handlers</a>, unless
  this installation has already been performed. You can configure these
  handlers by  <a href="#Shell_sys.configure_job_handlers">Shell_sys.configure_job_handlers</a>. The handlers remain
- in effect even after <code class="code">call</code> returns.<br/> Note that this has a global side effect on the whole process, because
- there is only one set of signal handlers.</div></div>
+ in effect even after <code class="code">call</code> returns.<p> Note that this has a global side effect on the whole process, because
+ there is only one set of signal handlers.</p></div></div>
 <div class="info"><div class="info"><h1 id="1_TITLE">Calling commands and pipelines</h1></div></div>
 <div class="info"><div class="info">The following functions are simplified versions of the
  <code class="code">Shell_sys.job</code> abstraction.</div></div>
@@ -35,32 +35,32 @@
 ?environment:<a href="?package=ocamlnet&amp;module=Shell_sys&amp;type=environment">Shell_sys.environment</a> -&gt;
 ?descriptors:<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list -&gt;
 ?assignments:<a href="?package=ocamlnet&amp;module=Shell&amp;type=assignment">assignment</a> list -&gt; string -&gt; string list -&gt; <a href="?package=ocamlnet&amp;module=Shell_sys&amp;type=command">Shell_sys.command</a></code></pre><div class="info"><div class="info">The same as <code class="code">command</code> but with a slightly different interface: Use
- <pre class="codepre"><code class="code"> cmd &quot;ls&quot; [ &quot;/dir/file&quot; ] </code></pre>
+ <code class="code"> cmd &quot;ls&quot; [ &quot;/dir/file&quot; ] </code>
  instead of
- <pre class="codepre"><code class="code"> command ~arguments:[|&quot;/dir/file&quot;|] &quot;ls&quot; </code></pre><br/> The named arguments have the same meanings as in <code class="code">command</code>.</div></div>
+ <code class="code"> command ~arguments:[|&quot;/dir/file&quot;|] &quot;ls&quot; </code><p> The named arguments have the same meanings as in <code class="code">command</code>.</p></div></div>
 <pre><span class="VALcall"><span class="keyword">val</span> call</span> : <code class="type">?ignore_error_code:bool -&gt;
 ?mode:<a href="?package=ocamlnet&amp;module=Shell_sys&amp;type=group_mode">Shell_sys.group_mode</a> -&gt;
 ?stdin:<a href="?package=ocamlnet&amp;module=Shell&amp;type=producer">producer</a> -&gt;
 ?stdout:<a href="?package=ocamlnet&amp;module=Shell&amp;type=consumer">consumer</a> -&gt; ?stderr:<a href="?package=ocamlnet&amp;module=Shell&amp;type=consumer">consumer</a> -&gt; <a href="?package=ocamlnet&amp;module=Shell_sys&amp;type=command">Shell_sys.command</a> list -&gt; unit</code></pre><div class="info"><div class="info">Starts the pipeline represented by the list of commands; i.e.
  if <code class="code"> [c1;c2;...;cN] </code> is passed, this corresponds to the pipeline
- <code class="code"> c1 | c2 | ... | cN </code> (in shell notation).<br/> The function returns normally if all processes can be started and
+ <code class="code"> c1 | c2 | ... | cN </code> (in shell notation).<p> The function returns normally if all processes can be started and
  terminate regularly with exit code 0. If a process terminates with
  some other exit code, and <code class="code">ignore_error_code</code> is set, the function
  returns normally, too. The latter does not apply if a process terminates
  because of a signal (which triggers always the exception
- <code class="code">Subprocess_error</code>).<br/> If a process terminates with an exit code other than 0 and 
+ <code class="code">Subprocess_error</code>).</p><p> If a process terminates with an exit code other than 0 and 
  <code class="code">ignore_error_code</code> is not set (the default), or if a process is
  terminated because of a signal, the exception <code class="code">Subprocess_error</code>
  will be raised. For every command the process result is included
- in the exception argument.<br/> If a process cannot be started (e.g. because of insufficient 
+ in the exception argument.</p><p> If a process cannot be started (e.g. because of insufficient 
  resources), the function will try to shut down the already running
  part of the pipeline by sending SIGTERM to these processes.
  It is not checked whether the processes actually terminate (no
  &quot;wait&quot; for them); an appropriate exception will be raised.
  In the case that it is not even possible to perform these cleanup
- actions, the exception <code class="code">Shell_sys.Fatal_error</code> will be raised.<br/> When the function raises an exception other than <code class="code">Subprocess_error</code>,
+ actions, the exception <code class="code">Shell_sys.Fatal_error</code> will be raised.</p><p> When the function raises an exception other than <code class="code">Subprocess_error</code>,
  a serious error condition has happened, and it is recommended
- to exit the program as soon as possible.<div class="parameters"><div class="param_info"><code class="code">ignore_error_code</code> : If <code class="code">true</code>, exit codes other than 0 of the
+ to exit the program as soon as possible.</p><div class="parameters"><div class="param_info"><code class="code">ignore_error_code</code> : If <code class="code">true</code>, exit codes other than 0 of the
    subprocesses are ignored. This does not apply to signals, however.
    By default <code class="code">false</code>.</div><div class="param_info"><code class="code">mode</code> : See  <a href="#Shell_sys.run_job">Shell_sys.run_job</a> for a detailed description
    of this parameter. By default <code class="code">Same_as_caller</code>.</div><div class="param_info"><code class="code">stdin</code> : If present, the first process of the pipeline reads
@@ -85,18 +85,18 @@
 <pre><span class="VALassign"><span class="keyword">val</span> assign</span> : <code class="type">src:<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; target:<a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocamlnet&amp;module=Shell&amp;type=assignment">assignment</a></code></pre><div class="info"><div class="info">Arranges a redirection such that writing to <code class="code">src</code> or reading from <code class="code">src</code>
  will actually write to <code class="code">target</code> or read from <code class="code">target</code>
  (i.e., the <code class="code">target</code> descriptor is duplicated and replaces
- the <code class="code">src</code> descriptor just before the process is launched.)<br/> Note that assignments work only if the descriptors are shared
+ the <code class="code">src</code> descriptor just before the process is launched.)<p> Note that assignments work only if the descriptors are shared
  with the called process, so they must also be contained in the
  <code class="code">descriptors</code> list of <code class="code">command</code> or <code class="code">cmd</code>. Furthermore, the
- close-on-exec flag must not be set.</div></div>
+ close-on-exec flag must not be set.</p></div></div>
 <pre><span class="VAL(&gt;&amp;)"><span class="keyword">val</span> (&gt;&amp;)</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocamlnet&amp;module=Shell&amp;type=assignment">assignment</a></code></pre><div class="info"><div class="info">Same as <code class="code">assign</code>, but infix notation. For example,
  <code class="code">stdout &gt;&amp; stderr</code> creates an assignment such that all output
- to stdout is redirected to stderr.<br/> <code class="code">f &gt;&amp; g</code> is the same as <code class="code">assign ~src:f target:g</code>. It should
- be used for output assignments (as in the Bourne shell).</div></div>
+ to stdout is redirected to stderr.<p> <code class="code">f &gt;&amp; g</code> is the same as <code class="code">assign ~src:f target:g</code>. It should
+ be used for output assignments (as in the Bourne shell).</p></div></div>
 <pre><span class="VAL(&lt;&amp;)"><span class="keyword">val</span> (&lt;&amp;)</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocamlnet&amp;module=Shell&amp;type=assignment">assignment</a></code></pre><div class="info"><div class="info">Same as <code class="code">assign</code>, but infix notation. For example,
  <code class="code">stdin &lt;&amp; f</code> creates an assignment such that the called process
- reads from the open file descriptor <code class="code">f</code>.<br/> <code class="code">f &lt;&amp; g</code> is the same as <code class="code">assign ~src:f target:g</code>. It should
- be used for input assignments (as in the Bourne shell).</div></div>
+ reads from the open file descriptor <code class="code">f</code>.<p> <code class="code">f &lt;&amp; g</code> is the same as <code class="code">assign ~src:f target:g</code>. It should
+ be used for input assignments (as in the Bourne shell).</p></div></div>
 <pre><span class="VALassigned_pair"><span class="keyword">val</span> assigned_pair</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Shell&amp;type=assignment">assignment</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></pre><div class="info"><div class="info">Returns the target and the source of the assignment as
  pair of descriptors <code class="code">(target,src)</code>.</div></div>
 <pre><span class="VALstdin"><span class="keyword">val</span> stdin</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></pre>
@@ -131,9 +131,9 @@
  appended to the file. By default, <code class="code">append</code> is <code class="code">false</code>.</div></div>
 <pre><span class="VALto_fd"><span class="keyword">val</span> to_fd</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocamlnet&amp;module=Shell&amp;type=consumer">consumer</a></code></pre><div class="info"><div class="info">Creates a consumer redirecting the data to the file descriptor</div></div>
 <pre><span class="VALto_dev_null"><span class="keyword">val</span> to_dev_null</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Shell&amp;type=consumer">consumer</a></code></pre><div class="info"><div class="info">A consumer redirecting the data to <code class="code">/dev/null</code>.</div></div>
-<div class="info"><div class="info"><h1 id="1_TITLE">Examples</h1> <br/> The following examples show toploop sessions using <code class="code">Shell</code>.</div></div>
-<div class="info"><div class="info"><h2 id="2_TITLE">Invoking simple commands</h2><br/> Call the command &quot;ls&quot; without redirection:
- <pre class="codepre"><code class="code">
+<div class="info"><div class="info"><h1 id="1_TITLE">Examples</h1> <p> The following examples show toploop sessions using <code class="code">Shell</code>.</p></div></div>
+<div class="info"><div class="info"><h2 id="2_TITLE">Invoking simple commands</h2><p> Call the command &quot;ls&quot; without redirection:
+ </p><code class="code">
  # call [ command &quot;ls&quot; ];;
  IDEAS       s1.ml~      shell.mli~      shell_sys.ml~  unix_exts.ml
  META        shell.a     shell.ml~       shell_sys.o    unix_exts.mli
@@ -144,8 +144,8 @@
  log         shell.ml    shell_sys.mli   unix_exts.cmo  unix_exts_c.c~
  s1.ml       shell.mli   shell_sys.mli~  unix_exts.cmx  unix_exts_c.o
  \- : unit = ()
- </code></pre><br/> <h2 id="2_TITLE">Redirecting stdout to a buffer</h2><br/> The output of &quot;ls&quot; is collected in the buffer <code class="code">b</code>:
- <pre class="codepre"><code class="code">
+ </code><p> </p><h2 id="2_TITLE">Redirecting stdout to a buffer</h2><p> The output of &quot;ls&quot; is collected in the buffer <code class="code">b</code>:
+ </p><code class="code">
  # let b = Buffer.create 10;;
  val b : Buffer.t = &lt;abstr&gt;
  # call ~stdout:(to_buffer b) [ command &quot;ls&quot; ];;
@@ -153,23 +153,23 @@
  # Buffer.contents b;;
  \- : string =
  &quot;IDEAS\nMETA\nMakefile\nMakefile~\ndepend\n...&quot;
- </code></pre><br/> <h2 id="2_TITLE">Subprocess errors are caught and propagated to the caller</h2><br/> Because &quot;/a&quot; does not exist, &quot;ls&quot; will fail. The command writes the
+ </code><p> </p><h2 id="2_TITLE">Subprocess errors are caught and propagated to the caller</h2><p> Because &quot;/a&quot; does not exist, &quot;ls&quot; will fail. The command writes the
  message to stderr (not redirected here), and returns with an exit
  code of 1, triggering an exception:
- <pre class="codepre"><code class="code">
+ </p><code class="code">
  # call [ command ~arguments:[| &quot;/a&quot; |] &quot;ls&quot; ];;
  /bin/ls: /a: No such file or directory
  Uncaught exception: Shell.Subprocess_error [&quot;/bin/ls&quot;, Unix.WEXITED 1].
- </code></pre><br/> <h2 id="2_TITLE">Redirecting stderr, too</h2><br/> Here, the message written to stderr is collected in <code class="code">b</code>:
- <pre class="codepre"><code class="code">
+ </code><p> </p><h2 id="2_TITLE">Redirecting stderr, too</h2><p> Here, the message written to stderr is collected in <code class="code">b</code>:
+ </p><code class="code">
  # Buffer.clear b;;
  \- : unit = ()
  # call ~stderr:(to_buffer b) [ command ~arguments:[| &quot;/a&quot; |] &quot;ls&quot; ];;
  Uncaught exception: Shell.Subprocess_error [&quot;/bin/ls&quot;, Unix.WEXITED 1].
  # Buffer.contents b;;
  \- : string = &quot;/bin/ls: /a: No such file or directory\n&quot;
- </code></pre><br/> <h2 id="2_TITLE">Pipelines</h2><br/> Here, the output of &quot;cat&quot; becomes the input of &quot;sort&quot;:
- <pre class="codepre"><code class="code">
+ </code><p> </p><h2 id="2_TITLE">Pipelines</h2><p> Here, the output of &quot;cat&quot; becomes the input of &quot;sort&quot;:
+ </p><code class="code">
  # call [ command ~arguments:[|&quot;META&quot;|] &quot;cat&quot;; command &quot;sort&quot; ];;
  archive(byte) = &quot;shell.cma&quot;
  archive(native) = &quot;shell.cmxa&quot;
@@ -178,8 +178,8 @@
  requires = &quot;unix str&quot;
  version = &quot;0.0&quot;
  \- : unit = ()
- </code></pre><br/> <h2 id="2_TITLE">Combining pipelines and redirections</h2><br/> The same, but the output of &quot;sort&quot; is collected in the buffer <code class="code">b</code>:
- <pre class="codepre"><code class="code">
+ </code><p> </p><h2 id="2_TITLE">Combining pipelines and redirections</h2><p> The same, but the output of &quot;sort&quot; is collected in the buffer <code class="code">b</code>:
+ </p><code class="code">
  # Buffer.clear b;;
  \- : unit = ()
  # call ~stdout:(to_buffer b) [ command ~arguments:[|&quot;META&quot;|] &quot;cat&quot;; command &quot;sort&quot; ];;
@@ -187,8 +187,8 @@
  # Buffer.contents b;;
  \- : string =
  &quot;archive(byte) = \&quot;shell.cma\&quot;\narchive(native) = \&quot;shell.cmxa\&quot;\ndescription = \&quot;Unix shell functions\&quot;\nlinkopts = \&quot;-cclib -lshell\&quot;\nrequires = \&quot;unix str\&quot;\nversion = \&quot;0.0\&quot;\n&quot;
- </code></pre><br/> <h2 id="2_TITLE">Redirection from a string</h2><br/> The contents of the string <code class="code">s</code> are written to the input of &quot;sort&quot;:
- <pre class="codepre"><code class="code">
+ </code><p> </p><h2 id="2_TITLE">Redirection from a string</h2><p> The contents of the string <code class="code">s</code> are written to the input of &quot;sort&quot;:
+ </p><code class="code">
  # let s = &quot;f\na\nd\nc\n&quot;;;
  val s : string = &quot;f\na\nd\nc\n&quot;
  # call ~stdin:(from_string s) [ command &quot;sort&quot; ];;
@@ -197,18 +197,18 @@
  d
  f
  \- : unit = ()
- </code></pre><br/> <h2 id="2_TITLE">Combined redirections</h2><br/> It is possible to have several redirections. Here, the string <code class="code">s</code> is
+ </code><p> </p><h2 id="2_TITLE">Combined redirections</h2><p> It is possible to have several redirections. Here, the string <code class="code">s</code> is
  sorted by &quot;sort&quot;, and the output is collected in the buffer <code class="code">b</code>:
- <pre class="codepre"><code class="code">
+ </p><code class="code">
  # Buffer.clear b;;
  \- : unit = ()
  # call ~stdout:(to_buffer b) ~stdin:(from_string s) [ command &quot;sort&quot; ];;
  \- : unit = ()
  # Buffer.contents b;;
  \- : string = &quot;a\nc\nd\nf\n&quot;
- </code></pre><br/> <h2 id="2_TITLE">Redirections combined with assignments</h2><br/> Here, the output and errors of &quot;ls&quot; are both collected in the buffer
+ </code><p> </p><h2 id="2_TITLE">Redirections combined with assignments</h2><p> Here, the output and errors of &quot;ls&quot; are both collected in the buffer
  <code class="code">b</code>:
- <pre class="codepre"><code class="code">
+ </p><code class="code">
  # Buffer.clear b;;
  \- : unit = ()
  # call ~stdout:(to_buffer b) 
@@ -219,8 +219,8 @@
  Uncaught exception: Shell.Subprocess_error [&quot;/bin/ls&quot;, Unix.WEXITED 1].
  # Buffer.contents b;;
  \- : string = &quot;/bin/ls: /a: No such file or directory\n&quot;
- </code></pre><br/> <h2 id="2_TITLE">Final notes</h2><br/> Of course, all features can be combined arbitrarily. <br/> Note that error reporting is better than in a traditional shell, because
+ </code><p> </p><h2 id="2_TITLE">Final notes</h2><p> Of course, all features can be combined arbitrarily. </p><p> Note that error reporting is better than in a traditional shell, because
  the exit codes of all started commands are returned. (Shells usually only
- return the exit code of the last command of a pipeline.)<br/> For non-standard pipelines, you can also use the functions in
- Shell_sys. &quot;call&quot; is a simple concatenation of Shell_sys invocations.</div></div>
+ return the exit code of the last command of a pipeline.)</p><p> For non-standard pipelines, you can also use the functions in
+ Shell_sys. &quot;call&quot; is a simple concatenation of Shell_sys invocations.</p></div></div>
 </div>

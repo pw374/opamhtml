@@ -1,6 +1,6 @@
-<div class="ocaml_toplevel_module"><div class="info">First-in first-out queues.<br/>   This module implements queues (FIFOs), with in-place modification.<br/>   <b>Warning</b> This module is not thread-safe: each  <a href="#Queue.t">Queue.t</a> value
+<div class="ocaml_toplevel_module"><div class="info">First-in first-out queues.<p>   This module implements queues (FIFOs), with in-place modification.</p><p>   <b>Warning</b> This module is not thread-safe: each  <a href="#Queue.t">Queue.t</a> value
    must be protected from concurrent access (e.g. with a  <a href="#Mutex.t">Mutex.t</a>).
-   Failure to do so can lead to a crash.</div>
+   Failure to do so can lead to a crash.</p></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> </pre><div class="info"><div class="info">The type of queues containing elements of type <code class="code">'a</code>.</div></div>
 <pre><span class="EXCEPTIONEmpty"><span class="keyword">exception</span> Empty</span></pre><div class="info"><div class="info">Raised when  <a href="#Queue.take">Queue.take</a> or  <a href="#Queue.peek">Queue.peek</a> is applied to an empty queue.</div></div>
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">unit -&gt; 'a <a href="?package=ocaml&amp;module=Queue&amp;type=t">t</a></code></pre><div class="info"><div class="info">Return a new queue, initially empty.</div></div>

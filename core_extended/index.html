@@ -1,53 +1,25 @@
-<h1>Modules</h1>
+<h2>Modules</h2>
 <table class="indextable">
     <tr><td class="module"><a href="?package=core_extended&amp;module=Alternating_primary_backup_assignment">Alternating_primary_backup_assignment</a></td><td/></tr>
-<tr><td class="module"><a href="?package=core_extended&amp;module=Atomic_edit">Atomic_edit</a></td><td><div class="info">Atomically edit a file without long-term locking<br/>   See documentation for the function <code class="code">atomic_edit</code></div></td></tr>
+<tr><td class="module"><a href="?package=core_extended&amp;module=Atomic_edit">Atomic_edit</a></td><td><div class="info">Atomically edit a file without long-term locking</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Bin_io_utils">Bin_io_utils</a></td><td/></tr>
-<tr><td class="module"><a href="?package=core_extended&amp;module=Bitarray">Bitarray</a></td><td><div class="info">This module implements efficient and compact arrays of boolean values. It stores it's
-    values in the bits of an integer, using multiple integers to allow for arrays larger
-    than the machine word size. All operations are on immediates (no caml_modify), and are
-    quite simple. Hence this data structure should be more efficient than an array of
-    bools.</div></td></tr>
+<tr><td class="module"><a href="?package=core_extended&amp;module=Bitarray">Bitarray</a></td><td><div class="info">This module implements efficient and compact arrays of boolean values.</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Cache">Cache</a></td><td><div class="info">Generic caching library</div></td></tr>
-<tr><td class="module"><a href="?package=core_extended&amp;module=Cbuffer">Cbuffer</a></td><td><div class="info">Circular buffers.<br/>   THIS LIBRARY WILL BE DELETED IN FAVOUR OF DEQUEUE AT SOME POINT IN THE FUTURE</div></td></tr>
+<tr><td class="module"><a href="?package=core_extended&amp;module=Cbuffer">Cbuffer</a></td><td><div class="info">Circular buffers.</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Color_print">Color_print</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Crit_bit">Crit_bit</a></td><td/></tr>
-<tr><td class="module"><a href="?package=core_extended&amp;module=Csv_writer">Csv_writer</a></td><td><div class="info">Compliant simple CSV writter.<br/> This library is designed to deal with proper CSV (no quotes allowed in the
- middle of the fields...). It is fast and flexible: by splitting most
- writing functions in two parts one that gives the length of the string to
- write and another that writes the result in a subpart of another string we
- avoid unnecessary string creations.</div></td></tr>
+<tr><td class="module"><a href="?package=core_extended&amp;module=Csv_writer">Csv_writer</a></td><td><div class="info">Compliant simple CSV writter.</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Deprecated_bench">Deprecated_bench</a></td><td><div class="info">DEPRECATED: use the base/bench library instead</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Deprecated_command">Deprecated_command</a></td><td><div class="info">DEPRECATED: use Core.Std.Command instead</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Deprecated_fcommand">Deprecated_fcommand</a></td><td><div class="info">DEPRECATED: use Core.Std.Command instead</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Deprecated_service_command">Deprecated_service_command</a></td><td><div class="info"><code class="code">command ~lock_file ~name main</code> creates a command group for starting,
     stopping, restarting, and checking the status of a daemon (the code
-    for which lives in the argument <code class="code">main</code>).  This family of commands
-    uses a <code class="code">lock_file</code> to ensure that two instances of the daemon don't
-    run concurrently on the same machine.  The <code class="code">name</code> parameter is used
-    to name the daemon in the command help and various error messages.<br/>    <code class="code">lock_file</code> should be on the local file system (for example in /var/tmp)
-    since file locking doesn't work over NFS.</div></td></tr>
-<tr><td class="module"><a href="?package=core_extended&amp;module=Documented_match_statement">Documented_match_statement</a></td><td><div class="info">A <code class="code">t</code> represents a match statement where every case is documented.  You can then use it
-    in one way to extract documentation, and in another way as the underlying function.<br/>    More specifically, an <code class="code">('input,'output) t</code> represents a match statement matching things
-    of type <code class="code">input'</code> and producing things of type <code class="code">'output</code>. It consists of
-    <code class="code">specific_cases</code> and a <code class="code">catchall_case</code>.<br/>    The <code class="code">specific_cases</code> are straightforward:
-    <code class="code">{pattern=pattern;documentation=documentation;value=value}</code> represents
-    &quot;| pattern -&gt; value&quot;, with <code class="code">documentation</code> explaining what's going on.<br/>    The <code class="code">catchall_case</code> can be either <code class="code">`Unused x</code>, representing &quot;| _ -&gt; x&quot; with no
-    documentation, or <code class="code">`Used case</code>, representing &quot;| x -&gt; f x&quot;, where <code class="code">f</code> is <code class="code">case.value</code>,
-    and <code class="code">case.documentation</code> explains what's going on with <code class="code">f</code>.  This is intended to allow
-    many input values to be handled uniformly without having to document each one individually.</div></td></tr>
+    for which lives in the argument <code class="code">main</code>).</div></td></tr>
+<tr><td class="module"><a href="?package=core_extended&amp;module=Documented_match_statement">Documented_match_statement</a></td><td><div class="info">A <code class="code">t</code> represents a match statement where every case is documented.</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=English">English</a></td><td><div class="info">Translating English into useful data structures</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Environment">Environment</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Exception_check">Exception_check</a></td><td><div class="info">Code to test the effect of exceptions happening in strategic
-    places in daemons.<br/>    In order to use this module one defines a list
-    of (mnemonic, exception) pairs<br/>    E.G.<br/>    <code class="code">(&quot;M.f: invalid arg&quot;, Invalid_argument &quot;foo&quot;);
-     (&quot;Z.f: sys error&quot;, Sys_error &quot;bar&quot;);
-     (&quot;R.z: failure&quot;, Failure &quot;baz&quot;)</code><br/>    And one passes this list to create. Then one places calls to
-    Exception_check.maybe_raise &lt;name&gt;, in important parts of one's
-    code. When the code is run, it will listen on <code class="code">listen_port</code>, and
-    one can connect with netcat and type a name, which will
-    cause that exception to be raised on the next call to
-    <code class="code">Exception_check.maybe_raise</code>.</div></td></tr>
+    places in daemons.</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Extended_array">Extended_array</a></td><td><div class="info">Extensions to <code class="code">Core.Core_array</code>.</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Extended_common">Extended_common</a></td><td><div class="info">Pervasive functions.</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Extended_exn">Extended_exn</a></td><td><div class="info">Extensions to <code class="code">Core.Exn</code>.</div></td></tr>
@@ -75,11 +47,9 @@
 <tr><td class="module"><a href="?package=core_extended&amp;module=Extended_time">Extended_time</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Extended_unix">Extended_unix</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Extra_fields">Extra_fields</a></td><td/></tr>
-<tr><td class="module"><a href="?package=core_extended&amp;module=Fd_leak_check">Fd_leak_check</a></td><td><div class="info">File descriptor leak check.<br/>   This mod</div></td></tr>
+<tr><td class="module"><a href="?package=core_extended&amp;module=Fd_leak_check">Fd_leak_check</a></td><td><div class="info">File descriptor leak check.</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Find">Find</a></td><td><div class="info">Unix like <code class="code">find</code>.</div></td></tr>
-<tr><td class="module"><a href="?package=core_extended&amp;module=Fold_map">Fold_map</a></td><td><div class="info">A map that folds in new values.<br/>    An example would be a multi-map in which a key is initialized with the empty
-    list as its value, and adding a new key/value pair appends the value to the
-    key's list.</div></td></tr>
+<tr><td class="module"><a href="?package=core_extended&amp;module=Fold_map">Fold_map</a></td><td><div class="info">A map that folds in new values.</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Generic">Generic</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Invariant">Invariant</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Invocation">Invocation</a></td><td/></tr>
@@ -87,69 +57,41 @@
 <tr><td class="module"><a href="?package=core_extended&amp;module=Lazy_list">Lazy_list</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Lazy_m">Lazy_m</a></td><td><div class="info">A non-threadsafe reimplementation of <code class="code">Lazy</code></div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Lazy_sequence">Lazy_sequence</a></td><td/></tr>
-<tr><td class="module"><a href="?package=core_extended&amp;module=Linebuf">Linebuf</a></td><td><div class="info">Line-by-line reading of a file.  A line buffer allows one to read
-    one line of a file at a time, blocking until a line is available.
-    Line buffers are distinct from Pervasives.read_line in that they
-    &quot;notice&quot; new data arriving in the file more quickly.</div></td></tr>
+<tr><td class="module"><a href="?package=core_extended&amp;module=Linebuf">Linebuf</a></td><td><div class="info">Line-by-line reading of a file.</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=List_zipper">List_zipper</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Logger">Logger</a></td><td><div class="info">Another logging library.</div></td></tr>
-<tr><td class="module"><a href="?package=core_extended&amp;module=Loggers">Loggers</a></td><td><div class="info">High-level logging capabilities<div class="authors"><b>Author(s): </b><span class="author">Markus Mottl &lt;mmottl@janestreet.com&gt;</span></div></div></td></tr>
+<tr><td class="module"><a href="?package=core_extended&amp;module=Loggers">Loggers</a></td><td><div class="info">High-level logging capabilities</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Low_level_debug">Low_level_debug</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Malloc">Malloc</a></td><td/></tr>
-<tr><td class="module"><a href="?package=core_extended&amp;module=Multi_map">Multi_map</a></td><td><div class="info">Maps with mutliple bindings.<br/>   This is a map that allows multiple binding. Each key can have several values
-   associated to it.</div></td></tr>
-<tr><td class="module"><a href="?package=core_extended&amp;module=Net_utils">Net_utils</a></td><td><div class="info">Networking utilities<div class="authors"><b>Author(s): </b><span class="author">Markus Mottl &lt;mmottl@janestreet.com&gt;</span></div></div></td></tr>
+<tr><td class="module"><a href="?package=core_extended&amp;module=Multi_map">Multi_map</a></td><td><div class="info">Maps with mutliple bindings.</div></td></tr>
+<tr><td class="module"><a href="?package=core_extended&amp;module=Net_utils">Net_utils</a></td><td><div class="info">Networking utilities</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Number">Number</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Packed_array">Packed_array</a></td><td><div class="info">A packed array is a read-only array that has a fairly compact representation and will
-    not be traversed by the GC. It's designed for cases where you might construct a very
-    large array once and then read from it many times. Array access is reasonably
-    efficient. Be warned, however, that construction can be excruciatingly slow and might
-    even perform many intermediate allocations, depending on the type of array.</div></td></tr>
+    not be traversed by the GC.</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Packed_map">Packed_map</a></td><td><div class="info">A packed map is a map from keys to values, represented using a packed array of
-    key-value tuples which is sorted by key. Construction is very slow, but lookup is a
-    reasonable speed. The main purpose is to be able to construct very large lookup tables
-    that don't have much GC overhead.</div></td></tr>
+    key-value tuples which is sorted by key.</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Patience_diff">Patience_diff</a></td><td><div class="info">This is a port of Bram Cohen's patience diff algorithm, as found in the Bazaar 1.14.1
-    source code, available at http://bazaar-vcs.org.<br/>    This copyright notice was included:<br/>    # Copyright (C) 2005 Bram Cohen, Copyright (C) 2005, 2006 Canonical Ltd
-    #
-    # This program is free software; you can redistribute it and/or modify
-    # it under the terms of the GNU General Public License as published by
-    # the Free Software Foundation; either version 2 of the License, or
-    # (at your option) any later version.
-    #
-    # This program is distributed in the hope that it will be useful,
-    # but WITHOUT ANY WARRANTY; without even the implied warranty of
-    # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    # GNU General Public License for more details.
-    #
-    # You should have received a copy of the GNU General Public License
-    # along with this program; if not, write to the Free Software
-    # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA</div></td></tr>
+    source code, available at http://bazaar-vcs.org.</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Posix_clock">Posix_clock</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Pp">Pp</a></td><td><div class="info">Functional pretty printing.</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Printc">Printc</a></td><td/></tr>
-<tr><td class="module"><a href="?package=core_extended&amp;module=Process">Process</a></td><td><div class="info">Low-level process handling<br/>   This is low-level enough that you should probably be using <code class="code">Shell</code> instead
-   to dispatch processes.</div></td></tr>
+<tr><td class="module"><a href="?package=core_extended&amp;module=Process">Process</a></td><td><div class="info">Low-level process handling</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Procfs">Procfs</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Prod_or_test">Prod_or_test</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Random_selection">Random_selection</a></td><td><div class="info">reservoir sampling</div></td></tr>
-<tr><td class="module"><a href="?package=core_extended&amp;module=Readline">Readline</a></td><td><div class="info">Interactive line editing.<br/>   This implements very basic <code class="code">readline</code> abilities: backspace, left and right
-   arrows work as expected.
-   There's also a history that can be browsed through the <code class="code">up</code> and <code class="code">down</code> arrows.</div></td></tr>
+<tr><td class="module"><a href="?package=core_extended&amp;module=Readline">Readline</a></td><td><div class="info">Interactive line editing.</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Readline__input_char">Readline__input_char</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Readline__input_loop">Readline__input_loop</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Runtime_blockout_detector">Runtime_blockout_detector</a></td><td><div class="info"><code class="code">Runtime_blockout_detector</code> is used detect bugs in C libraries that fail
     to release the OCaml runtime lock before making blocking calls.</div></td></tr>
-<tr><td class="module"><a href="?package=core_extended&amp;module=Rw_mutex">Rw_mutex</a></td><td><div class="info">Read/write mutexes<div class="authors"><b>Author(s): </b><span class="author">Markus Mottl &lt;mmottl@janestreet.com&gt;</span></div></div></td></tr>
+<tr><td class="module"><a href="?package=core_extended&amp;module=Rw_mutex">Rw_mutex</a></td><td><div class="info">Read/write mutexes</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Sampler">Sampler</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Search_foo">Search_foo</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Selector">Selector</a></td><td/></tr>
-<tr><td class="module"><a href="?package=core_extended&amp;module=Semaphore">Semaphore</a></td><td><div class="info">Semaphores<div class="authors"><b>Author(s): </b><span class="author">Markus Mottl &lt;mmottl@janestreet.com&gt;</span></div></div></td></tr>
+<tr><td class="module"><a href="?package=core_extended&amp;module=Semaphore">Semaphore</a></td><td><div class="info">Semaphores</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Sendmail">Sendmail</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Service_command">Service_command</a></td><td/></tr>
-<tr><td class="module"><a href="?package=core_extended&amp;module=Shell">Shell</a></td><td><div class="info">Shell scripting in OCaml.<br/>    This module contains basic blocks for shell scripting in OCaml. It tends to
-    be safer than just using <code class="code">Unix.system</code> because it handles errors more
-    strictly.</div></td></tr>
+<tr><td class="module"><a href="?package=core_extended&amp;module=Shell">Shell</a></td><td><div class="info">Shell scripting in OCaml.</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Shell__core">Shell__core</a></td><td/></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Shell__line_buffer">Shell__line_buffer</a></td><td><div class="info">String buffers that automatically get flushed at every line return.</div></td></tr>
 <tr><td class="module"><a href="?package=core_extended&amp;module=Sntp">Sntp</a></td><td><div class="info">Simple Network Time Protocol</div></td></tr>

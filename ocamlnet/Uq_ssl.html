@@ -2,10 +2,10 @@
 <pre><span class="EXCEPTIONSsl_error"><span class="keyword">exception</span> Ssl_error</span> <span class="keyword">of</span> <code class="type"><a href="?package=ssl&amp;module=Ssl&amp;type=ssl_error">Ssl.ssl_error</a></code></pre><div class="info"><div class="info">Used in <code class="code">when_done</code> callbacks to indicate an SSL-specific error code</div></div>
 <pre><span class="TYPEssl_socket_state"><span class="keyword">type</span> ssl_socket_state</span> = <code class="type">[ `Clean | `Client | `Server | `Unclean | `Unset ]</code></pre>
 <div class="ocaml_class sig" name="ssl_multiplex_controller"><pre><span class="TYPEssl_multiplex_controller"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Uq_ssl&amp;class=ssl_multiplex_controller">ssl_multiplex_controller</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">The <code class="code">ssl_multiplex_controller</code> is an extended multiplex controller
- which can also control SSL handshakes.<br/> Important note: SSL/TLS does not support half-open connections. When
+ which can also control SSL handshakes.<p> Important note: SSL/TLS does not support half-open connections. When
  one party closes the connection, the other party must immediately 
  close the connection, too, throwing away any pending writes. See
- RFC 2246.</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=multiplex_controller"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=multiplex_controller">Uq_engines.multiplex_controller</a></pre></div>
+ RFC 2246.</p></div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=multiplex_controller"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=multiplex_controller">Uq_engines.multiplex_controller</a></pre></div>
 
 <pre><span class="METHODssl_socket"><span class="keyword">method</span> ssl_socket</span> : <code class="code"><a href="?package=ssl&amp;module=Ssl&amp;type=socket">Ssl.socket</a></code></pre>
 
@@ -20,10 +20,10 @@
  socket a server.</div></div>
 <pre><span class="METHODstart_ssl_connecting"><span class="keyword">method</span> start_ssl_connecting</span> : <code class="code">when_done:(exn option -&gt; unit) -&gt; unit -&gt; unit</code></pre>
 <div class="info"><div class="info">Makes the socket an SSL client socket by initiating the handshake.
- The <code class="code">when_done</code> callback is invoked when the handshake is done.<br/> One can neither read nor write before that.</div></div>
+ The <code class="code">when_done</code> callback is invoked when the handshake is done.<p> One can neither read nor write before that.</p></div></div>
 <pre><span class="METHODstart_ssl_accepting"><span class="keyword">method</span> start_ssl_accepting</span> : <code class="code">when_done:(exn option -&gt; unit) -&gt; unit -&gt; unit</code></pre>
 <div class="info"><div class="info">Makes the socket an SSL server socket by initiating the handshake.
- The <code class="code">when_done</code> callback is invoked when the handshake is done.<br/> One can neither read nor write before that.</div></div>
+ The <code class="code">when_done</code> callback is invoked when the handshake is done.<p> One can neither read nor write before that.</p></div></div>
 <pre><span class="METHODinactivate_no_close"><span class="keyword">method</span> inactivate_no_close</span> : <code class="code">unit -&gt; unit</code></pre>
 <div class="info"><div class="info">Inactivates the controller by deleting all event handlers. The
 	file descriptor, however, is not closed. Normal users should not
@@ -34,12 +34,12 @@
 ?timeout:float * exn -&gt;
 <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt;
 <a href="?package=ssl&amp;module=Ssl&amp;type=context">Ssl.context</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; <a href="?package=ocamlnet&amp;module=Uq_ssl&amp;type=ssl_multiplex_controller">ssl_multiplex_controller</a></code></pre><div class="info"><div class="info">Creates a multiplex controller for an SSL socket. The descriptor must
- be a connected socket descriptor.<br/> <code class="code">close_inactive_descr</code>: Whether to close the file descriptor by
- <code class="code">inactivate</code>.<br/> <code class="code">preclose</code>: This function is called immediately before closing
- the descriptor<br/> <code class="code">initial_state</code>: can be set to <code class="code">`Client</code> or <code class="code">`Server</code> if the context
- is already established. Defaults to <code class="code">`Unset</code><br/> <code class="code">timeout</code>: if set to <code class="code">(t, x)</code>, started operations time out after <code class="code">t</code>
+ be a connected socket descriptor.<p> <code class="code">close_inactive_descr</code>: Whether to close the file descriptor by
+ <code class="code">inactivate</code>.</p><p> <code class="code">preclose</code>: This function is called immediately before closing
+ the descriptor</p><p> <code class="code">initial_state</code>: can be set to <code class="code">`Client</code> or <code class="code">`Server</code> if the context
+ is already established. Defaults to <code class="code">`Unset</code></p><p> <code class="code">timeout</code>: if set to <code class="code">(t, x)</code>, started operations time out after <code class="code">t</code>
  seconds and pass the exception <code class="code">x</code> back. A timeout is only indicated
- when all started operations are inactive for <code class="code">t</code> seconds.</div></div>
+ when all started operations are inactive for <code class="code">t</code> seconds.</p></div></div>
 <pre><span class="VALssl_connect_engine"><span class="keyword">val</span> ssl_connect_engine</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Uq_ssl&amp;type=ssl_multiplex_controller">ssl_multiplex_controller</a> -&gt; unit <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">Uq_engines.engine</a></code></pre><div class="info"><div class="info">This engine performs the client handshake.</div></div>
 <pre><span class="VALssl_accept_engine"><span class="keyword">val</span> ssl_accept_engine</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Uq_ssl&amp;type=ssl_multiplex_controller">ssl_multiplex_controller</a> -&gt; unit <a href="?package=ocamlnet&amp;module=Uq_engines&amp;type=engine">Uq_engines.engine</a></code></pre><div class="info"><div class="info">This engine performs the server handshake.</div></div>
 <div class="info"><div class="info"><h1 id="1_TITLE">Debugging</h1></div></div>

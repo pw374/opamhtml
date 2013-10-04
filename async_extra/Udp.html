@@ -1,25 +1,25 @@
 <div class="ocaml_toplevel_module"><div class="info">A grab-bag of performance-oriented, UDP-oriented network tools.  These provide some
-    convenience, but they are more complex than basic applications require.<br/>    Defaults are chosen for typical UDP applications.  Buffering is via <code class="code">Iobuf</code>
+    convenience, but they are more complex than basic applications require.<p>    Defaults are chosen for typical UDP applications.  Buffering is via <code class="code">Iobuf</code>
     conventions, where a typical packet-handling loop iteration is
-    read-<code class="code">flip_lo</code>-process-<code class="code">reset</code>.<br/>    For zero-copy <code class="code">Bigstring.t</code> transfers, we must ensure no buffering between the receive
+    read-<code class="code">flip_lo</code>-process-<code class="code">reset</code>.</p><p>    For zero-copy <code class="code">Bigstring.t</code> transfers, we must ensure no buffering between the receive
     loop and caller.  So, an interface like <code class="code">Tcp.connect</code>, with something like
-    <code class="code">(Bigstring.t * Socket.Address.Inet.t) Pipe.Reader.t</code>, won't work.<br/>    Instead, we use synchronous callbacks.</div>
+    <code class="code">(Bigstring.t * Socket.Address.Inet.t) Pipe.Reader.t</code>, won't work.</p><p>    Instead, we use synchronous callbacks.</p></div>
 <pre><span class="TYPEwrite_buffer"><span class="keyword">type</span> write_buffer</span> = <code class="type">(<a href="?package=core&amp;module=Std&amp;type=read_write">Core.Std.read_write</a>, <a href="?package=core&amp;module=Std.Iobuf&amp;type=seek">Core.Std.Iobuf.seek</a>) <a href="?package=core&amp;module=Std.Iobuf&amp;type=t">Core.Std.Iobuf.t</a></code></pre>
 <pre><span class="VALdefault_capacity"><span class="keyword">val</span> default_capacity</span> : <code class="type">int</code></pre><div class="info"><div class="info">The default buffer capacity for UDP-oriented buffers is 1472, determined as the
     typical Ethernet MTU (1500 octets) less the typical UDP header length (28).  Using
     buffers of this size, one avoids accidentally creating messages that will be dropped
     on send because they exceed the MTU, and can receive the largest corresponding UDP
-    message.<br/>    While this number is merely typical and not guaranteed to work in all cases, defining
+    message.<p>    While this number is merely typical and not guaranteed to work in all cases, defining
     it in one place makes it easy to share and change.  For example, another MTU in common
     use is 9000 for Jumbo frames, so the value of <code class="code">default_capacity</code> might change to 8972
-    in the future.</div></div>
+    in the future.</p></div></div>
 <div class="ocaml_module sig" name="Config"><pre><span class="keyword">module</span> <a href="?package=async_extra&amp;module=Udp.Config">Config</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">A typical receive loop calls <code class="code">before</code> before calling its callback to prepare a packet
     buffer for reading and <code class="code">after</code> afterwards to prepare for writing (for the next
-    iteration).<br/>    One can specify <code class="code">~before:ignore</code> or <code class="code">~after:ignore</code> to disable the default action, as
+    iteration).<p>    One can specify <code class="code">~before:ignore</code> or <code class="code">~after:ignore</code> to disable the default action, as
     when doing buffer management in the callback.  One can also specify an action, such as
     <code class="code">~after:Iobuf.compact</code> for use with <code class="code">read_loop</code> on a connection-oriented socket or
     file.  It's often convenient to use the same interface for UDP, TCP, and file variants
-    of the same protocol.<br/>    <code class="code">stop</code> terminates a typical loop as soon as possible, when it becomes determined.</div></div><div class="ocaml_module_content">
+    of the same protocol.</p><p>    <code class="code">stop</code> terminates a typical loop as soon as possible, when it becomes determined.</p></div></div><div class="ocaml_module_content">
 <pre><code><span class="TYPEt"><span class="keyword">type</span> t</span> = {</code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTt.capacity">capacity</span> : <code class="type">int</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTt.init">init</span> : <code class="type"><a href="?package=async_extra&amp;module=Udp&amp;type=write_buffer">write_buffer</a></code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTt.before">before</span> : <code class="type"><a href="?package=async_extra&amp;module=Udp&amp;type=write_buffer">write_buffer</a> -&gt; unit</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTt.after">after</span> : <code class="type"><a href="?package=async_extra&amp;module=Udp&amp;type=write_buffer">write_buffer</a> -&gt; unit</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTt.stop">stop</span> : <code class="type">unit <a href="?package=async_extra&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code>;</code></td></tr><tr><td>}</td></tr></table>
 <pre><span class="VALstop"><span class="keyword">val</span> stop</span> : <code class="type"><a href="?package=async_extra&amp;module=Udp.Config&amp;type=t">t</a> -&gt; unit <a href="?package=async_extra&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre>
@@ -119,7 +119,7 @@ stop:('acc__ -&gt;
  ('a, <a href="?package=core&amp;module=Std.Iobuf&amp;type=seek">Core.Std.Iobuf.seek</a>) <a href="?package=core&amp;module=Std.Iobuf&amp;type=t">Core.Std.Iobuf.t</a> -&gt;
  <a href="?package=async_extra&amp;module=Import.Socket.Address.Inet&amp;type=t">Import.Socket.Address.Inet.t</a> -&gt; [ `Not_ready | `Ok ])
 <a href="?package=core&amp;module=Std.Or_error&amp;type=t">Core.Std.Or_error.t</a></code></pre><div class="info"><div class="info"><code class="code">sendto_sync sock buf addr</code> does not try again if <code class="code">sock</code> is not ready to write.
-    Instead, it returns <code class="code">`Not_ready</code> immediately.<br/>    Short writes are distinguished by <code class="code">buf</code> not being empty afterward. <b>Raises</b> <code>Unix_error</code> in the case of output errors.  See also
+    Instead, it returns <code class="code">`Not_ready</code> immediately.<p>    Short writes are distinguished by <code class="code">buf</code> not being empty afterward.</p> <b>Raises</b> <code>Unix_error</code> in the case of output errors.  See also
      <a href="#Iobuf.sendto_nonblocking_no_sigpipe">Iobuf.sendto_nonblocking_no_sigpipe</a> and
      <a href="#Bigstring.sendto_nonblocking_no_sigpipe">Bigstring.sendto_nonblocking_no_sigpipe</a>.<br/></div><div class="info"><code class="code">sendto sock buf addr</code> retries if <code class="code">sock</code> is not ready to write.</div></div>
 <pre><span class="VALsendto"><span class="keyword">val</span> sendto</span> : <code class="type">unit -&gt;
@@ -159,9 +159,9 @@ unit <a href="?package=async_extra&amp;module=Import.Deferred&amp;type=t">Import
  unit <a href="?package=async_extra&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a>)
 <a href="?package=core&amp;module=Std.Or_error&amp;type=t">Core.Std.Or_error.t</a></code></pre><div class="info"><div class="info"><code class="code">recvmmsg_loop ~socket callback</code> iteratively receives up to <code class="code">max_count</code> packets at a
     time on <code class="code">socket</code> and passes them to <code class="code">callback</code>.  Each packet is up to <code class="code">capacity</code>
-    bytes.  If <code class="code">create_srcs</code>, collect from-addresses there.<br/>    <code class="code">callback ?srcs bufs ~count</code> processes <code class="code">count</code> packets synchronously.  <code class="code">callback</code> may
+    bytes.  If <code class="code">create_srcs</code>, collect from-addresses there.<p>    <code class="code">callback ?srcs bufs ~count</code> processes <code class="code">count</code> packets synchronously.  <code class="code">callback</code> may
     replace packet buffers in <code class="code">bufs</code> and take ownership of the corresponding originals.
     <code class="code">srcs</code> contains the corresponding source addresses of the packets in <code class="code">bufs</code>, if
-    requested, and will similarly be reused when <code class="code">callback</code> returns.<br/>    <code class="code">Config.init config</code> is used as a prototype for <code class="code">bufs</code> and as one of the elements.</div></div>
+    requested, and will similarly be reused when <code class="code">callback</code> returns.</p><p>    <code class="code">Config.init config</code> is used as a prototype for <code class="code">bufs</code> and as one of the elements.</p></div></div>
 <pre><span class="VALbind_to_interface_exn"><span class="keyword">val</span> bind_to_interface_exn</span> : <code class="type">(ifname:string -&gt; <a href="?package=async_extra&amp;module=Import.Fd&amp;type=t">Import.Fd.t</a> -&gt; unit) <a href="?package=core&amp;module=Std.Or_error&amp;type=t">Core.Std.Or_error.t</a></code></pre>
 </div>

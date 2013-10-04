@@ -6,85 +6,85 @@
 <div class="info"><div class="info"><h2 id="2_TITLE">General</h2></div></div>
 <pre><span class="VALblit_memory_to_string"><span class="keyword">val</span> blit_memory_to_string</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">memory</a> -&gt; int -&gt; string -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">blit_memory_to_string src srcoff dst dstoff len</code> copies <code class="code">len</code> characters
       from buffer <code class="code">src</code>, starting at character number <code class="code">srcoff</code>, to
-      string <code class="code">dst</code>, starting at character number <code class="code">dstoff</code><br/>      Raise <code class="code">Invalid_argument</code> if <code class="code">srcoff</code> and <code class="code">len</code> do not
+      string <code class="code">dst</code>, starting at character number <code class="code">dstoff</code><p>      Raise <code class="code">Invalid_argument</code> if <code class="code">srcoff</code> and <code class="code">len</code> do not
       designate a valid subbuffer of <code class="code">src</code>, or if <code class="code">dstoff</code> and <code class="code">len</code>
-      do not designate a valid substring of <code class="code">dst</code>.</div></div>
+      do not designate a valid substring of <code class="code">dst</code>.</p></div></div>
 <pre><span class="VALblit_memory_to_string_unsafe"><span class="keyword">val</span> blit_memory_to_string_unsafe</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">memory</a> -&gt; int -&gt; string -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">Unsafe version</div></div>
 <pre><span class="VALblit_string_to_memory"><span class="keyword">val</span> blit_string_to_memory</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">memory</a> -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">blit_string_to_memory src srcoff dst dstoff len</code> copies <code class="code">len</code> characters
       from string <code class="code">src</code>, starting at character number <code class="code">srcoff</code>, to
-      buffer <code class="code">dst</code>, starting at character number <code class="code">dstoff</code><br/>      Raise <code class="code">Invalid_argument</code> if <code class="code">srcoff</code> and <code class="code">len</code> do not
+      buffer <code class="code">dst</code>, starting at character number <code class="code">dstoff</code><p>      Raise <code class="code">Invalid_argument</code> if <code class="code">srcoff</code> and <code class="code">len</code> do not
       designate a valid substring of <code class="code">src</code>, or if <code class="code">dstoff</code> and <code class="code">len</code>
-      do not designate a valid subbuffer of <code class="code">dst</code>.</div></div>
+      do not designate a valid subbuffer of <code class="code">dst</code>.</p></div></div>
 <pre><span class="VALblit_string_to_memory_unsafe"><span class="keyword">val</span> blit_string_to_memory_unsafe</span> : <code class="type">string -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">memory</a> -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">Unsafe version</div></div>
 <pre><span class="VALmemory_address"><span class="keyword">val</span> memory_address</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">memory</a> -&gt; nativeint</code></pre><div class="info"><div class="info">Returns the start address of the buffer</div></div>
 <pre><span class="VALmemory_of_bigarray"><span class="keyword">val</span> memory_of_bigarray</span> : <code class="type">('a, 'b, 'c) <a href="?package=ocaml&amp;module=Bigarray.Genarray&amp;type=t">Bigarray.Genarray.t</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">memory</a></code></pre>
 <pre><span class="VALmemory_of_bigarray_1"><span class="keyword">val</span> memory_of_bigarray_1</span> : <code class="type">('a, 'b, 'c) <a href="?package=ocaml&amp;module=Bigarray.Array1&amp;type=t">Bigarray.Array1.t</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">memory</a></code></pre>
 <pre><span class="VALmemory_of_bigarray_2"><span class="keyword">val</span> memory_of_bigarray_2</span> : <code class="type">('a, 'b, 'c) <a href="?package=ocaml&amp;module=Bigarray.Array2&amp;type=t">Bigarray.Array2.t</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">memory</a></code></pre>
-<pre><span class="VALmemory_of_bigarray_3"><span class="keyword">val</span> memory_of_bigarray_3</span> : <code class="type">('a, 'b, 'c) <a href="?package=ocaml&amp;module=Bigarray.Array3&amp;type=t">Bigarray.Array3.t</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">memory</a></code></pre><div class="info"><div class="info">These functions return an arbitrary bigarray as <code class="code">memory</code>.<br/>      Due to a bug in the OCaml runtime, this is for now limited to
+<pre><span class="VALmemory_of_bigarray_3"><span class="keyword">val</span> memory_of_bigarray_3</span> : <code class="type">('a, 'b, 'c) <a href="?package=ocaml&amp;module=Bigarray.Array3&amp;type=t">Bigarray.Array3.t</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">memory</a></code></pre><div class="info"><div class="info">These functions return an arbitrary bigarray as <code class="code">memory</code>.<p>      Due to a bug in the OCaml runtime, this is for now limited to
       arrays of up to 2G size (in bytes). (The bug exists at least
-      up to OCaml-3.12.1.)</div></div>
+      up to OCaml-3.12.1.)</p></div></div>
 <div class="info"><div class="info"><h2 id="2_TITLE">Allocation and memory-mapping</h2></div></div>
-<pre><span class="VALgetpagesize"><span class="keyword">val</span> getpagesize</span> : <code class="type">unit -&gt; int</code></pre><div class="info"><div class="info">Returns the size of a page as reported by <code class="code">sysconf</code>.<br/>      On many systems, a page has 4096 bytes, but this cannot be relied
-      upon.<br/>      This function is only available if the system has <code class="code">sysconf</code>.</div></div>
+<pre><span class="VALgetpagesize"><span class="keyword">val</span> getpagesize</span> : <code class="type">unit -&gt; int</code></pre><div class="info"><div class="info">Returns the size of a page as reported by <code class="code">sysconf</code>.<p>      On many systems, a page has 4096 bytes, but this cannot be relied
+      upon.</p><p>      This function is only available if the system has <code class="code">sysconf</code>.</p></div></div>
 <pre><span class="VALpagesize"><span class="keyword">val</span> pagesize</span> : <code class="type">int</code></pre><div class="info"><div class="info">The best guess at the page size</div></div>
 <pre><span class="VALalloc_memory_pages"><span class="keyword">val</span> alloc_memory_pages</span> : <code class="type">?addr:nativeint -&gt; ?exec:bool -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">memory</a></code></pre><div class="info"><div class="info">Allocates memory in units of pages. The memory buffer will start
-      on a page boundary.<br/>      The passed int is the requested number of <b>bytes</b>. The size of
-      the buffer is rounded up so a whole number of pages is allocated.<br/>      Optionally, one can request a certain address <code class="code">addr</code> (which must
+      on a page boundary.<p>      The passed int is the requested number of <b>bytes</b>. The size of
+      the buffer is rounded up so a whole number of pages is allocated.</p><p>      Optionally, one can request a certain address <code class="code">addr</code> (which must
       be a multiple of the page size). There is, however, no guarantee
       that this wish can be fulfilled. In any way, one should check with
-      <code class="code">memory_address</code> what the start address really is.<br/>      If <code class="code">exec</code>, the memory region is marked as executable.<br/>      This function is only available if the system has <code class="code">sysconf</code>, <code class="code">mmap</code>,
+      <code class="code">memory_address</code> what the start address really is.</p><p>      If <code class="code">exec</code>, the memory region is marked as executable.</p><p>      This function is only available if the system has <code class="code">sysconf</code>, <code class="code">mmap</code>,
       and allows to allocate anonymous memory with <code class="code">mmap</code> (outside POSIX
-      but common).</div></div>
+      but common).</p></div></div>
 <pre><span class="VALalloc_aligned_memory"><span class="keyword">val</span> alloc_aligned_memory</span> : <code class="type">int -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">memory</a></code></pre><div class="info"><div class="info"><code class="code">alloc_aligned_memory alignment size</code>: Allocates a buffer of <code class="code">size</code>
       whose start address is a multiple of <code class="code">alignment</code>. The <code class="code">alignment</code>
-      must be a power of two, and at least <code class="code">Sys.word_size/8</code>.<br/>      Aligned memory can be useful for ensuring that the whole memory
+      must be a power of two, and at least <code class="code">Sys.word_size/8</code>.<p>      Aligned memory can be useful for ensuring that the whole memory
       block is in the same cache line. A cache line typically has
       64 or 128 bytes - but this is very platform-specific. (Linux:
-      look at <code class="code">/proc/cpuinfo</code>.)<br/>      This function is only available if the system has <code class="code">posix_memalign</code>.</div></div>
+      look at <code class="code">/proc/cpuinfo</code>.)</p><p>      This function is only available if the system has <code class="code">posix_memalign</code>.</p></div></div>
 <pre><span class="VALmemory_map_file"><span class="keyword">val</span> memory_map_file</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; ?pos:int64 -&gt; ?addr:nativeint -&gt; bool -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">memory</a></code></pre><div class="info"><div class="info"><code class="code">memory_map_file fd shared size</code>: Maps <code class="code">size</code> bytes of the file
       <code class="code">fd</code> into memory, and returns the memory buffer like
       <code class="code">Bigarray.Array1.map_file</code>. <code class="code">pos</code> and <code class="code">shared</code> have the same
       meaning as there. In <code class="code">addr</code> one can suggest a start address.
       There is, however, no guarantee that this wish can be fulfilled.</div></div>
 <pre><span class="VALmemory_unmap_file"><span class="keyword">val</span> memory_unmap_file</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">memory</a> -&gt; unit</code></pre><div class="info"><div class="info">Unmaps the file. The memory block must have been allocated
-      with <code class="code">memory_map_file</code> or with <code class="code">Bigarray.Array1.map_file</code>.<br/>      <b>Note that the data pointer of the bigarray is set to NULL,
+      with <code class="code">memory_map_file</code> or with <code class="code">Bigarray.Array1.map_file</code>.<p>      <b>Note that the data pointer of the bigarray is set to NULL,
       and that any further access of the array will trigger a
       segmentation violation!</b> The intention of this function is to
       control when the file mapping is removed. Normally, this is
-      done first when the GC finalizer is run.<br/>      It is required that there are no subarrays at the time of
-      calling this function. (If so, the function does nothing.)</div></div>
+      done first when the GC finalizer is run.</p><p>      It is required that there are no subarrays at the time of
+      calling this function. (If so, the function does nothing.)</p></div></div>
 <pre><span class="VALzero_pages"><span class="keyword">val</span> zero_pages</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">memory</a> -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">zero_pages m pos len</code>: If possible, the memory pages in the
       range <code class="code">pos</code> to <code class="code">pos+len-1</code> of <code class="code">m</code> are allocated again, so that
-      they replace the previous pages.<br/>      It is required that the start address of the range is a
+      they replace the previous pages.<p>      It is required that the start address of the range is a
       multiple of the page size, and the <code class="code">len</code> is a multiple of
       the page size. Fails with <code class="code">Invalid_argument</code> if the requirements
-      are not met, or the function is otherwise unavailable.<br/>      Calling <code class="code">zero_pages</code> is sometimes an optimization when old
+      are not met, or the function is otherwise unavailable.</p><p>      Calling <code class="code">zero_pages</code> is sometimes an optimization when old
       memory pages can be dropped, and when the alternative of
-      overwriting these pages would imply a copy-on-write operation.</div></div>
+      overwriting these pages would imply a copy-on-write operation.</p></div></div>
 <pre><span class="VALgrab"><span class="keyword">val</span> grab</span> : <code class="type">nativeint -&gt; int -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">memory</a></code></pre><div class="info"><div class="info"><code class="code">grab addr len</code>: Interprets the address range from <code class="code">addr</code> to
-      <code class="code">addr+len-1</code> as <code class="code">memory</code> bigarray.<br/>      This function does not allocate! It assumes that the given
-      address range points to valid memory.</div></div>
+      <code class="code">addr+len-1</code> as <code class="code">memory</code> bigarray.<p>      This function does not allocate! It assumes that the given
+      address range points to valid memory.</p></div></div>
 <div class="info"><div class="info"><h2 id="2_TITLE">Interpreting memory as values</h2></div></div>
 <pre><span class="VALas_value"><span class="keyword">val</span> as_value</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">memory</a> -&gt; int -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">as_value mem offset</code>: Returns a pointer to <code class="code">mem+offset</code>. There
       must be a valid boxed value at this address (i.e. at 
       the word preceding <code class="code">mem+offset</code> there must be a valid block
       header, followed by a valid value of the right type). However,
-      this is not checked:<br/>      <b>This is an unsafe function that may crash the program if used
-      in the wrong way!</b><br/>      It is possible that the memory block is deallocated while the
+      this is not checked:<p>      <b>This is an unsafe function that may crash the program if used
+      in the wrong way!</b></p><p>      It is possible that the memory block is deallocated while the
       returned value still exists. Any attempt to access the value will
       result into undefined behavior (anything from funny results
-      to crashes may happen).<br/>      Some Ocaml primitives might not work on the returned values
+      to crashes may happen).</p><p>      Some Ocaml primitives might not work on the returned values
       (polymorphic equality, marshalling, hashing) unless 
-       <a href="#Netsys_mem.value_area">Netsys_mem.value_area</a> is called for the memory block.</div></div>
+       <a href="#Netsys_mem.value_area">Netsys_mem.value_area</a> is called for the memory block.</p></div></div>
 <pre><span class="VALas_obj"><span class="keyword">val</span> as_obj</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">memory</a> -&gt; int -&gt; <a href="?package=ocaml&amp;module=Obj&amp;type=t">Obj.t</a></code></pre><div class="info"><div class="info">Same as <code class="code">as_value</code> but returns the value as <code class="code">Obj.t</code></div></div>
 <pre><span class="VALvalue_area"><span class="keyword">val</span> value_area</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">memory</a> -&gt; unit</code></pre><div class="info"><div class="info">Marks the memory block as value area. This enables that the
       value primitives (polymorphic equality, marshalling, hashing)
       return meaningful results. The memory area is automatically
-      unmarked when the finaliser for the memory block is run.<br/>      Be careful when marking sub arrays.<br/>      This function is first available since O'Caml 3.11.</div></div>
+      unmarked when the finaliser for the memory block is run.<p>      Be careful when marking sub arrays.</p><p>      This function is first available since O'Caml 3.11.</p></div></div>
 <pre><span class="VALobj_address"><span class="keyword">val</span> obj_address</span> : <code class="type"><a href="?package=ocaml&amp;module=Obj&amp;type=t">Obj.t</a> -&gt; nativeint</code></pre>
 <pre><span class="VALhdr_address"><span class="keyword">val</span> hdr_address</span> : <code class="type"><a href="?package=ocaml&amp;module=Obj&amp;type=t">Obj.t</a> -&gt; nativeint</code></pre><div class="info"><div class="info">These two functions return the address of the <code class="code">Obj.t</code> and the
-      address of the header of the <code class="code">Obj.t</code>, respectively.<br/>      Note that this can only be relied upon if the input object
-      cannot be moved around by the garbage collector!</div></div>
+      address of the header of the <code class="code">Obj.t</code>, respectively.<p>      Note that this can only be relied upon if the input object
+      cannot be moved around by the garbage collector!</p></div></div>
 <pre><span class="VALcmp_string"><span class="keyword">val</span> cmp_string</span> : <code class="type">string -&gt; string -&gt; int</code></pre><div class="info"><div class="info">Compares two strings like <code class="code">String.compare</code>. This also works
       when the strings reside outside the O'Caml heap, e.g. in a
       <code class="code">memory</code> block.</div></div>
@@ -98,9 +98,9 @@
       and following bytes as Ocaml string with length <code class="code">len</code>.
       Returns in <code class="code">voffset</code> the offset where the value starts
       (i.e. <code class="code">offset</code> plus one word), and in <code class="code">bytelen</code> the number
-      of bytes used in <code class="code">mem</code>. <br/>      <code class="code">offset</code> must be a multiple of the word size in bytes.<br/>      The string can be accessed with
-      <pre class="codepre"><code class="code"> let s = (as_value mem voffset : string) </code></pre><br/>      The function is useful for initializing shared memory as string
-      so that several processes can directly access the string.<br/>      The string has the GC color <code class="code">White</code>.<br/>      Raises <code class="code">Out_of_space</code> if the memory block is too small.</div></div>
+      of bytes used in <code class="code">mem</code>. <p>      <code class="code">offset</code> must be a multiple of the word size in bytes.</p><p>      The string can be accessed with
+      </p><code class="code"> let s = (as_value mem voffset : string) </code><p>      The function is useful for initializing shared memory as string
+      so that several processes can directly access the string.</p><p>      The string has the GC color <code class="code">White</code>.</p><p>      Raises <code class="code">Out_of_space</code> if the memory block is too small.</p></div></div>
 <pre><span class="VALinit_string_bytelen"><span class="keyword">val</span> init_string_bytelen</span> : <code class="type">int -&gt; int</code></pre><div class="info"><div class="info">Returns <code class="code">bytelen</code> if <code class="code">init_string</code> was called with the passed
       <code class="code">len</code>.</div></div>
 <pre><span class="VALinit_array"><span class="keyword">val</span> init_array</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">memory</a> -&gt; int -&gt; int -&gt; int * int</code></pre><div class="info"><div class="info"><code class="code">let voffset, bytelen = init_array mem offset size</code>: 
@@ -108,11 +108,11 @@
       and following bytes as Ocaml array with <code class="code">size</code> elements.
       Returns in <code class="code">voffset</code> the offset where the value starts
       (i.e. <code class="code">offset</code> plus one word), and in <code class="code">bytelen</code> the number
-      of bytes used in <code class="code">mem</code>. <br/>      The array cannot be used as float array.<br/>      <code class="code">offset</code> must be a multiple of the word size in bytes.<br/>      The array can be accessed with
-      <pre class="codepre"><code class="code"> let a = (as_value mem voffset : _ array) </code></pre><br/>      The elements of the array have a value but it might not be
+      of bytes used in <code class="code">mem</code>. <p>      The array cannot be used as float array.</p><p>      <code class="code">offset</code> must be a multiple of the word size in bytes.</p><p>      The array can be accessed with
+      </p><code class="code"> let a = (as_value mem voffset : _ array) </code><p>      The elements of the array have a value but it might not be
       valid for the element type of the array. Because of this, it
       is unwise to access the elements before setting them for the
-      first time.<br/>      The array has the GC color <code class="code">White</code>.<br/>      Raises <code class="code">Out_of_space</code> if the memory block is too small.</div></div>
+      first time.</p><p>      The array has the GC color <code class="code">White</code>.</p><p>      Raises <code class="code">Out_of_space</code> if the memory block is too small.</p></div></div>
 <pre><span class="VALinit_float_array"><span class="keyword">val</span> init_float_array</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">memory</a> -&gt; int -&gt; int -&gt; int * int</code></pre><div class="info"><div class="info">Same for arrays of floats</div></div>
 <pre><span class="VALinit_array_bytelen"><span class="keyword">val</span> init_array_bytelen</span> : <code class="type">int -&gt; int</code></pre><div class="info"><div class="info">Returns <code class="code">bytelen</code> if <code class="code">init_array</code> was called with the passed
       <code class="code">size</code>.</div></div>
@@ -128,9 +128,9 @@
       copy of the boxed value <code class="code">v</code>. 
       Returns in <code class="code">voffset</code> the offset where the value starts
       (i.e. <code class="code">offset</code> plus one word), and in <code class="code">bytelen</code> the number
-      of bytes used in <code class="code">mem</code>. <br/>      The copied value can then be accessed with
-      <pre class="codepre"><code class="code"> let v' = (as_value mem voffset : 'a) </code></pre><br/>      <code class="code">offset</code> must be a multiple of the word size in bytes.<br/>      The input value <code class="code">v</code> must be heap-allocated. Also, a number of
-      restrictions and caveats apply:<ul><li>Objects, closures, and lazy values are not supported</li><li>Bigarrays are only supported if the <code class="code">Copy_bigarray</code> flag
+      of bytes used in <code class="code">mem</code>. <p>      The copied value can then be accessed with
+      </p><code class="code"> let v' = (as_value mem voffset : 'a) </code><p>      <code class="code">offset</code> must be a multiple of the word size in bytes.</p><p>      The input value <code class="code">v</code> must be heap-allocated. Also, a number of
+      restrictions and caveats apply:</p><ul><li>Objects, closures, and lazy values are not supported</li><li>Bigarrays are only supported if the <code class="code">Copy_bigarray</code> flag
         is given. In this case, a copy of the bigarray is also made
         and appended to the value copy (i.e. it is also placed into
         the buffer <code class="code">mem</code>).</li><li>Abstract and custom values need to be enabled. For
@@ -151,24 +151,24 @@
         <code class="code">if array=[| |] then...</code> may yield wrong results.</li><li>The input value may reside outside the Ocaml heap. This may break
         badly written C wrappers that do not use abstract or custom
         tags to mark foreign data.</li></ul>      The function raises <code class="code">Out_of_space</code> if the memory block is too small.
-      Cyclic input values are supported, and value sharing is kept intact.<br/>      If the <code class="code">Copy_simulate</code> flag is given, <code class="code">mem</code> is not modified.
+      Cyclic input values are supported, and value sharing is kept intact.<p>      If the <code class="code">Copy_simulate</code> flag is given, <code class="code">mem</code> is not modified.
       In simulation mode, it is pretended that <code class="code">mem</code> is as large
       as necessary to hold the value, no matter how large <code class="code">mem</code> really
       is. The returned values <code class="code">voffset</code> and <code class="code">bytelen</code> reflect how much
-      of <code class="code">mem</code> would have been used.<br/>      If the <code class="code">targetaddr</code> argument is passed, it is assumed that the
+      of <code class="code">mem</code> would have been used.</p><p>      If the <code class="code">targetaddr</code> argument is passed, it is assumed that the
       memory block is mapped at this address and not at the address it
       is really mapped. This is useful for preparing memory that is going
-      to be mapped at a different address than it is right now.<br/>      The new value has the GC color <code class="code">White</code>.<br/>      If bigarrays are copied, the copy also includes the data part.
+      to be mapped at a different address than it is right now.</p><p>      The new value has the GC color <code class="code">White</code>.</p><p>      If bigarrays are copied, the copy also includes the data part.
       The data part is directly following the bigarray block, and is
-      represented in a special implementation-defined way.<br/>      If the <code class="code">Copy_conditionally</code> flag is set, the condition <code class="code">cc</code> is
+      represented in a special implementation-defined way.</p><p>      If the <code class="code">Copy_conditionally</code> flag is set, the condition <code class="code">cc</code> is
       evaluated for every block, and only if <code class="code">cc</code> returns true, the block
       is copied. <code class="code">cc</code> is a list of addresses <code class="code">(start,end)</code>, and a block
       is not copied if its address lies in any of these address ranges.
       Otherwise the block is copied. As an exception of the foregoing,
-      the first block (i.e. <code class="code">v</code>) is always copied.</div></div>
+      the first block (i.e. <code class="code">v</code>) is always copied.</p></div></div>
 <pre><span class="VALget_custom_ops"><span class="keyword">val</span> get_custom_ops</span> : <code class="type">'a -&gt; string * <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=custom_ops">custom_ops</a></code></pre><div class="info"><div class="info">Returns custom ops for a sample value (or <code class="code">Invalid_argument</code>)</div></div>
 <pre><span class="VALcopy_value"><span class="keyword">val</span> copy_value</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=init_value_flag">init_value_flag</a> list -&gt; 'a -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">copy_value flags v</code>: Creates a deep copy of <code class="code">v</code> and returns it.
-      The copy is allocated in the normal Ocaml heap.<br/>      Restrictions:<ul><li>Objects, closures, and lazy values are not supported (FIXME)</li><li>Bigarrays are only supported if the <code class="code">Copy_bigarray</code> flag
+      The copy is allocated in the normal Ocaml heap.<p>      Restrictions:</p><ul><li>Objects, closures, and lazy values are not supported (FIXME)</li><li>Bigarrays are only supported if the <code class="code">Copy_bigarray</code> flag
         is given. In this case, a copy of bigarrays are also made,
         and placed into additional buffers obtained via <code class="code">stat_alloc</code>.</li><li>Abstract and custom values need to be enabled. For
         <code class="code">int32</code>, <code class="code">int64</code>, and <code class="code">nativeint</code> the flag <code class="code">Copy_custom_int</code>
@@ -199,13 +199,13 @@
 <pre><span class="VALpool_alloc_memory"><span class="keyword">val</span> pool_alloc_memory</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory_pool">memory_pool</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">memory</a></code></pre><div class="info"><div class="info"><code class="code">let m = pool_alloc_memory p</code>: 
       Gets a memory block <code class="code">m</code> from the pool <code class="code">p</code>. If required, new blocks are 
       automatically allocated and added to the pool. This function is
-      thread-safe.<br/>      The memory block is automatically garbage-collected.</div></div>
+      thread-safe.<p>      The memory block is automatically garbage-collected.</p></div></div>
 <pre><span class="VALpool_alloc_memory2"><span class="keyword">val</span> pool_alloc_memory2</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory_pool">memory_pool</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory">memory</a> * (unit -&gt; unit)</code></pre><div class="info"><div class="info"><code class="code">let m, free = pool_alloc_memory2 p</code>: 
       Gets a memory block <code class="code">m</code> from the pool <code class="code">p</code> like <code class="code">pool_alloc_memory</code>.
       This function also returns the function <code class="code">free</code> marking the
       block as free again. The block can then be immediately recycled
-      for another use.<br/>      If <code class="code">free</code> is not called, the block <code class="code">m</code> is first recycled when it
-      is not referenced any more (like in <code class="code">pool_alloc_memory</code>).</div></div>
+      for another use.<p>      If <code class="code">free</code> is not called, the block <code class="code">m</code> is first recycled when it
+      is not referenced any more (like in <code class="code">pool_alloc_memory</code>).</p></div></div>
 <pre><span class="VALpool_reclaim"><span class="keyword">val</span> pool_reclaim</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory_pool">memory_pool</a> -&gt; unit</code></pre><div class="info"><div class="info">Reclaim as much memory as possible</div></div>
 <pre><span class="VALpool_block_size"><span class="keyword">val</span> pool_block_size</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_mem&amp;type=memory_pool">memory_pool</a> -&gt; int</code></pre><div class="info"><div class="info">Returns the size of the memory blocks in bytes</div></div>
 <pre><span class="VALdefault_block_size"><span class="keyword">val</span> default_block_size</span> : <code class="type">int</code></pre><div class="info"><div class="info">The default block size, normally 64 K (or better, 16 times the

@@ -1,12 +1,12 @@
 <div class="ocaml_toplevel_module"><div class="info"><code class="code">Result</code> is often used to handle error messages.</div>
 <pre><code><span class="TYPEt"><span class="keyword">type</span> <code class="type">('ok, 'err) </code>t</span> = </code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTt.Ok"><span class="constructor">Ok</span></span> <span class="keyword">of</span> <code class="type">'ok</code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTt.Error"><span class="constructor">Error</span></span> <span class="keyword">of</span> <code class="type">'err</code></code></td></tr></table><div class="info"><div class="info"><code class="code">'a</code> is a function's expected return type, and <code class="code">'b</code> is often an error message string.
-    <pre class="codepre"><code class="code">let ric_of_ticker = function
+    <code class="code">let ric_of_ticker = function
     | &quot;IBM&quot; -&gt; Ok &quot;IBM.N&quot;
     | &quot;MSFT&quot; -&gt; Ok &quot;MSFT.OQ&quot;
     | &quot;AA&quot; -&gt; Ok &quot;AA.N&quot;
     | &quot;CSCO&quot; -&gt; Ok &quot;CSCO.OQ&quot;
-    | _ as ticker -&gt; Error (sprintf &quot;can't find ric of %s&quot; ticker) </code></pre>
+    | _ as ticker -&gt; Error (sprintf &quot;can't find ric of %s&quot; ticker) </code>
     The return type of ric_of_ticker could be <code class="code">string option</code>, but <code class="code">(string, string)
     Result.t</code> gives more control over the error message.</div></div>
 <div class="ocaml_include ident" path="?package=core_kernel&amp;module=Monad.S2" items="[&quot;Monad_infix&quot;]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core_kernel&amp;module=Monad.S2">Monad.S2</a></code> with type t := ('a, 'err) <a href="?package=core_kernel&amp;module=Result&amp;type=t">t</a></code></pre></div>
@@ -28,9 +28,9 @@ ok:('ok1 -&gt; 'ok2 -&gt; 'ok3) -&gt; err:('err -&gt; 'err -&gt; 'err) -&gt; ('o
 <pre><span class="VALcall"><span class="keyword">val</span> call</span> : <code class="type">f:('a -&gt; unit, 'b) <a href="?package=core_kernel&amp;module=Result&amp;type=t">t</a> -&gt; 'a -&gt; unit</code></pre>
 <pre><span class="VALapply"><span class="keyword">val</span> apply</span> : <code class="type">f:('a -&gt; 'b, 'err) <a href="?package=core_kernel&amp;module=Result&amp;type=t">t</a> -&gt; 'a -&gt; ('b, 'err) <a href="?package=core_kernel&amp;module=Result&amp;type=t">t</a></code></pre>
 <pre><span class="VALok_fst"><span class="keyword">val</span> ok_fst</span> : <code class="type">('ok, 'err) <a href="?package=core_kernel&amp;module=Result&amp;type=t">t</a> -&gt; [ `Fst of 'ok | `Snd of 'err ]</code></pre><div class="info"><div class="info"><code class="code">ok_fst</code> is useful with <code class="code">List.partition_map</code>.  Continuing the above example:
-<pre class="codepre"><code class="code">
+<code class="code">
     let rics, errors = List.partition_map ~f:Result.ok_fst
-      (List.map ~f:ric_of_ticker [&quot;AA&quot;; &quot;F&quot;; &quot;CSCO&quot;; &quot;AAPL&quot;]) </code></pre></div></div>
+      (List.map ~f:ric_of_ticker [&quot;AA&quot;; &quot;F&quot;; &quot;CSCO&quot;; &quot;AAPL&quot;]) </code></div></div>
 <pre><span class="VALok_if_true"><span class="keyword">val</span> ok_if_true</span> : <code class="type">bool -&gt; error:'err -&gt; (unit, 'err) <a href="?package=core_kernel&amp;module=Result&amp;type=t">t</a></code></pre>
 <pre><span class="VALtry_with"><span class="keyword">val</span> try_with</span> : <code class="type">(unit -&gt; 'a) -&gt; ('a, exn) <a href="?package=core_kernel&amp;module=Result&amp;type=t">t</a></code></pre>
 <pre><span class="VALok_exn"><span class="keyword">val</span> ok_exn</span> : <code class="type">('ok, exn) <a href="?package=core_kernel&amp;module=Result&amp;type=t">t</a> -&gt; 'ok</code></pre><div class="info"><div class="info"><code class="code">ok_exn t</code> returns <code class="code">x</code> if <code class="code">t = Ok x</code>, and raises <code class="code">exn</code> if <code class="code">t = Error exn</code></div></div>
@@ -99,9 +99,9 @@ ok:('ok1 -&gt; 'ok2 -&gt; 'ok3) -&gt; err:('err -&gt; 'err -&gt; 'err) -&gt; ('o
 'err <a href="?package=bin_prot&amp;module=Type_class&amp;type=writer">Bin_prot.Type_class.writer</a> -&gt; ('ok, 'err) <a href="?package=core_kernel&amp;module=Result&amp;type=t">t</a> <a href="?package=bin_prot&amp;module=Type_class&amp;type=writer">Bin_prot.Type_class.writer</a></code></pre>
 <div class="info"><div class="info">e.g. <code class="code">failf &quot;Couldn't find bloogle %s&quot; (Bloogle.to_string b)</code></div></div>
 <div class="info"><div class="info"><code class="code">ok_fst</code> is useful with <code class="code">List.partition_map</code>.  Continuing the above example:
-<pre class="codepre"><code class="code">
+<code class="code">
     let rics, errors = List.partition_map ~f:Result.ok_fst
-      (List.map ~f:ric_of_ticker [&quot;AA&quot;; &quot;F&quot;; &quot;CSCO&quot;; &quot;AAPL&quot;]) </code></pre></div></div>
+      (List.map ~f:ric_of_ticker [&quot;AA&quot;; &quot;F&quot;; &quot;CSCO&quot;; &quot;AAPL&quot;]) </code></div></div>
 <div class="info"><div class="info"><code class="code">ok_exn t</code> returns <code class="code">x</code> if <code class="code">t = Ok x</code>, and raises <code class="code">exn</code> if <code class="code">t = Error exn</code></div></div>
 <div class="info"><div class="info"><code class="code">ok_unit = Ok ()</code>, used to avoid allocation as a performance hack</div></div>
 </div>

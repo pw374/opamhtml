@@ -1,6 +1,6 @@
-<div class="ocaml_toplevel_module"><div class="info"><h1 id="1_TITLE">Service Providers for HTTP daemon</h1><br/> This module defines the basic service providers that handle requests and
+<div class="ocaml_toplevel_module"><div class="info"><h1 id="1_TITLE">Service Providers for HTTP daemon</h1><p> This module defines the basic service providers that handle requests and
  generate responses. The service providers can be used with both the
- reactive and the event-based daemon encapsulations.</div>
+ reactive and the event-based daemon encapsulations.</p></div>
 <pre><code><span class="TYPEhost"><span class="keyword">type</span> host</span> = {</code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELThost.server_pref_name">server_pref_name</span> : <code class="type">string option</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">The preferred name of the host. This can be a DNS name or an IP address.</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELThost.server_pref_port">server_pref_port</span> : <code class="type">int option</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">The preferred port of the host</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELThost.server_names">server_names</span> : <code class="type">(string * int) list</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">Names and ports that match this host definition, for
  name-based virtual hosting. The name <code class="code">&quot;*&quot;</code> matches any name, and the port
@@ -10,10 +10,10 @@
  host. An incoming request matches this host if:<ul><li>The <code class="code">Host</code> header is mentioned in <code class="code">server_names</code>, or if</li><li>The request has been accepted on the port contained in <code class="code">server_addresses</code></li></ul> If <code class="code">server_pref_name</code> is set, the name of the host is set to this string for
  further processing (esp. <code class="code">cgi_server_name</code>). If not set, the name of the
  host is set to the name corresponding to the matching entry of <code class="code">server_names</code>
- or <code class="code">server_addresses</code>, or if this does not succeed, to the real IP address.<br/> If <code class="code">server_pref_port</code> is set, the port of the host is set to this string for
+ or <code class="code">server_addresses</code>, or if this does not succeed, to the real IP address.<p> If <code class="code">server_pref_port</code> is set, the port of the host is set to this string for
  further processing (esp. <code class="code">cgi_server_port</code>). If not set, the port of the
  host is set to the port corresponding to the matching entry of <code class="code">server_names</code>
- or <code class="code">server_addresses</code>, or if this does not succeed, to the real port number.</div></div>
+ or <code class="code">server_addresses</code>, or if this does not succeed, to the real port number.</p></div></div>
 <pre><span class="TYPEhost_distributor"><span class="keyword">type</span> <code class="type">'a </code>host_distributor</span> = <code class="type">(<a href="?package=ocamlnet&amp;module=Nethttpd_services&amp;type=host">host</a> * 'a <a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;type=http_service">Nethttpd_types.http_service</a>) list</code></pre><div class="info"><div class="info">Describes virtual hosting by pairs <code class="code">(host,service)</code>: If <code class="code">host</code> matches the
  incoming request, the corresponding <code class="code">service</code> is performed to generate the
  response.</div></div>
@@ -25,13 +25,13 @@
 <pre><span class="TYPEuri_distributor"><span class="keyword">type</span> <code class="type">'a </code>uri_distributor</span> = <code class="type">(string * 'a <a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;type=http_service">Nethttpd_types.http_service</a>) list</code></pre><div class="info"><div class="info">Describes that services are bound to URI prefixes. The strings are URI paths
  (without URI escaping).
  For an incoming request URI, the longest matching prefix is selected, and
- the corresponding service is carried out.<br/> If the URI path in the list ends with a slash, it can only be selected if the
- incoming request URI also includes the slash.<br/> If the URI path in the list does not end with a slash, it can only be selected
+ the corresponding service is carried out.<p> If the URI path in the list ends with a slash, it can only be selected if the
+ incoming request URI also includes the slash.</p><p> If the URI path in the list does not end with a slash, it can only be selected
  if the incoming request URI is exactly identical, or continues the path with
- a slash.</div></div>
+ a slash.</p></div></div>
 <pre><span class="VALuri_distributor"><span class="keyword">val</span> uri_distributor</span> : <code class="type">'a <a href="?package=ocamlnet&amp;module=Nethttpd_services&amp;type=uri_distributor">uri_distributor</a> -&gt;
 [&gt; `Uri_distributor of 'a <a href="?package=ocamlnet&amp;module=Nethttpd_services&amp;type=uri_distributor">uri_distributor</a> ] <a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;type=http_service">Nethttpd_types.http_service</a></code></pre><div class="info"><div class="info">Configures URI distribution. The incoming request URI is normalized before
- being matched, and the request is rewritten to the normalized URI.<br/> Normalization includes:<ul><li>Removal of <code class="code">.</code> path components</li><li>Resolution of <code class="code">..</code> path components</li></ul> If the path starts with <code class="code">..</code> after normalization, the request is rejected.</div></div>
+ being matched, and the request is rewritten to the normalized URI.<p> Normalization includes:</p><ul><li>Removal of <code class="code">.</code> path components</li><li>Resolution of <code class="code">..</code> path components</li></ul> If the path starts with <code class="code">..</code> after normalization, the request is rejected.</div></div>
 <pre><span class="TYPElinear_distributor"><span class="keyword">type</span> <code class="type">'a </code>linear_distributor</span> = <code class="type">((<a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;type=extended_environment">Nethttpd_types.extended_environment</a> -&gt; bool) *
  'a <a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;type=http_service">Nethttpd_types.http_service</a>)
 list</code></pre><div class="info"><div class="info">Services are selected by calling the selector function. The first service
@@ -72,16 +72,16 @@ list</code></pre><div class="info"><div class="info">Services are selected by ca
 <pre><span class="VALfile_service"><span class="keyword">val</span> file_service</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Nethttpd_services&amp;type=file_service">file_service</a> -&gt;
 [&gt; `File_service of <a href="?package=ocamlnet&amp;module=Nethttpd_services&amp;type=file_service">file_service</a> ] <a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;type=http_service">Nethttpd_types.http_service</a></code></pre><div class="info"><div class="info">Configures a file service</div></div>
 <pre><span class="VALfile_translator"><span class="keyword">val</span> file_translator</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Nethttpd_services&amp;type=file_service">file_service</a> -&gt; string -&gt; string</code></pre><div class="info"><div class="info">Translates an URI path to a file name. Raises <code class="code">Not_found</code> if not
-      possible. It is not checked whether the resulting file exists.<br/>      This function removes a trailing slash of the translated path, if any,
+      possible. It is not checked whether the resulting file exists.<p>      This function removes a trailing slash of the translated path, if any,
       and if resulting from appending the path info component.
       Trailing slashes must not be used to deduce that directories are
-      accessed.</div></div>
+      accessed.</p></div></div>
 <pre><span class="VALsimple_listing"><span class="keyword">val</span> simple_listing</span> : <code class="type">?hide:string list -&gt;
 <a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;type=extended_environment">Nethttpd_types.extended_environment</a> -&gt;
-<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=cgi_activation">Netcgi.cgi_activation</a> -&gt; <a href="?package=ocamlnet&amp;module=Nethttpd_services&amp;type=file_service">file_service</a> -&gt; unit</code></pre><div class="info"><div class="info">Simple listing generator for <code class="code">`Enable_listings</code> <br/> <code class="code">hide</code>: An optional list of Str regular expressions. File names matching one
+<a href="?package=ocamlnet&amp;module=Netcgi&amp;type=cgi_activation">Netcgi.cgi_activation</a> -&gt; <a href="?package=ocamlnet&amp;module=Nethttpd_services&amp;type=file_service">file_service</a> -&gt; unit</code></pre><div class="info"><div class="info">Simple listing generator for <code class="code">`Enable_listings</code> <p> <code class="code">hide</code>: An optional list of Str regular expressions. File names matching one
  of the regexps are hidden in the listing. Defaults to hiding files starting with
  a dot, and files ending in a tilde character. (Changed in Ocamlnet-3.3:
- <code class="code">hide</code> uses now Str regexps, and no longer PCRE regexps.)</div></div>
+ <code class="code">hide</code> uses now Str regexps, and no longer PCRE regexps.)</p></div></div>
 <pre><code><span class="TYPEstd_activation_options"><span class="keyword">type</span> std_activation_options</span> = {</code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTstd_activation_options.stdactv_processing">stdactv_processing</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netcgi&amp;type=arg_store">Netcgi.arg_store</a> option</code>;</code></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTstd_activation_options.stdactv_operating_type">stdactv_operating_type</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netcgi&amp;type=output_type">Netcgi.output_type</a> option</code>;</code></td></tr><tr><td>}</td></tr></table><div class="info"><div class="info">These are options for <code class="code">`Std_activation</code>. For explanations, see the <code class="code">Netcgi</code>
  module.</div></div>
@@ -104,9 +104,9 @@ list</code></pre><div class="info"><div class="info">Services are selected by ca
  to <code class="code">(fun _ -&gt; &quot;&quot;)</code> if not needed.</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTdynamic_service.dyn_accept_all_conditionals">dyn_accept_all_conditionals</span> : <code class="type">bool</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">Whether to pass requests with <code class="code">If-Match</code> and <code class="code">If-Unmodified-Since</code> headers
  to this service. If set to <code class="code">true</code>, the service can optimize the caching
  behaviour by interpreting these fields. It is even obliged to interpret
- them. If <code class="code">false</code>, requests containing these headers are rejected.<br/> The other condition fields <code class="code">If-None-Match</code>, <code class="code">If-Modified-Since</code>, and
+ them. If <code class="code">false</code>, requests containing these headers are rejected.<p> The other condition fields <code class="code">If-None-Match</code>, <code class="code">If-Modified-Since</code>, and
  <code class="code">If-Ranges</code> are not affected by this option. One can safely ignore these
- headers.</div></td></tr><tr><td>}</td></tr></table>
+ headers.</p></div></td></tr><tr><td>}</td></tr></table>
 <pre><span class="VALstd_activation"><span class="keyword">val</span> std_activation</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Nethttpd_services&amp;type=std_activation">std_activation</a> -&gt;
 <a href="?package=ocamlnet&amp;module=Nethttpd_types&amp;type=extended_environment">Nethttpd_types.extended_environment</a> -&gt; <a href="?package=ocamlnet&amp;module=Netcgi&amp;type=cgi_activation">Netcgi.cgi_activation</a></code></pre><div class="info"><div class="info">Create the function for <code class="code">dyn_activation</code> from a <code class="code">std_activation</code> tag.
  Example:

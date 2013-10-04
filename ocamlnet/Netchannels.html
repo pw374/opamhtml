@@ -1,4 +1,4 @@
-<div class="ocaml_toplevel_module"><div class="info">Object-oriented I/O: Basic types and classes <br/> <b>Contents</b><br/> -  <a href="#Netchannels.types">Netchannels.types</a><ul><li> <a href="#Netchannels.input">Netchannels.input</a></li><li> <a href="#Netchannels.output">Netchannels.output</a></li><li> <a href="#Netchannels.delegation">Netchannels.delegation</a></li><li> <a href="#Netchannels.lifting">Netchannels.lifting</a></li><li> <a href="#Netchannels.descriptors">Netchannels.descriptors</a></li><li> <a href="#Netchannels.transactional">Netchannels.transactional</a></li><li> <a href="#Netchannels.filters">Netchannels.filters</a>
+<div class="ocaml_toplevel_module"><div class="info">Object-oriented I/O: Basic types and classes <p> <b>Contents</b></p><p> -  <a href="#Netchannels.types">Netchannels.types</a></p><ul><li> <a href="#Netchannels.input">Netchannels.input</a></li><li> <a href="#Netchannels.output">Netchannels.output</a></li><li> <a href="#Netchannels.delegation">Netchannels.delegation</a></li><li> <a href="#Netchannels.lifting">Netchannels.lifting</a></li><li> <a href="#Netchannels.descriptors">Netchannels.descriptors</a></li><li> <a href="#Netchannels.transactional">Netchannels.transactional</a></li><li> <a href="#Netchannels.filters">Netchannels.filters</a>
    <ul><li> <a href="#Netchannels.filters_notes">Netchannels.filters_notes</a></li></ul></li></ul> The tutorial has been moved to  <a href="#Netchannels_tut">Netchannels_tut</a>.</div>
 <div class="info"><div class="info"><h1 id="types">Types</h1></div></div>
 <div class="info"><div class="info">There are three levels of class types for channels:<ul><li><code class="code">rec_in_channel</code> and <code class="code">rec_out_channel</code>: Primitive, but standardized level</li><li><code class="code">raw_in_channel</code> and <code class="code">raw_out_channel</code>: Unix level</li><li><code class="code">in_obj_channel</code> and <code class="code">out_obj_channel</code>: Application level</li></ul> The &quot;rec&quot; level has been recently introduced to improve interoperability
@@ -6,23 +6,23 @@
  real core methods of I/O, so they have the same meaning in all libraries.
  Read
  &quot; <a href="http://www.ocaml-programming.de/rec/IO-Classes.html">Basic I/O class types</a>&quot;
- for more.<br/> The &quot;raw&quot; level represents the level of Unix file descriptors.<br/> The application level is what should be used in programs. In addition
+ for more.<p> The &quot;raw&quot; level represents the level of Unix file descriptors.</p><p> The application level is what should be used in programs. In addition
  to the &quot;raw&quot; level one can find a number of convenience methods,
  e.g. <code class="code">input_line</code> to read a line from the channel. The downside is that
- these methods usually work only for blocking I/O.<br/> One can lower the level by coercion, e.g. to turn an <code class="code">in_obj_channel</code>
- into a <code class="code">rec_in_channel</code>, apply the function<br/> <code class="code">(fun ch -&gt; (ch : in_obj_channel :&gt; rec_in_channel))</code><br/> To higher the level, apply <code class="code">lift_in</code> or <code class="code">lift_out</code>, defined below.</div></div>
+ these methods usually work only for blocking I/O.</p><p> One can lower the level by coercion, e.g. to turn an <code class="code">in_obj_channel</code>
+ into a <code class="code">rec_in_channel</code>, apply the function</p><p> <code class="code">(fun ch -&gt; (ch : in_obj_channel :&gt; rec_in_channel))</code></p><p> To higher the level, apply <code class="code">lift_in</code> or <code class="code">lift_out</code>, defined below.</p></div></div>
 <div class="info"><div class="info"><b>Interface changes:</b> Since ocamlnet-0.98, the semantics of
  the methods <code class="code">input</code> and <code class="code">output</code> has slightly changed. When the end
  of the channel is reached, <code class="code">input</code> raises now <code class="code">End_of_file</code>. In previous
  releases of ocamlnet, the value 0 was returned. When the channel cannot
  process data, but is in non-blocking mode, both methods now return the
  value 0. In previous releases of ocamlnet, the behaviour was not
- defined.<br/> <b>Ocamlnet-3.0</b> changed the behavior of <code class="code">close_out</code>. Errors are no longer
+ defined.<p> <b>Ocamlnet-3.0</b> changed the behavior of <code class="code">close_out</code>. Errors are no longer
  reported - instead, the exception is logged to  <a href="#Netlog">Netlog</a>. For a stricter
  error handling, it is suggested to call <code class="code">flush</code> first. Also, <code class="code">close_in</code>
  and <code class="code">close_out</code> no longer raise <code class="code">Closed_channel</code> when the channel is
  already closed. Read more about this in the section
-  <a href="#Netchannels.rec_out_channel.close_error">Netchannels.rec_out_channel.close_error</a>.</div></div>
+  <a href="#Netchannels.rec_out_channel.close_error">Netchannels.rec_out_channel.close_error</a>.</p></div></div>
 <pre><span class="EXCEPTIONClosed_channel"><span class="keyword">exception</span> Closed_channel</span></pre><div class="info"><div class="info">Raised when channel operations are called when the channel is closed</div></div>
 <pre><span class="EXCEPTIONBuffer_underrun"><span class="keyword">exception</span> Buffer_underrun</span></pre><div class="info"><div class="info">Raised by input methods if the internal buffer of the channel is too
  empty to read even one byte of data.
@@ -30,82 +30,82 @@
  classes.</div></div>
 <pre><span class="EXCEPTIONCommand_failure"><span class="keyword">exception</span> Command_failure</span> <span class="keyword">of</span> <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=process_status">Unix.process_status</a></code></pre><div class="info"><div class="info">Raised by <code class="code">close_in</code> or <code class="code">close_out</code> if the channel is connected with
  another process, and the execution of that process fails.</div></div>
-<div class="ocaml_class sig" name="rec_in_channel"><pre><span class="TYPErec_in_channel"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=rec_in_channel">rec_in_channel</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Recommended input class type for library interoperability.</div></div><div class="ocaml_class_content"><div class="info"><div class="info">Description<br/> This class type is defined in 
+<div class="ocaml_class sig" name="rec_in_channel"><pre><span class="TYPErec_in_channel"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=rec_in_channel">rec_in_channel</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Recommended input class type for library interoperability.</div></div><div class="ocaml_class_content"><div class="info"><div class="info">Description<p> This class type is defined in 
  &quot; <a href="http://www.ocaml-programming.de/rec/IO-Classes.html">Basic I/O class types</a>&quot;
- as collaborative effort of several library creators.</div></div>
+ as collaborative effort of several library creators.</p></div></div>
 <pre><span class="METHODinput"><span class="keyword">method</span> input</span> : <code class="code">string -&gt; int -&gt; int -&gt; int</code></pre>
 <div class="info"><div class="info">Reads octets from the channel and puts them into the string. The
  first <code class="code">int</code> argument is the position of the substring, and the second
  <code class="code">int</code> argument is the length of the substring where the data are
  stored. The method returns the number of octets actually read and
- stored.<br/> When the end of the channel is reached and there is no further octet
+ stored.<p> When the end of the channel is reached and there is no further octet
  to read, the exception <code class="code">End_of_file</code> will be raised. <b>This has
  been changed in ocamlnet-0.97! In previous releases the number 0 
- was returned at the end of the channel.</b><br/> When the channel is non-blocking, and there are currently no bytes
+ was returned at the end of the channel.</b></p><p> When the channel is non-blocking, and there are currently no bytes
  to read, the number 0 will be returned. <b>This has
  been changed in ocamlnet-0.97! In previous releases this behaviour
- was undefined.</b><br/> When the channel is closed, the exception <code class="code">Closed_channel</code> will be
+ was undefined.</b></p><p> When the channel is closed, the exception <code class="code">Closed_channel</code> will be
  raised if an ocamlnet implementation is used. For implementations
- of other libraries there is no standard for this case.</div></div>
+ of other libraries there is no standard for this case.</p></div></div>
 <pre><span class="METHODclose_in"><span class="keyword">method</span> close_in</span> : <code class="code">unit -&gt; unit</code></pre>
-<div class="info"><div class="info">Closes the channel for input.<br/> When the channel is already closed, this is a no-op.<br/> Error policy: Exceptions are only raised in cases of serious
- corruption, e.g. if the underlying descriptor is invalid.</div></div></div></div>
+<div class="info"><div class="info">Closes the channel for input.<p> When the channel is already closed, this is a no-op.</p><p> Error policy: Exceptions are only raised in cases of serious
+ corruption, e.g. if the underlying descriptor is invalid.</p></div></div></div></div>
 <div class="ocaml_class sig" name="raw_in_channel"><pre><span class="TYPEraw_in_channel"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=raw_in_channel">raw_in_channel</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Basic Unix-level class type for input channels as used by ocamlnet. In addition
  to the recommended standard, ocamlnet always support a position counter</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Netchannels&amp;class=rec_in_channel"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=rec_in_channel">rec_in_channel</a></pre></div>
 
 <pre><span class="METHODpos_in"><span class="keyword">method</span> pos_in</span> : <code class="code">int</code></pre>
 <div class="info"><div class="info">Returns the current channel position. This position can be expected
  to be consistent with the returned number of bytes of <code class="code">input</code>, i.e.
- when <code class="code">input</code> returns <code class="code">n</code>, the position is advanced by <code class="code">n</code>.<br/> As seek operations are outside the scope of <code class="code">Netchannels</code>, 
- implementations may or may not take seek operations into account.</div></div></div></div>
-<div class="ocaml_class sig" name="rec_out_channel"><pre><span class="TYPErec_out_channel"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=rec_out_channel">rec_out_channel</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Recommended output class type for library interoperability.</div></div><div class="ocaml_class_content"><div class="info"><div class="info">Description<br/> This class type is defined in 
+ when <code class="code">input</code> returns <code class="code">n</code>, the position is advanced by <code class="code">n</code>.<p> As seek operations are outside the scope of <code class="code">Netchannels</code>, 
+ implementations may or may not take seek operations into account.</p></div></div></div></div>
+<div class="ocaml_class sig" name="rec_out_channel"><pre><span class="TYPErec_out_channel"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=rec_out_channel">rec_out_channel</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Recommended output class type for library interoperability.</div></div><div class="ocaml_class_content"><div class="info"><div class="info">Description<p> This class type is defined in 
  &quot; <a href="http://www.ocaml-programming.de/rec/IO-Classes.html">Basic I/O class types</a>&quot;
- as collaborative effort of several library creators.</div></div>
+ as collaborative effort of several library creators.</p></div></div>
 <pre><span class="METHODoutput"><span class="keyword">method</span> output</span> : <code class="code">string -&gt; int -&gt; int -&gt; int</code></pre>
 <div class="info"><div class="info">Takes octets from the string and writes them into the channel. The
  first <code class="code">int</code> argument is the position of the substring, and the second
  <code class="code">int</code> argument is the length of the substring where the data can
- be found. The method returns the number of octets actually written.<br/> The implementation may choose to collect written octets in a buffer
- before they actually delivered to the underlying resource. <br/> When the channel is non-blocking, and there are currently no bytes
+ be found. The method returns the number of octets actually written.<p> The implementation may choose to collect written octets in a buffer
+ before they actually delivered to the underlying resource. </p><p> When the channel is non-blocking, and there are currently no bytes
  to write, the number 0 will be returned. <b>This has
  been changed in ocamlnet-0.97! In previous releases this behaviour
- was undefined.</b><br/> When the channel is closed, the exception <code class="code">Closed_channel</code> will be
+ was undefined.</b></p><p> When the channel is closed, the exception <code class="code">Closed_channel</code> will be
  raised if an ocamlnet implementation is used. For implementations
- of other libraries there is no standard for this case.</div></div>
+ of other libraries there is no standard for this case.</p></div></div>
 <pre><span class="METHODflush"><span class="keyword">method</span> flush</span> : <code class="code">unit -&gt; unit</code></pre>
 <div class="info"><div class="info">If there is a write buffer, it will be flushed. Otherwise, nothing
  happens.</div></div>
 <pre><span class="METHODclose_out"><span class="keyword">method</span> close_out</span> : <code class="code">unit -&gt; unit</code></pre>
-<div class="info"><div class="info">Flushes the buffer, if any, and closes the channel for output.<br/> When the channel is already closed, this is a no-op.</div></div>
-<div class="info"><div class="info"><h2 id="close_error">How to close channels in case of errors</h2><br/>     The <code class="code">close_out</code> method has actually two tasks: First, it writes out
+<div class="info"><div class="info">Flushes the buffer, if any, and closes the channel for output.<p> When the channel is already closed, this is a no-op.</p></div></div>
+<div class="info"><div class="info"><h2 id="close_error">How to close channels in case of errors</h2><p>     The <code class="code">close_out</code> method has actually two tasks: First, it writes out
      all remaining data (like <code class="code">flush</code>), and second, it releases OS
      resources (e.g. closes file descriptors). There is the question
      what has to happen when the write part fails - is the resource released
-     anyway or not?<br/>     We choose here a pragmatic approach under the assumption that
+     anyway or not?</p><p>     We choose here a pragmatic approach under the assumption that
      an OS error at close time is usually unrecoverable, and it is
      more important to release the OS resource. Also, we
      assume that the user is wise enough to call <code class="code">flush</code> first if
      it is essential to know write errors at close time. Under these
-     assumptions:<br/>     - The <code class="code">flush</code> method fully reports any errors when writing out
-       the remaining data.<ul><li>When <code class="code">flush</code> raises an error exception, it should discard
+     assumptions:</p><p>     - The <code class="code">flush</code> method fully reports any errors when writing out
+       the remaining data.</p><ul><li>When <code class="code">flush</code> raises an error exception, it should discard
        any data in the buffer. This is not obligatory, however,
        but considered good practice, and is subject to discussion.</li><li>The <code class="code">close_out</code> method usually does not report errors by
        raising exceptions, but only by logging them via  <a href="#Netlog">Netlog</a>.
        The OS resource is released in any case. As before, this
        behavior is not obligatory, but considered as good practice,
        and subject to discussion.</li></ul>     This ensures that the following code snippet reports all errors, but also
-     releases OS resources:<br/>     <pre class="codepre"><code class="code">
+     releases OS resources:<p>     </p><code class="code">
        try 
          ch # flush();
          ch # close_out();
        with error -&gt; 
           ch # close_out(); raise error
-     </code></pre><br/>     There are some cases where data can be first written when it is
+     </code><p>     There are some cases where data can be first written when it is
      known that the channel is closed. These data would not be written
-     by a preceding <code class="code">flush</code>. In such cases:<br/>     - The best way to deal with it is to define another method,
+     by a preceding <code class="code">flush</code>. In such cases:</p><p>     - The best way to deal with it is to define another method,
        e.g. called <code class="code">write_eof</code>, that marks the data as logically 
        being complete, so a following <code class="code">flush</code> can do the complete
-       shutdown cycle of the channel.<ul><li>At least, however, one should allow then that a double
+       shutdown cycle of the channel.</p><ul><li>At least, however, one should allow then that a double
        <code class="code">close_out</code> releases the descriptor: the first <code class="code">close_out</code>
        will report the error condition as exception, but discard
        all data in the channel. The second <code class="code">close_out</code> finally
@@ -118,8 +118,8 @@
 <pre><span class="METHODpos_out"><span class="keyword">method</span> pos_out</span> : <code class="code">int</code></pre>
 <div class="info"><div class="info">Returns the current channel position. This position can be expected
  to be consistent with the returned number of bytes of <code class="code">output</code>, i.e.
- when <code class="code">output</code> returns <code class="code">n</code>, the position is advanced by <code class="code">n</code>.<br/> As seek operations are outside the scope of <code class="code">Netchannels</code>, 
- implementations may or may not take seek operations into account.</div></div></div></div>
+ when <code class="code">output</code> returns <code class="code">n</code>, the position is advanced by <code class="code">n</code>.<p> As seek operations are outside the scope of <code class="code">Netchannels</code>, 
+ implementations may or may not take seek operations into account.</p></div></div></div></div>
 <div class="ocaml_class sig" name="raw_io_channel"><pre><span class="TYPEraw_io_channel"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=raw_io_channel">raw_io_channel</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">A channel supporting both input and output. The input and output
  aspects are strictly separated</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Netchannels&amp;class=raw_in_channel"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=raw_in_channel">raw_in_channel</a></pre></div>
 
@@ -132,8 +132,8 @@
  channel is non-blocking.</div></div><div class="ocaml_class_content"><pre><span class="METHODreally_input"><span class="keyword">method</span> really_input</span> : <code class="code">string -&gt; int -&gt; int -&gt; unit</code></pre>
 <div class="info"><div class="info">Reads exactly as many octets from the channel as the second <code class="code">int</code>
  argument specifies. The octets are placed at the position denoted
- by the first <code class="code">int</code> argument into the string.<br/> When the end of the channel is reached before the passed number of
- octets are read, the exception <code class="code">End_of_file</code> is raised.</div></div>
+ by the first <code class="code">int</code> argument into the string.<p> When the end of the channel is reached before the passed number of
+ octets are read, the exception <code class="code">End_of_file</code> is raised.</p></div></div>
 <pre><span class="METHODinput_char"><span class="keyword">method</span> input_char</span> : <code class="code">unit -&gt; char</code></pre>
 <div class="info"><div class="info">Reads exactly one character from the channel, or raises <code class="code">End_of_file</code></div></div>
 <pre><span class="METHODinput_line"><span class="keyword">method</span> input_line</span> : <code class="code">unit -&gt; string</code></pre>
@@ -178,9 +178,9 @@
 </div></div>
 <div class="ocaml_class sig" name="trans_out_obj_channel"><pre><span class="TYPEtrans_out_obj_channel"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=trans_out_obj_channel">trans_out_obj_channel</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">A transactional output channel has a buffer for uncommitted data.
  This means that all data written to this channel is collected in the
- buffer until either <code class="code">commit_work</code> or <code class="code">rollback_work</code> is called.<br/> When the channel is closed, the buffer may optionally be committed.
- This is implementation-defined.<br/> The method <code class="code">flush</code> does not have any effect on the transaction
- buffer.</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel">out_obj_channel</a></pre></div>
+ buffer until either <code class="code">commit_work</code> or <code class="code">rollback_work</code> is called.<p> When the channel is closed, the buffer may optionally be committed.
+ This is implementation-defined.</p><p> The method <code class="code">flush</code> does not have any effect on the transaction
+ buffer.</p></div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel">out_obj_channel</a></pre></div>
 
 <pre><span class="METHODcommit_work"><span class="keyword">method</span> commit_work</span> : <code class="code">unit -&gt; unit</code></pre>
 <div class="info"><div class="info">Flushes the transaction buffer, and writes its contents to the
@@ -188,55 +188,55 @@
 <pre><span class="METHODrollback_work"><span class="keyword">method</span> rollback_work</span> : <code class="code">unit -&gt; unit</code></pre>
 <div class="info"><div class="info">Empties the transaction buffer</div></div></div></div>
 <div class="info"><div class="info"><h1 id="input">Input channels</h1></div></div>
-<div class="ocaml_class ident" name="input_channel" path="?package=ocamlnet&amp;module=Netchannels&amp;class=in_obj_channel"><pre><span class="TYPEinput_channel"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=input_channel">input_channel</a></span> : <code class="type">(unit -&gt; unit) option -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=in_obj_channel">in_obj_channel</a></pre><div class="info"><div class="info">Creates an input channel from an <code class="code">in_channel</code>, which must be open.<br/> The method <code class="code">pos_in</code> reflects the real position in the channel as
+<div class="ocaml_class ident" name="input_channel" path="?package=ocamlnet&amp;module=Netchannels&amp;class=in_obj_channel"><pre><span class="TYPEinput_channel"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=input_channel">input_channel</a></span> : <code class="type">(unit -&gt; unit) option -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=in_obj_channel">in_obj_channel</a></pre><div class="info"><div class="info">Creates an input channel from an <code class="code">in_channel</code>, which must be open.<p> The method <code class="code">pos_in</code> reflects the real position in the channel as
  returned by <code class="code">Pervasives.pos_in</code>. This works for both seekable and
- non-seekable channels.<br/> The method <code class="code">close_in</code> also closes the underlying <code class="code">in_channel</code>.<br/> The function <code class="code">onclose</code> is called after the <code class="code">in_channel</code> has been closed.</div></div></div>
+ non-seekable channels.</p><p> The method <code class="code">close_in</code> also closes the underlying <code class="code">in_channel</code>.</p><p> The function <code class="code">onclose</code> is called after the <code class="code">in_channel</code> has been closed.</p></div></div></div>
 <div class="ocaml_class ident" name="input_command" path="?package=ocamlnet&amp;module=Netchannels&amp;class=in_obj_channel"><pre><span class="TYPEinput_command"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=input_command">input_command</a></span> : <code class="type">string -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=in_obj_channel">in_obj_channel</a></pre><div class="info"><div class="info">Runs the command with <code class="code">/bin/sh</code>, and reads the data the command prints
- to stdout. <br/> The method <code class="code">pos_in</code> returns the number of read octets.<br/> When <code class="code">close_in</code> is invoked, the subprocess is <code class="code">wait</code>ed for. If the
+ to stdout. <p> The method <code class="code">pos_in</code> returns the number of read octets.</p><p> When <code class="code">close_in</code> is invoked, the subprocess is <code class="code">wait</code>ed for. If the
  process exits with code 0, the method returns normally. Otherwise,
- the exception <code class="code">Command_failure</code> is raised.</div></div></div>
-<div class="ocaml_class ident" name="input_string" path="?package=ocamlnet&amp;module=Netchannels&amp;class=in_obj_channel"><pre><span class="TYPEinput_string"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=input_string">input_string</a></span> : <code class="type">int option -&gt; int option -&gt; string -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=in_obj_channel">in_obj_channel</a></pre><div class="info"><div class="info">Creates an input channel from a (constant) string. <br/> The method <code class="code">pos_in</code> reflects the real position in the string, i.e.
+ the exception <code class="code">Command_failure</code> is raised.</p></div></div></div>
+<div class="ocaml_class ident" name="input_string" path="?package=ocamlnet&amp;module=Netchannels&amp;class=in_obj_channel"><pre><span class="TYPEinput_string"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=input_string">input_string</a></span> : <code class="type">int option -&gt; int option -&gt; string -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=in_obj_channel">in_obj_channel</a></pre><div class="info"><div class="info">Creates an input channel from a (constant) string. <p> The method <code class="code">pos_in</code> reflects the real position in the string, i.e.
  a character read at position <code class="code">k</code> can be found at <code class="code">s.[k]</code> in the string
- <code class="code">s</code>.<div class="parameters"><div class="param_info"><code class="code">pos</code> : The data of the channel begins at this position of the string.
+ <code class="code">s</code>.</p><div class="parameters"><div class="param_info"><code class="code">pos</code> : The data of the channel begins at this position of the string.
    Default: 0</div><div class="param_info"><code class="code">len</code> : The data of the channel consists of this number of bytes.
    Default: until the end of the string</div></div></div></div></div>
 <pre><span class="VALcreate_input_netbuffer"><span class="keyword">val</span> create_input_netbuffer</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">Netbuffer.t</a> -&gt; <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=in_obj_channel">in_obj_channel</a> * (unit -&gt; unit)</code></pre><div class="info"><div class="info">Creates an input channel and a shutdown function for a netbuffer. 
  This is a destructive
  implementation: Every time data is read, the octets are taken from the
  beginning of the netbuffer, and they are deleted from the netbuffer
- (recall that a netbuffer works like a queue of characters).<br/> Conversely, the user of this class may add new data to the netbuffer 
+ (recall that a netbuffer works like a queue of characters).<p> Conversely, the user of this class may add new data to the netbuffer 
  at any time. When the shutdown function is called, the EOF condition
- is recorded, and no further data must be added.<br/> If the netbuffer becomes empty, the input methods raise <code class="code">Buffer_underrun</code>
+ is recorded, and no further data must be added.</p><p> If the netbuffer becomes empty, the input methods raise <code class="code">Buffer_underrun</code>
  when the EOF condition has not yet been set, and they raise
- <code class="code">End_of_file</code> when the EOF condition has been recorded.</div></div>
+ <code class="code">End_of_file</code> when the EOF condition has been recorded.</p></div></div>
 <pre><span class="VALlexbuf_of_in_obj_channel"><span class="keyword">val</span> lexbuf_of_in_obj_channel</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netchannels&amp;type=in_obj_channel">in_obj_channel</a> -&gt; <a href="?package=ocaml&amp;module=Lexing&amp;type=lexbuf">Lexing.lexbuf</a></code></pre><div class="info"><div class="info">Creates a lexical buffer from an input channel. The input channel
- is not closed when the end is reached<br/> This function does not work for non-blocking channels.</div></div>
+ is not closed when the end is reached<p> This function does not work for non-blocking channels.</p></div></div>
 <pre><span class="VALstring_of_in_obj_channel"><span class="keyword">val</span> string_of_in_obj_channel</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netchannels&amp;type=in_obj_channel">in_obj_channel</a> -&gt; string</code></pre><div class="info"><div class="info">Reads from the input channel until EOF and returns the characters
- as string. The input channel is not closed.<br/> This function does not work for non-blocking channels.</div></div>
+ as string. The input channel is not closed.<p> This function does not work for non-blocking channels.</p></div></div>
 <pre><span class="VALlines_of_in_obj_channel"><span class="keyword">val</span> lines_of_in_obj_channel</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netchannels&amp;type=in_obj_channel">in_obj_channel</a> -&gt; string list</code></pre><div class="info"><div class="info">Reads from the input channel until EOF and returns the lines
- as string list. The input channel is not closed.<br/> This function does not work for non-blocking channels.</div></div>
+ as string list. The input channel is not closed.<p> This function does not work for non-blocking channels.</p></div></div>
 <pre><span class="VALwith_in_obj_channel"><span class="keyword">val</span> with_in_obj_channel</span> : <code class="type">(#<a href="?package=ocamlnet&amp;module=Netchannels&amp;class=in_obj_channel">in_obj_channel</a> as 'a) -&gt; ('a -&gt; 'b) -&gt; 'b</code></pre><div class="info"><div class="info"><code class="code">with_in_obj_channel ch f</code>:
  Computes <code class="code">f ch</code> and closes <code class="code">ch</code>. If an exception happens, the channel is
  closed, too.</div></div>
 <div class="info"><div class="info"><h1 id="output">Output channels</h1></div></div>
-<div class="ocaml_class ident" name="output_channel" path="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel"><pre><span class="TYPEoutput_channel"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=output_channel">output_channel</a></span> : <code class="type">(unit -&gt; unit) option -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel">out_obj_channel</a></pre><div class="info"><div class="info">Creates an output channel writing into an <code class="code">out_channel</code>.<br/> The method <code class="code">pos_out</code> reflects the real position in the channel as
+<div class="ocaml_class ident" name="output_channel" path="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel"><pre><span class="TYPEoutput_channel"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=output_channel">output_channel</a></span> : <code class="type">(unit -&gt; unit) option -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel">out_obj_channel</a></pre><div class="info"><div class="info">Creates an output channel writing into an <code class="code">out_channel</code>.<p> The method <code class="code">pos_out</code> reflects the real position in the channel as
  returned by <code class="code">Pervasives.pos_out</code>. This works for both seekable and
- non-seekable channels.<br/> The method <code class="code">close_out</code> also closes the underlying <code class="code">out_channel</code>.
+ non-seekable channels.</p><p> The method <code class="code">close_out</code> also closes the underlying <code class="code">out_channel</code>.
  There is some implicit logic to either use <code class="code">close_out</code> or <code class="code">close_out_noerr</code>
  depending on whether the immediately preceding operation already reported
- an error.<div class="parameters"><div class="param_info"><code class="code">onclose</code> : this function is called when the <code class="code">close_out</code> method is
+ an error.</p><div class="parameters"><div class="param_info"><code class="code">onclose</code> : this function is called when the <code class="code">close_out</code> method is
  invoked, just after the underlying <code class="code">out_channel</code> has been closed.</div></div></div></div></div>
 <div class="ocaml_class ident" name="output_command" path="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel"><pre><span class="TYPEoutput_command"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=output_command">output_command</a></span> : <code class="type">(unit -&gt; unit) option -&gt; string -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel">out_obj_channel</a></pre><div class="info"><div class="info">Runs the command with <code class="code">/bin/sh</code>, and data written to the channel is
- piped to stdin of the command.<br/> The method <code class="code">pos_out</code> returns the number of written octets.<br/> When <code class="code">close_out</code> is invoked, the subprocess is <code class="code">wait</code>ed for. If the
+ piped to stdin of the command.<p> The method <code class="code">pos_out</code> returns the number of written octets.</p><p> When <code class="code">close_out</code> is invoked, the subprocess is <code class="code">wait</code>ed for. If the
  process exits with code 0, the method returns normally. Otherwise,
  the exception <code class="code">Command_failure</code> is raised. (The channel is closed
- even if this exception is raised.)<div class="parameters"><div class="param_info"><code class="code">onclose</code> : this function is called when the <code class="code">close_out</code> method is
+ even if this exception is raised.)</p><div class="parameters"><div class="param_info"><code class="code">onclose</code> : this function is called when the <code class="code">close_out</code> method is
  invoked, just after the underlying descriptor has been closed.</div></div></div></div></div>
-<div class="ocaml_class ident" name="output_buffer" path="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel"><pre><span class="TYPEoutput_buffer"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=output_buffer">output_buffer</a></span> : <code class="type">(unit -&gt; unit) option -&gt; <a href="?package=ocaml&amp;module=Buffer&amp;type=t">Buffer.t</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel">out_obj_channel</a></pre><div class="info"><div class="info">This output channel writes the data into the passed buffer.<br/> The method <code class="code">pos_out</code> returns the number of written octets.<div class="parameters"><div class="param_info"><code class="code">onclose</code> : this function is called when the <code class="code">close_out</code> method is
+<div class="ocaml_class ident" name="output_buffer" path="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel"><pre><span class="TYPEoutput_buffer"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=output_buffer">output_buffer</a></span> : <code class="type">(unit -&gt; unit) option -&gt; <a href="?package=ocaml&amp;module=Buffer&amp;type=t">Buffer.t</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel">out_obj_channel</a></pre><div class="info"><div class="info">This output channel writes the data into the passed buffer.<p> The method <code class="code">pos_out</code> returns the number of written octets.</p><div class="parameters"><div class="param_info"><code class="code">onclose</code> : this function is called when the <code class="code">close_out</code> method is
  invoked, just after the underlying descriptor has been closed.</div></div></div></div></div>
-<div class="ocaml_class ident" name="output_netbuffer" path="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel"><pre><span class="TYPEoutput_netbuffer"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=output_netbuffer">output_netbuffer</a></span> : <code class="type">(unit -&gt; unit) option -&gt; <a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">Netbuffer.t</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel">out_obj_channel</a></pre><div class="info"><div class="info">This output channel writes the data into the passed netbuffer.<br/> The method <code class="code">pos_out</code> returns the number of written octets.<div class="parameters"><div class="param_info"><code class="code">onclose</code> : this function is called when the <code class="code">close_out</code> method is
+<div class="ocaml_class ident" name="output_netbuffer" path="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel"><pre><span class="TYPEoutput_netbuffer"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=output_netbuffer">output_netbuffer</a></span> : <code class="type">(unit -&gt; unit) option -&gt; <a href="?package=ocamlnet&amp;module=Netbuffer&amp;type=t">Netbuffer.t</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel">out_obj_channel</a></pre><div class="info"><div class="info">This output channel writes the data into the passed netbuffer.<p> The method <code class="code">pos_out</code> returns the number of written octets.</p><div class="parameters"><div class="param_info"><code class="code">onclose</code> : this function is called when the <code class="code">close_out</code> method is
  invoked, just after the underlying descriptor has been closed.</div></div></div></div></div>
-<div class="ocaml_class ident" name="output_null" path="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel"><pre><span class="TYPEoutput_null"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=output_null">output_null</a></span> : <code class="type">(unit -&gt; unit) option -&gt; unit -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel">out_obj_channel</a></pre><div class="info"><div class="info">This output channel discards all written data. <br/> The method <code class="code">pos_out</code> returns the number of discarded bytes.<div class="parameters"><div class="param_info"><code class="code">onclose</code> : this function is called when the <code class="code">close_out</code> method is
+<div class="ocaml_class ident" name="output_null" path="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel"><pre><span class="TYPEoutput_null"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=output_null">output_null</a></span> : <code class="type">(unit -&gt; unit) option -&gt; unit -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel">out_obj_channel</a></pre><div class="info"><div class="info">This output channel discards all written data. <p> The method <code class="code">pos_out</code> returns the number of discarded bytes.</p><div class="parameters"><div class="param_info"><code class="code">onclose</code> : this function is called when the <code class="code">close_out</code> method is
  invoked, just after the underlying descriptor has been closed.</div></div></div></div></div>
 <pre><span class="VALwith_out_obj_channel"><span class="keyword">val</span> with_out_obj_channel</span> : <code class="type">(#<a href="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel">out_obj_channel</a> as 'a) -&gt; ('a -&gt; 'b) -&gt; 'b</code></pre><div class="info"><div class="info"><code class="code">with_out_obj_channel ch f</code>:
  Computes <code class="code">f ch</code> and closes <code class="code">ch</code>. If an exception happens, the channel is
@@ -246,20 +246,20 @@
  object, i.e. when method <code class="code">m</code> of the delegation class is called,
  the definition of <code class="code">m</code> is just to call the method with the same
  name <code class="code">m</code> of the parameter object. This is very useful in order
- to redefine methods individually.<br/> For example, to redefine the method <code class="code">pos_in</code> of an <code class="code">in_obj_channel</code>,
+ to redefine methods individually.<p> For example, to redefine the method <code class="code">pos_in</code> of an <code class="code">in_obj_channel</code>,
  use
- <pre class="codepre"><code class="code">
+ </p><code class="code">
  class my_channel = object(self)
    inherit in_obj_channel_delegation ...
    method pos_in = ...
  end
- </code></pre><br/> As a special feature, the following delegation classes can suppress
+ </code><p> As a special feature, the following delegation classes can suppress
  the delegation of <code class="code">close_in</code> or <code class="code">close_out</code>, whatever applies.
  Just pass <code class="code">close:false</code> to get this effect, e.g.
- <pre class="codepre"><code class="code">
+ </p><code class="code">
  class input_channel_don't_close c =
    in_obj_channel_delegation ~close:false (new input_channel c)
- </code></pre>
+ </code>
  This class does not close <code class="code">c : in_channel</code> when the <code class="code">close_in</code>
  method is called.</div></div>
 <div class="ocaml_class ident" name="rec_in_channel_delegation" path="?package=ocamlnet&amp;module=Netchannels&amp;class=rec_in_channel"><pre><span class="TYPErec_in_channel_delegation"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=rec_in_channel_delegation">rec_in_channel_delegation</a></span> : <code class="type">bool option -&gt; <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=rec_in_channel">rec_in_channel</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=rec_in_channel">rec_in_channel</a></pre></div>
@@ -280,10 +280,10 @@
  variant, into a full <code class="code">in_obj_channel</code> object. (This is a convenience
  function, you can also use the classes below directly.) If you
  want to define a class for the lifted object, use
- <pre class="codepre"><code class="code">
+ <code class="code">
  class lifted_ch ... =
    in_obj_channel_delegation (lift_in ...)
- </code></pre><div class="parameters"><div class="param_info"><code class="code">eol</code> : The accepted end-of-line delimiters. The method 
+ </code><div class="parameters"><div class="param_info"><code class="code">eol</code> : The accepted end-of-line delimiters. The method 
    <code class="code">input_line</code> recognizes any of the passed strings as EOL
    delimiters. When more than one delimiter matches, the longest
    is taken. Defaults to <code class="code"> [&quot;\n&quot;] </code>. The default cannot be
@@ -299,10 +299,10 @@
  variant, into a full <code class="code">out_obj_channel</code> object. (This is a convenience
  function, you can also use the classes below directly.) If you
  want to define a class for the lifted object, use
- <pre class="codepre"><code class="code">
+ <code class="code">
  class lifted_ch ... =
    out_obj_channel_delegation (lift_out ...)
- </code></pre><div class="parameters"><div class="param_info"><code class="code">buffered</code> : Whether a buffer is added, by default <b>true</b></div><div class="param_info"><code class="code">buffer_size</code> : The size of the buffer, if any, by default 4096</div><div class="param_info"><code class="code">pass_through</code> : If the write request has at least this size,
+ </code><div class="parameters"><div class="param_info"><code class="code">buffered</code> : Whether a buffer is added, by default <b>true</b></div><div class="param_info"><code class="code">buffer_size</code> : The size of the buffer, if any, by default 4096</div><div class="param_info"><code class="code">pass_through</code> : If the write request has at least this size,
    and the buffer is currently empty, the buffer will be bypassed.
    Defaults to <code class="code">max_int</code>, i.e. it is off.</div></div></div></div>
 <div class="ocaml_class sig" name="augment_raw_in_channel"><pre><span class="TYPEaugment_raw_in_channel"><span class="keyword">class</span> <span class="keyword">virtual </span><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=augment_raw_in_channel">augment_raw_in_channel</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">This class implements the methods from <code class="code">compl_in_channel</code> by calling
@@ -318,9 +318,9 @@
 <div class="info"><div class="info">As in <code class="code">raw_in_channel</code></div></div></div></div>
 <div class="ocaml_class ident" name="lift_rec_in_channel" path="?package=ocamlnet&amp;module=Netchannels&amp;class=in_obj_channel"><pre><span class="TYPElift_rec_in_channel"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=lift_rec_in_channel">lift_rec_in_channel</a></span> : <code class="type">int option -&gt; <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=rec_in_channel">rec_in_channel</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=in_obj_channel">in_obj_channel</a></pre><div class="info"><div class="info">This class implements <code class="code">pos_in</code> and the methods from <code class="code">compl_in_channel</code> 
  by calling the methods of <code class="code">rec_in_channel</code>. 
- There is no additional buffering.<br/> The performance of the method <code class="code">input_line</code> is very bad (consider
- to override it, e.g. by <code class="code">enhanced_input_line</code> as defined below).<br/> The method <code class="code">pos_in</code> is implemented by counting the number of octets
- read by the <code class="code">input</code> method.<div class="parameters"><div class="param_info"><code class="code">start_pos_in</code> : The initial value of the counter for <code class="code">pos_in</code>.
+ There is no additional buffering.<p> The performance of the method <code class="code">input_line</code> is very bad (consider
+ to override it, e.g. by <code class="code">enhanced_input_line</code> as defined below).</p><p> The method <code class="code">pos_in</code> is implemented by counting the number of octets
+ read by the <code class="code">input</code> method.</p><div class="parameters"><div class="param_info"><code class="code">start_pos_in</code> : The initial value of the counter for <code class="code">pos_in</code>.
    Defaults to 0.</div></div></div></div></div>
 <div class="ocaml_class sig" name="augment_raw_out_channel"><pre><span class="TYPEaugment_raw_out_channel"><span class="keyword">class</span> <span class="keyword">virtual </span><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=augment_raw_out_channel">augment_raw_out_channel</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">This class implements the methods from <code class="code">compl_out_channel</code> by calling
  the methods of <code class="code">raw_out_channel</code>. There is no additional buffering.</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Netchannels&amp;class=compl_out_channel"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=compl_out_channel">compl_out_channel</a></pre></div>
@@ -337,8 +337,8 @@
  the methods of <code class="code">raw_out_channel</code>. There is no additional buffering.</div></div></div>
 <div class="ocaml_class ident" name="lift_rec_out_channel" path="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel"><pre><span class="TYPElift_rec_out_channel"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=lift_rec_out_channel">lift_rec_out_channel</a></span> : <code class="type">int option -&gt; <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=rec_out_channel">rec_out_channel</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel">out_obj_channel</a></pre><div class="info"><div class="info">This class implements <code class="code">pos_out</code> and the methods from <code class="code">compl_out_channel</code> 
  by calling the methods of <code class="code">rec_out_channel</code>. 
- There is no additional buffering.<br/> The method <code class="code">pos_out</code> is implemented by counting the number of octets
- read by the <code class="code">output</code> method.<div class="parameters"><div class="param_info"><code class="code">start_pos_out</code> : The initial value of the counter for <code class="code">pos_out</code>.
+ There is no additional buffering.<p> The method <code class="code">pos_out</code> is implemented by counting the number of octets
+ read by the <code class="code">output</code> method.</p><div class="parameters"><div class="param_info"><code class="code">start_pos_out</code> : The initial value of the counter for <code class="code">pos_out</code>.
    Defaults to 0.</div></div></div></div></div>
 <pre><span class="TYPEinput_result"><span class="keyword">type</span> input_result</span> = <code class="type">[ `Data of int | `Separator of string ]</code></pre><div class="info"><div class="info">This type is for the method <code class="code">enhanced_input</code> of <code class="code">enhanced_raw_in_channel</code>.<ul><li><code class="code">`Data n</code> means that <code class="code">n</code> bytes have been copied to the target string</li><li><code class="code">`Separator s</code> means that no bytes have been copied, but that an
    end-of-line separator <code class="code">s</code> has been found
@@ -370,15 +370,15 @@
    Defaults to <code class="code">max_int</code>, i.e. it is off.</div></div></div></div></div>
 <div class="info"><div class="info"><h1 id="descriptors">Channels over descriptors</h1></div></div>
 <div class="ocaml_class ident" name="input_descr" path="?package=ocamlnet&amp;module=Netchannels&amp;class=raw_in_channel"><pre><span class="TYPEinput_descr"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=input_descr">input_descr</a></span> : <code class="type">bool option -&gt; int option -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=raw_in_channel">raw_in_channel</a></pre><div class="info"><div class="info">Creates a <code class="code">raw_in_channel</code> for the passed file descriptor, which must
- be open for reading. <br/> The <code class="code">pos_in</code> method returns logical positions, i.e. it counts the number
- of read octets. It is not tried to determine the real file position.<br/> The method <code class="code">close_in</code> also closes the file descriptor.<br/> This class also supports Win32 proxy descriptors referring to an input
- channel.<div class="parameters"><div class="param_info"><code class="code">blocking</code> : Whether the channel waits for data if it is not
+ be open for reading. <p> The <code class="code">pos_in</code> method returns logical positions, i.e. it counts the number
+ of read octets. It is not tried to determine the real file position.</p><p> The method <code class="code">close_in</code> also closes the file descriptor.</p><p> This class also supports Win32 proxy descriptors referring to an input
+ channel.</p><div class="parameters"><div class="param_info"><code class="code">blocking</code> : Whether the channel waits for data if it is not
  possible to read from the (non-blocking) descriptor. Defaults to <code class="code">true</code>.</div><div class="param_info"><code class="code">start_pos_in</code> : The position to which <code class="code">pos_in</code> is initialized when
  the channel is created, by default 0</div></div></div></div></div>
 <div class="ocaml_class ident" name="output_descr" path="?package=ocamlnet&amp;module=Netchannels&amp;class=raw_out_channel"><pre><span class="TYPEoutput_descr"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=output_descr">output_descr</a></span> : <code class="type">bool option -&gt; int option -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=raw_out_channel">raw_out_channel</a></pre><div class="info"><div class="info">Creates a <code class="code">raw_out_channel</code> for the passed file descriptor, which must
- be open for writing. <br/> The <code class="code">pos_out</code> method returns logical positions, i.e. it counts the number
- of written octets. It is not tried to determine the real file position.<br/> The method <code class="code">close_out</code> also closes the file descriptor.<br/> This class also supports Win32 proxy descriptors referring to an output
- channel.<div class="parameters"><div class="param_info"><code class="code">blocking</code> : Whether the channel waits until it can output if it is not
+ be open for writing. <p> The <code class="code">pos_out</code> method returns logical positions, i.e. it counts the number
+ of written octets. It is not tried to determine the real file position.</p><p> The method <code class="code">close_out</code> also closes the file descriptor.</p><p> This class also supports Win32 proxy descriptors referring to an output
+ channel.</p><div class="parameters"><div class="param_info"><code class="code">blocking</code> : Whether the channel waits until it can output if it is not
  possible to write to the (non-blocking) descriptor. Defaults to <code class="code">true</code>.</div><div class="param_info"><code class="code">start_pos_out</code> : The position to which <code class="code">pos_out</code> is initialized when
  the channel is created, by default 0</div></div></div></div></div>
 <div class="ocaml_class ident" name="socket_descr" path="?package=ocamlnet&amp;module=Netchannels&amp;class=raw_io_channel"><pre><span class="TYPEsocket_descr"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=socket_descr">socket_descr</a></span> : <code class="type">bool option -&gt; int option -&gt; int option -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=raw_io_channel">raw_io_channel</a></pre><div class="info"><div class="info">Creates a <code class="code">raw_io_channel</code> for the passed socket descriptor, which must
@@ -386,9 +386,9 @@
  direction. The <code class="code">raw_io_channel</code> is used to represent a bidirectional
  channel: <code class="code">close_out</code> shuts the socket down for sending, <code class="code">close_in</code>
  shuts the socket down for reading, and when both directions are down,
- the descriptor is closed.<br/> The <code class="code">pos_in</code> and <code class="code">pos_out</code> methods returns logical positions.<br/> This class supports sockets and Win32 named pipes. Note, however,
+ the descriptor is closed.<p> The <code class="code">pos_in</code> and <code class="code">pos_out</code> methods returns logical positions.</p><p> This class supports sockets and Win32 named pipes. Note, however,
  that for Win32 named pipes it is not possible to shut down only one
- direction of the bidirectional data channel.<div class="parameters"><div class="param_info"><code class="code">blocking</code> : See  <a href="#input_descr">input_descr</a> and  <a href="#output_descr">output_descr</a></div><div class="param_info"><code class="code">start_pos_in</code> : The position to which <code class="code">pos_in</code> is initialized when
+ direction of the bidirectional data channel.</p><div class="parameters"><div class="param_info"><code class="code">blocking</code> : See  <a href="#input_descr">input_descr</a> and  <a href="#output_descr">output_descr</a></div><div class="param_info"><code class="code">start_pos_in</code> : The position to which <code class="code">pos_in</code> is initialized when
  the channel is created, by default 0</div><div class="param_info"><code class="code">start_pos_out</code> : The position to which <code class="code">pos_out</code> is initialized when
  the channel is created, by default 0</div></div></div></div></div>
 <div class="info"><div class="info"><h1 id="transactional">Transactional channels</h1></div></div>
@@ -421,44 +421,44 @@ unit -&gt; string * <a href="?package=ocaml&amp;module=Pervasives&amp;type=in_ch
  buffer. The conversion function must convert the data available in the
  incoming buffer and append the result to the outgoing buffer. Finally,
  the input methods of the class return the data found in the outgoing
- buffer.<br/> The conversion function is called as follows:
- <code class="code">conv incoming_buffer at_eof outgoing_buffer</code><br/> The conversion function is allowed to do nothing if the incoming data
+ buffer.<p> The conversion function is called as follows:
+ <code class="code">conv incoming_buffer at_eof outgoing_buffer</code></p><p> The conversion function is allowed to do nothing if the incoming data
  are not complete enough to be converted. It is also allowed to convert
- only the beginning of the incoming buffer.<br/> If the outgoing buffer is empty, the input methods will raise
- <code class="code">Buffer_underrun</code>.<br/> If <code class="code">close_out</code> is invoked, the end of the data stream will be recorded.
+ only the beginning of the incoming buffer.</p><p> If the outgoing buffer is empty, the input methods will raise
+ <code class="code">Buffer_underrun</code>.</p><p> If <code class="code">close_out</code> is invoked, the end of the data stream will be recorded.
  In this case, the conversion function is called with <code class="code">at_eof = true</code>,
  and it is expected that this function converts the whole data found
- in the incoming buffer.<br/> <code class="code">close_in</code> implies <code class="code">close_out</code>.<br/> The conversion function may raise exceptions. The exceptions will
+ in the incoming buffer.</p><p> <code class="code">close_in</code> implies <code class="code">close_out</code>.</p><p> The conversion function may raise exceptions. The exceptions will
  fall through to the caller of the input methods. (The output methods
- and <code class="code">close_in</code>, <code class="code">close_out</code> never fail because of such exceptions.)<br/> The default conversion function copies everything from the incoming
- buffer to the outgoing buffer without modification.</div></div></div>
+ and <code class="code">close_in</code>, <code class="code">close_out</code> never fail because of such exceptions.)</p><p> The default conversion function copies everything from the incoming
+ buffer to the outgoing buffer without modification.</p></div></div></div>
 <div class="ocaml_class ident" name="output_filter" path="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel"><pre><span class="TYPEoutput_filter"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=output_filter">output_filter</a></span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netchannels&amp;type=io_obj_channel">io_obj_channel</a> -&gt; <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=out_obj_channel">out_obj_channel</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel">out_obj_channel</a></pre><div class="info"><div class="info">An <code class="code">output_filter</code> filters the data written to it through the
  <code class="code">io_obj_channel</code> (usually a <code class="code">pipe</code>), and writes the filtered data
- to the passed <code class="code">out_obj_channel</code>.<br/> If the filter is closed, the <code class="code">io_obj_channel</code> will be closed, too,
+ to the passed <code class="code">out_obj_channel</code>.<p> If the filter is closed, the <code class="code">io_obj_channel</code> will be closed, too,
  but not the destination <code class="code">out_obj_channel</code> (so you can still append
- further data).</div></div></div>
+ further data).</p></div></div></div>
 <div class="ocaml_class ident" name="input_filter" path="?package=ocamlnet&amp;module=Netchannels&amp;class=in_obj_channel"><pre><span class="TYPEinput_filter"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netchannels&amp;class=input_filter">input_filter</a></span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netchannels&amp;type=in_obj_channel">in_obj_channel</a> -&gt; <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=io_obj_channel">io_obj_channel</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=in_obj_channel">in_obj_channel</a></pre><div class="info"><div class="info">An <code class="code">input_filter</code> filters the data read from it through the
  <code class="code">io_obj_channel</code> (usually a <code class="code">pipe</code> after the data have been 
- retrieved from the passed <code class="code">in_obj_channel</code>.<br/> An <code class="code">input_filter</code> object never generates <code class="code">Buffer_underrun</code> exceptions.
+ retrieved from the passed <code class="code">in_obj_channel</code>.<p> An <code class="code">input_filter</code> object never generates <code class="code">Buffer_underrun</code> exceptions.
  However, if the passed <code class="code">in_obj_channel</code> or <code class="code">io_obj_channel</code> raises such
- an exception, the exception will fall through the calling chain.<br/> If the filter is closed, the <code class="code">io_obj_channel</code> will be closed, too,
+ an exception, the exception will fall through the calling chain.</p><p> If the filter is closed, the <code class="code">io_obj_channel</code> will be closed, too,
  but not the source <code class="code">in_obj_channel</code> (so you can still read further
- data from it).</div></div></div>
+ data from it).</p></div></div></div>
 <div class="info"><div class="info"><h2 id="filters_notes">Notes, Examples</h2></div></div>
 <div class="info"><div class="info">If you have the choice, prefer <code class="code">output_filter</code> over <code class="code">input_filter</code>.
- The latter is slower.<br/> The primary application of filters is to encode or decode a channel
- on the fly. For example, the following lines write a BASE64-encoded file:<br/> <pre class="codepre"><code class="code">let ch = new output_channel (open_out &quot;file.b64&quot;) in
+ The latter is slower.<p> The primary application of filters is to encode or decode a channel
+ on the fly. For example, the following lines write a BASE64-encoded file:</p><p> </p><code class="code">let ch = new output_channel (open_out &quot;file.b64&quot;) in
  let encoder = new Netencoding.Base64.encoding_pipe ~linelength:76 () in
  let ch' = new output_filter encoder ch in
  ... (* write to ch' *)
  ch' # close_out();
  ch  # close_out();  (* you must close both channels! *)
- </code></pre><br/> All bytes written to <code class="code">ch'</code> are BASE64-encoded and the encoded bytes are
- written to <code class="code">ch</code>.<br/> There are also pipes to decode BASE64, and to encode and decode the
+ </code><p> All bytes written to <code class="code">ch'</code> are BASE64-encoded and the encoded bytes are
+ written to <code class="code">ch</code>.</p><p> There are also pipes to decode BASE64, and to encode and decode the
  &quot;Quoted printable&quot; format. Encoding and decoding work even if the
  data is delivered in disadvantageous chunks, because the data is
  &quot;re-chunked&quot; if needed. For example, BASE64 would require that data
  arrive in multiples of three bytes, and to cope with that, the BASE64 pipe
  only processes the prefix of the input buffer that is a multiple of three,
- and defers the encoding of the extra bytes till the next opportunity.</div></div>
+ and defers the encoding of the extra bytes till the next opportunity.</p></div></div>
 </div>

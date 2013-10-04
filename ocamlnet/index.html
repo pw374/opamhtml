@@ -1,23 +1,9 @@
-<h1>Modules</h1>
+<h2>Modules</h2>
 <table class="indextable">
     <tr><td class="module"><a href="?package=ocamlnet&amp;module=Config">Config</a></td><td/></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Direct">Direct</a></td><td/></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Equeue">Equeue</a></td><td><div class="info"><code class="code">Equeue</code> implements generic event queues. An <b>event system</b> 
- consists of an event queue, a list of event handlers, and an 
- event source. The queue has FIFO semantics, i.e. the first event
- is processed next, and new events are appended to its end. When
- an event is delivered to an event handler, all handlers are tried
- until a handler accepts the event (or the event is dropped if no
- such handler can be found). See below how a handler can indicate
- whether to accept or reject an event.<br/> When the queue is empty, the event source is called once. The source
- can add events to the queue, in order to continue event processing.
- If the queue remains empty, the execution of the event system
- stops.</div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Ftp_client">Ftp_client</a></td><td><div class="info">FTP client<br/> Currently implements:<ul><li>Core FTP (RFC 959), except compressed transfer modes, and except page
-   files</li><li>Negotiation of FTP extensions (RFC 2389)</li><li>Common FTP extensions (RFC 3659)</li><li>IPv6 (RFC 2428)</li><li>Internationalization (RFC 2640)</li><li>Directory walking (NVFS) and direct access (TVFS)</li></ul> The client is written in asynchronous style (using  <a href="#Uq_engines">Uq_engines</a>).<br/> The interface of this module was changed in Ocamlnet-3.3. Before this
- release, the module was marked as &quot;experimental&quot;. This is no longer
- the case, as the interface has been updated, and the missing features
- have been added (e.g. <code class="code">STOR</code> support).</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Equeue">Equeue</a></td><td><div class="info"><code class="code">Equeue</code> implements generic event queues.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Ftp_client">Ftp_client</a></td><td><div class="info">FTP client</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Ftp_data_endpoint">Ftp_data_endpoint</a></td><td><div class="info">Senders and receivers for the FTP data connection</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Ftp_fs">Ftp_fs</a></td><td><div class="info">FTP filesystem</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Generate">Generate</a></td><td/></tr>
@@ -28,136 +14,33 @@
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Lexer">Lexer</a></td><td/></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Main">Main</a></td><td/></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Main">Main</a></td><td/></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Mimestring">Mimestring</a></td><td><div class="info">Low-level functions to parse and print mail and MIME messages <br/> <code class="code">Mimestring</code> contains a lot of functions to scan and print strings
- formatted as MIME messages. For a higher-level view on this topic,
- see the <code class="code">Netmime</code> module.<br/> <b>Contents</b><ul><li> <a href="#Mimestring.lines">Mimestring.lines</a></li><li> <a href="#Mimestring.headers">Mimestring.headers</a></li><li> <a href="#Mimestring.structured_values">Mimestring.structured_values</a></li><li> <a href="#Mimestring.parsers_for_structured_values">Mimestring.parsers_for_structured_values</a></li><li> <a href="#Mimestring.printers_for_structured_values">Mimestring.printers_for_structured_values</a></li><li> <a href="#Mimestring.scanning_mime">Mimestring.scanning_mime</a></li><li> <a href="#Mimestring.helpers_mime">Mimestring.helpers_mime</a></li></ul></div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netaccel">Netaccel</a></td><td><div class="info">Accelerators for bytecode<br/> This module can be linked with executables to accelerate
- certain functions. In particular, the following functions
- will run faster:<br/> -  <a href="#Netaux.ArrayAux.int_blit">Netaux.ArrayAux.int_blit</a><ul><li>All conversion functions in  <a href="#Netconversion">Netconversion</a> when they
-   must read an ISO-8859-1 or UTF-8 encoded string</li></ul> It is not recommended to install the accelerators for native
- code, however (and with the distributed build rules, this
- is not done).<br/> To link this module, you must name both <code class="code">netaccel.cma</code> and
- <code class="code">netaccel_link.cmo</code> explicitly on the ocamlc command line
- (after <code class="code">netstring.cma</code>).
- If you use <code class="code">findlib</code>, this is done automatically.</div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netaccel_link">Netaccel_link</a></td><td><div class="info">Enables accelerator module <code class="code">Netaccel</code><br/> This module exists for technical reasons.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Mimestring">Mimestring</a></td><td><div class="info">Low-level functions to parse and print mail and MIME messages </div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netaccel">Netaccel</a></td><td><div class="info">Accelerators for bytecode</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netaccel_link">Netaccel_link</a></td><td><div class="info">Enables accelerator module <code class="code">Netaccel</code></div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netaddress">Netaddress</a></td><td><div class="info">Parsing of mail addresses</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netauth">Netauth</a></td><td><div class="info">Some primitives for authentication</div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netaux">Netaux</a></td><td><div class="info">Internal auxiliary functions <br/> This is an internal module.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netaux">Netaux</a></td><td><div class="info">Internal auxiliary functions </div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netbuffer">Netbuffer</a></td><td><div class="info">A Netbuffer.t is a buffer that can grow and shrink dynamically.</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netcamlbox">Netcamlbox</a></td><td><div class="info">Camlboxes are a fast IPC mechanism to send Ocaml values from one
-   process to another. Source and destination processes must run on
-   the same machine (no network). The Ocaml value is copied to a
-   shared memory object where it can be directly accessed by the
-   receiver without unmarshalling step. This means the sender writes
-   the value into the shared memory in a format that can immediately
-   interpreted by the receiver.<br/>   A camlbox is owned by the single receiving process. Only this process
-   (or a fork) can look for new messages and can read them. There can be
-   any number of sending processes, i.e. we have a n:1 message passing
-   scenario.<br/>   The receiver process creates the camlbox, and is seen as the owner.
-   The receiver is accountible for deleting the camlbox when it is no
-   longer needed.<br/>   The sender(s) can send messages to any existing camlbox. There is
-   no notification whether the messages are actually read. The sender,
-   however, blocks when the destination camlbox is full, and will only
-   proceed when the receiver makes room for new messages. If there is
-   space in the camlbox the sender does not need to synchronize with the
-   receiver, i.e. it is possible to put a message into the box when
-   the receiver is busy with something else (asynchronous send operation).<br/>   Camlboxes have a fixed capacity of messages, and the message slots
-   have a fixed maximum length. The messages can have any type with only
-   a few restrictions (e.g. no functions and no custom blocks). There is
-   no check whether the sender and the receiver assume the same type
-   of the messages. This is left to the user. Breaking this assumption
-   will lead to unpredictable effects, including program crashes.
-   It is strongly advised to only communicate between processes that
-   run the same executable.<br/>   The user is also responsible for keeping only references to 
-   existing messages. It is possible to get a value pointer 
-   for a certain message via <code class="code">camlbox_get</code> and then to delete the message. 
-   The user must no longer access the value - once the value is deleted
-   it may be overwritten, and the program may crash. Another danger
-   is that message values are modified so that pointers to heap
-   values are put into the message. This may lead to delayed crashes
-   when the heap value is moved to a different location or is even
-   deleted by the garbage collector. There is nothing the camlbox
-   implementation can do about that. If this is a problem, it is
-   advised to use <code class="code">camlbox_get_copy</code> instead which is not dangerous
-   in this respect.<br/>   On the system level, camlboxes are stored in POSIX shared memory
-   objects. These objects have kernel persistence and continue to
-   live after the process creating the camlbox has terminated without
-   unlinking the box.<br/>   This module requires Ocaml 3.11 or newer. The system must support
-   POSIX shared memory and POSIX semaphores. Camlboxes may be used
-   in multi-threaded programs as long as the values <code class="code">camlbox</code> and
-   <code class="code">camlbox_sender</code> are not used by several threads at the same time.<br/>   <b>Examples.</b> There a few examples in the distribution tarball
-   (examples/camlbox).<br/>   <b>Multi-core:</b>
-   Camlboxes can be used to gain speed-ups on multi-cores. See
-   examples/camlbox/README in the distribution tarball for an example
-   how to accomplish this.<br/>   <b>Integration into event-based programs:</b> See the section
-   below,  <a href="#Netcamlbox.events">Netcamlbox.events</a>.</div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netcgi">Netcgi</a></td><td><div class="info">Common data-structures for CGI-like connectors.<br/> This library tries to minimize the use of unsafe practices.  It
- cannot be bullet proof however and you should read about
-  <a href="http://www.w3.org/Security/Faq/wwwsf4.html">security</a>.<br/> REMARK: It happens frequently that hard to predict random numbers
- are needed in Web applications.  The previous version of this
- library used to include some facilities for that (in the
- <code class="code">Netcgi_jserv</code> module).  They have been dropped in favor of
-  <a href="http://pauillac.inria.fr/~xleroy/software.html#cryptokit">Cryptokit</a>.</div></td></tr>
+   process to another.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netcgi">Netcgi</a></td><td><div class="info">Common data-structures for CGI-like connectors.</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netcgi1_compat">Netcgi1_compat</a></td><td/></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netcgi_ajp">Netcgi_ajp</a></td><td><div class="info">Apache JServ Protocol (AJP) 1.3 connector.<br/> See the  <a href="#Netcgi_ajp.setup">Netcgi_ajp.setup</a> section at the end of this file to know
- how to configure your web server.</div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netcgi_cgi">Netcgi_cgi</a></td><td><div class="info">Classical CGI connector.<br/> CGI scripts have poor performance as they are entirely re-run for
- each request (so it is not possible to cache in the running program
- database connections for example).  Still they are suitable for
- moderate frequented websites (especially because they run
- everywhere) and for development.</div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netcgi_common">Netcgi_common</a></td><td><div class="info">Functions to develop new connectors.<br/> The following module is provided as a set of helper functions to
- define new connectors.  As a normal user of <code class="code">Netcgi</code>, <b>you should
- not use this module</b>.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netcgi_ajp">Netcgi_ajp</a></td><td><div class="info">Apache JServ Protocol (AJP) 1.3 connector.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netcgi_cgi">Netcgi_cgi</a></td><td><div class="info">Classical CGI connector.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netcgi_common">Netcgi_common</a></td><td><div class="info">Functions to develop new connectors.</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netcgi_dbi">Netcgi_dbi</a></td><td><div class="info">Pools of connections for the ocamldbi generic database interface.</div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netcgi_fcgi">Netcgi_fcgi</a></td><td><div class="info">FastCGI connector.<br/> <b>Remark:</b> This connector does not allow requests to be multiplexed
- (and let it know to the web server via FCGI_MPXS_CONNS=0).
- Multiplexing requests is seldom done by
-  <a href="http://www.fastcgi.com">FastCGI modules</a> and is even sometimes
- impossible because of bugs in them.  Moreover, multiplexing is
- mostly useful if concurrent requests are handled by different
- threads while this library use a single thread to process all
- requests coming on a given connection.  If the need is felt (speak
- out!), a multithreaded connector can be built on the side of this
- one.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netcgi_fcgi">Netcgi_fcgi</a></td><td><div class="info">FastCGI connector.</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netcgi_plex">Netcgi_plex</a></td><td><div class="info"><h1 id="1_TITLE">Netplex support for FastCGI, SCGI and AJP connectors</h1></div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netcgi_scgi">Netcgi_scgi</a></td><td><div class="info">SCGI connector.<br/>    The  <a href="http://www.mems-exchange.org/software/scgi/">SCGI</a> connects
-    your web applications through a TCP/IP socket (thus the application
-    can run on a machine different from the web server).<br/>    See the  <a href="#Netcgi_scgi.setup">Netcgi_scgi.setup</a> section at the end of this file to know
-    how to configure your web server.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netcgi_scgi">Netcgi_scgi</a></td><td><div class="info">SCGI connector.</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netcgi_test">Netcgi_test</a></td><td/></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netchannels">Netchannels</a></td><td><div class="info">Object-oriented I/O: Basic types and classes <br/> <b>Contents</b><br/> -  <a href="#Netchannels.types">Netchannels.types</a><ul><li> <a href="#Netchannels.input">Netchannels.input</a></li><li> <a href="#Netchannels.output">Netchannels.output</a></li><li> <a href="#Netchannels.delegation">Netchannels.delegation</a></li><li> <a href="#Netchannels.lifting">Netchannels.lifting</a></li><li> <a href="#Netchannels.descriptors">Netchannels.descriptors</a></li><li> <a href="#Netchannels.transactional">Netchannels.transactional</a></li><li> <a href="#Netchannels.filters">Netchannels.filters</a>
-   <ul><li> <a href="#Netchannels.filters_notes">Netchannels.filters_notes</a></li></ul></li></ul> The tutorial has been moved to  <a href="#Netchannels_tut">Netchannels_tut</a>.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netchannels">Netchannels</a></td><td><div class="info">Object-oriented I/O: Basic types and classes </div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netcompression">Netcompression</a></td><td><div class="info">Registry for compression algorithms</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netconst">Netconst</a></td><td/></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netconversion">Netconversion</a></td><td><div class="info">Conversion between character encodings <br/> <b>Contents</b>
- <ul><li> <a href="#Netconversion.interface">Netconversion.interface</a>
-     <ul><li> <a href="#Netconversion.unicode_functions">Netconversion.unicode_functions</a></li><li> <a href="#Netconversion.cursors">Netconversion.cursors</a>
-           <ul><li> <a href="#Netconversion.bom">Netconversion.bom</a></li></ul></li><li> <a href="#Netconversion.direct_conv">Netconversion.direct_conv</a></li></ul>
-   </li><li> <a href="#Netconversion.preliminaries">Netconversion.preliminaries</a>
-     <ul><li> <a href="#Netconversion.problems">Netconversion.problems</a></li><li> <a href="#Netconversion.domain">Netconversion.domain</a></li><li> <a href="#Netconversion.linking">Netconversion.linking</a></li><li> <a href="#Netconversion.subsets">Netconversion.subsets</a></li><li> <a href="#Netconversion.unicode">Netconversion.unicode</a></li></ul></li></ul></div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netdate">Netdate</a></td><td><div class="info">Support for common date/time parsing and formatting.
- Many routines refer to the epoch, which for Unix is 
- 00:00:00 UTC, January 1, 1970. Timestamps given as
- &quot;seconds since the epoch&quot; ignore leap seconds.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netconversion">Netconversion</a></td><td><div class="info">Conversion between character encodings </div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netdate">Netdate</a></td><td><div class="info">Support for common date/time parsing and formatting.</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netdb">Netdb</a></td><td/></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netencoding">Netencoding</a></td><td><div class="info">Base64, Quoted Printable, URL encoding, HTML escaping</div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netexn">Netexn</a></td><td><div class="info">Exception registry<br/>    This module allow the user to register exceptions, and to set a
-    custom exception printing function. This results in nicer exception
-    prints when <code class="code">Netexn.to_string</code> is called instead of <code class="code">Printexc.to_string</code>.<br/>    Generally, <code class="code">Printexc.to_string</code> works well if:<ul><li>the exception does not have arguments, or</li><li>all arguments are int's or string's.</li></ul>    In these cases it is not required to register a custom printer. Arguments
-    that are neither int nor string are printed as &quot;_&quot;, however, so defining
-    a custom printer helps then.<br/>    The printers registered here are intended for helping debugging, so
-    the goal is to print all of the exception in an unambiguous way.
-    The syntax &quot;Exception(arg1, arg2, ...)&quot; is preferred.<br/>    <b>Since OCaml 3.11.2 there is a similar feature in <code class="code">Printexc</code>.</b>
-    If Ocamlnet recognizes that <code class="code">Printexc.register_printer</code> is available,
-    all functions registered in this module are also registered at
-    the central <code class="code">Printexc</code> registry. For users it does not make a difference
-    then whether <code class="code">Netexn.to_string</code> or <code class="code">Printexc.to_string</code> is called
-    to print the exception. We recommend, however, to use <code class="code">Netexn</code> as
-    primary registry for all code that uses Ocamlnet because this
-    mechanism also works for older Ocaml versions, and is slightly more
-    efficient.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netexn">Netexn</a></td><td><div class="info">Exception registry</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netfs">Netfs</a></td><td/></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netglob">Netglob</a></td><td><div class="info">Globbing</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netglob_lex">Netglob_lex</a></td><td/></tr>
@@ -165,136 +48,29 @@
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Nethtml">Nethtml</a></td><td><div class="info">Parsing of HTML</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Nethtml_scanner">Nethtml_scanner</a></td><td/></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Nethttp">Nethttp</a></td><td><div class="info"><h1 id="1_TITLE">Basic definitions for the HTTP protocol</h1></div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Nethttpd_engine">Nethttpd_engine</a></td><td><div class="info"><h1 id="1_TITLE">The event-based encapsulation of the HTTP daemon</h1><br/> This is a user-friendlier encapsulation of the HTTP daemon. It uses
- the engine module defined in <code class="code">Uq_engines</code>.</div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Nethttpd_kernel">Nethttpd_kernel</a></td><td><div class="info"><h1 id="1_TITLE">The protocol kernel of the HTTP daemon</h1><br/> This module mainly defines the <code class="code">http_protocol</code> class which implements the
- exchange of messages with a HTTP client. The request messages are represented
- as sequence of <code class="code">req_token</code> values. The response is encapsulated in a separate
- <code class="code">http_response</code> class. The contents of the response are represented as sequence
- of <code class="code">resp_token</code> values.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Nethttpd_engine">Nethttpd_engine</a></td><td><div class="info"><h1 id="1_TITLE">The event-based encapsulation of the HTTP daemon</h1></div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Nethttpd_kernel">Nethttpd_kernel</a></td><td><div class="info"><h1 id="1_TITLE">The protocol kernel of the HTTP daemon</h1></div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Nethttpd_plex">Nethttpd_plex</a></td><td><div class="info"><h1 id="1_TITLE">Netplex support</h1></div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Nethttpd_reactor">Nethttpd_reactor</a></td><td><div class="info"><h1 id="1_TITLE">The reactive encapsulation of the HTTP daemon</h1><br/> This is a user-friendlier encapsulation of the HTTP daemon. It uses a
- &quot;pull model&quot;: One pulls HTTP requests from the &quot;reactor&quot; one after the
- other. Request/response pairs have a common environment that represents
- the input and output facilities. Input and output are realised by
- <code class="code">Netchannels</code>, and the implementation details are completely hidden.<br/> This encapsulation can be easily used in a multi-threaded environment
- when for every arriving HTTP connection a separate thread is used.</div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Nethttpd_services">Nethttpd_services</a></td><td><div class="info"><h1 id="1_TITLE">Service Providers for HTTP daemon</h1><br/> This module defines the basic service providers that handle requests and
- generate responses. The service providers can be used with both the
- reactive and the event-based daemon encapsulations.</div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Nethttpd_types">Nethttpd_types</a></td><td><div class="info">Type definitions for the HTTP daemon<br/> <b>Contents</b><br/> -  <a href="#Nethttpd_types.exceptions">Nethttpd_types.exceptions</a><ul><li> <a href="#Nethttpd_types.environment">Nethttpd_types.environment</a></li><li> <a href="#Nethttpd_types.service">Nethttpd_types.service</a></li><li> <a href="#Nethttpd_types.helpers">Nethttpd_types.helpers</a>
- </li></ul></div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Nethttpd_reactor">Nethttpd_reactor</a></td><td><div class="info"><h1 id="1_TITLE">The reactive encapsulation of the HTTP daemon</h1></div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Nethttpd_services">Nethttpd_services</a></td><td><div class="info"><h1 id="1_TITLE">Service Providers for HTTP daemon</h1></div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Nethttpd_types">Nethttpd_types</a></td><td><div class="info">Type definitions for the HTTP daemon</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Nethttpd_util">Nethttpd_util</a></td><td><div class="info">Utility functions</div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netlog">Netlog</a></td><td><div class="info">Basic logging facility<br/>    The purpose of this module is to define a mutable logging function
-    which ensures to be always pointing to a valid logging implementation.
-    By default, the function prints the messages to stderr, prepended
-    by a timestamp. In Netplex context, the implementation is changed so
-    that the Netplex logger is used instead (see  <a href="#Netplex_log">Netplex_log</a>), and
-    the <code class="code">log</code> and <code class="code">logf</code> functions below have the same effect as
-    the counterparts in  <a href="#Netplex_cenv">Netplex_cenv</a> with the same name.</div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmappings">Netmappings</a></td><td><div class="info">Internal access to the character conversion database<br/> This is an internal module.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netlog">Netlog</a></td><td><div class="info">Basic logging facility</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmappings">Netmappings</a></td><td><div class="info">Internal access to the character conversion database</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmappings_iso">Netmappings_iso</a></td><td/></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmappings_jp">Netmappings_jp</a></td><td/></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmappings_kr">Netmappings_kr</a></td><td/></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmappings_min">Netmappings_min</a></td><td/></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmappings_other">Netmappings_other</a></td><td/></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmcore">Netmcore</a></td><td><div class="info">Multi-processing for compute jobs<br/>    This library allows it to develop parallel algorithms that can take
-    advantage of multiple CPU cores. It does not use Ocaml's multi-threading
-    feature because this would implicitly serialize all computations.
-    Instead, independent processes are created, and the communication
-    between processes is made as cheap and unproblematic as possible.<br/>    Please read  <a href="#Netmcore_basics">Netmcore_basics</a> for an introduction into using
-    this module. There is also  <a href="#Netmcore_tut">Netmcore_tut</a> with more advanced
-    techniques.<br/>    Before using this library, it is required to call  <a href="#Netmcore.startup">Netmcore.startup</a>.
-    This turns the current process into the master process. The master
-    process has only a supervising function, and is responsible for
-    managing global resources, and for starting further worker processes.<br/>    The worker processes can start more workers. This is different from
-    creating a new thread, though: The new worker does not share memory
-    with its creator. It is also different from calling <code class="code">Unix.fork</code>,
-    because new workers are always subprocesses of the master process.
-    This means it is not initialized with a copy of the state of the
-    logical creator, but with its real parent process which is always
-    the master.<br/>    Compatibility with multi-threading: You may run into big trouble
-    when the master process starts further threads (after forking 
-    thread-related resources are in an uncontrolled state). There is
-    no such problem in the worker processes. In this library,
-    however, nothing is done to ease the multi-threaded life, so you
-    should carefully check the compatibility first.<br/>     <a href="#Netmcore">Netmcore</a> controls the lifetime of certain system resources in
-    addition to worker processes:<ul><li>Temporary files</li><li>Shared memory objects</li><li>Named semaphores</li></ul>    These objects have kernel persistence, and continue to exist when
-    the program ends. Because of this, there are two mechanisms to
-    control the lifetime, and to delete these objects finally: First,
-    if all using processes terminate normally, an object is deleted.
-    Second, in order to also catch abnormal terminations, these objects
-    are also managed by storing their names into an external file
-    &quot;netplex.pmanage&quot; (in the socket directory). When the program is
-    started the next time with the same socket directory, the objects
-    from the previous run are automatically deleted. The second mechanism
-    can be disabled by setting the<ul><li><code class="code">disable_pmanage</code> parameter for the  <a href="#Netmcore.startup">Netmcore.startup</a> call, or by
-      setting the</li><li><code class="code">unlink</code> parameter in the same call. This second option only disables
-      the deletion, but the management file is updated.</li></ul></div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmcore">Netmcore</a></td><td><div class="info">Multi-processing for compute jobs</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmcore_array">Netmcore_array</a></td><td><div class="info">Shared arrays</div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmcore_buffer">Netmcore_buffer</a></td><td><div class="info">Shared buffer<br/>    One can add more data to the end of the buffer, and one can
-    remove data from the beginning of the buffer.<br/>    Additions and deletions of data are atomic, and are strictly
-    serialized. Read accesses can occur in parallel, and can even
-    overlap with modifications (to some degree). It is, however,
-    ensured that reads do not see the parallel modification, i.e.
-    reads always base on the state from the beginning of the read
-    operation.<br/>    It is not excluded that additions can be executed in parallel. If
-    done this way, it is guaranteed that the effects of parallel
-    additions are the same as if they were executed in a serial
-    way. In particular, if an addition operation returns, this
-    addition and all parallel additions affecting preceding index
-    positions must be done. (The current implementation does not
-    attempt this optimization.)<br/>    Index positions are &quot;eternal&quot;, i.e. the index position of a
-    byte does not change when preceding bytes are deleted. Instead,
-    a deletion merely advances the start index of the valid data
-    (which is not necessarily 0). This model is more consistent
-    with parallel modifications.<br/>    On 32 bit platforms it can happen that index positions wrap
-    around (at 1G). The position following <code class="code">max_int</code> is 0. The
-    length is restricted to <code class="code">max_int-bsize</code> on these platforms.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmcore_buffer">Netmcore_buffer</a></td><td><div class="info">Shared buffer</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmcore_camlbox">Netmcore_camlbox</a></td><td><div class="info">Camlboxes for use in netmulticore programs</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmcore_condition">Netmcore_condition</a></td><td><div class="info">Condition variables</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmcore_hashtbl">Netmcore_hashtbl</a></td><td><div class="info">Shared hashtables</div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmcore_heap">Netmcore_heap</a></td><td><div class="info">Shared heaps of structured values<br/>    These heaps live in  <a href="#Netmcore_mempool">Netmcore_mempool</a>-type shared memory pools,
-    and can contain an arbitrary number of Ocaml values. These values
-    can be mutable, but special care has to be taken when modifying them.
-    The first value pushed onto the heap is called the <i>root element</i>.
-    All other values must be (directly or indirectly) reachable from the
-    root element.<br/>    Heaps are created with a certain initial size. The heaps remain
-    connected with the memory pool, and they are enlarged if necessary
-    by allocating more blocks in the pool.<br/>    As the heaps are shared between processes, it must be taken care
-    that no reference is made from shared heaps to normal process-local
-    memory. These references would only be valid in the process creating
-    them, and following such references from other processes would probably
-    crash the program (or at least return wrong values). In order to ensure
-    this, it is strictly forbidden to directly manipulate mutable
-    data structures. The  <a href="#Netmcore_heap.modify">Netmcore_heap.modify</a> function has to be used,
-    as this function makes it possible to copy more values to the heap.
-    Unfortunately, there is nothing in the type system that would prevent
-    direct mutation. so this can only be ensured by the discipline of the
-    programmer.<br/>    The values of the heap are also garbage-collected: If all allocated
-    space is used and more values need to be added, it is first tried
-    to get rid of old unreachable values. The garbarge collection is done
-    by the process that happens to initiate the addition of the value
-    that does no more fit onto the heap. During garbage collection, no
-    other additions can be done, but read accesses are not prevented.
-    The garbage collector does not move values (addresses remain unchanged).<br/>    The garabage collector only considers values as reachable that are
-    reachable via the root element. It is not sufficient when a value
-    is only reachable via a process-specific reference.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmcore_heap">Netmcore_heap</a></td><td><div class="info">Shared heaps of structured values</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmcore_matrix">Netmcore_matrix</a></td><td><div class="info">Shared 2-dimensional arrays (matrices)</div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmcore_mempool">Netmcore_mempool</a></td><td><div class="info">Memory pools<br/>    A memory pool is a block of shared memory that is set aside for storing
-    shared data structures. The pool needs to be created before the
-    worker processes are forked off that are going to use the pool.
-    The worker processes do not map the pool to some random address,
-    but rather the processes inherit the pool from the common master
-    process which ensures that all processes will see the pool at
-    the same address.<br/>    In order to allow inheritance, the function  <a href="#Netmcore.start">Netmcore.start</a>
-    for starting workers needs to get an additional argument
-    <code class="code">~inherit_resources</code>. The resource ID of the pool must be put
-    into this list - otherwise the worker does not get access to
-    the pool.<br/>    It is not possible to enlarge the pool later (because of the
-    inheritance method for making the pool accessible). It is advised
-    to make the pool large enough for all possible data cases, and
-    to let the user configure this size.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmcore_mempool">Netmcore_mempool</a></td><td><div class="info">Memory pools</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmcore_mutex">Netmcore_mutex</a></td><td><div class="info">Mutexes</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmcore_process">Netmcore_process</a></td><td><div class="info">Statically typed processes</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmcore_queue">Netmcore_queue</a></td><td><div class="info">Shared queues</div></td></tr>
@@ -302,19 +78,13 @@
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmcore_sem">Netmcore_sem</a></td><td><div class="info">Semaphores</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmcore_util">Netmcore_util</a></td><td/></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netmime">Netmime</a></td><td><div class="info">Netmime contains high-level classes and functions to process
- mail and MIME messages.<br/> <b>Contents</b><br/> -  <a href="#Netmime.types">Netmime.types</a><ul><li> <a href="#Netmime.classes">Netmime.classes</a></li><li> <a href="#Netmime.parsing">Netmime.parsing</a></li><li> <a href="#Netmime.printing">Netmime.printing</a></li></ul> The tutorial has been moved to  <a href="#Netmime_tut">Netmime_tut</a>.</div></td></tr>
+ mail and MIME messages.</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netnumber">Netnumber</a></td><td><div class="info">Binary encodings of numbers</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netpagebuffer">Netpagebuffer</a></td><td><div class="info">Buffer for page-aligned I/O</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netplex_admin">Netplex_admin</a></td><td/></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netplex_cenv">Netplex_cenv</a></td><td><div class="info">Container environment<br/> Some helper functions to explore the environment from a container.
- Most of the following functions <b>must</b> be called from a container context,
- i.e. from a process or thread that acts as container, otherwise
- the exception <code class="code">Not_in_container_thread</code> is raised. There are also some
- functions that can be called from controller context for convenience.<br/> <b>Thread safety:</b> Full. The functions in this module can be called from any
- thread.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netplex_cenv">Netplex_cenv</a></td><td><div class="info">Container environment</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netplex_config">Netplex_config</a></td><td><div class="info">Read the configuration file</div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netplex_container">Netplex_container</a></td><td><div class="info">Containers<br/> The container is the management object for the concurrently running
- service processor.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netplex_container">Netplex_container</a></td><td><div class="info">Containers</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netplex_controller">Netplex_controller</a></td><td><div class="info">Controller</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netplex_ctrl_aux">Netplex_ctrl_aux</a></td><td/></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netplex_ctrl_clnt">Netplex_ctrl_clnt</a></td><td/></tr>
@@ -329,16 +99,11 @@
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netplex_mutex">Netplex_mutex</a></td><td><div class="info">Netplex-wide mutexes</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netplex_semaphore">Netplex_semaphore</a></td><td><div class="info">Netplex-wide semaphores</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netplex_sharedvar">Netplex_sharedvar</a></td><td><div class="info">Netplex-wide variables</div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netplex_sockserv">Netplex_sockserv</a></td><td><div class="info">Socket service creation<br/> A socket service object is an encapsulation of a user-defined processor
- for a list of sockets.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netplex_sockserv">Netplex_sockserv</a></td><td><div class="info">Socket service creation</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netplex_util">Netplex_util</a></td><td/></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netplex_workload">Netplex_workload</a></td><td><div class="info">Workload management<br/> Workload managers control when additional containers are started or
- idle containers are stopped. See  <a href="#Netplex_intro.workload">Netplex_intro.workload</a> for 
- additional documentation how they are configured.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netplex_workload">Netplex_workload</a></td><td><div class="info">Workload management</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netpop">Netpop</a></td><td><div class="info">This is an interface for the Post Office Protocol - Version 3
- (POP3) as specifed by RFC 1939. The protocol is intended to permit
- a workstation to dynamically access a maildrop on a server host in
- a useful fashion.</div></td></tr>
+ (POP3) as specifed by RFC 1939.</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netsendmail">Netsendmail</a></td><td/></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netshm">Netshm</a></td><td><div class="info">Shared memory for O'Caml programs using multi-processing</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netshm_array">Netshm_array</a></td><td><div class="info">Arrays in shared memory</div></td></tr>
@@ -347,45 +112,13 @@
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netsmtp">Netsmtp</a></td><td><div class="info">This is an interface for the Simple Mail Tranfer Protocol (SMTP)
  as specified by RFC 2821.</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netsockaddr">Netsockaddr</a></td><td><div class="info">Parsing of socket addresses</div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netstream">Netstream</a></td><td><div class="info">A netstream is an input channel that is read block by block. The 
- fragment of the channel currently loaded into memory is called the
- current window of the netstream. The window can be thought as
- look-ahead buffer.<br/> <b>Picture:</b><br/> <pre class="codepre"><code class="code">
- 0                pos_in        pos_in + window_length            EOF
- +------------------+-------------------+--------------------------+
-                    ====================
-                     The current window
- </code></pre><br/> You can use a netstream like an <code class="code">in_obj_channel</code>, and read characters
- and strings from the stream. The bytes come first from the look-ahead
- buffer, and if there are not enough bytes, they are loaded from the
- underlying channel. After every read operation it is tried to enlarge
- the window such that it contains at least one block.<br/> If you want that the window becomes larger, you can call <code class="code">want</code> (to
- enlarge the window to a certain size) or <code class="code">want_another_block</code> (to load
- just another block from the underlying channel). Note that this affects only
- the current window and not the future size of the window.<br/> Note <code class="code">Buffer_underrun</code>: netstreams can cope with underruns of underlying
- channels. An underrun happens when it is not possible to ensure the
- minimum window size. However, it is possible that the window size
- sinks under the minimum, but the <code class="code">Buffer_underrun</code> is deferred until the
- next call of an input method. Furthermore, there is a problem in the <code class="code">skip</code>
- method which may only be partially executed, i.e. the method skips some
- bytes and then raises <code class="code">Buffer_underrun</code>.</div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netstring_pcre">Netstring_pcre</a></td><td><div class="info">Wrapper for regexps with PCRE syntax<br/> This module is a version of <code class="code">Str</code> with a thread-safe interface,
- implemented using Pcre. <br/> This modules processes PCRE-style regular expressions. If you like
- to write <code class="code">Str</code>-like regexps, you can also use  <a href="#Netstring_str">Netstring_str</a> with
- almost the same signature.<br/> <b>The functions in this module are unavailable if Ocamlnet is built
- with <code class="code">Str</code> as implementation of regular expressions! They will always
- raise <code class="code">Invalid_argument</code>!</b></div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netstring_str">Netstring_str</a></td><td><div class="info">Wrapper for regexps with <code class="code">Str</code> syntax<br/> This module was written at a time when we had only the <code class="code">Str</code> module
- for regular expressions. However, <code class="code">Str</code> has an interface that does
- not work for multi-threaded programs, because the state of the module
- is visible to the outside. The module <code class="code">Netstring_str</code> is similar to <code class="code">Str</code>,
- but has a thread-compatible interface.<br/> For an explanation why we need this module, please read  <a href="#Regexp">Regexp</a>.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netstream">Netstream</a></td><td><div class="info">A netstream is an input channel that is read block by block.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netstring_pcre">Netstring_pcre</a></td><td><div class="info">Wrapper for regexps with PCRE syntax</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netstring_str">Netstring_str</a></td><td><div class="info">Wrapper for regexps with <code class="code">Str</code> syntax</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netstring_top">Netstring_top</a></td><td/></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netsys">Netsys</a></td><td><div class="info">System calls missing in the <code class="code">Unix</code> module</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netsys_conf">Netsys_conf</a></td><td/></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netsys_gprof_init">Netsys_gprof_init</a></td><td><div class="info">Initialize GPROF helper<br/>    By linking this module the function  <a href="#Netsys.moncontrol">Netsys.moncontrol</a> is made
-    working. This should only be done if the program is built for
-    profiling (ocamlopt -p).</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netsys_gprof_init">Netsys_gprof_init</a></td><td><div class="info">Initialize GPROF helper</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netsys_impl_util">Netsys_impl_util</a></td><td/></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netsys_mem">Netsys_mem</a></td><td><div class="info">Bigarrays as memory buffers</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netsys_oothr">Netsys_oothr</a></td><td><div class="info">Object-oriented thread API</div></td></tr>
@@ -400,30 +133,14 @@
     further API's from POSIX-style operating systems.</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netsys_rng">Netsys_rng</a></td><td><div class="info">Random-number generator</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netsys_sem">Netsys_sem</a></td><td><div class="info"><h1 id="1_TITLE">Generic anonymous semaphores</h1></div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netsys_signal">Netsys_signal</a></td><td><div class="info">Signal handler framework<br/>    This module defines a simple framework for setting signal handlers.
-    When two modules want to set the handler for the same signal, the framework
-    decides in which order the handlers are executed.<br/>    The module also defines an empty handler list for <code class="code">Sys.sigpipe</code>, so these
-    signals are ignored by the program. This empty list can be extended, 
-    however.<br/>    Win32: Only <code class="code">Sys.sigint</code> handlers can effectively be registered. 
-    Registrations for other signal types are accepted but ignored.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netsys_signal">Netsys_signal</a></td><td><div class="info">Signal handler framework</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netsys_tmp">Netsys_tmp</a></td><td><div class="info">Temporary files</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netsys_types">Netsys_types</a></td><td><div class="info">Types for all Netsys modules</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netsys_win32">Netsys_win32</a></td><td><div class="info">Primitives for Win32</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netsys_xdr">Netsys_xdr</a></td><td><div class="info">Some helpers for en/decoding XDR faster</div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netulex">Netulex</a></td><td><div class="info">Support module for Alain Frisch's <code class="code">ulex</code> lexer generator<br/> The sub module <code class="code">ULB</code> is a Unicode-based lexing buffer that
- reads encoded strings and makes them available to the lexer
- as both Unicode arrays and UTF-8 strings.<br/> The sub module <code class="code">Ulexing</code> is a replacement for the module
- in <code class="code">ulex</code> with the same name. It uses <code class="code">ULB</code> to represent
- the main lexing buffer. It is much faster than the original
- <code class="code">Ulexing</code> implementation when the scanned text is UTF-8
- encoded and <code class="code">Ulexing.utf8_lexeme</code> is frequently called to
- get the lexeme strings. Furthermore, it can process input
- data of all encodings available to <code class="code">Netconversion</code>. It is,
- however, no drop-in replacement as it has a different
- signature.<br/> To enable this version of <code class="code">Ulexing</code>, simply put an
- <code class="code">open Netulex</code> before using the <code class="code">ulex</code> lexers.<br/> Note that the tutorial has been moved to  <a href="#Netulex_tut">Netulex_tut</a>.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Netulex">Netulex</a></td><td><div class="info">Support module for Alain Frisch's <code class="code">ulex</code> lexer generator</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Netunichar">Netunichar</a></td><td><div class="info">Unicode character information</div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Neturl">Neturl</a></td><td><div class="info">Uniform Resource Locators (URLs)<br/> <b>Contents</b><br/> -  <a href="#Neturl.interface">Neturl.interface</a><br/> The tutorial has been moved to  <a href="#Neturl_tut">Neturl_tut</a>.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Neturl">Neturl</a></td><td><div class="info">Uniform Resource Locators (URLs)</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Options">Options</a></td><td/></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Parser">Parser</a></td><td/></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Printexc_register_printer">Printexc_register_printer</a></td><td/></tr>
@@ -444,41 +161,24 @@
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Rpc_proxy">Rpc_proxy</a></td><td><div class="info">RPC proxies</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Rpc_server">Rpc_server</a></td><td><div class="info">RPC servers</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Rpc_simple_client">Rpc_simple_client</a></td><td><div class="info">Synchronous API for RPC clients</div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Rpc_ssl">Rpc_ssl</a></td><td><div class="info">Securing RPC by SSL<br/> The following configuration objects allow it to encapsulate a
- stream with SSL. Note that this is only possible with stream
- sockets.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Rpc_ssl">Rpc_ssl</a></td><td><div class="info">Securing RPC by SSL</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Rpc_transport">Rpc_transport</a></td><td><div class="info">Low-level RPC transporters</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Rpc_util">Rpc_util</a></td><td><div class="info">Utility functions</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Rtypes">Rtypes</a></td><td><div class="info">Binary encodings of numbers (Legacy)</div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Shell">Shell</a></td><td><div class="info">Calls external programs, creates pipelines, etc. (simplified interface)</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Shell">Shell</a></td><td><div class="info">Calls external programs, creates pipelines, etc.</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Shell_fs">Shell_fs</a></td><td><div class="info">Shell filesystem</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Shell_sys">Shell_sys</a></td><td/></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Shell_uq">Shell_uq</a></td><td><div class="info">Run shell commands within Unixqueues</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Ssl_exts">Ssl_exts</a></td><td><div class="info">A few extensions to the ocaml-ssl library <code class="code">Ssl</code></div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Syntax">Syntax</a></td><td/></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=T">T</a></td><td/></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Telnet_client">Telnet_client</a></td><td><div class="info">Telnet client<br/> This is a Telnet client providing the basic Telnet services. It
- supports sending and receiving data (asynchronously), and the
- negotiation of Telnet options, but it does not implement any option.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Telnet_client">Telnet_client</a></td><td><div class="info">Telnet client</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Unimap_to_ocaml">Unimap_to_ocaml</a></td><td/></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Unixqueue">Unixqueue</a></td><td/></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Unixqueue_pollset">Unixqueue_pollset</a></td><td><div class="info">Unixqueue implementation on top of  <a href="#Netsys_pollset">Netsys_pollset</a></div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Unixqueue_select">Unixqueue_select</a></td><td/></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Unixqueue_util">Unixqueue_util</a></td><td><div class="info">Definitions common to  <a href="#Unixqueue and {!Unixqueue2">Unixqueue and {!Unixqueue2</a></div></td></tr>
-<tr><td class="module"><a href="?package=ocamlnet&amp;module=Uq_engines">Uq_engines</a></td><td><div class="info">An <b>engine</b> performs a certain task in an autonomous way. Engines
- are attached to a  <a href="#Unixqueue.event_system">Unixqueue.event_system</a>, and do their task by
- generating events for resources of the operating system, and 
- by handling such events. Engines are in one of four states: They
- may be still <b>working</b>, they may be <b>done</b>, they may be
- <b>aborted</b>, or they may be in an <b>error</b> state. The three latter
- states a called <b>final states</b>, because they indicate that the
- engine has stopped operation.<br/> It is possible to ask an engine to notify another object when it
- changes its state. For simplicity, notification is done by invoking
- a callback function, and not by issuing notification events.<br/> Effectively, engines provide a calculus for cooperative microthreading.
- This calculus includes combinators for sequential execution and
- synchronization. Moreover, it is easy to connect it with callback-style
- microthreading - one can arrange callbacks when an engine is done, and
- one can catch callbacks and turn them into engines.</div></td></tr>
+<tr><td class="module"><a href="?package=ocamlnet&amp;module=Uq_engines">Uq_engines</a></td><td><div class="info">An <b>engine</b> performs a certain task in an autonomous way.</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Uq_io">Uq_io</a></td><td><div class="info">Unified engines for stream I/O</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Uq_libevent">Uq_libevent</a></td><td><div class="info">Use Libevent as event loop</div></td></tr>
 <tr><td class="module"><a href="?package=ocamlnet&amp;module=Uq_lwt">Uq_lwt</a></td><td><div class="info">Compatibility with <code class="code">Lwt</code></div></td></tr>

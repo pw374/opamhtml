@@ -1,15 +1,15 @@
 <div class="ocaml_toplevel_module"><div class="info">A simple boolean domain-specific language</div>
 <div class="info"><div class="info">Blang provides infrastructure for writing simple boolean DSLs.
     All expressions in a Blang language evaluate to a bool.  The language
-    is parameterized over another language of base propositions.<br/>    The syntax is almost exactly the obvious s-expression syntax,
-    except that:<br/>    1. Base elements are not marked explicitly.  Thus, if your base
+    is parameterized over another language of base propositions.<p>    The syntax is almost exactly the obvious s-expression syntax,
+    except that:</p><p>    1. Base elements are not marked explicitly.  Thus, if your base
        language has elements FOO, BAR, etc., then you could write
-       the following Blang s-expressions:<br/>       <span class="verbatim">          FOO
+       the following Blang s-expressions:</p><p>       <span class="verbatim">          FOO
           (and FOO BAR)
           (if FOO BAR BAZ)
-       </span><br/>       and so on.  Note that this gets in the way of using the blang
-       &quot;keywords&quot; in your value language.<br/>    2. And and Or take a variable number of arguments, so that one can
-       (and probably should) write<br/>       <span class="verbatim">(and FOO BAR BAZ QUX) </span><br/>       instead of<br/>       <span class="verbatim">(and FOO (and BAR (and BAZ QUX))) </span></div></div>
+       </span></p><p>       and so on.  Note that this gets in the way of using the blang
+       &quot;keywords&quot; in your value language.</p><p>    2. And and Or take a variable number of arguments, so that one can
+       (and probably should) write</p><p>       <span class="verbatim">(and FOO BAR BAZ QUX) </span></p><p>       instead of</p><p>       <span class="verbatim">(and FOO (and BAR (and BAZ QUX))) </span></p></div></div>
 <pre><code><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> = <span class="keyword">private</span></code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTt.True"><span class="constructor">True</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTt.False"><span class="constructor">False</span></span></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTt.And"><span class="constructor">And</span></span> <span class="keyword">of</span> <code class="type">'a <a href="?package=core_kernel&amp;module=Blang&amp;type=t">t</a> * 'a <a href="?package=core_kernel&amp;module=Blang&amp;type=t">t</a></code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTt.Or"><span class="constructor">Or</span></span> <span class="keyword">of</span> <code class="type">'a <a href="?package=core_kernel&amp;module=Blang&amp;type=t">t</a> * 'a <a href="?package=core_kernel&amp;module=Blang&amp;type=t">t</a></code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTt.Not"><span class="constructor">Not</span></span> <span class="keyword">of</span> <code class="type">'a <a href="?package=core_kernel&amp;module=Blang&amp;type=t">t</a></code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTt.If"><span class="constructor">If</span></span> <span class="keyword">of</span> <code class="type">'a <a href="?package=core_kernel&amp;module=Blang&amp;type=t">t</a> * 'a <a href="?package=core_kernel&amp;module=Blang&amp;type=t">t</a> * 'a <a href="?package=core_kernel&amp;module=Blang&amp;type=t">t</a></code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTt.Base"><span class="constructor">Base</span></span> <span class="keyword">of</span> <code class="type">'a</code></code></td><td class="typefieldcomment" align="left"><div class="info">Note that the sexps are not directly inferred from the type above -- there are lots of
     fancy shortcuts.  Also, the sexps for <code class="code">'a</code> must not look anything like blang sexps.
@@ -25,20 +25,20 @@
 <pre><span class="VALconstant_value"><span class="keyword">val</span> constant_value</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Blang&amp;type=t">t</a> -&gt; bool option</code></pre>
 <div class="info"><div class="info">The following two functions are useful when one wants to pretend
     that <code class="code">'a t</code> has constructors And and Or of type <code class="code">'a t list -&gt; 'a t</code>.
-    The pattern of use is<br/>    <pre class="codepre"><code class="code">
+    The pattern of use is<p>    </p><code class="code">
       match t with
       | ...
       | And (_, _) as t -&gt; let ts = gather_conjuncts t in ...
       | Or (_, _) as t -&gt; let ts = gather_disjuncts t in ...
       | ...
-    </code></pre><br/>    or, in case you also want to handle True (resp. False) as a special
-    case of conjunction (disjunction)<br/>    <pre class="codepre"><code class="code">
+    </code><p>    or, in case you also want to handle True (resp. False) as a special
+    case of conjunction (disjunction)</p><p>    </p><code class="code">
       match t with
       | ...
       | True | And (_, _) as t -&gt; let ts = gather_conjuncts t in ...
       | False | Or (_, _) as t -&gt; let ts = gather_disjuncts t in ...
       | ...
-    </code></pre></div></div>
+    </code></div></div>
 <pre><span class="VALgather_conjuncts"><span class="keyword">val</span> gather_conjuncts</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Blang&amp;type=t">t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Blang&amp;type=t">t</a> list</code></pre><div class="info"><div class="info"><code class="code">gather_conjuncts t</code> gathers up all toplevel conjuncts in <code class="code">t</code>.  For example,
     <ul><li><code class="code">gather_conjuncts t = [t]</code> when <code class="code">t</code> matches neither <code class="code">And (_, _)</code> nor <code class="code">True</code> </li><li><code class="code">gather_conjuncts True = [] </code> </li><li><code class="code">gather_conjuncts (And (t1, t2)) = gather_conjuncts t1 @ gather_conjuncts t2</code> </li><li><code class="code">gather_conjuncts (and_ ts) = ts</code> </li></ul></div></div>
 <pre><span class="VALgather_disjuncts"><span class="keyword">val</span> gather_disjuncts</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Blang&amp;type=t">t</a> -&gt; 'a <a href="?package=core_kernel&amp;module=Blang&amp;type=t">t</a> list</code></pre><div class="info"><div class="info"><code class="code">gather_disjuncts t</code> gathers up all toplevel disjuncts in <code class="code">t</code>.  For example,
@@ -54,7 +54,7 @@
     <code class="code">f</code> that assigns truth values to base propositions.</div></div>
 <pre><span class="VALspecialize"><span class="keyword">val</span> specialize</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Blang&amp;type=t">t</a> -&gt; ('a -&gt; [ `Known of bool | `Unknown ]) -&gt; 'a <a href="?package=core_kernel&amp;module=Blang&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">specialize t f</code> partially evaluates <code class="code">t</code> according to a
     perhaps-incomplete assignment <code class="code">f</code> of the values of base propositions.
-    The following laws (at least partially) characterize its behavior.<br/>    - <code class="code">specialize t (fun _ -&gt; `Unknown) = t</code><br/>    - <code class="code">specialize t (fun x -&gt; `Known (f x)) = constant (eval t f)</code><br/>    - <code class="code">List.forall (values (specialize t g)) ~f:(fun x -&gt; g x = `Unknown)</code><br/>    - <pre class="codepre"><code class="code">
+    The following laws (at least partially) characterize its behavior.<p>    - <code class="code">specialize t (fun _ -&gt; `Unknown) = t</code></p><p>    - <code class="code">specialize t (fun x -&gt; `Known (f x)) = constant (eval t f)</code></p><p>    - <code class="code">List.forall (values (specialize t g)) ~f:(fun x -&gt; g x = `Unknown)</code></p><p>    - </p><code class="code">
         if
           List.forall (values t) ~f:(fun x -&gt;
             match g x with
@@ -62,7 +62,7 @@
             | `Unknown -&gt; true)
         then
           eval t f = eval (specialize t g) f
-      </code></pre></div></div>
+      </code></div></div>
 <pre><span class="VALinvariant"><span class="keyword">val</span> invariant</span> : <code class="type">'a <a href="?package=core_kernel&amp;module=Blang&amp;type=t">t</a> -&gt; unit</code></pre>
 <div class="ocaml_module sig" name="Stable"><pre><span class="keyword">module</span> <a href="?package=core_kernel&amp;module=Blang.Stable">Stable</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
 <div class="ocaml_module sig" name="V1"><pre><span class="keyword">module</span> <a href="?package=core_kernel&amp;module=Blang.Stable.V1">V1</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
@@ -99,20 +99,20 @@
     Otherwise <code class="code">t_of_sexp</code> will fail.</div></div>
 <div class="info"><div class="info">The following two functions are useful when one wants to pretend
     that <code class="code">'a t</code> has constructors And and Or of type <code class="code">'a t list -&gt; 'a t</code>.
-    The pattern of use is<br/>    <pre class="codepre"><code class="code">
+    The pattern of use is<p>    </p><code class="code">
       match t with
       | ...
       | And (_, _) as t -&gt; let ts = gather_conjuncts t in ...
       | Or (_, _) as t -&gt; let ts = gather_disjuncts t in ...
       | ...
-    </code></pre><br/>    or, in case you also want to handle True (resp. False) as a special
-    case of conjunction (disjunction)<br/>    <pre class="codepre"><code class="code">
+    </code><p>    or, in case you also want to handle True (resp. False) as a special
+    case of conjunction (disjunction)</p><p>    </p><code class="code">
       match t with
       | ...
       | True | And (_, _) as t -&gt; let ts = gather_conjuncts t in ...
       | False | Or (_, _) as t -&gt; let ts = gather_disjuncts t in ...
       | ...
-    </code></pre></div></div>
+    </code></div></div>
 <div class="info"><div class="info"><code class="code">gather_conjuncts t</code> gathers up all toplevel conjuncts in <code class="code">t</code>.  For example,
     <ul><li><code class="code">gather_conjuncts t = [t]</code> when <code class="code">t</code> matches neither <code class="code">And (_, _)</code> nor <code class="code">True</code> </li><li><code class="code">gather_conjuncts True = [] </code> </li><li><code class="code">gather_conjuncts (And (t1, t2)) = gather_conjuncts t1 @ gather_conjuncts t2</code> </li><li><code class="code">gather_conjuncts (and_ ts) = ts</code> </li></ul></div></div>
 <div class="info"><div class="info"><code class="code">gather_disjuncts t</code> gathers up all toplevel disjuncts in <code class="code">t</code>.  For example,
@@ -127,7 +127,7 @@
     <code class="code">f</code> that assigns truth values to base propositions.</div></div>
 <div class="info"><div class="info"><code class="code">specialize t f</code> partially evaluates <code class="code">t</code> according to a
     perhaps-incomplete assignment <code class="code">f</code> of the values of base propositions.
-    The following laws (at least partially) characterize its behavior.<br/>    - <code class="code">specialize t (fun _ -&gt; `Unknown) = t</code><br/>    - <code class="code">specialize t (fun x -&gt; `Known (f x)) = constant (eval t f)</code><br/>    - <code class="code">List.forall (values (specialize t g)) ~f:(fun x -&gt; g x = `Unknown)</code><br/>    - <pre class="codepre"><code class="code">
+    The following laws (at least partially) characterize its behavior.<p>    - <code class="code">specialize t (fun _ -&gt; `Unknown) = t</code></p><p>    - <code class="code">specialize t (fun x -&gt; `Known (f x)) = constant (eval t f)</code></p><p>    - <code class="code">List.forall (values (specialize t g)) ~f:(fun x -&gt; g x = `Unknown)</code></p><p>    - </p><code class="code">
         if
           List.forall (values t) ~f:(fun x -&gt;
             match g x with
@@ -135,5 +135,5 @@
             | `Unknown -&gt; true)
         then
           eval t f = eval (specialize t g) f
-      </code></pre></div></div>
+      </code></div></div>
 </div>

@@ -10,17 +10,17 @@
             Netplex_types.address -&gt; Netplex_types.processor_hooks) -&gt;
 (Netplex_types.container -&gt; <a href="?package=ocamlnet&amp;module=Netcgi&amp;type=cgi">Netcgi.cgi</a> -&gt; unit) -&gt;
 Netplex_types.processor_factory</code></pre><div class="info"><div class="info">Reads a Netplex configuration section like
- <pre class="codepre"><code class="code">
+ <code class="code">
     processor {
       type = &quot;netcgi&quot;;          (* or the overridden [name] *)
       timeout = 15;             (* optional *)
       mount_dir = &quot;/url/path&quot;;  (* optional *)
       mount_at = &quot;/url/path&quot;;   (* optional alternative to mount_dir *)
     }
- </code></pre><br/> and creates a processor for the protocols &quot;fcgi&quot;, &quot;scgi&quot;,
+ </code><p> and creates a processor for the protocols &quot;fcgi&quot;, &quot;scgi&quot;,
  and &quot;ajp&quot; (or a subset of these protocols if the <code class="code">enable</code> 
  parameter restricts them). A complete service definition
- looks thus like:<br/> <pre class="codepre"><code class="code">
+ looks thus like:</p><p> </p><code class="code">
       service {
           name = &quot;name_of_service&quot;;
           protocol {
@@ -42,12 +42,12 @@ Netplex_types.processor_factory</code></pre><div class="info"><div class="info">
               max_threads = &lt;n&gt;;
           };
       }
- </code></pre><br/> The processor calls the argument function of type <code class="code">container -&gt; cgi -&gt; unit</code>
- for every incoming request.<br/> The <code class="code">timeout</code> parameter specifies when inactive connections are
+ </code><p> The processor calls the argument function of type <code class="code">container -&gt; cgi -&gt; unit</code>
+ for every incoming request.</p><p> The <code class="code">timeout</code> parameter specifies when inactive connections are
  timed out (in seconds). The <code class="code">mount_dir</code> and <code class="code">mount_at</code> parameters
- define which part of the URL is considered as <code class="code">SCRIPT_NAME</code>:<br/> - By default (if neither <code class="code">mount_dir</code> nor <code class="code">mount_at</code>) are given
+ define which part of the URL is considered as <code class="code">SCRIPT_NAME</code>:</p><p> - By default (if neither <code class="code">mount_dir</code> nor <code class="code">mount_at</code>) are given
    <code class="code">SCRIPT_NAME</code> is determined in a protocol-dependent way. Usually,
-   the server transmits <code class="code">SCRIPT_NAME</code>, but see the note below.<ul><li>If <code class="code">mount_dir</code> is present, the processor accepts only URLs
+   the server transmits <code class="code">SCRIPT_NAME</code>, but see the note below.</p><ul><li>If <code class="code">mount_dir</code> is present, the processor accepts only URLs
    that have this path as true prefix directory, i.e. the URL path
    is <code class="code">&lt;mount_dir&gt;/&lt;name&gt;&lt;rest&gt;</code>. The part <code class="code">&lt;mount_dir&gt;/&lt;name&gt;</code>
    is taken as <code class="code">SCRIPT_NAME</code>.</li><li>If <code class="code">mount_at</code> is present, the processor accepts only URLs

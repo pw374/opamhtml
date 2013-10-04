@@ -30,7 +30,7 @@
 <div class="info"><div class="info">This module supports standard JSON nodes only, i.e. no special syntax
    for variants or tuples as supported by  <a href="#Yojson.Safe">Yojson.Safe</a>.
    Arbitrary integers are not supported as they must all fit within the
-   standard OCaml int type (31 or 63 bits depending on the platform).<br/>   The main advantage of this module is its simplicity.</div></div>
+   standard OCaml int type (31 or 63 bits depending on the platform).<p>   The main advantage of this module is its simplicity.</p></div></div>
 <div class="info"><div class="info"><h3 id="3_TITLE">Type of the JSON tree</h3></div></div>
 <pre><span class="TYPEjson"><span class="keyword">type</span> json</span> = <code class="type">[ `Assoc of (string * <a href="?package=yojson&amp;module=Yojson.Basic&amp;type=json">json</a>) list
 | `Bool of bool
@@ -59,14 +59,14 @@
       <code class="code">Bi_outbuf.create_channel_writer</code> on the same channel.
       <code class="code">buf</code> is flushed right
       before <code class="code">to_channel</code> returns but the <code class="code">out_channel</code> is
-      not flushed automatically.<br/>      See <code class="code">to_string</code> for the role of the other optional arguments.</div></div></div></div>
+      not flushed automatically.<p>      See <code class="code">to_string</code> for the role of the other optional arguments.</p></div></div></div></div>
 <pre><span class="VALto_output"><span class="keyword">val</span> to_output</span> : <code class="type">?buf:<a href="?package=biniou&amp;module=Bi_outbuf&amp;type=t">Bi_outbuf.t</a> -&gt;
 ?len:int -&gt;
 ?std:bool -&gt; &lt; output : string -&gt; int -&gt; int -&gt; int; .. &gt; -&gt; <a href="?package=yojson&amp;module=Yojson.Basic&amp;type=json">json</a> -&gt; unit</code></pre><div class="info"><div class="info">Write a compact JSON value to an OO channel.<div class="parameters"><div class="param_info"><code class="code">buf</code> : allows to reuse an existing buffer created with 
       <code class="code">Bi_outbuf.create_output_writer</code> on the same channel.
       <code class="code">buf</code> is flushed right
       before <code class="code">to_output</code> returns but the channel itself is
-      not flushed automatically.<br/>      See <code class="code">to_string</code> for the role of the other optional arguments.</div></div></div></div>
+      not flushed automatically.<p>      See <code class="code">to_string</code> for the role of the other optional arguments.</p></div></div></div></div>
 <pre><span class="VALto_file"><span class="keyword">val</span> to_file</span> : <code class="type">?len:int -&gt; ?std:bool -&gt; string -&gt; <a href="?package=yojson&amp;module=Yojson.Basic&amp;type=json">json</a> -&gt; unit</code></pre><div class="info"><div class="info">Write a compact JSON value to a file.
       See <code class="code">to_string</code> for the role of the optional arguments.</div></div>
 <pre><span class="VALto_outbuf"><span class="keyword">val</span> to_outbuf</span> : <code class="type">?std:bool -&gt; <a href="?package=biniou&amp;module=Bi_outbuf&amp;type=t">Bi_outbuf.t</a> -&gt; <a href="?package=yojson&amp;module=Yojson.Basic&amp;type=json">json</a> -&gt; unit</code></pre><div class="info"><div class="info">Write a compact JSON value to an existing buffer.
@@ -139,27 +139,27 @@
 ?fname:string -&gt; ?lnum:int -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a> -&gt; <a href="?package=yojson&amp;module=Yojson.Basic&amp;type=json">json</a> <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a></code></pre><div class="info"><div class="info">Input a sequence of JSON values from a channel.
       Whitespace between JSON values is fine but not required.<div class="parameters"><div class="param_info"><code class="code">fin</code> : finalization function executed once when the end of the
       stream is reached either because there is no more input or because
-      the input could not be parsed, raising an exception.<br/>      See <code class="code">from_string</code> for the meaning of the other optional arguments.</div></div></div></div>
+      the input could not be parsed, raising an exception.<p>      See <code class="code">from_string</code> for the meaning of the other optional arguments.</p></div></div></div></div>
 <pre><span class="VALstream_from_file"><span class="keyword">val</span> stream_from_file</span> : <code class="type">?buf:<a href="?package=biniou&amp;module=Bi_outbuf&amp;type=t">Bi_outbuf.t</a> -&gt; ?fname:string -&gt; ?lnum:int -&gt; string -&gt; <a href="?package=yojson&amp;module=Yojson.Basic&amp;type=json">json</a> <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a></code></pre><div class="info"><div class="info">Input a sequence of JSON values from a file.
-      Whitespace between JSON values is fine but not required.<br/>      See <code class="code">from_string</code> for the meaning of the optional arguments.</div></div>
+      Whitespace between JSON values is fine but not required.<p>      See <code class="code">from_string</code> for the meaning of the optional arguments.</p></div></div>
 <pre><span class="VALstream_from_lexbuf"><span class="keyword">val</span> stream_from_lexbuf</span> : <code class="type"><a href="?package=yojson&amp;module=Yojson.Basic&amp;type=lexer_state">lexer_state</a> -&gt; ?fin:(unit -&gt; unit) -&gt; <a href="?package=ocaml&amp;module=Lexing&amp;type=lexbuf">Lexing.lexbuf</a> -&gt; <a href="?package=yojson&amp;module=Yojson.Basic&amp;type=json">json</a> <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a></code></pre><div class="info"><div class="info">Input a sequence of JSON values from a lexbuf.
       A valid initial <code class="code">lexer_state</code> can be created with <code class="code">init_lexer</code>.
-      Whitespace between JSON values is fine but not required.<br/>      See <code class="code">stream_from_channel</code> for the meaning of the optional <code class="code">fin</code>
-      argument.</div></div>
+      Whitespace between JSON values is fine but not required.<p>      See <code class="code">stream_from_channel</code> for the meaning of the optional <code class="code">fin</code>
+      argument.</p></div></div>
 <pre><span class="TYPEjson_line"><span class="keyword">type</span> json_line</span> = <code class="type">[ `Exn of exn | `Json of <a href="?package=yojson&amp;module=Yojson.Basic&amp;type=json">json</a> ]</code></pre><div class="info"><div class="info">The type of values resulting from a parsing attempt of a JSON value.</div></div>
 <pre><span class="VALlinestream_from_channel"><span class="keyword">val</span> linestream_from_channel</span> : <code class="type">?buf:<a href="?package=biniou&amp;module=Bi_outbuf&amp;type=t">Bi_outbuf.t</a> -&gt;
 ?fin:(unit -&gt; unit) -&gt;
 ?fname:string -&gt; ?lnum:int -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a> -&gt; <a href="?package=yojson&amp;module=Yojson.Basic&amp;type=json_line">json_line</a> <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a></code></pre><div class="info"><div class="info">Input a sequence of JSON values, one per line, from a channel.
       Exceptions raised when reading malformed lines are caught
-      and represented using <code class="code">`Exn</code>.<br/>      See <code class="code">stream_from_channel</code> for the meaning of the optional <code class="code">fin</code>
+      and represented using <code class="code">`Exn</code>.<p>      See <code class="code">stream_from_channel</code> for the meaning of the optional <code class="code">fin</code>
       argument.
-      See <code class="code">from_string</code> for the meaning of the other optional arguments.</div></div>
+      See <code class="code">from_string</code> for the meaning of the other optional arguments.</p></div></div>
 <pre><span class="VALlinestream_from_file"><span class="keyword">val</span> linestream_from_file</span> : <code class="type">?buf:<a href="?package=biniou&amp;module=Bi_outbuf&amp;type=t">Bi_outbuf.t</a> -&gt;
 ?fname:string -&gt; ?lnum:int -&gt; string -&gt; <a href="?package=yojson&amp;module=Yojson.Basic&amp;type=json_line">json_line</a> <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a></code></pre><div class="info"><div class="info">Input a sequence of JSON values, one per line, from a file.
       Exceptions raised when reading malformed lines are caught
-      and represented using <code class="code">`Exn</code>.<br/>      See <code class="code">stream_from_channel</code> for the meaning of the optional <code class="code">fin</code>
+      and represented using <code class="code">`Exn</code>.<p>      See <code class="code">stream_from_channel</code> for the meaning of the optional <code class="code">fin</code>
       argument.
-      See <code class="code">from_string</code> for the meaning of the other optional arguments.</div></div>
+      See <code class="code">from_string</code> for the meaning of the other optional arguments.</p></div></div>
 <pre><span class="VALfinish_string"><span class="keyword">val</span> finish_string</span> : <code class="type"><a href="?package=yojson&amp;module=Yojson.Basic&amp;type=lexer_state">lexer_state</a> -&gt; <a href="?package=ocaml&amp;module=Lexing&amp;type=lexbuf">Lexing.lexbuf</a> -&gt; string</code></pre>
 <pre><span class="VALread_string"><span class="keyword">val</span> read_string</span> : <code class="type"><a href="?package=yojson&amp;module=Yojson.Basic&amp;type=lexer_state">lexer_state</a> -&gt; <a href="?package=ocaml&amp;module=Lexing&amp;type=lexbuf">Lexing.lexbuf</a> -&gt; string</code></pre>
 <pre><span class="VALread_ident"><span class="keyword">val</span> read_ident</span> : <code class="type"><a href="?package=yojson&amp;module=Yojson.Basic&amp;type=lexer_state">lexer_state</a> -&gt; <a href="?package=ocaml&amp;module=Lexing&amp;type=lexbuf">Lexing.lexbuf</a> -&gt; string</code></pre>
@@ -220,7 +220,7 @@
 <div class="info"><div class="info">This module provides combinators for extracting fields from JSON
    values. This approach is recommended for reading a few fields
    from data returned by public APIs. However for more complex applications 
-   we recommend  <a href="https://github.com/MyLifeLabs/atdgen">Atdgen</a>.<br/>   Here is some sample JSON data:
+   we recommend  <a href="https://github.com/MyLifeLabs/atdgen">Atdgen</a>.<p>   Here is some sample JSON data:
 <span class="verbatim">{
   &quot;id&quot;: &quot;398eb027&quot;,
   &quot;name&quot;: &quot;John Doe&quot;,
@@ -245,13 +245,13 @@
       &quot;url&quot;: &quot;http://example.com/398eb027/4&quot;
     }
   ]
-}</span><br/>   In order to extract the &quot;id&quot; field, assuming it is mandatory,
+}</span></p><p>   In order to extract the &quot;id&quot; field, assuming it is mandatory,
    we would use the following OCaml code that operates on single JSON
    nodes:
 <span class="verbatim">open Yojson.Basic.Util
 ...
   let id = json |&gt; member &quot;id&quot; |&gt; to_string in
-  ...</span><br/>   In order to extract all the &quot;title&quot; fields, we would write the following
+  ...</span></p><p>   In order to extract all the &quot;title&quot; fields, we would write the following
    OCaml code that operates on lists of JSON nodes, skipping
    undefined nodes and nodes of unexpected type:
 <span class="verbatim">open Yojson.Basic.Util
@@ -261,7 +261,7 @@ let extract_titles (json : Yojson.Basic.json) : string list =
     |&gt; filter_member &quot;pages&quot;
     |&gt; flatten
     |&gt; filter_member &quot;title&quot;
-    |&gt; filter_string</span></div></div>
+    |&gt; filter_string</span></p></div></div>
 <pre><span class="EXCEPTIONType_error"><span class="keyword">exception</span> Type_error</span> <span class="keyword">of</span> <code class="type">string * <a href="?package=yojson&amp;module=Yojson.Basic&amp;type=json">json</a></code></pre><div class="info"><div class="info">Raised when the JSON value is not of the correct type to support an
       operation, e.g. <code class="code">member</code> on an <code class="code">`Int</code>. The string message explains the
       mismatch.</div></div>
@@ -334,8 +334,8 @@ let extract_titles (json : Yojson.Basic.json) : string list =
 <div class="info"><div class="info">This module supports a specific syntax for variants and tuples
    in addition to the standard JSON nodes.
    Arbitrary integers are supported and represented as a decimal string 
-   using <code class="code">`Intlit</code> when they cannot be represented using OCaml's int type.<br/>   This module is recommended for intensive use 
-   or OCaml-friendly use of JSON.</div></div>
+   using <code class="code">`Intlit</code> when they cannot be represented using OCaml's int type.<p>   This module is recommended for intensive use 
+   or OCaml-friendly use of JSON.</p></div></div>
 <div class="info"><div class="info"><h3 id="3_TITLE">Type of the JSON tree</h3></div></div>
 <pre><span class="TYPEjson"><span class="keyword">type</span> json</span> = <code class="type">[ `Assoc of (string * <a href="?package=yojson&amp;module=Yojson.Safe&amp;type=json">json</a>) list
 | `Bool of bool
@@ -357,11 +357,11 @@ let extract_titles (json : Yojson.Basic.json) : string list =
 <pre><span class="VALto_basic"><span class="keyword">val</span> to_basic</span> : <code class="type"><a href="?package=yojson&amp;module=Yojson.Safe&amp;type=json">json</a> -&gt; <a href="?package=yojson&amp;module=Yojson.Basic&amp;type=json">Basic.json</a></code></pre><div class="info"><div class="info">Tuples are converted to JSON arrays,
      Variants are converted to JSON strings or arrays of a string (constructor)
      and a json value (argument).
-     Long integers are converted to JSON strings.<br/>     Examples:
+     Long integers are converted to JSON strings.<p>     Examples:
 <span class="verbatim">`Tuple [ `Int 1; `Float 2.3 ]   -&gt;    `List [ `Int 1; `Float 2.3 ]
 `Variant (&quot;A&quot;, None)            -&gt;    `String &quot;A&quot;
 `Variant (&quot;B&quot;, Some x)          -&gt;    `List [ `String &quot;B&quot;, x ]
-`Intlit &quot;12345678901234567890&quot;  -&gt;    `String &quot;12345678901234567890&quot;</span></div></div>
+`Intlit &quot;12345678901234567890&quot;  -&gt;    `String &quot;12345678901234567890&quot;</span></p></div></div>
 <div class="info"><div class="info"><h2 id="2_TITLE">JSON writers</h2></div></div>
 <pre><span class="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">?buf:<a href="?package=biniou&amp;module=Bi_outbuf&amp;type=t">Bi_outbuf.t</a> -&gt; ?len:int -&gt; ?std:bool -&gt; <a href="?package=yojson&amp;module=Yojson.Safe&amp;type=json">json</a> -&gt; string</code></pre><div class="info"><div class="info">Write a compact JSON value to a string.<div class="parameters"><div class="param_info"><code class="code">buf</code> : allows to reuse an existing buffer created with 
       <code class="code">Bi_outbuf.create</code>. The buffer is cleared of all contents
@@ -375,14 +375,14 @@ let extract_titles (json : Yojson.Basic.json) : string list =
       <code class="code">Bi_outbuf.create_channel_writer</code> on the same channel.
       <code class="code">buf</code> is flushed right
       before <code class="code">to_channel</code> returns but the <code class="code">out_channel</code> is
-      not flushed automatically.<br/>      See <code class="code">to_string</code> for the role of the other optional arguments.</div></div></div></div>
+      not flushed automatically.<p>      See <code class="code">to_string</code> for the role of the other optional arguments.</p></div></div></div></div>
 <pre><span class="VALto_output"><span class="keyword">val</span> to_output</span> : <code class="type">?buf:<a href="?package=biniou&amp;module=Bi_outbuf&amp;type=t">Bi_outbuf.t</a> -&gt;
 ?len:int -&gt;
 ?std:bool -&gt; &lt; output : string -&gt; int -&gt; int -&gt; int; .. &gt; -&gt; <a href="?package=yojson&amp;module=Yojson.Safe&amp;type=json">json</a> -&gt; unit</code></pre><div class="info"><div class="info">Write a compact JSON value to an OO channel.<div class="parameters"><div class="param_info"><code class="code">buf</code> : allows to reuse an existing buffer created with 
       <code class="code">Bi_outbuf.create_output_writer</code> on the same channel.
       <code class="code">buf</code> is flushed right
       before <code class="code">to_output</code> returns but the channel itself is
-      not flushed automatically.<br/>      See <code class="code">to_string</code> for the role of the other optional arguments.</div></div></div></div>
+      not flushed automatically.<p>      See <code class="code">to_string</code> for the role of the other optional arguments.</p></div></div></div></div>
 <pre><span class="VALto_file"><span class="keyword">val</span> to_file</span> : <code class="type">?len:int -&gt; ?std:bool -&gt; string -&gt; <a href="?package=yojson&amp;module=Yojson.Safe&amp;type=json">json</a> -&gt; unit</code></pre><div class="info"><div class="info">Write a compact JSON value to a file.
       See <code class="code">to_string</code> for the role of the optional arguments.</div></div>
 <pre><span class="VALto_outbuf"><span class="keyword">val</span> to_outbuf</span> : <code class="type">?std:bool -&gt; <a href="?package=biniou&amp;module=Bi_outbuf&amp;type=t">Bi_outbuf.t</a> -&gt; <a href="?package=yojson&amp;module=Yojson.Safe&amp;type=json">json</a> -&gt; unit</code></pre><div class="info"><div class="info">Write a compact JSON value to an existing buffer.
@@ -460,27 +460,27 @@ let extract_titles (json : Yojson.Basic.json) : string list =
 ?fname:string -&gt; ?lnum:int -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a> -&gt; <a href="?package=yojson&amp;module=Yojson.Safe&amp;type=json">json</a> <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a></code></pre><div class="info"><div class="info">Input a sequence of JSON values from a channel.
       Whitespace between JSON values is fine but not required.<div class="parameters"><div class="param_info"><code class="code">fin</code> : finalization function executed once when the end of the
       stream is reached either because there is no more input or because
-      the input could not be parsed, raising an exception.<br/>      See <code class="code">from_string</code> for the meaning of the other optional arguments.</div></div></div></div>
+      the input could not be parsed, raising an exception.<p>      See <code class="code">from_string</code> for the meaning of the other optional arguments.</p></div></div></div></div>
 <pre><span class="VALstream_from_file"><span class="keyword">val</span> stream_from_file</span> : <code class="type">?buf:<a href="?package=biniou&amp;module=Bi_outbuf&amp;type=t">Bi_outbuf.t</a> -&gt; ?fname:string -&gt; ?lnum:int -&gt; string -&gt; <a href="?package=yojson&amp;module=Yojson.Safe&amp;type=json">json</a> <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a></code></pre><div class="info"><div class="info">Input a sequence of JSON values from a file.
-      Whitespace between JSON values is fine but not required.<br/>      See <code class="code">from_string</code> for the meaning of the optional arguments.</div></div>
+      Whitespace between JSON values is fine but not required.<p>      See <code class="code">from_string</code> for the meaning of the optional arguments.</p></div></div>
 <pre><span class="VALstream_from_lexbuf"><span class="keyword">val</span> stream_from_lexbuf</span> : <code class="type"><a href="?package=yojson&amp;module=Yojson.Safe&amp;type=lexer_state">lexer_state</a> -&gt; ?fin:(unit -&gt; unit) -&gt; <a href="?package=ocaml&amp;module=Lexing&amp;type=lexbuf">Lexing.lexbuf</a> -&gt; <a href="?package=yojson&amp;module=Yojson.Safe&amp;type=json">json</a> <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a></code></pre><div class="info"><div class="info">Input a sequence of JSON values from a lexbuf.
       A valid initial <code class="code">lexer_state</code> can be created with <code class="code">init_lexer</code>.
-      Whitespace between JSON values is fine but not required.<br/>      See <code class="code">stream_from_channel</code> for the meaning of the optional <code class="code">fin</code>
-      argument.</div></div>
+      Whitespace between JSON values is fine but not required.<p>      See <code class="code">stream_from_channel</code> for the meaning of the optional <code class="code">fin</code>
+      argument.</p></div></div>
 <pre><span class="TYPEjson_line"><span class="keyword">type</span> json_line</span> = <code class="type">[ `Exn of exn | `Json of <a href="?package=yojson&amp;module=Yojson.Safe&amp;type=json">json</a> ]</code></pre><div class="info"><div class="info">The type of values resulting from a parsing attempt of a JSON value.</div></div>
 <pre><span class="VALlinestream_from_channel"><span class="keyword">val</span> linestream_from_channel</span> : <code class="type">?buf:<a href="?package=biniou&amp;module=Bi_outbuf&amp;type=t">Bi_outbuf.t</a> -&gt;
 ?fin:(unit -&gt; unit) -&gt;
 ?fname:string -&gt; ?lnum:int -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a> -&gt; <a href="?package=yojson&amp;module=Yojson.Safe&amp;type=json_line">json_line</a> <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a></code></pre><div class="info"><div class="info">Input a sequence of JSON values, one per line, from a channel.
       Exceptions raised when reading malformed lines are caught
-      and represented using <code class="code">`Exn</code>.<br/>      See <code class="code">stream_from_channel</code> for the meaning of the optional <code class="code">fin</code>
+      and represented using <code class="code">`Exn</code>.<p>      See <code class="code">stream_from_channel</code> for the meaning of the optional <code class="code">fin</code>
       argument.
-      See <code class="code">from_string</code> for the meaning of the other optional arguments.</div></div>
+      See <code class="code">from_string</code> for the meaning of the other optional arguments.</p></div></div>
 <pre><span class="VALlinestream_from_file"><span class="keyword">val</span> linestream_from_file</span> : <code class="type">?buf:<a href="?package=biniou&amp;module=Bi_outbuf&amp;type=t">Bi_outbuf.t</a> -&gt;
 ?fname:string -&gt; ?lnum:int -&gt; string -&gt; <a href="?package=yojson&amp;module=Yojson.Safe&amp;type=json_line">json_line</a> <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a></code></pre><div class="info"><div class="info">Input a sequence of JSON values, one per line, from a file.
       Exceptions raised when reading malformed lines are caught
-      and represented using <code class="code">`Exn</code>.<br/>      See <code class="code">stream_from_channel</code> for the meaning of the optional <code class="code">fin</code>
+      and represented using <code class="code">`Exn</code>.<p>      See <code class="code">stream_from_channel</code> for the meaning of the optional <code class="code">fin</code>
       argument.
-      See <code class="code">from_string</code> for the meaning of the other optional arguments.</div></div>
+      See <code class="code">from_string</code> for the meaning of the other optional arguments.</p></div></div>
 <pre><span class="VALfinish_string"><span class="keyword">val</span> finish_string</span> : <code class="type"><a href="?package=yojson&amp;module=Yojson.Safe&amp;type=lexer_state">lexer_state</a> -&gt; <a href="?package=ocaml&amp;module=Lexing&amp;type=lexbuf">Lexing.lexbuf</a> -&gt; string</code></pre>
 <pre><span class="VALread_string"><span class="keyword">val</span> read_string</span> : <code class="type"><a href="?package=yojson&amp;module=Yojson.Safe&amp;type=lexer_state">lexer_state</a> -&gt; <a href="?package=ocaml&amp;module=Lexing&amp;type=lexbuf">Lexing.lexbuf</a> -&gt; string</code></pre>
 <pre><span class="VALread_ident"><span class="keyword">val</span> read_ident</span> : <code class="type"><a href="?package=yojson&amp;module=Yojson.Safe&amp;type=lexer_state">lexer_state</a> -&gt; <a href="?package=ocaml&amp;module=Lexing&amp;type=lexbuf">Lexing.lexbuf</a> -&gt; string</code></pre>
@@ -573,14 +573,14 @@ let extract_titles (json : Yojson.Basic.json) : string list =
       <code class="code">Bi_outbuf.create_channel_writer</code> on the same channel.
       <code class="code">buf</code> is flushed right
       before <code class="code">to_channel</code> returns but the <code class="code">out_channel</code> is
-      not flushed automatically.<br/>      See <code class="code">to_string</code> for the role of the other optional arguments.</div></div></div></div>
+      not flushed automatically.<p>      See <code class="code">to_string</code> for the role of the other optional arguments.</p></div></div></div></div>
 <pre><span class="VALto_output"><span class="keyword">val</span> to_output</span> : <code class="type">?buf:<a href="?package=biniou&amp;module=Bi_outbuf&amp;type=t">Bi_outbuf.t</a> -&gt;
 ?len:int -&gt;
 ?std:bool -&gt; &lt; output : string -&gt; int -&gt; int -&gt; int; .. &gt; -&gt; <a href="?package=yojson&amp;module=Yojson.Raw&amp;type=json">json</a> -&gt; unit</code></pre><div class="info"><div class="info">Write a compact JSON value to an OO channel.<div class="parameters"><div class="param_info"><code class="code">buf</code> : allows to reuse an existing buffer created with 
       <code class="code">Bi_outbuf.create_output_writer</code> on the same channel.
       <code class="code">buf</code> is flushed right
       before <code class="code">to_output</code> returns but the channel itself is
-      not flushed automatically.<br/>      See <code class="code">to_string</code> for the role of the other optional arguments.</div></div></div></div>
+      not flushed automatically.<p>      See <code class="code">to_string</code> for the role of the other optional arguments.</p></div></div></div></div>
 <pre><span class="VALto_file"><span class="keyword">val</span> to_file</span> : <code class="type">?len:int -&gt; ?std:bool -&gt; string -&gt; <a href="?package=yojson&amp;module=Yojson.Raw&amp;type=json">json</a> -&gt; unit</code></pre><div class="info"><div class="info">Write a compact JSON value to a file.
       See <code class="code">to_string</code> for the role of the optional arguments.</div></div>
 <pre><span class="VALto_outbuf"><span class="keyword">val</span> to_outbuf</span> : <code class="type">?std:bool -&gt; <a href="?package=biniou&amp;module=Bi_outbuf&amp;type=t">Bi_outbuf.t</a> -&gt; <a href="?package=yojson&amp;module=Yojson.Raw&amp;type=json">json</a> -&gt; unit</code></pre><div class="info"><div class="info">Write a compact JSON value to an existing buffer.
@@ -652,27 +652,27 @@ let extract_titles (json : Yojson.Basic.json) : string list =
 ?fname:string -&gt; ?lnum:int -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a> -&gt; <a href="?package=yojson&amp;module=Yojson.Raw&amp;type=json">json</a> <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a></code></pre><div class="info"><div class="info">Input a sequence of JSON values from a channel.
       Whitespace between JSON values is fine but not required.<div class="parameters"><div class="param_info"><code class="code">fin</code> : finalization function executed once when the end of the
       stream is reached either because there is no more input or because
-      the input could not be parsed, raising an exception.<br/>      See <code class="code">from_string</code> for the meaning of the other optional arguments.</div></div></div></div>
+      the input could not be parsed, raising an exception.<p>      See <code class="code">from_string</code> for the meaning of the other optional arguments.</p></div></div></div></div>
 <pre><span class="VALstream_from_file"><span class="keyword">val</span> stream_from_file</span> : <code class="type">?buf:<a href="?package=biniou&amp;module=Bi_outbuf&amp;type=t">Bi_outbuf.t</a> -&gt; ?fname:string -&gt; ?lnum:int -&gt; string -&gt; <a href="?package=yojson&amp;module=Yojson.Raw&amp;type=json">json</a> <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a></code></pre><div class="info"><div class="info">Input a sequence of JSON values from a file.
-      Whitespace between JSON values is fine but not required.<br/>      See <code class="code">from_string</code> for the meaning of the optional arguments.</div></div>
+      Whitespace between JSON values is fine but not required.<p>      See <code class="code">from_string</code> for the meaning of the optional arguments.</p></div></div>
 <pre><span class="VALstream_from_lexbuf"><span class="keyword">val</span> stream_from_lexbuf</span> : <code class="type"><a href="?package=yojson&amp;module=Yojson.Raw&amp;type=lexer_state">lexer_state</a> -&gt; ?fin:(unit -&gt; unit) -&gt; <a href="?package=ocaml&amp;module=Lexing&amp;type=lexbuf">Lexing.lexbuf</a> -&gt; <a href="?package=yojson&amp;module=Yojson.Raw&amp;type=json">json</a> <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a></code></pre><div class="info"><div class="info">Input a sequence of JSON values from a lexbuf.
       A valid initial <code class="code">lexer_state</code> can be created with <code class="code">init_lexer</code>.
-      Whitespace between JSON values is fine but not required.<br/>      See <code class="code">stream_from_channel</code> for the meaning of the optional <code class="code">fin</code>
-      argument.</div></div>
+      Whitespace between JSON values is fine but not required.<p>      See <code class="code">stream_from_channel</code> for the meaning of the optional <code class="code">fin</code>
+      argument.</p></div></div>
 <pre><span class="TYPEjson_line"><span class="keyword">type</span> json_line</span> = <code class="type">[ `Exn of exn | `Json of <a href="?package=yojson&amp;module=Yojson.Raw&amp;type=json">json</a> ]</code></pre><div class="info"><div class="info">The type of values resulting from a parsing attempt of a JSON value.</div></div>
 <pre><span class="VALlinestream_from_channel"><span class="keyword">val</span> linestream_from_channel</span> : <code class="type">?buf:<a href="?package=biniou&amp;module=Bi_outbuf&amp;type=t">Bi_outbuf.t</a> -&gt;
 ?fin:(unit -&gt; unit) -&gt;
 ?fname:string -&gt; ?lnum:int -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=in_channel">Pervasives.in_channel</a> -&gt; <a href="?package=yojson&amp;module=Yojson.Raw&amp;type=json_line">json_line</a> <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a></code></pre><div class="info"><div class="info">Input a sequence of JSON values, one per line, from a channel.
       Exceptions raised when reading malformed lines are caught
-      and represented using <code class="code">`Exn</code>.<br/>      See <code class="code">stream_from_channel</code> for the meaning of the optional <code class="code">fin</code>
+      and represented using <code class="code">`Exn</code>.<p>      See <code class="code">stream_from_channel</code> for the meaning of the optional <code class="code">fin</code>
       argument.
-      See <code class="code">from_string</code> for the meaning of the other optional arguments.</div></div>
+      See <code class="code">from_string</code> for the meaning of the other optional arguments.</p></div></div>
 <pre><span class="VALlinestream_from_file"><span class="keyword">val</span> linestream_from_file</span> : <code class="type">?buf:<a href="?package=biniou&amp;module=Bi_outbuf&amp;type=t">Bi_outbuf.t</a> -&gt;
 ?fname:string -&gt; ?lnum:int -&gt; string -&gt; <a href="?package=yojson&amp;module=Yojson.Raw&amp;type=json_line">json_line</a> <a href="?package=ocaml&amp;module=Stream&amp;type=t">Stream.t</a></code></pre><div class="info"><div class="info">Input a sequence of JSON values, one per line, from a file.
       Exceptions raised when reading malformed lines are caught
-      and represented using <code class="code">`Exn</code>.<br/>      See <code class="code">stream_from_channel</code> for the meaning of the optional <code class="code">fin</code>
+      and represented using <code class="code">`Exn</code>.<p>      See <code class="code">stream_from_channel</code> for the meaning of the optional <code class="code">fin</code>
       argument.
-      See <code class="code">from_string</code> for the meaning of the other optional arguments.</div></div>
+      See <code class="code">from_string</code> for the meaning of the other optional arguments.</p></div></div>
 <pre><span class="VALfinish_string"><span class="keyword">val</span> finish_string</span> : <code class="type"><a href="?package=yojson&amp;module=Yojson.Raw&amp;type=lexer_state">lexer_state</a> -&gt; <a href="?package=ocaml&amp;module=Lexing&amp;type=lexbuf">Lexing.lexbuf</a> -&gt; string</code></pre>
 <pre><span class="VALread_string"><span class="keyword">val</span> read_string</span> : <code class="type"><a href="?package=yojson&amp;module=Yojson.Raw&amp;type=lexer_state">lexer_state</a> -&gt; <a href="?package=ocaml&amp;module=Lexing&amp;type=lexbuf">Lexing.lexbuf</a> -&gt; string</code></pre>
 <pre><span class="VALread_ident"><span class="keyword">val</span> read_ident</span> : <code class="type"><a href="?package=yojson&amp;module=Yojson.Raw&amp;type=lexer_state">lexer_state</a> -&gt; <a href="?package=ocaml&amp;module=Lexing&amp;type=lexbuf">Lexing.lexbuf</a> -&gt; string</code></pre>
@@ -763,14 +763,14 @@ let extract_titles (json : Yojson.Basic.json) : string list =
       <code class="code">Bi_outbuf.create_channel_writer</code> on the same channel.
       <code class="code">buf</code> is flushed right
       before <code class="code">to_channel</code> returns but the <code class="code">out_channel</code> is
-      not flushed automatically.<br/>      See <code class="code">to_string</code> for the role of the other optional arguments.</div></div></div></div>
+      not flushed automatically.<p>      See <code class="code">to_string</code> for the role of the other optional arguments.</p></div></div></div></div>
 <pre><span class="VALto_output"><span class="keyword">val</span> to_output</span> : <code class="type">?buf:<a href="?package=biniou&amp;module=Bi_outbuf&amp;type=t">Bi_outbuf.t</a> -&gt;
 ?len:int -&gt;
 ?std:bool -&gt; &lt; output : string -&gt; int -&gt; int -&gt; int; .. &gt; -&gt; <a href="?package=yojson&amp;module=Yojson&amp;type=json">json</a> -&gt; unit</code></pre><div class="info"><div class="info">Write a compact JSON value to an OO channel.<div class="parameters"><div class="param_info"><code class="code">buf</code> : allows to reuse an existing buffer created with 
       <code class="code">Bi_outbuf.create_output_writer</code> on the same channel.
       <code class="code">buf</code> is flushed right
       before <code class="code">to_output</code> returns but the channel itself is
-      not flushed automatically.<br/>      See <code class="code">to_string</code> for the role of the other optional arguments.</div></div></div></div>
+      not flushed automatically.<p>      See <code class="code">to_string</code> for the role of the other optional arguments.</p></div></div></div></div>
 <pre><span class="VALto_file"><span class="keyword">val</span> to_file</span> : <code class="type">?len:int -&gt; ?std:bool -&gt; string -&gt; <a href="?package=yojson&amp;module=Yojson&amp;type=json">json</a> -&gt; unit</code></pre><div class="info"><div class="info">Write a compact JSON value to a file.
       See <code class="code">to_string</code> for the role of the optional arguments.</div></div>
 <pre><span class="VALto_outbuf"><span class="keyword">val</span> to_outbuf</span> : <code class="type">?std:bool -&gt; <a href="?package=biniou&amp;module=Bi_outbuf&amp;type=t">Bi_outbuf.t</a> -&gt; <a href="?package=yojson&amp;module=Yojson&amp;type=json">json</a> -&gt; unit</code></pre><div class="info"><div class="info">Write a compact JSON value to an existing buffer.

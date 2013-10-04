@@ -42,8 +42,8 @@
     <code class="code">reset</code> is called</div></div>
 <pre><span class="VALunsafe_tail"><span class="keyword">val</span> unsafe_tail</span> : <code class="type"><a href="?package=core_extended&amp;module=Linebuf&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">Same as <code class="code">tail</code> except it may return before a new line is available on the file
     i.e. it (usually) doesn't block.  Note that this does interact with files in
-    a fairly naive way, so there's no guarantee that it absolutely doesn't block.<br/>    Note that when this functions is called, the next line that's read may be a partial
-    line.  After that first line, only full lines will be read.</div></div>
+    a fairly naive way, so there's no guarantee that it absolutely doesn't block.<p>    Note that when this functions is called, the next line that's read may be a partial
+    line.  After that first line, only full lines will be read.</p></div></div>
 <pre><span class="VALname"><span class="keyword">val</span> name</span> : <code class="type"><a href="?package=core_extended&amp;module=Linebuf&amp;type=t">t</a> -&gt; string</code></pre>
 <pre><span class="VALreset"><span class="keyword">val</span> reset</span> : <code class="type"><a href="?package=core_extended&amp;module=Linebuf&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info">reopens the file and seeks to the beginning.  Also recovers the ability to get line
     numbers if <code class="code">tail</code> has been called</div></div>

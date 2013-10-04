@@ -64,13 +64,13 @@ io_vectors:<a href="?package=lwt&amp;module=Lwt_bytes&amp;type=io_vector">io_vec
     the manual madvise(2) for a description of each advices.</div></div>
 <pre><span class="VALmadvise"><span class="keyword">val</span> madvise</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_bytes&amp;type=t">t</a> -&gt; int -&gt; int -&gt; <a href="?package=lwt&amp;module=Lwt_bytes&amp;type=advice">advice</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">madvise buffer pos len advice</code> advise the kernel about how the
       program is going to use the part of the memory mapped file
-      between <code class="code">pos</code> and <code class="code">pos + len</code>.<br/>      This call is not available on windows.</div></div>
+      between <code class="code">pos</code> and <code class="code">pos + len</code>.<p>      This call is not available on windows.</p></div></div>
 <pre><span class="VALpage_size"><span class="keyword">val</span> page_size</span> : <code class="type">int</code></pre><div class="info"><div class="info">Size of pages.</div></div>
 <pre><span class="VALmincore"><span class="keyword">val</span> mincore</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_bytes&amp;type=t">t</a> -&gt; int -&gt; bool array -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">mincore buffer offset states</code> tests whether the given pages are
       in the system memory (the RAM). The <code class="code">offset</code> argument must be a
       multiple of  <a href="#page_size">page_size</a>. <code class="code">states</code> is used to store the result;
       each cases is <code class="code">true</code> if the corresponding page in the RAM and
-      <code class="code">false</code> otherwise.<br/>      This call is not available on windows.</div></div>
+      <code class="code">false</code> otherwise.<p>      This call is not available on windows.</p></div></div>
 <pre><span class="VALwait_mincore"><span class="keyword">val</span> wait_mincore</span> : <code class="type"><a href="?package=lwt&amp;module=Lwt_bytes&amp;type=t">t</a> -&gt; int -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">wait_mincore buffer offset</code> waits until the page containing the
-      byte at offset <code class="code">offset</code> in the the RAM.<br/>      This functions is not available on windows.</div></div>
+      byte at offset <code class="code">offset</code> in the the RAM.<p>      This functions is not available on windows.</p></div></div>
 </div>

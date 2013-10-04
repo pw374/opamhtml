@@ -17,8 +17,8 @@
 <pre><span class="VALwsa_maximum_wait_events"><span class="keyword">val</span> wsa_maximum_wait_events</span> : <code class="type">unit -&gt; int</code></pre><div class="info"><div class="info">max size of the array passed to <code class="code">wsa_wait_for_multiple_events</code></div></div>
 <pre><span class="VALwsa_wait_for_multiple_events"><span class="keyword">val</span> wsa_wait_for_multiple_events</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_event">w32_event</a> array -&gt; int -&gt; int option</code></pre><div class="info"><div class="info">Waits until one of the events in the array is in signaled state,
         or until a timeout happens. The int is the timeout in milliseconds.
-        A negative timeout means infinity.<br/>        The function returns the first index in the array that is signaled.<br/>        On timeout, <code class="code">None</code> is returned.<br/>        The return value <code class="code">WSA_WAIT_IO_COMPLETION</code> is mapped to the
-        Unix error <code class="code">EINTR</code>.</div></div>
+        A negative timeout means infinity.<p>        The function returns the first index in the array that is signaled.</p><p>        On timeout, <code class="code">None</code> is returned.</p><p>        The return value <code class="code">WSA_WAIT_IO_COMPLETION</code> is mapped to the
+        Unix error <code class="code">EINTR</code>.</p></div></div>
 <pre><span class="VALwsa_enum_network_events"><span class="keyword">val</span> wsa_enum_network_events</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_event">w32_event</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_posix&amp;type=poll_act_events">Netsys_posix.poll_act_events</a></code></pre><div class="info"><div class="info">Checks whether an event has been recorded</div></div>
 <pre><span class="VALreal_select"><span class="keyword">val</span> real_select</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list -&gt;
 <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> list -&gt;
@@ -34,9 +34,9 @@ float -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.fi
     mimicks socket behaviour as far as possible (and we also use
     an socket-like API with <code class="code">listen</code> and <code class="code">accept</code>). There is a 
     <code class="code">w32_pipe_server</code> representing pipe servers. An individual pipe
-    is wrapped into a <code class="code">w32_pipe</code>.<br/>    Win32 named pipes do not allow to check whether an operation would block
+    is wrapped into a <code class="code">w32_pipe</code>.<p>    Win32 named pipes do not allow to check whether an operation would block
     before starting the operation. There is so-called overlapped I/O,
-    but it works differently than Unix-style multiplexing.<br/>    The following functions add a layer to the Win32 primitives that
+    but it works differently than Unix-style multiplexing.</p><p>    The following functions add a layer to the Win32 primitives that
     helps using pipes in a way similar to multiplexing. We allocate
     buffers for input and output, and the functions <code class="code">pipe_read</code> and
     <code class="code">pipe_write</code> access these buffers in the first place. When reading,
@@ -44,18 +44,18 @@ float -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.fi
     from the pipe handle. The arriving data refills the read buffer, and
     a <code class="code">w32_event</code> is signaled to wake up any pending event loop.
     During the pending read from the pipe handle, the read buffer is
-    locked, and <code class="code">pipe_read</code> will return <code class="code">EWOULDBLOCK</code>.<br/>    Writing is slightly more difficult. The first <code class="code">pipe_write</code> puts
+    locked, and <code class="code">pipe_read</code> will return <code class="code">EWOULDBLOCK</code>.</p><p>    Writing is slightly more difficult. The first <code class="code">pipe_write</code> puts
     the data into the write buffer, and immediately starts an overlapped
     I/O operation to write the data to the pipe handle. During this
     operation the write buffer is locked, and cannot be further used
     to accumulate data, even if there is space. So <code class="code">pipe_write</code> will
     return <code class="code">EWOULDBLOCK</code> while the operation takes place. A <code class="code">w32_event</code> is
-    signaled when the write operation is over.<br/>    The only downside of this approach is that the caller has to use
+    signaled when the write operation is over.</p><p>    The only downside of this approach is that the caller has to use
     <code class="code">pipe_read</code> and <code class="code">pipe_write</code> to access pipes, instead of
     <code class="code">Unix.read</code> and <code class="code">Unix.write</code>. If generic r/w functions are
     required that work for numerous kinds of descriptors, there are
      <a href="#Netsys.gread">Netsys.gread</a> and  <a href="#Netsys.gwrite">Netsys.gwrite</a> which support named
-    pipes.</div></div>
+    pipes.</p></div></div>
 <pre><span class="TYPEw32_pipe_server"><span class="keyword">type</span> w32_pipe_server</span> </pre><div class="info"><div class="info">A pipe server. Note that there is no such thing in the Win32 API.
       Actually, a <code class="code">w32_pipe_server</code> contains the server endpoints of 
       a number of pipes, and a few helper objects.</div></div>
@@ -72,32 +72,32 @@ float -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.fi
 <div class="info"><div class="info">In the following, a terminology has been chosen that is similar to
     those of the socket API. The terms are different from those Microsoft
     prefers, however.</div></div>
-<pre><span class="VALpipe_listen"><span class="keyword">val</span> pipe_listen</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_pipe_server">w32_pipe_server</a> -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">Creates the backlog queue with <code class="code">n</code> prepared server endpoints.<br/>      One can check for new client connections by looking at the
-      <code class="code">pipe_connect_event</code>.</div></div>
+<pre><span class="VALpipe_listen"><span class="keyword">val</span> pipe_listen</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_pipe_server">w32_pipe_server</a> -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">Creates the backlog queue with <code class="code">n</code> prepared server endpoints.<p>      One can check for new client connections by looking at the
+      <code class="code">pipe_connect_event</code>.</p></div></div>
 <pre><span class="VALpipe_accept"><span class="keyword">val</span> pipe_accept</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_pipe_server">w32_pipe_server</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_pipe">w32_pipe</a></code></pre><div class="info"><div class="info">Waits until the connect event is signaled (usually meaning that
       a new client connection is available), and returns the new
       pipe.</div></div>
 <pre><span class="VALpipe_connect"><span class="keyword">val</span> pipe_connect</span> : <code class="type">string -&gt; <a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=pipe_mode">pipe_mode</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_pipe">w32_pipe</a></code></pre><div class="info"><div class="info"><code class="code">pipe_connect name mode</code>: Creates a client pipe handle, and tries
       to connect to the pipe server <code class="code">name</code>. The function fails with the
       Unix error <code class="code">EAGAIN</code> if there are currently no listening instances of the
-      pipe at the server.<br/>      The name must be of the form &quot;\\.\pipe\&lt;name&gt;&quot; (excluding connects
+      pipe at the server.<p>      The name must be of the form &quot;\\.\pipe\&lt;name&gt;&quot; (excluding connects
       to pipes on remote systems). This function allows only connects to
-      local pipe servers, and enforces anonymous impersonation.<br/>      Note that you also can connect to named pipes using <code class="code">open_in</code> and
+      local pipe servers, and enforces anonymous impersonation.</p><p>      Note that you also can connect to named pipes using <code class="code">open_in</code> and
       <code class="code">Unix.openfile</code>, and that these functions do not protect against
-      malicious servers that impersonate as the caller.</div></div>
+      malicious servers that impersonate as the caller.</p></div></div>
 <pre><span class="VALpipe_pair"><span class="keyword">val</span> pipe_pair</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=pipe_mode">pipe_mode</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_pipe">w32_pipe</a> * <a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_pipe">w32_pipe</a></code></pre><div class="info"><div class="info">Returns a pair of connected pipes (using automatically generated
       names). The left pipe is in the passed <code class="code">pipe_mode</code>, and the
       right pipe is in the matching complementaty mode.</div></div>
 <pre><span class="VALpipe_read"><span class="keyword">val</span> pipe_read</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_pipe">w32_pipe</a> -&gt; string -&gt; int -&gt; int -&gt; int</code></pre><div class="info"><div class="info"><code class="code">pipe_read p s pos len</code>: Tries to read data from the pipe. If data
       is available, it is put into the <code class="code">len</code> bytes at position <code class="code">pos</code> of
-      the string <code class="code">s</code>, and the actual number of read bytes is returned.<br/>      If no data is available, the function fails with a Unix error of
-      <code class="code">EAGAIN</code>.<br/>      If the end of the pipe is reached, the function returns 0.</div></div>
+      the string <code class="code">s</code>, and the actual number of read bytes is returned.<p>      If no data is available, the function fails with a Unix error of
+      <code class="code">EAGAIN</code>.</p><p>      If the end of the pipe is reached, the function returns 0.</p></div></div>
 <pre><span class="VALpipe_write"><span class="keyword">val</span> pipe_write</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_pipe">w32_pipe</a> -&gt; string -&gt; int -&gt; int -&gt; int</code></pre><div class="info"><div class="info"><code class="code">pipe_write p s pos len</code>: Tries to write data to the pipe. If space
       is available, the data is taken from the <code class="code">len</code> bytes at position <code class="code">pos</code> of
-      the string <code class="code">s</code>, and the actual number of written bytes is returned.<br/>      If no space is available, the function fails with a Unix error of
-      <code class="code">EAGAIN</code>.</div></div>
-<pre><span class="VALpipe_shutdown"><span class="keyword">val</span> pipe_shutdown</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_pipe">w32_pipe</a> -&gt; unit</code></pre><div class="info"><div class="info">Cancels all pending I/O operations and closes the pipe handle.<br/>      Note that there is no way to close only one direction of bidirectional
-      pipes.<br/>      See the comments on closing pipes below.</div></div>
+      the string <code class="code">s</code>, and the actual number of written bytes is returned.<p>      If no space is available, the function fails with a Unix error of
+      <code class="code">EAGAIN</code>.</p></div></div>
+<pre><span class="VALpipe_shutdown"><span class="keyword">val</span> pipe_shutdown</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_pipe">w32_pipe</a> -&gt; unit</code></pre><div class="info"><div class="info">Cancels all pending I/O operations and closes the pipe handle.<p>      Note that there is no way to close only one direction of bidirectional
+      pipes.</p><p>      See the comments on closing pipes below.</p></div></div>
 <pre><span class="VALpipe_shutdown_server"><span class="keyword">val</span> pipe_shutdown_server</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_pipe_server">w32_pipe_server</a> -&gt; unit</code></pre><div class="info"><div class="info">Closes the pipe server: All endpoints in the backlog queue are
       shutdown. Note that this can result in crashed connections -
       if the kernel establishes a connection but it is not yet
@@ -134,68 +134,68 @@ float -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.fi
     by waiting until the pipe becomes writable again, and then calling
     <code class="code">pipe_shutdown</code>. The server then sees EOF when reading from the pipe,
     or gets an <code class="code">EPIPE</code> error when writing to the pipe. The server should
-    then also <code class="code">pipe_shutdown</code> the endpoint.<br/>    When servers start the closure of connections, there is no clean way
+    then also <code class="code">pipe_shutdown</code> the endpoint.<p>    When servers start the closure of connections, there is no clean way
     of ensuring that all written data are transmitted. There is the
-    <code class="code">FlushFileBuffers</code> Win32 function, but it is blocking.</div></div>
+    <code class="code">FlushFileBuffers</code> Win32 function, but it is blocking.</p></div></div>
 <div class="info"><div class="info"><h1 id="1_TITLE">I/O threads</h1></div></div>
 <div class="info"><div class="info">I/O threads can be used to do read/write-based I/O in an asynchronous
     way for file handles that do not support asynchronous I/O by themselves,
-    e.g. anonymous pipes.<br/>    I/O threads are only available if the application is compiled as
-    multi-threaded program.</div></div>
+    e.g. anonymous pipes.<p>    I/O threads are only available if the application is compiled as
+    multi-threaded program.</p></div></div>
 <pre><span class="TYPEw32_input_thread"><span class="keyword">type</span> w32_input_thread</span> </pre>
 <pre><span class="VALcreate_input_thread"><span class="keyword">val</span> create_input_thread</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_input_thread">w32_input_thread</a></code></pre><div class="info"><div class="info">Creates the input thread for this file descriptor. Data is being
      pumped from this handle to an internal buffer, and can be read from
-     there by <code class="code">input_thread_read</code>.<br/>     The thread continues to run until EOF is reached, an I/O error
+     there by <code class="code">input_thread_read</code>.<p>     The thread continues to run until EOF is reached, an I/O error
      occurs, or until the
-     thread is cancelled (<code class="code">cancel_input_thread</code>).<br/>     After starting the input thread, the file descriptor must not
-     be used anymore. It is now owned by the input thread.</div></div>
+     thread is cancelled (<code class="code">cancel_input_thread</code>).</p><p>     After starting the input thread, the file descriptor must not
+     be used anymore. It is now owned by the input thread.</p></div></div>
 <pre><span class="VALinput_thread_event"><span class="keyword">val</span> input_thread_event</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_input_thread">w32_input_thread</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_event">w32_event</a></code></pre><div class="info"><div class="info">This event is signaled when there is data to read, or the EOF
      is reached, or there is an error condition</div></div>
 <pre><span class="VALinput_thread_read"><span class="keyword">val</span> input_thread_read</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_input_thread">w32_input_thread</a> -&gt; string -&gt; int -&gt; int -&gt; int</code></pre><div class="info"><div class="info"><code class="code">input_thread_read t s pos len</code>: Tries to read data from the buffer. 
       If data
       is available, it is put into the <code class="code">len</code> bytes at position <code class="code">pos</code> of
-      the string <code class="code">s</code>, and the actual number of read bytes is returned.<br/>      If no data is available, the function fails with a Unix error of
-      <code class="code">EAGAIN</code> (non-blocking).<br/>      If the end of the data is reached, the function returns 0.<br/>      For cancelled requests, the function raises <code class="code">EPERM</code>.</div></div>
+      the string <code class="code">s</code>, and the actual number of read bytes is returned.<p>      If no data is available, the function fails with a Unix error of
+      <code class="code">EAGAIN</code> (non-blocking).</p><p>      If the end of the data is reached, the function returns 0.</p><p>      For cancelled requests, the function raises <code class="code">EPERM</code>.</p></div></div>
 <pre><span class="VALcancel_input_thread"><span class="keyword">val</span> cancel_input_thread</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_input_thread">w32_input_thread</a> -&gt; unit</code></pre><div class="info"><div class="info">Stops the input thread. No more data will be pumped from the handle
       to the internal buffer. It is no error to cancel a thread that is
-      already cancelled. There is no way to restart the thread later.<br/>      The thread is automatically cancelled by the GC finaliser. However,
+      already cancelled. There is no way to restart the thread later.<p>      The thread is automatically cancelled by the GC finaliser. However,
       users are encouraged to call <code class="code">cancel_input_thread</code> as soon as
       the thread is no longer needed, because a thread is an expensive
-      resource.<br/>      Implementation note: Actually, cancellation is only fully implemented
+      resource.</p><p>      Implementation note: Actually, cancellation is only fully implemented
       on Windows Vista. On XP the actual cancellation may be delayed
-      indefinetely.</div></div>
+      indefinetely.</p></div></div>
 <pre><span class="VALinput_thread_proxy_descr"><span class="keyword">val</span> input_thread_proxy_descr</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_input_thread">w32_input_thread</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></pre><div class="info"><div class="info">Returns the proxy descriptor</div></div>
 <pre><span class="TYPEw32_output_thread"><span class="keyword">type</span> w32_output_thread</span> </pre>
 <pre><span class="VALcreate_output_thread"><span class="keyword">val</span> create_output_thread</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_output_thread">w32_output_thread</a></code></pre><div class="info"><div class="info">Creates the output thread for this file descriptor. Data is being
      pumped an internal buffer to this descriptor, and can be written
-     there by <code class="code">output_thread_read</code>.<br/>     The thread continues to run until it is explicitly closed, or 
+     there by <code class="code">output_thread_read</code>.<p>     The thread continues to run until it is explicitly closed, or 
      an I/O error occurs, or until the
-     thread is cancelled (<code class="code">cancel_output_thread</code>).<br/>     After starting the output thread, the file descriptor must not
-     be used anymore. It is now owned by the output thread.</div></div>
+     thread is cancelled (<code class="code">cancel_output_thread</code>).</p><p>     After starting the output thread, the file descriptor must not
+     be used anymore. It is now owned by the output thread.</p></div></div>
 <pre><span class="VALoutput_thread_event"><span class="keyword">val</span> output_thread_event</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_output_thread">w32_output_thread</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_event">w32_event</a></code></pre><div class="info"><div class="info">This event is signaled when there is space in the buffer,
       or when there is an error condition</div></div>
 <pre><span class="VALoutput_thread_write"><span class="keyword">val</span> output_thread_write</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_output_thread">w32_output_thread</a> -&gt; string -&gt; int -&gt; int -&gt; int</code></pre><div class="info"><div class="info"><code class="code">output_thread_write t s pos len</code>: Tries to write data to the buffer. 
       If this
       is possible, the substring starting at position <code class="code">pos</code> of the string <code class="code">s</code>
       with a length of <code class="code">len</code> is appended to the buffer. The actual number
-      of written bytes is returned.<br/>      If no space is available in the buffer, the function fails with a
-      Unix error of <code class="code">EAGAIN</code> (non-blocking).<br/>      For cancelled requests, the function raises <code class="code">EPERM</code>.</div></div>
+      of written bytes is returned.<p>      If no space is available in the buffer, the function fails with a
+      Unix error of <code class="code">EAGAIN</code> (non-blocking).</p><p>      For cancelled requests, the function raises <code class="code">EPERM</code>.</p></div></div>
 <pre><span class="VALclose_output_thread"><span class="keyword">val</span> close_output_thread</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_output_thread">w32_output_thread</a> -&gt; unit</code></pre><div class="info"><div class="info">Adds the EOF condition to the buffer. When the buffer is written
-      to the descriptor, the descriptor will be closed.<br/>      Note that this is also an asynchronous operation, like
+      to the descriptor, the descriptor will be closed.<p>      Note that this is also an asynchronous operation, like
       <code class="code">output_thread_write</code>. If closing is not possible at a certain
       moment, the Unix error <code class="code">EGAIN</code> is raised. This ensures that all
-      errors of previous writes can be reported.<br/>      The output thread terminates after a successful close.<br/>      For cancelled requests, the function raises <code class="code">EPERM</code>.</div></div>
+      errors of previous writes can be reported.</p><p>      The output thread terminates after a successful close.</p><p>      For cancelled requests, the function raises <code class="code">EPERM</code>.</p></div></div>
 <pre><span class="VALcancel_output_thread"><span class="keyword">val</span> cancel_output_thread</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_output_thread">w32_output_thread</a> -&gt; unit</code></pre><div class="info"><div class="info">Stops the output thread. This is different from closing as the
       data that is still in the buffer but not yet written may be
-      dropped (if possible). Also, there is no error reporting.<br/>      It is no error to cancel a thread that is
+      dropped (if possible). Also, there is no error reporting.<p>      It is no error to cancel a thread that is
       already cancelled or closed. 
-      There is no way to restart the thread later.<br/>      The thread is automatically cancelled by the GC finaliser. However,
+      There is no way to restart the thread later.</p><p>      The thread is automatically cancelled by the GC finaliser. However,
       users are encouraged to call <code class="code">cancel_output_thread</code> or
       <code class="code">close_output_thread</code> as soon as
       the thread is no longer needed, because a thread is an expensive
-      resource.<br/>      Implementation note: Actually, cancellation is only fully implemented
+      resource.</p><p>      Implementation note: Actually, cancellation is only fully implemented
       on Windows Vista. On XP the actual cancellation may be delayed
-      indefinetely.</div></div>
+      indefinetely.</p></div></div>
 <pre><span class="VALoutput_thread_proxy_descr"><span class="keyword">val</span> output_thread_proxy_descr</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_output_thread">w32_output_thread</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></pre><div class="info"><div class="info">Returns the proxy descriptor</div></div>
 <div class="info"><div class="info"><h1 id="1_TITLE">Processes</h1></div></div>
 <div class="info"><div class="info">Keep in mind that Win32 distinguishes between two kinds of
@@ -204,9 +204,9 @@ float -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.fi
     Years ago, these kinds meant different worlds,
     and a GUI application could not act like a console application,
     and vice versa. Nowaways, however, the distinction is mostly gone,
-    and the application kind only affects defaults at program startup:<br/>    - Console: A GUI application starts without console. However, it is 
+    and the application kind only affects defaults at program startup:<p>    - Console: A GUI application starts without console. However, it is 
       possible to allocate a console later. A console application always
-      starts with a console which is created by the OS if missing.<ul><li>Standard handles: For a GUI application, stdin/stdout/stderr are
+      starts with a console which is created by the OS if missing.</p><ul><li>Standard handles: For a GUI application, stdin/stdout/stderr are
       initially set to the invalid file handle. Nevertheless, this
       feature of standard handles exists, and one can set these handles
       later. Also, the handles can be inherited by the parent process.
@@ -226,9 +226,9 @@ float -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.fi
           the new process starts with the current working directory of
           the caller.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTcreate_process_option.CP_set_env"><span class="constructor">CP_set_env</span></span> <span class="keyword">of</span> <code class="type">string</code></code></td><td class="typefieldcomment" align="left"><div class="info">The process environment is set to this encoded array of environment
           variables. By default the current environment is passed down
-          to the new process.<br/>          The string is created from an array of &quot;name=value&quot; settings
+          to the new process.<p>          The string is created from an array of &quot;name=value&quot; settings
           by separating all elements by null bytes, and by putting two
-          null bytes at the end.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTcreate_process_option.CP_std_handles"><span class="constructor">CP_std_handles</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></code></td><td class="typefieldcomment" align="left"><div class="info">Sets the standard handles of the new console process.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTcreate_process_option.CP_create_console"><span class="constructor">CP_create_console</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Creates a new console window. The standard handles of the new
+          null bytes at the end.</p></div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTcreate_process_option.CP_std_handles"><span class="constructor">CP_std_handles</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> * <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></code></td><td class="typefieldcomment" align="left"><div class="info">Sets the standard handles of the new console process.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTcreate_process_option.CP_create_console"><span class="constructor">CP_create_console</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">Creates a new console window. The standard handles of the new
           process may also be modified - however, the exact effect is not
           well documented by Microsoft. I have the impression that the logic
           is this: handles pointing to the parent console are replaced by
@@ -238,8 +238,8 @@ float -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.fi
           <code class="code">CP_std_handles</code>. So you cannot create a new console, and
           keep standard handles that are connected to the old console.
           Best practice is to avoid the combination of <code class="code">CP_std_handles</code> and
-          <code class="code">CP_create_console</code> when there is already a console.<br/>          This flag does not have any effect when the started app is
-          a GUI app.</div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTcreate_process_option.CP_detach_from_console"><span class="constructor">CP_detach_from_console</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">The new process detaches from the console at startup, even if it is
+          <code class="code">CP_create_console</code> when there is already a console.<p>          This flag does not have any effect when the started app is
+          a GUI app.</p></div></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTcreate_process_option.CP_detach_from_console"><span class="constructor">CP_detach_from_console</span></span></code></td><td class="typefieldcomment" align="left"><div class="info">The new process detaches from the console at startup, even if it is
           a console application. Unless <code class="code">CP_std_handles</code> is specified,
           the new process will initially not have standard handles (i.e.
           the standard handles are invalid handles)!
@@ -261,9 +261,9 @@ float -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.fi
 <pre><span class="VALcreate_process"><span class="keyword">val</span> create_process</span> : <code class="type">string -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=create_process_option">create_process_option</a> list -&gt; <a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_process">w32_process</a></code></pre><div class="info"><div class="info"><code class="code">create_process cmd cmdline options</code>: Spawns a new process that runs
       concurrently with the calling process. <code class="code">cmd</code> is the command
       to execute (it is not searched by path, and the file suffix must be
-      given). <code class="code">cmdline</code> is the full command-line.<br/>      If the exit code of the new process does not play any role, it is
+      given). <code class="code">cmdline</code> is the full command-line.<p>      If the exit code of the new process does not play any role, it is
       ok to just ignore the returned process handle (which will be
-      automatically closed by a GC finalizer).</div></div>
+      automatically closed by a GC finalizer).</p></div></div>
 <pre><span class="VALclose_process"><span class="keyword">val</span> close_process</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_process">w32_process</a> -&gt; unit</code></pre><div class="info"><div class="info">Closes the handle in the <code class="code">w32_process</code> value, if it is still open</div></div>
 <pre><span class="VALget_process_status"><span class="keyword">val</span> get_process_status</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_process">w32_process</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=process_status">Unix.process_status</a> option</code></pre><div class="info"><div class="info">Returns the process result if the process is finished, and <code class="code">None</code>
       otherwise</div></div>
@@ -275,7 +275,7 @@ float -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.fi
 <pre><span class="VALemulated_pid"><span class="keyword">val</span> emulated_pid</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_process">w32_process</a> -&gt; int</code></pre><div class="info"><div class="info">Returns the MSVCRT.DLL notion of the process identifier (pid).
       This kind of pid is used in the <code class="code">Unix</code> library to refer to
       processes, especially in <code class="code">waitpid</code>. Note that the pid is actually
-      a handle, and it must be closed by calling <code class="code">Unix.waitpid</code>.<br/>      Each call of <code class="code">emulated_pid</code> returns a new handle.</div></div>
+      a handle, and it must be closed by calling <code class="code">Unix.waitpid</code>.<p>      Each call of <code class="code">emulated_pid</code> returns a new handle.</p></div></div>
 <pre><span class="VALwin_pid"><span class="keyword">val</span> win_pid</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_process">w32_process</a> -&gt; int</code></pre><div class="info"><div class="info">Returns the Windows notion of the process identifier (pid)</div></div>
 <pre><span class="VALprocess_descr"><span class="keyword">val</span> process_descr</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_process">w32_process</a> -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></pre><div class="info"><div class="info">Returns the proxy descriptor of the process</div></div>
 <pre><span class="VALterminate_process"><span class="keyword">val</span> terminate_process</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_process">w32_process</a> -&gt; unit</code></pre><div class="info"><div class="info">Terminates the process</div></div>
@@ -284,11 +284,11 @@ float -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.fi
 <pre><span class="VALis_console"><span class="keyword">val</span> is_console</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; bool</code></pre><div class="info"><div class="info">Tests whether the descriptor is the input or the output stream of the
       console.</div></div>
 <pre><span class="VALget_console_input"><span class="keyword">val</span> get_console_input</span> : <code class="type">unit -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></pre><div class="info"><div class="info">Get the input stream of the console. If there is no console yet,
-      a new one is opened.<br/>      The returned descriptor needs to be closed by the caller when done
-      with it.</div></div>
+      a new one is opened.<p>      The returned descriptor needs to be closed by the caller when done
+      with it.</p></div></div>
 <pre><span class="VALget_console_output"><span class="keyword">val</span> get_console_output</span> : <code class="type">unit -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a></code></pre><div class="info"><div class="info">Get the output stream of the console. If there is no console yet,
-      a new one is opened<br/>      The returned descriptor needs to be closed by the caller when done
-      with it.</div></div>
+      a new one is opened<p>      The returned descriptor needs to be closed by the caller when done
+      with it.</p></div></div>
 <div class="info"><div class="info">We use a simplified model of the console where only the visible part
     of the buffer is represented. All coordinates are relative to the
     visible part of the buffer.</div></div>
@@ -314,11 +314,11 @@ float -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.fi
 <pre><span class="VALinit_console_codepage"><span class="keyword">val</span> init_console_codepage</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info">Sets the code page of the console to the ANSI code page of the
       system. Unfortunately, the console uses the OEM code page by default
       (e.g. code page 437 instead of 1252). This function changes the
-      code page back to the ANSI version.<br/>      Note, however, that the docs say: &quot;If the current font is a
+      code page back to the ANSI version.<p>      Note, however, that the docs say: &quot;If the current font is a
       raster font, SetConsoleOutputCP does not affect how extended characters
       are displayed.&quot; (grrmmpf) So you should also switch to a different
       font - otherwise you get input in the ANSI code page, and do output
-      in the OEM code page.<br/>      For Windows novices: Historically, there were two types of 8 bit
+      in the OEM code page.</p><p>      For Windows novices: Historically, there were two types of 8 bit
       character sets. The older type is an IBM code page, and predates
       the ISO-8859 series of character sets. This code page was used
       at MS-DOS times.  Microsoft calls this code page the &quot;OEM&quot; code
@@ -327,7 +327,7 @@ float -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.fi
       fully match them. These newer code pages have names like
       &quot;Windows-1252&quot;, and are now called ANSI code pages by Microsoft.
       The 8-bit versions of the Win32 calls (which are used by the
-      Ocaml runtime)normally use the ANSI code page.</div></div>
+      Ocaml runtime)normally use the ANSI code page.</p></div></div>
 <pre><span class="VALclear_until_end_of_line"><span class="keyword">val</span> clear_until_end_of_line</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info">Writes a space character from the current cursor position to the
       end of the line</div></div>
 <pre><span class="VALclear_until_end_of_screen"><span class="keyword">val</span> clear_until_end_of_screen</span> : <code class="type">unit -&gt; unit</code></pre><div class="info"><div class="info">Writes a space character from the current cursor position to the
@@ -346,7 +346,7 @@ float -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.fi
     file descriptors as input. However, you cannot do anything with the
     proxies except looking the corresponding real objects up. Proxy
     descriptors are used in interfaces that only allow to pass
-    <code class="code">Unix.file_descr</code> values in and out.<br/>    Proxy descriptors have to be closed by the caller once they have
+    <code class="code">Unix.file_descr</code> values in and out.<p>    Proxy descriptors have to be closed by the caller once they have
     been handed out to the caller. Closing the proxy descriptor does not
     make the descriptor unusable (lookups still work), and the referenced 
     object is also 
@@ -355,7 +355,7 @@ float -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.fi
     descriptor, e.g. via <code class="code">pipe_descr</code>. After closing the proxy, however,
     it is possible that the system generates another file descriptor
     that looks equal to the closed proxy. It is often best to close at the
-    moment when one is really done with the proxy.</div></div>
+    moment when one is really done with the proxy.</p></div></div>
 <pre><code><span class="TYPEw32_object"><span class="keyword">type</span> w32_object</span> = </code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTw32_object.W32_event"><span class="constructor">W32_event</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_event">w32_event</a></code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTw32_object.W32_pipe"><span class="constructor">W32_pipe</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_pipe">w32_pipe</a></code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTw32_object.W32_pipe_server"><span class="constructor">W32_pipe_server</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_pipe_server">w32_pipe_server</a></code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTw32_object.W32_process"><span class="constructor">W32_process</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_process">w32_process</a></code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTw32_object.W32_input_thread"><span class="constructor">W32_input_thread</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_input_thread">w32_input_thread</a></code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTw32_object.W32_output_thread"><span class="constructor">W32_output_thread</span></span> <span class="keyword">of</span> <code class="type"><a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_output_thread">w32_output_thread</a></code></code></td></tr></table>
 <pre><span class="VALlookup"><span class="keyword">val</span> lookup</span> : <code class="type"><a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocamlnet&amp;module=Netsys_win32&amp;type=w32_object">w32_object</a></code></pre><div class="info"><div class="info">Returns the real object behind a proxy descriptor, or raises

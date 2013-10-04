@@ -1,9 +1,9 @@
-<div class="ocaml_toplevel_module"><div class="info">Wrapper for regexps with PCRE syntax<br/> This module is a version of <code class="code">Str</code> with a thread-safe interface,
- implemented using Pcre. <br/> This modules processes PCRE-style regular expressions. If you like
+<div class="ocaml_toplevel_module"><div class="info">Wrapper for regexps with PCRE syntax<p> This module is a version of <code class="code">Str</code> with a thread-safe interface,
+ implemented using Pcre. </p><p> This modules processes PCRE-style regular expressions. If you like
  to write <code class="code">Str</code>-like regexps, you can also use  <a href="#Netstring_str">Netstring_str</a> with
- almost the same signature.<br/> <b>The functions in this module are unavailable if Ocamlnet is built
+ almost the same signature.</p><p> <b>The functions in this module are unavailable if Ocamlnet is built
  with <code class="code">Str</code> as implementation of regular expressions! They will always
- raise <code class="code">Invalid_argument</code>!</b></div>
+ raise <code class="code">Invalid_argument</code>!</b></p></div>
 <pre><span class="TYPEregexp"><span class="keyword">type</span> regexp</span> = <code class="type"><a href="?package=pcre-ocaml&amp;module=Pcre&amp;type=regexp">Pcre.regexp</a></code></pre><div class="info"><div class="info">Supported regexp syntax: See pcrepattern(3).</div></div>
 <pre><span class="TYPEsplit_result"><span class="keyword">type</span> split_result</span> = <code class="type"><a href="?package=pcre-ocaml&amp;module=Pcre&amp;type=split_result">Pcre.split_result</a></code></pre><table class="typetable">
 		    <tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsplit_result.Text"><span class="constructor">Text</span></span> <span class="keyword">of</span> <code class="type">string</code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsplit_result.Delim"><span class="constructor">Delim</span></span> <span class="keyword">of</span> <code class="type">string</code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsplit_result.Group"><span class="constructor">Group</span></span> <span class="keyword">of</span> <code class="type">int * string</code></code></td></tr><tr><td align="left" valign="top"><code><span class="keyword">|</span></code></td><td align="left" valign="top"><code><span class="TYPEELTsplit_result.NoGroup"><span class="constructor">NoGroup</span></span></code></td></tr></table><div class="info"><div class="info">The type of regular expressions; now based on <code class="code">Pcre</code></div><div class="info">Here we keep compatiblity with <code class="code">Pcre</code></div></div>
@@ -43,13 +43,13 @@
 <pre><span class="VALglobal_replace"><span class="keyword">val</span> global_replace</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netstring_pcre&amp;type=regexp">regexp</a> -&gt; string -&gt; string -&gt; string</code></pre><div class="info"><div class="info">Returns the position where the substring matching the nth
  group ends</div></div>
 <pre><span class="VALreplace_first"><span class="keyword">val</span> replace_first</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netstring_pcre&amp;type=regexp">regexp</a> -&gt; string -&gt; string -&gt; string</code></pre><div class="info"><div class="info"><code class="code">global_replace re templ s</code>: Replaces all matchings of <code class="code">re</code> in
- <code class="code">s</code> by <code class="code">templ</code>.<br/> In <code class="code">templ</code> one can refer to matched groups by the backslash notation:
+ <code class="code">s</code> by <code class="code">templ</code>.<p> In <code class="code">templ</code> one can refer to matched groups by the backslash notation:
  <code class="code">\1</code> refers to the first group, <code class="code">\2</code> to the second etc.
- <code class="code">\0</code> is the whole match. <code class="code">\\ </code> is the backslash character.</div></div>
+ <code class="code">\0</code> is the whole match. <code class="code">\\ </code> is the backslash character.</p></div></div>
 <pre><span class="VALglobal_substitute"><span class="keyword">val</span> global_substitute</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netstring_pcre&amp;type=regexp">regexp</a> -&gt; (<a href="?package=ocamlnet&amp;module=Netstring_pcre&amp;type=result">result</a> -&gt; string -&gt; string) -&gt; string -&gt; string</code></pre><div class="info"><div class="info"><code class="code">replace_first re templ s</code>: Replaces the first match of <code class="code">re</code> in
- <code class="code">s</code> by <code class="code">templ</code>.<br/> In <code class="code">templ</code> one can refer to matched groups by the backslash notation:
+ <code class="code">s</code> by <code class="code">templ</code>.<p> In <code class="code">templ</code> one can refer to matched groups by the backslash notation:
  <code class="code">\1</code> refers to the first group, <code class="code">\2</code> to the second etc.
- <code class="code">\0</code> is the whole match. <code class="code">\\ </code> is the backslash character.</div></div>
+ <code class="code">\0</code> is the whole match. <code class="code">\\ </code> is the backslash character.</p></div></div>
 <pre><span class="VALsubstitute_first"><span class="keyword">val</span> substitute_first</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netstring_pcre&amp;type=regexp">regexp</a> -&gt; (<a href="?package=ocamlnet&amp;module=Netstring_pcre&amp;type=result">result</a> -&gt; string -&gt; string) -&gt; string -&gt; string</code></pre><div class="info"><div class="info"><code class="code">global_substitute re subst s</code>: Applies the substitution function
  <code class="code">subst</code> to all matchings of <code class="code">re</code> in <code class="code">s</code>, and returns the 
  transformed string. <code class="code">subst</code> is called with the current <code class="code">result</code>

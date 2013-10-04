@@ -3,11 +3,11 @@
     <code class="code">type encap</code> as an arbitrary value that carries a type identifier with it.
     The type identifier is generated when the functor
      <a href="#Netplex_encap.Make_encap">Netplex_encap.Make_encap</a> is applied. Every instantiation of this
-    functor generates a new type identifier.<br/>    The idea is then that an <code class="code">encap</code> value can be marshalled to another
+    functor generates a new type identifier.<p>    The idea is then that an <code class="code">encap</code> value can be marshalled to another
     process using <code class="code">Marshal</code>, and when it is unwrapped the type identifier
     is checked. Unwrapping is only successful when the <code class="code">unwrap</code> function
     from the same functor instantiation is used as the <code class="code">wrap</code>
-    function.<br/>    This module is incompatible with:<ul><li>Marshalling to processes running a different executable</li><li>Marshalling to processes that are dynamically loading 
+    function.</p><p>    This module is incompatible with:</p><ul><li>Marshalling to processes running a different executable</li><li>Marshalling to processes that are dynamically loading 
        modules</li><li>The functor must be instantiated at program initialization time.
        Especially this must not happen in <code class="code">let module</code> expressions.</li></ul>    Only some of these assumptions can be checked at runtime by this
     implementation.</div></div>

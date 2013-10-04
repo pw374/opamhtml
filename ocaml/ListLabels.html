@@ -1,10 +1,10 @@
-<div class="ocaml_toplevel_module"><div class="info">List operations.<br/>   Some functions are flagged as not tail-recursive.  A tail-recursive
+<div class="ocaml_toplevel_module"><div class="info">List operations.<p>   Some functions are flagged as not tail-recursive.  A tail-recursive
    function uses constant stack space, while a non-tail-recursive function
    uses stack space proportional to the length of its list argument, which
    can be a problem with very long lists.  When the function takes several
    list arguments, an approximate formula giving stack usage (in some
-   unspecified constant unit) is shown in parentheses.<br/>   The above considerations can usually be ignored if your lists are not
-   longer than about 10000 elements.</div>
+   unspecified constant unit) is shown in parentheses.</p><p>   The above considerations can usually be ignored if your lists are not
+   longer than about 10000 elements.</p></div>
 <pre><span class="VALlength"><span class="keyword">val</span> length</span> : <code class="type">'a list -&gt; int</code></pre><div class="info"><div class="info">Return the length (number of elements) of the given list.</div></div>
 <pre><span class="VALhd"><span class="keyword">val</span> hd</span> : <code class="type">'a list -&gt; 'a</code></pre><div class="info"><div class="info">Return the first element of the given list. Raise
    <code class="code">Failure &quot;hd&quot;</code> if the list is empty.</div></div>
@@ -135,12 +135,12 @@
    The resulting list is sorted in increasing order.
    <code class="code">List.sort</code> is guaranteed to run in constant heap space
    (in addition to the size of the result list) and logarithmic
-   stack space.<br/>   The current implementation uses Merge Sort. It runs in constant
-   heap space and logarithmic stack space.</div></div>
+   stack space.<p>   The current implementation uses Merge Sort. It runs in constant
+   heap space and logarithmic stack space.</p></div></div>
 <pre><span class="VALstable_sort"><span class="keyword">val</span> stable_sort</span> : <code class="type">cmp:('a -&gt; 'a -&gt; int) -&gt; 'a list -&gt; 'a list</code></pre><div class="info"><div class="info">Same as  <a href="#ListLabels.sort">ListLabels.sort</a>, but the sorting algorithm is guaranteed to
    be stable (i.e. elements that compare equal are kept in their
-   original order) .<br/>   The current implementation uses Merge Sort. It runs in constant
-   heap space and logarithmic stack space.</div></div>
+   original order) .<p>   The current implementation uses Merge Sort. It runs in constant
+   heap space and logarithmic stack space.</p></div></div>
 <pre><span class="VALfast_sort"><span class="keyword">val</span> fast_sort</span> : <code class="type">cmp:('a -&gt; 'a -&gt; int) -&gt; 'a list -&gt; 'a list</code></pre><div class="info"><div class="info">Same as  <a href="#List.sort">List.sort</a> or  <a href="#List.stable_sort">List.stable_sort</a>, whichever is faster
     on typical input.</div></div>
 <pre><span class="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type">cmp:('a -&gt; 'a -&gt; int) -&gt; 'a list -&gt; 'a list -&gt; 'a list</code></pre><div class="info"><div class="info">Merge two lists:

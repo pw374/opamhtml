@@ -67,13 +67,13 @@
                                  process exists and the current process has
                                  permission to signal it</div></div>
 <div class="ocaml_module sig" name="Expert"><pre><span class="keyword">module</span> <a href="?package=core&amp;module=Signal.Expert">Expert</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">The <code class="code">Expert</code> module contains functions that novice users should avoid, due to their
-    complexity.<br/>    An OCaml signal handler can run at any time, which introduces all the semantic
+    complexity.<p>    An OCaml signal handler can run at any time, which introduces all the semantic
     complexities of multithreading.  It is much easier to use async signal handling, see
      <a href="#Async_unix.Signal">Async_unix.Signal</a>, which does not involve multithreading, and runs user code as
     ordinary async jobs.  Also, beware that there can only be a single OCaml signal
     handler for any signal, so handling a signal with a <code class="code">Core</code> signal handler will
-    interfere if async is attempting to handle the same signal.<br/>    If you do use <code class="code">Core</code> signal handlers, you should strive to make the signal handler
-    perform a simple idempotent action, like setting a ref.</div></div><div class="ocaml_module_content">
+    interfere if async is attempting to handle the same signal.</p><p>    If you do use <code class="code">Core</code> signal handlers, you should strive to make the signal handler
+    perform a simple idempotent action, like setting a ref.</p></div></div><div class="ocaml_module_content">
 <pre><span class="TYPEbehavior"><span class="keyword">type</span> behavior</span> = <code class="type">[ `Default | `Handle of <a href="?package=core&amp;module=Signal&amp;type=t">t</a> -&gt; unit | `Ignore ]</code></pre>
 <pre><span class="VALsignal"><span class="keyword">val</span> signal</span> : <code class="type"><a href="?package=core&amp;module=Signal&amp;type=t">t</a> -&gt; <a href="?package=core&amp;module=Signal.Expert&amp;type=behavior">behavior</a> -&gt; <a href="?package=core&amp;module=Signal.Expert&amp;type=behavior">behavior</a></code></pre><div class="info"><div class="info"><code class="code">signal t</code> sets the behavior of the system on receipt of signal <code class="code">t</code> and returns the
       behavior previously associated with <code class="code">t</code>.  If <code class="code">t</code> is not available on your system,
@@ -153,13 +153,13 @@
                                  process exists and the current process has
                                  permission to signal it</div></div>
 <div class="info"><div class="info">The <code class="code">Expert</code> module contains functions that novice users should avoid, due to their
-    complexity.<br/>    An OCaml signal handler can run at any time, which introduces all the semantic
+    complexity.<p>    An OCaml signal handler can run at any time, which introduces all the semantic
     complexities of multithreading.  It is much easier to use async signal handling, see
      <a href="#Async_unix.Signal">Async_unix.Signal</a>, which does not involve multithreading, and runs user code as
     ordinary async jobs.  Also, beware that there can only be a single OCaml signal
     handler for any signal, so handling a signal with a <code class="code">Core</code> signal handler will
-    interfere if async is attempting to handle the same signal.<br/>    If you do use <code class="code">Core</code> signal handlers, you should strive to make the signal handler
-    perform a simple idempotent action, like setting a ref.</div></div>
+    interfere if async is attempting to handle the same signal.</p><p>    If you do use <code class="code">Core</code> signal handlers, you should strive to make the signal handler
+    perform a simple idempotent action, like setting a ref.</p></div></div>
 <div class="info"><div class="info"><code class="code">signal t</code> sets the behavior of the system on receipt of signal <code class="code">t</code> and returns the
       behavior previously associated with <code class="code">t</code>.  If <code class="code">t</code> is not available on your system,
       <code class="code">signal</code> raises.</div></div>

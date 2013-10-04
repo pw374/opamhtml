@@ -1,10 +1,10 @@
-<div class="ocaml_toplevel_module"><div class="info">Common data-structures for CGI-like connectors.<br/> This library tries to minimize the use of unsafe practices.  It
+<div class="ocaml_toplevel_module"><div class="info">Common data-structures for CGI-like connectors.<p> This library tries to minimize the use of unsafe practices.  It
  cannot be bullet proof however and you should read about
-  <a href="http://www.w3.org/Security/Faq/wwwsf4.html">security</a>.<br/> REMARK: It happens frequently that hard to predict random numbers
+  <a href="http://www.w3.org/Security/Faq/wwwsf4.html">security</a>.</p><p> REMARK: It happens frequently that hard to predict random numbers
  are needed in Web applications.  The previous version of this
  library used to include some facilities for that (in the
  <code class="code">Netcgi_jserv</code> module).  They have been dropped in favor of
-  <a href="http://pauillac.inria.fr/~xleroy/software.html#cryptokit">Cryptokit</a>.</div>
+  <a href="http://pauillac.inria.fr/~xleroy/software.html#cryptokit">Cryptokit</a>.</p></div>
 <div class="info"><div class="info"><h2 id="2_TITLE">Arguments</h2></div></div>
 <div class="ocaml_class sig" name="cgi_argument"><pre><span class="TYPEcgi_argument"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netcgi&amp;class=cgi_argument">cgi_argument</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Represent a key-value pair of data passed to the script (including
     file uploads).</div></div><div class="ocaml_class_content"><pre><span class="METHODname"><span class="keyword">method</span> name</span> : <code class="code">string</code></pre>
@@ -34,8 +34,8 @@
         (This is not to be confused with the possible local file
         holding the data.)</div></div>
 <pre><span class="METHODrepresentation"><span class="keyword">method</span> representation</span> : <code class="code">[ `MIME of <a href="?package=ocamlnet&amp;module=Netmime&amp;type=mime_message">Netmime.mime_message</a> | `Simple of <a href="?package=ocamlnet&amp;module=Netmime&amp;type=mime_body">Netmime.mime_body</a> ]</code></pre>
-<div class="info"><div class="info">The representation of the argument.<br/>        - <code class="code">`Simple</code> the value of the CGI argument is an unstructured
-          string value.<ul><li><code class="code">`MIME</code> The argument has a MIME header in addition to the
+<div class="info"><div class="info">The representation of the argument.<p>        - <code class="code">`Simple</code> the value of the CGI argument is an unstructured
+          string value.</p><ul><li><code class="code">`MIME</code> The argument has a MIME header in addition to the
           value.  The MIME message is read-only.  </li></ul></div></div>
 <pre><span class="METHODfinalize"><span class="keyword">method</span> finalize</span> : <code class="code">unit -&gt; unit</code></pre>
 <div class="info"><div class="info">Arguments stored in temp files must be deleted when the
@@ -44,9 +44,9 @@
         `Memory</code>.  The method never raises any exceptions.  If the
         file no longer exists (e.g. because it was moved away) or if
         there are any problems deleting the file, the error will be
-        ignored.<br/>        The <code class="code">finalize</code> method is not registered in the garbage
+        ignored.<p>        The <code class="code">finalize</code> method is not registered in the garbage
         collector.  You can do that, but it is usually better to call
-        this method manually.</div></div></div></div>
+        this method manually.</p></div></div></div></div>
 <div class="ocaml_module sig" name="Argument"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netcgi.Argument">Argument</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Operations on arguments and lists of thereof.</div></div><div class="ocaml_module_content">
 <pre><span class="EXCEPTIONOversized"><span class="keyword">exception</span> Oversized</span></pre>
 <pre><span class="VALsimple"><span class="keyword">val</span> simple</span> : <code class="type">string -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Netcgi&amp;type=cgi_argument">cgi_argument</a></code></pre><div class="info"><div class="info"><code class="code">simple_arg name value</code> creates an unstructured CGI argument
@@ -83,16 +83,16 @@
 <div class="ocaml_class ident" name="simple_argument" path="?package=ocamlnet&amp;module=Netcgi&amp;class=rw_cgi_argument"><pre><span class="TYPEsimple_argument"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netcgi&amp;class=simple_argument">simple_argument</a></span> : <code class="type">bool option -&gt; string -&gt; string -&gt; </code><a href="?package=ocamlnet&amp;module=Netcgi&amp;class=rw_cgi_argument">rw_cgi_argument</a></pre><div class="info"><div class="info">Old deprecated simple argument class.<span class="warning">Deprecated.</span> Use  <a href="#Netcgi.Argument.simple">Netcgi.Argument.simple</a> instead.<br/></div></div></div>
 <div class="ocaml_class ident" name="mime_argument" path="?package=ocamlnet&amp;module=Netcgi&amp;class=rw_cgi_argument"><pre><span class="TYPEmime_argument"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Netcgi&amp;class=mime_argument">mime_argument</a></span> : <code class="type">bool option -&gt; string -&gt; <a href="?package=ocamlnet&amp;module=Netmime&amp;type=mime_message">Netmime.mime_message</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Netcgi&amp;class=rw_cgi_argument">rw_cgi_argument</a></pre><div class="info"><div class="info">Old deprecated MIME argument class.<span class="warning">Deprecated.</span> Use  <a href="#Netcgi.Argument.mime">Netcgi.Argument.mime</a> instead.<br/></div></div></div>
 <div class="info"><div class="info"><h2 id="2_TITLE">Cookies</h2></div></div>
-<div class="ocaml_module sig" name="Cookie"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netcgi.Cookie">Cookie</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Functions to manipulate cookies.<br/>    You should know that besides the <code class="code">name</code> and <code class="code">value</code> attribute,
+<div class="ocaml_module sig" name="Cookie"><pre><span class="keyword">module</span> <a href="?package=ocamlnet&amp;module=Netcgi.Cookie">Cookie</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">Functions to manipulate cookies.<p>    You should know that besides the <code class="code">name</code> and <code class="code">value</code> attribute,
     user agents will send at most the <code class="code">path</code>, <code class="code">domain</code> and <code class="code">port</code> and
-    usually will not send them at all.<br/>    For interoperability, cookies are set using version 0 (by
+    usually will not send them at all.</p><p>    For interoperability, cookies are set using version 0 (by
     Netscape) unless version 1 (RFC 2965 and the older RFC 2109)
     fields are set.  While version 0 is well supported by browsers,
     RFC 2109 requires a recent browser and RFC 2965 is usually not
     supported.  You do not have to worry however, cookies are always
     sent in such a way older browsers understand them -- albeit not
     all attributes of course -- so your application can be ready for
-    the time RFC 2965 will be the norm.<br/>    N.B. This module appears also as  <a href="#Nethttp.Cookie">Nethttp.Cookie</a>.</div></div><div class="ocaml_module_content">
+    the time RFC 2965 will be the norm.</p><p>    N.B. This module appears also as  <a href="#Nethttp.Cookie">Nethttp.Cookie</a>.</p></div></div><div class="ocaml_module_content">
 <pre><span class="TYPEt"><span class="keyword">type</span> t</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Nethttp.Cookie&amp;type=t">Nethttp.Cookie.t</a></code></pre><div class="info"><div class="info">Mutable cookie type.</div></div>
 <pre><span class="VALmake"><span class="keyword">val</span> make</span> : <code class="type">?max_age:int -&gt;
 ?domain:string -&gt;
@@ -143,15 +143,15 @@
 	which must be UTF-8 encoded (RFC 2279).  Because cookies can
 	store personal information, the comment should describe how
 	the cookie will be used so the client can decide whether to
-	allow the cookie or not.  To cancel a comment, set it to <code class="code">&quot;&quot;</code>.<br/>	Cookie version 1 (RFC 2109).</div></div>
+	allow the cookie or not.  To cancel a comment, set it to <code class="code">&quot;&quot;</code>.<p>	Cookie version 1 (RFC 2109).</p></div></div>
 <pre><span class="VALset_comment_url"><span class="keyword">val</span> set_comment_url</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netcgi.Cookie&amp;type=t">t</a> -&gt; string -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">set_comment_url c url</code> same as  <a href="#Netcgi.Cookie.set_comment">Netcgi.Cookie.set_comment</a>
 	except that the cookie comment is available on the page
-	pointed by <code class="code">url</code>.  To cancel, set it to <code class="code">&quot;&quot;</code>.<br/>	Cookie version 1 (RFC 2965).</div></div>
+	pointed by <code class="code">url</code>.  To cancel, set it to <code class="code">&quot;&quot;</code>.<p>	Cookie version 1 (RFC 2965).</p></div></div>
 <pre><span class="VALset_ports"><span class="keyword">val</span> set_ports</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netcgi.Cookie&amp;type=t">t</a> -&gt; int list option -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">set ports c (Some p)</code> says that the cookie <code class="code">c</code> must only be
 	returned if the server request comes from one of the listed
 	ports.  If <code class="code">p = []</code>, the cookie will only be sent to the
 	request-port it was received from.  <code class="code">set_ports c None</code> says
-	that the cookie may be sent to any port.<br/>	Cookie version 1 (RFC 2965).</div></div>
+	that the cookie may be sent to any port.<p>	Cookie version 1 (RFC 2965).</p></div></div>
 <pre><span class="VALof_netscape_cookie"><span class="keyword">val</span> of_netscape_cookie</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Nethttp&amp;type=netscape_cookie">Nethttp.netscape_cookie</a> -&gt; <a href="?package=ocamlnet&amp;module=Netcgi.Cookie&amp;type=t">t</a></code></pre><div class="info"><div class="info">Convert a Netscape cookie to the new representation</div></div>
 <pre><span class="VALto_netscape_cookie"><span class="keyword">val</span> to_netscape_cookie</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netcgi.Cookie&amp;type=t">t</a> -&gt; <a href="?package=ocamlnet&amp;module=Nethttp&amp;type=netscape_cookie">Nethttp.netscape_cookie</a></code></pre><div class="info"><div class="info">Convert to Netscape cookie (with information loss)</div></div></div></div>
 <div class="info"><div class="info"><h2 id="2_TITLE">The environment of a request</h2></div></div>
@@ -164,29 +164,29 @@
       If the list is empty, all content types are allowed.</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTconfig.input_content_length_limit">input_content_length_limit</span> : <code class="type">int</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">The maximum size of the request, in bytes.</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTconfig.max_arguments">max_arguments</span> : <code class="type">int</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">The maximum number of CGI arguments</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTconfig.workarounds">workarounds</span> : <code class="type">[ `Backslash_bug
 | `MSIE_Content_type_bug
 | `Work_around_MSIE_Content_type_bug
-| `Work_around_backslash_bug ] list</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">The list of enabled workarounds.<br/>      - <code class="code">`MSIE_Content_type_bug</code><br/>      - <code class="code">`Backslash_bug</code> A common error in MIME implementations is not
+| `Work_around_backslash_bug ] list</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">The list of enabled workarounds.<p>      - <code class="code">`MSIE_Content_type_bug</code></p><p>      - <code class="code">`Backslash_bug</code> A common error in MIME implementations is not
       to escape backslashes in quoted string and comments.  This
       workaround mandates that backslashes are handled as normal
       characters.  This is important for e.g. DOS filenames because,
       in the absence of this, the wrongly encoded &quot;C:\dir\file&quot; will
-      be decoded as &quot;C:dirfile&quot;.<br/>      Remark: <code class="code">`Work_around_MSIE_Content_type_bug</code> and
+      be decoded as &quot;C:dirfile&quot;.</p><p>      Remark: <code class="code">`Work_around_MSIE_Content_type_bug</code> and
       <code class="code">`Work_around_backslash_bug</code> are deprecated versions of,
-      respectively, <code class="code">`MSIE_Content_type_bug</code> and <code class="code">`Backslash_bug</code>.</div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTconfig.default_exn_handler">default_exn_handler</span> : <code class="type">bool</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">Whether to catch exceptions raised by the script and display an
+      respectively, <code class="code">`MSIE_Content_type_bug</code> and <code class="code">`Backslash_bug</code>.</p></div></td></tr><tr><td align="left" valign="top"><code>  </code></td><td align="left" valign="top"><code><span class="TYPEELTconfig.default_exn_handler">default_exn_handler</span> : <code class="type">bool</code>;</code></td><td class="typefieldcomment" align="left"><div class="info">Whether to catch exceptions raised by the script and display an
       error page.  This will keep the connector running even if your
       program has bugs in some of its components.  This will however
       also prevent a stack trace to be printed; if you want this turn
       this option off.</div></td></tr><tr><td>}</td></tr></table>
 <pre><span class="VALdefault_config"><span class="keyword">val</span> default_config</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netcgi&amp;type=config">config</a></code></pre><div class="info"><div class="info">The default configuration is:<ul><li><code class="code">tmp_directory</code>:  <a href="#Netsys_tmp.tmp_directory()">Netsys_tmp.tmp_directory()</a></li><li><code class="code">tmp_prefix</code>: &quot;netcgi&quot;</li><li><code class="code">permitted_http_methods</code>: <code class="code">`GET</code>, <code class="code">`HEAD</code>, <code class="code">`POST</code>.</li><li><code class="code">permitted_input_content_types</code>: <code class="code">&quot;multipart/form-data&quot;</code>,
       <code class="code">&quot;application/x-www-form-urlencoded&quot;</code>.</li><li><code class="code">input_content_length_limit</code>: <code class="code">maxint</code> (i.e., no limit).</li><li><code class="code">max_arguments = 10000</code> (for security reasons)</li><li><code class="code">workarounds</code>: all of them.</li><li><code class="code">default_exn_handler</code>: set to <code class="code">true</code>.</li></ul>      To create a custom configuration, it is recommended to use this syntax:
-      <pre class="codepre"><code class="code">
+      <code class="code">
       let custom_config = { default_config with tmp_prefix = &quot;my_prefix&quot; }
-      </code></pre>
+      </code>
       (This syntax is also robust w.r.t. the possible addition of new
       config flields.)</div></div>
 <div class="ocaml_class sig" name="cgi_environment"><pre><span class="TYPEcgi_environment"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netcgi&amp;class=cgi_environment">cgi_environment</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">The environment of a request consists of the information available
-    besides the data sent by the user (as key-value pairs).</div></div><div class="ocaml_class_content"><div class="info"><div class="info"><h3 id="3_TITLE">CGI properties</h3><br/>      The following properties are standardised by CGI.  The methods
+    besides the data sent by the user (as key-value pairs).</div></div><div class="ocaml_class_content"><div class="info"><div class="info"><h3 id="3_TITLE">CGI properties</h3><p>      The following properties are standardised by CGI.  The methods
       return <code class="code">&quot;&quot;</code> (or <code class="code">None</code> in the case of the port number) when the
-      property is not available.</div></div>
+      property is not available.</p></div></div>
 <pre><span class="METHODcgi_gateway_interface"><span class="keyword">method</span> cgi_gateway_interface</span> : <code class="code">string</code></pre>
 
 <pre><span class="METHODcgi_server_name"><span class="keyword">method</span> cgi_server_name</span> : <code class="code">string</code></pre>
@@ -226,11 +226,11 @@
 <div class="info"><div class="info">Returns a (possibly non-standard) CGI environment property.
         If the property is not set, <code class="code">Not_found</code> is be raised unless
         the <code class="code">default</code> argument is passed.  The <code class="code">default</code> argument
-        determines the result of the function in this case.<br/>        The method takes the case-sensitive name and returns the value
+        determines the result of the function in this case.<p>        The method takes the case-sensitive name and returns the value
         of the property. Usually, these properties have uppercase
-        names.<br/>        For example, <code class="code">cgi_gateway_interface</code> returns the same as <pre class="codepre"><code class="code">
-        cgi_property ~default:&quot;&quot; &quot;GATEWAY_INTERFACE&quot; </code></pre><br/>        You cannot access the fields coming from the HTTP header.  Use
-        the method <code class="code">input_header_field</code> instead.</div></div>
+        names.</p><p>        For example, <code class="code">cgi_gateway_interface</code> returns the same as </p><code class="code">
+        cgi_property ~default:&quot;&quot; &quot;GATEWAY_INTERFACE&quot; </code><p>        You cannot access the fields coming from the HTTP header.  Use
+        the method <code class="code">input_header_field</code> instead.</p></div></div>
 <pre><span class="METHODcgi_properties"><span class="keyword">method</span> cgi_properties</span> : <code class="code">(string * string) list</code></pre>
 <div class="info"><div class="info">Return all properties as an associative list.</div></div>
 <pre><span class="METHODcgi_https"><span class="keyword">method</span> cgi_https</span> : <code class="code">bool</code></pre>
@@ -281,11 +281,11 @@
 <div class="info"><div class="info">Returns the value of a field of the response header. If the
         field does not exist, <code class="code">Not_found</code> will be raised unless the
         <code class="code">default</code> argument is passed. The <code class="code">default</code> argument determines
-        the result of the function in this case.<br/>        If there are several fields with the same name only the first
-        field will be returned.<br/>        The anonymous string is the name of the field.  The name is
+        the result of the function in this case.<p>        If there are several fields with the same name only the first
+        field will be returned.</p><p>        The anonymous string is the name of the field.  The name is
         case-insensitive, and it does not matter whether it consists
         of lowercase or uppercase letters. If the name is a compound
-        name, the parts are separated by &quot;-&quot;, e.g. <code class="code">&quot;content-length&quot;</code>.</div></div>
+        name, the parts are separated by &quot;-&quot;, e.g. <code class="code">&quot;content-length&quot;</code>.</p></div></div>
 <pre><span class="METHODmultiple_output_header_field"><span class="keyword">method</span> multiple_output_header_field</span> : <code class="code">string -&gt; string list</code></pre>
 <div class="info"><div class="info">Returns the values of all fields with the passed name of the
         repsonse header.</div></div>
@@ -336,25 +336,25 @@
     </li></ul></div></div>
 <pre><span class="TYPEcache_control"><span class="keyword">type</span> cache_control</span> = <code class="type">[ `Max_age of int | `No_cache | `Unspecified ]</code></pre><div class="info"><div class="info">This is only a small subset of the HTTP 1.1 cache control
       features, but they are usually sufficient, and they work for
-      HTTP/1.0 as well.  The directives mean:<br/>      - <code class="code">`No_cache</code>: Caches are disabled.  The following headers are
+      HTTP/1.0 as well.  The directives mean:<p>      - <code class="code">`No_cache</code>: Caches are disabled.  The following headers are
       sent: <code class="code">Cache-control: no-cache</code>, <code class="code">Pragma: no-cache</code>, <code class="code">Expires:</code>
       (now - 1 second). Note that many versions of Internet Explorer
       have problems to process non-cached contents when TLS/SSL is
       used to transfer the file. Use <code class="code">`Max_age</code> in such cases (see
-      http://support.microsoft.com/kb/316431).<br/>      - <code class="code">`Max_age n</code>: Caches are allowed to store a copy of the
+      http://support.microsoft.com/kb/316431).</p><p>      - <code class="code">`Max_age n</code>: Caches are allowed to store a copy of the
       response for <code class="code">n</code> seconds.  After that, the response must be
       revalidated.  The following headers are sent: <code class="code">Cache-control:
       max-age n</code>, <code class="code">Cache-control: must-revalidate</code>, <code class="code">Expires:</code> (now +
-      <code class="code">n</code> seconds)<br/>      - <code class="code">`Unspecified</code>: No cache control header is added to the
-      response.<br/>      Notes:<ul><li>Cache control directives only apply to GET requests; POST
+      <code class="code">n</code> seconds)</p><p>      - <code class="code">`Unspecified</code>: No cache control header is added to the
+      response.</p><p>      Notes:</p><ul><li>Cache control directives only apply to GET requests; POST
       requests are never cached.</li><li>Not only proxies are considered as cache, but also the local
       disk cache of the browser.</li><li>HTTP/1.0 did not specify cache behaviour as strictly as
       HTTP/1.1 does.  Because of this the <code class="code">Pragma</code> and <code class="code">Expires</code>
       headers are sent, too.  These fields are not interpreted by
       HTTP/1.1 clients because <code class="code">Cache-control</code> has higher precedence.
   </li></ul></div></div>
-<div class="ocaml_class sig" name="cgi"><pre><span class="TYPEcgi"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netcgi&amp;class=cgi">cgi</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Object symbolizing a CGI-like request/response cycle.<br/>    This is the minimal set of services a connector must provide.
-    Additional methods may be defined for specific connectors.</div></div><div class="ocaml_class_content"><div class="info"><div class="info"><h3 id="3_TITLE">Arguments -- data sent to the script</h3></div></div>
+<div class="ocaml_class sig" name="cgi"><pre><span class="TYPEcgi"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netcgi&amp;class=cgi">cgi</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">Object symbolizing a CGI-like request/response cycle.<p>    This is the minimal set of services a connector must provide.
+    Additional methods may be defined for specific connectors.</p></div></div><div class="ocaml_class_content"><div class="info"><div class="info"><h3 id="3_TITLE">Arguments -- data sent to the script</h3></div></div>
 <pre><span class="METHODargument"><span class="keyword">method</span> argument</span> : <code class="code">string -&gt; <a href="?package=ocamlnet&amp;module=Netcgi&amp;type=cgi_argument">cgi_argument</a></code></pre>
 <div class="info"><div class="info"><code class="code">#argument name</code> returns the value of the argument named <code class="code">name</code>.
         If the argument appears several times, only one of its
@@ -423,8 +423,8 @@
         header (possibly several times) until the <code class="code">#out_channel</code> is
         commited for the first time or <code class="code">#env#send_output_header()</code> is
         called.  When there is no support for transactions, the header
-        must be set before the first byte of output is written.<br/>        If <code class="code">#set_header</code> is called a second time, it will overwrite
-        <i>all</i> the header fields.<div class="parameters"><div class="param_info"><code class="code">status</code> : Sets the HTTP status of the reply according to
+        must be set before the first byte of output is written.<p>        If <code class="code">#set_header</code> is called a second time, it will overwrite
+        <i>all</i> the header fields.</p><div class="parameters"><div class="param_info"><code class="code">status</code> : Sets the HTTP status of the reply according to
 	 <a href="http://www.w3.org/Protocols/rfc2616">RFC 2616</a>.  Defaults to
 	&quot;no status&quot;, but the server normally complements an <code class="code">`Ok</code>
 	status in this case.</div><div class="param_info"><code class="code">content_type</code> : Sets the content type.
@@ -479,18 +479,18 @@
         set Content-Length).  Note that HEAD requests must not send
         back a message body so, in this case, all data sent to this
         channel is discarded.  This allows your scripts to work
-        unmodified for GET, POST and HEAD requests.<br/>        The output channel may have transactional semantics, and
+        unmodified for GET, POST and HEAD requests.<p>        The output channel may have transactional semantics, and
         because of this, it is an <code class="code">trans_out_obj_channel</code>.
-        Implementations are free to support transactions or not.<br/>        After all data have been written, the method <code class="code">#commit_work()</code>
+        Implementations are free to support transactions or not.</p><p>        After all data have been written, the method <code class="code">#commit_work()</code>
         <b>must</b> be called, even if there is no support for
-        transactions.<br/>        Simple Example:
-        <pre class="codepre"><code class="code">
+        transactions.</p><p>        Simple Example:
+        </p><code class="code">
         cgi # out_channel # output_string &quot;Hello world!\n&quot;;
         cgi # out_channel # commit_work()
-        </code></pre><br/>        Example for an error handler and a transaction buffer: If an
+        </code><p>        Example for an error handler and a transaction buffer: If an
         error happens, it is possible to roll the channel back, and to
         write the error message.
-        <pre class="codepre"><code class="code">
+        </p><code class="code">
         try
           cgi # set_header ... ();
           cgi # out_channel # output_string &quot;Hello World!&quot;; ...
@@ -500,7 +500,7 @@
           cgi # set_header ... ();
           cgi # out_channel # output_string &quot;Software error!&quot;; ...
           cgi # out_channel # commit_work();
-        </code></pre></div></div>
+        </code></div></div>
 <pre><span class="METHODat_exit"><span class="keyword">method</span> at_exit</span> : <code class="code">(unit -&gt; unit) -&gt; unit</code></pre>
 <div class="info"><div class="info"><code class="code">#at_exit f</code> registers the function <code class="code">f</code> to be executed when
 	<code class="code">#finalize</code> is called (which is done automatically when the
@@ -527,14 +527,14 @@
         special transaction buffer until <code class="code">commit_work</code> is called.  This
         invocation forces the buffered data to be sent to the
         browser. If, however, <code class="code">rollback_work</code> is called, the buffer is
-        cleared.<br/>      Two important examples for <code class="code">`Transactional</code> are:<ul><li>The transaction buffer is implemented in memory:
-      <pre class="codepre"><code class="code">
+        cleared.<p>      Two important examples for <code class="code">`Transactional</code> are:</p><ul><li>The transaction buffer is implemented in memory:
+      <code class="code">
       let buffered _ ch = new Netchannels.buffered_trans_channel ch in
       `Transactional buffered
-      </code></pre></li><li>The transaction buffer is implemented as an external file:
-      <pre class="codepre"><code class="code">
+      </code></li><li>The transaction buffer is implemented as an external file:
+      <code class="code">
       `Transactional(fun _ ch -&gt; new Netchannels.tempfile_output_channel ch)
-      </code></pre>
+      </code>
   </li></ul></div></div>
 <pre><span class="VALbuffered_transactional_outtype"><span class="keyword">val</span> buffered_transactional_outtype</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netcgi&amp;type=output_type">output_type</a></code></pre><div class="info"><div class="info">The <code class="code">output_type</code> implementing transactions with a RAM-based buffer</div></div>
 <pre><span class="VALbuffered_transactional_optype"><span class="keyword">val</span> buffered_transactional_optype</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netcgi&amp;type=output_type">output_type</a></code></pre><div class="info"><div class="info"><b>Deprecated</b> name for <code class="code">buffered_transactional_outtype</code></div></div>
@@ -553,25 +553,25 @@ string -&gt;
 | `Memory_max of float ]</code></pre><div class="info"><div class="info">This is the type of functions <code class="code">arg_store</code> so that <code class="code">arg_store env
         name header</code> tells whether to <code class="code">`Discard</code> the argument or to
         store it into a <code class="code">`File</code> or in <code class="code">`Memory</code>.  The parameters passed
-        to <code class="code">arg_store</code> are as follows:<br/>        - <code class="code">env</code> is the CGI environment.  Thus, for example, you can have
-        different policies for different <code class="code">cgi_path_info</code>.<br/>        - <code class="code">name</code> is the name of the argument.<br/>        - <code class="code">header</code> is the MIME header of the argument (if any).<br/>        Any exception raised by <code class="code">arg_store</code> will be treated like if it
+        to <code class="code">arg_store</code> are as follows:<p>        - <code class="code">env</code> is the CGI environment.  Thus, for example, you can have
+        different policies for different <code class="code">cgi_path_info</code>.</p><p>        - <code class="code">name</code> is the name of the argument.</p><p>        - <code class="code">header</code> is the MIME header of the argument (if any).</p><p>        Any exception raised by <code class="code">arg_store</code> will be treated like if it
         returned <code class="code">`Discard</code>.  Note that the <code class="code">`File</code> will be treated
         like <code class="code">`Memory</code> except for <code class="code">`POST</code> &quot;multipart/form-data&quot; and
-        <code class="code">`PUT</code> queries.<br/>        <code class="code">`Automatic</code> means to store it into a file if the header
+        <code class="code">`PUT</code> queries.</p><p>        <code class="code">`Automatic</code> means to store it into a file if the header
         contains a file name and otherwise in memory (strictly
         speaking <code class="code">`Automatic</code> is not necessary since <code class="code">arg_store</code> can
-        check the header but is provided for your convenience).<br/>        <code class="code">`Memory_max</code> (resp. <code class="code">`File_max</code>, resp. <code class="code">`Automatic_max</code>) is
+        check the header but is provided for your convenience).</p><p>        <code class="code">`Memory_max</code> (resp. <code class="code">`File_max</code>, resp. <code class="code">`Automatic_max</code>) is
         the same as <code class="code">`Memory</code> (resp. <code class="code">`File</code>, resp. <code class="code">`Automatic</code>)
         except that the parameter indicates the maximum size in kB of
         the argument value.  If the size is bigger, the
          <a href="#Netcgi.cgi_argument">Netcgi.cgi_argument</a> methods <code class="code">#value</code> and <code class="code">#open_value_rd</code>
-        methods will raise  <a href="#Netcgi.Argument.Oversized">Netcgi.Argument.Oversized</a>.<br/>        Remark: this allows for fine grained size constraints while
+        methods will raise  <a href="#Netcgi.Argument.Oversized">Netcgi.Argument.Oversized</a>.</p><p>        Remark: this allows for fine grained size constraints while
          <a href="#Netcgi.config">Netcgi.config</a><code class="code">.input_content_length_limit</code> option is a
-        limit on the size of the entire request.</div></div>
+        limit on the size of the entire request.</p></div></div>
 <pre><span class="TYPEexn_handler"><span class="keyword">type</span> exn_handler</span> = <code class="type"><a href="?package=ocamlnet&amp;module=Netcgi&amp;type=cgi_environment">cgi_environment</a> -&gt; (unit -&gt; unit) -&gt; unit</code></pre><div class="info"><div class="info">A function of type <code class="code">exn_handler</code> allows to define a custom
       handler of uncaught exceptions raised by the <code class="code">unit -&gt; unit</code>
       parameter.  A typical example of <code class="code">exn_handler</code> is as follows:
-      <pre class="codepre"><code class="code">
+      <code class="code">
       let exn_handler env f =
         try f()
         with
@@ -581,12 +581,12 @@ string -&gt;
             env#out_channel#output_string &quot;...&quot;;
             env#out_channel#close_out()
         | ...
-      </code></pre></div></div>
+      </code></div></div>
 <pre><span class="TYPEconnection_directive"><span class="keyword">type</span> connection_directive</span> = <code class="type">[ `Conn_close | `Conn_close_linger | `Conn_error of exn | `Conn_keep_alive ]</code></pre><div class="info"><div class="info">Directive how to go on with the current connection:<ul><li><code class="code">`Conn_close</code>: Just shut down and close descriptor</li><li><code class="code">`Conn_close_linger</code>: Linger, shut down, and close descriptor</li><li><code class="code">`Conn_keep_alive</code>: Check for another request on the same connection</li><li><code class="code">`Conn_error e</code>: Shut down and close descriptor, and handle the
    exception <code class="code">e</code>
    </li></ul></div></div>
-<div class="info"><div class="info">Specific connectors can be found in separate modules.  For example:<br/>    -  <a href="#Netcgi_cgi">Netcgi_cgi</a>:  classical CGI.<ul><li> <a href="#Netcgi_fcgi">Netcgi_fcgi</a>: FastCGI protocol.</li><li> <a href="#Netcgi_ajp">Netcgi_ajp</a>:  AJP 1.3 connector (JSERV protocol).</li><li> <a href="#Netcgi_mod">Netcgi_mod</a>:  connector binding to Apache API.</li><li> <a href="#Netcgi_scgi">Netcgi_scgi</a>: SCGI connector.</li><li> <a href="#Netcgi_test">Netcgi_test</a>: special &quot;connector&quot; to test your code.</li></ul>    A typical use is as follows:
-    <pre class="codepre"><code class="code">
+<div class="info"><div class="info">Specific connectors can be found in separate modules.  For example:<p>    -  <a href="#Netcgi_cgi">Netcgi_cgi</a>:  classical CGI.</p><ul><li> <a href="#Netcgi_fcgi">Netcgi_fcgi</a>: FastCGI protocol.</li><li> <a href="#Netcgi_ajp">Netcgi_ajp</a>:  AJP 1.3 connector (JSERV protocol).</li><li> <a href="#Netcgi_mod">Netcgi_mod</a>:  connector binding to Apache API.</li><li> <a href="#Netcgi_scgi">Netcgi_scgi</a>: SCGI connector.</li><li> <a href="#Netcgi_test">Netcgi_test</a>: special &quot;connector&quot; to test your code.</li></ul>    A typical use is as follows:
+    <code class="code">
     open Netcgi
 
     let main (cgi:cgi) =
@@ -597,5 +597,5 @@ string -&gt;
     let () =
       let buffered _ ch = new Netchannels.buffered_trans_channel ch in
       Netcgi_cgi.run ~output_type:(`Transactional buffered) main
-    </code></pre></div></div>
+    </code></div></div>
 </div>

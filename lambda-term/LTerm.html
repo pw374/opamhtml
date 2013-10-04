@@ -11,24 +11,24 @@
 <a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">Lwt_unix.file_descr</a> -&gt; <a href="?package=lwt&amp;module=Lwt_io&amp;type=output_channel">Lwt_io.output_channel</a> -&gt; <a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">create ?windows ?model ?incoming_encoding ?outgoing_encoding
       input_fd input_channel outout_fd output_channel</code> creates a new
       terminal using <code class="code">input_fd</code> and <code class="code">input_channel</code> for inputs and
-      <code class="code">output_fd</code> and <code class="code">output_channel</code> for outputs.<br/>      - <code class="code">windows</code> indicates whether the terminal is a windows console
-      (not mintty, rxvt, ...). It defaults to <code class="code">Lwt_sys.windows</code>.<br/>      - <code class="code">model</code> is the type of the terminal, such as &quot;rxvt&quot; or
+      <code class="code">output_fd</code> and <code class="code">output_channel</code> for outputs.<p>      - <code class="code">windows</code> indicates whether the terminal is a windows console
+      (not mintty, rxvt, ...). It defaults to <code class="code">Lwt_sys.windows</code>.</p><p>      - <code class="code">model</code> is the type of the terminal, such as &quot;rxvt&quot; or
       &quot;xterm&quot;. It defaults to the contents of the &quot;TERM&quot; environment
       variable, or to &quot;dumb&quot; if this one is not found. It is used to
       determine capabilities of the terminal, such as the number of
-      colors. This is not used if <code class="code">windows</code> is <code class="code">true</code>.<br/>      - <code class="code">incoming_encoding</code> is the encoding used for incoming data. It
+      colors. This is not used if <code class="code">windows</code> is <code class="code">true</code>.</p><p>      - <code class="code">incoming_encoding</code> is the encoding used for incoming data. It
       defaults to <code class="code">LTerm_windows.get_console_cp</code> if <code class="code">windows</code> is <code class="code">true</code>
-      and <code class="code">LTerm_unix.system_encoding</code> otherwise.<br/>      - <code class="code">outgoing_encoding</code> is the encoding used for outgoing data. It
+      and <code class="code">LTerm_unix.system_encoding</code> otherwise.</p><p>      - <code class="code">outgoing_encoding</code> is the encoding used for outgoing data. It
       defaults to <code class="code">LTerm_windows.get_console_output_cp</code> if <code class="code">windows</code> is
       <code class="code">true</code> and <code class="code">LTerm_unix.system_encoding</code> otherwise. Note that
       transliteration is used so printing unicode character on the
-      terminal will never fail.<br/>      If one of the two given encodings does not exist, it raises
-      <code class="code">No_such_encoding</code>.<br/>      Note about terminal resize: in the windows console resizes are
+      terminal will never fail.</p><p>      If one of the two given encodings does not exist, it raises
+      <code class="code">No_such_encoding</code>.</p><p>      Note about terminal resize: in the windows console resizes are
       not automatically detected. Lambda-term will only check for
       resize only when something happens. If you want it to poll just
-      write somewhere in your program:<br/>      <pre class="codepre"><code class="code">
+      write somewhere in your program:</p><p>      </p><code class="code">
       Lwt_engine.on_timer 1.0 true ignore
-      </code></pre></div></div>
+      </code></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Informations</h6></div></div>
 <pre><span class="VALmodel"><span class="keyword">val</span> model</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; string</code></pre><div class="info"><div class="info">Returns the model of the terminal.</div></div>
 <pre><span class="VALcolors"><span class="keyword">val</span> colors</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">Number of colors of the terminal.</div></div>
@@ -44,32 +44,32 @@
 <pre><span class="VALset_escape_time"><span class="keyword">val</span> set_escape_time</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; float -&gt; unit</code></pre><div class="info"><div class="info">Set the time waited before returning the escape key.</div></div>
 <pre><span class="EXCEPTIONNot_a_tty"><span class="keyword">exception</span> Not_a_tty</span></pre><div class="info"><div class="info">Exception raised when trying to use a function that can only be
       used on terminals.</div></div>
-<pre><span class="VALsize"><span class="keyword">val</span> size</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; <a href="?package=lambda-term&amp;module=LTerm_geom&amp;type=size">LTerm_geom.size</a></code></pre><div class="info"><div class="info">Returns the curent size of the terminal.<br/>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the output of the given terminal is
-      not a tty.</div></div>
+<pre><span class="VALsize"><span class="keyword">val</span> size</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; <a href="?package=lambda-term&amp;module=LTerm_geom&amp;type=size">LTerm_geom.size</a></code></pre><div class="info"><div class="info">Returns the curent size of the terminal.<p>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the output of the given terminal is
+      not a tty.</p></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Modes</h6></div></div>
 <pre><span class="TYPEmode"><span class="keyword">type</span> mode</span> </pre><div class="info"><div class="info">Type of terminal modes.</div></div>
 <pre><span class="VALenter_raw_mode"><span class="keyword">val</span> enter_raw_mode</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; <a href="?package=lambda-term&amp;module=LTerm&amp;type=mode">mode</a> <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">enter_raw_mode term</code> puts the terminal in ``raw mode''. In this
       mode keyboard events are returned as they happen. In normal mode
       only complete line are returned. It returns the current terminal
-      mode that can be restored using  <a href="#leave_raw_mode">leave_raw_mode</a>.<br/>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the input of the given terminal is not
-      tty.</div></div>
+      mode that can be restored using  <a href="#leave_raw_mode">leave_raw_mode</a>.<p>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the input of the given terminal is not
+      tty.</p></div></div>
 <pre><span class="VALleave_raw_mode"><span class="keyword">val</span> leave_raw_mode</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; <a href="?package=lambda-term&amp;module=LTerm&amp;type=mode">mode</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">leave_raw_mode term mode</code> leaves the raw mode by restoring the
-      given mode.<br/>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the input of the given terminal is not
-      tty.</div></div>
-<pre><span class="VALenable_mouse"><span class="keyword">val</span> enable_mouse</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Enable mouse events reporting.<br/>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the output of the given terminal is
-      not a tty.</div></div>
-<pre><span class="VALdisable_mouse"><span class="keyword">val</span> disable_mouse</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Disable mouse events reporting.<br/>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the output of the given terminal is
-      not a tty.</div></div>
+      given mode.<p>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the input of the given terminal is not
+      tty.</p></div></div>
+<pre><span class="VALenable_mouse"><span class="keyword">val</span> enable_mouse</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Enable mouse events reporting.<p>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the output of the given terminal is
+      not a tty.</p></div></div>
+<pre><span class="VALdisable_mouse"><span class="keyword">val</span> disable_mouse</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Disable mouse events reporting.<p>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the output of the given terminal is
+      not a tty.</p></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Cursor</h6></div></div>
-<pre><span class="VALshow_cursor"><span class="keyword">val</span> show_cursor</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Make the cursor visible.<br/>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the output of the given terminal is
-      not a tty.</div></div>
-<pre><span class="VALhide_cursor"><span class="keyword">val</span> hide_cursor</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Make the cursor invisible.<br/>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the output of the given terminal is
-      not a tty.</div></div>
-<pre><span class="VALgoto"><span class="keyword">val</span> goto</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; <a href="?package=lambda-term&amp;module=LTerm_geom&amp;type=coord">LTerm_geom.coord</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">goto term coord</code> moves the cursor to the given coordinates.<br/>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the output of the given terminal is
-      not a tty.</div></div>
+<pre><span class="VALshow_cursor"><span class="keyword">val</span> show_cursor</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Make the cursor visible.<p>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the output of the given terminal is
+      not a tty.</p></div></div>
+<pre><span class="VALhide_cursor"><span class="keyword">val</span> hide_cursor</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Make the cursor invisible.<p>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the output of the given terminal is
+      not a tty.</p></div></div>
+<pre><span class="VALgoto"><span class="keyword">val</span> goto</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; <a href="?package=lambda-term&amp;module=LTerm_geom&amp;type=coord">LTerm_geom.coord</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">goto term coord</code> moves the cursor to the given coordinates.<p>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the output of the given terminal is
+      not a tty.</p></div></div>
 <pre><span class="VALmove"><span class="keyword">val</span> move</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; int -&gt; int -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">move term rows columns</code> moves the cursor by the given number of
-      lines and columns. Both <code class="code">rows</code> and <code class="code">columns</code> may be negavite.<br/>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the output of the given terminal is
-      not a tty.</div></div>
+      lines and columns. Both <code class="code">rows</code> and <code class="code">columns</code> may be negavite.<p>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the output of the given terminal is
+      not a tty.</p></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Erasing text</h6></div></div>
 <pre><span class="VALclear_screen"><span class="keyword">val</span> clear_screen</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">clear_screen term</code> clears the entire screen.</div></div>
 <pre><span class="VALclear_screen_next"><span class="keyword">val</span> clear_screen_next</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">clear_screen_next term</code> clears the screen from the cursor to
@@ -83,21 +83,21 @@
       to the beginning of the line.</div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">State</h6></div></div>
 <pre><span class="VALsave_state"><span class="keyword">val</span> save_state</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Save the current state of the terminal so it can be restored
-      latter.<br/>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the output of the given terminal is
-      not a tty.</div></div>
-<pre><span class="VALload_state"><span class="keyword">val</span> load_state</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Load the previously saved state of the terminal.<br/>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the output of the given terminal is
-      not a tty.</div></div>
+      latter.<p>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the output of the given terminal is
+      not a tty.</p></div></div>
+<pre><span class="VALload_state"><span class="keyword">val</span> load_state</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Load the previously saved state of the terminal.<p>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the output of the given terminal is
+      not a tty.</p></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Events</h6></div></div>
 <pre><span class="VALread_event"><span class="keyword">val</span> read_event</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; <a href="?package=lambda-term&amp;module=LTerm_event&amp;type=t">LTerm_event.t</a> <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Reads and returns one event. The terminal should be in raw mode
       before calling this function, otherwise event will not be
       reported as they happen. It does not fail if the terminal is not
-      a tty.<br/>      Note: you must not call  <a href="#read_event">read_event</a> from multiple thread at
-      the same time, it will raise  <a href="#Failure">Failure</a> if you try to do so.</div></div>
+      a tty.<p>      Note: you must not call  <a href="#read_event">read_event</a> from multiple thread at
+      the same time, it will raise  <a href="#Failure">Failure</a> if you try to do so.</p></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Printing</h6></div></div>
 <div class="info"><div class="info">All these functions accept only valid UTF-8 strings (or unicode
     styled text). Strings are recoded on the fly using the terminal
     output encoding (except if the terminal output encoding is already
-    UTF-8, in which case the string is just printed as-it).<br/>    The general name of a printing function is <code class="code">&lt;prefix&gt;print&lt;suffixes&gt;</code>.<br/>    Where <code class="code">&lt;prefix&gt;</code> is one of:<ul><li><code class="code">'f'</code>, which means that the function takes as argument a terminal</li><li>nothing, which means that the function prints on  <a href="#stdout">stdout</a></li><li><code class="code">'e'</code>, which means that the function prints on  <a href="#stderr">stderr</a></li></ul>    and <code class="code">&lt;suffixes&gt;</code> is a combination of:<ul><li><code class="code">'l'</code> which means that a new-line character is printed after the message</li><li><code class="code">'f'</code> which means that the function takes as argument a <b>format</b> instead
+    UTF-8, in which case the string is just printed as-it).<p>    The general name of a printing function is <code class="code">&lt;prefix&gt;print&lt;suffixes&gt;</code>.</p><p>    Where <code class="code">&lt;prefix&gt;</code> is one of:</p><ul><li><code class="code">'f'</code>, which means that the function takes as argument a terminal</li><li>nothing, which means that the function prints on  <a href="#stdout">stdout</a></li><li><code class="code">'e'</code>, which means that the function prints on  <a href="#stderr">stderr</a></li></ul>    and <code class="code">&lt;suffixes&gt;</code> is a combination of:<ul><li><code class="code">'l'</code> which means that a new-line character is printed after the message</li><li><code class="code">'f'</code> which means that the function takes as argument a <b>format</b> instead
       of a string</li><li><code class="code">'s'</code> which means that the function takes as argument a styled
       string instead of a string</li></ul>    Note that if the terminal is not a tty, styles are stripped.</div></div>
 <pre><span class="VALfprint"><span class="keyword">val</span> fprint</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; <a href="?package=zed&amp;module=Zed_utf8&amp;type=t">Zed_utf8.t</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
@@ -121,8 +121,8 @@
 <div class="info"><div class="info"><div class="h8">Printing contexts</div></div></div>
 <div class="info"><div class="info">You shoud use these functions when you to print a lot of styled
     text that does not entirely fit in a single  <a href="#LTerm_text.t">LTerm_text.t</a>
-    value.<br/>    This is more efficient than calling manually  <a href="#set_style">set_style</a> since
-    styles will be modified only when needed.</div></div>
+    value.<p>    This is more efficient than calling manually  <a href="#set_style">set_style</a> since
+    styles will be modified only when needed.</p></div></div>
 <pre><span class="TYPEcontext"><span class="keyword">type</span> context</span> </pre><div class="info"><div class="info">A context for styled printing.</div></div>
 <pre><span class="VALwith_context"><span class="keyword">val</span> with_context</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; (<a href="?package=lambda-term&amp;module=LTerm&amp;type=context">context</a> -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a>) -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">with_context term f</code> creates a new printing context and pass it
       to <code class="code">f</code>. Note that calls to <code class="code">with_context</code> are serialized.</div></div>
@@ -140,29 +140,29 @@
 <pre><span class="VALset_style"><span class="keyword">val</span> set_style</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; <a href="?package=lambda-term&amp;module=LTerm_style&amp;type=t">LTerm_style.t</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Change the style of the termina for subsequent unstyled
       output. It does nothing if the output is not a tty.</div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Rendering</h6></div></div>
-<pre><span class="VALrender"><span class="keyword">val</span> render</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; <a href="?package=lambda-term&amp;module=LTerm_draw&amp;type=matrix">LTerm_draw.matrix</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Render an offscreen array to the given terminal.<br/>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the output of the given terminal is
-      not a tty.</div></div>
+<pre><span class="VALrender"><span class="keyword">val</span> render</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; <a href="?package=lambda-term&amp;module=LTerm_draw&amp;type=matrix">LTerm_draw.matrix</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Render an offscreen array to the given terminal.<p>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the output of the given terminal is
+      not a tty.</p></div></div>
 <pre><span class="VALrender_update"><span class="keyword">val</span> render_update</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; <a href="?package=lambda-term&amp;module=LTerm_draw&amp;type=matrix">LTerm_draw.matrix</a> -&gt; <a href="?package=lambda-term&amp;module=LTerm_draw&amp;type=matrix">LTerm_draw.matrix</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">render_update displayed to_display</code> does the same as <code class="code">render
       to_display</code> but assumes that <code class="code">displayed</code> contains the current
       displayed text. This reduces the amount of text sent to the
-      terminal.<br/>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the output of the given terminal is
-      not a tty.</div></div>
+      terminal.<p>      It raises  <a href="#Not_a_tty">Not_a_tty</a> if the output of the given terminal is
+      not a tty.</p></div></div>
 <pre><span class="VALprint_box"><span class="keyword">val</span> print_box</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; <a href="?package=lambda-term&amp;module=LTerm_draw&amp;type=matrix">LTerm_draw.matrix</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">print_box term matrix</code> prints the contents of <code class="code">matrix</code> starting
       at current cursor row. Note that when you have the choice
       between using  <a href="#fprints">fprints</a> and  <a href="#print_box">print_box</a> you should use
        <a href="#print_box">print_box</a> because it works better under windows and is more
-      efficient.<br/>      The cursor is moved to the beginning of the last displayed
-      line.</div></div>
+      efficient.<p>      The cursor is moved to the beginning of the last displayed
+      line.</p></div></div>
 <pre><span class="VALprint_box_with_newlines"><span class="keyword">val</span> print_box_with_newlines</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; <a href="?package=lambda-term&amp;module=LTerm_draw&amp;type=matrix">LTerm_draw.matrix</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">print_box term matrix</code> Same as  <a href="#print_box">print_box</a> but <code class="code">matrix</code>
       may contains newline characters. It must contain one more column
       that the terminal (in case a line of the length of the terminal
-      ends with a newline).<br/>      The difference between  <a href="#print_box">print_box</a> and
+      ends with a newline).<p>      The difference between  <a href="#print_box">print_box</a> and
        <a href="#print_box_with_newlines">print_box_with_newlines</a> is that when the text is selected in
       the terminal, with  <a href="#print_box">print_box</a> it will always be a box with the
       dimensions of <code class="code">matrix</code>. With  <a href="#print_box_with_newlines">print_box_with_newlines</a> it may
-      contains lines longer than the width of the terminal.<br/>      The contents of a line after the first newline character (if
+      contains lines longer than the width of the terminal.</p><p>      The contents of a line after the first newline character (if
       any) in a row of <code class="code">matrix</code> is ignored. The rest of the line get
-      the style of the newline character.</div></div>
+      the style of the newline character.</p></div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Misc</h6></div></div>
 <pre><span class="VALflush"><span class="keyword">val</span> flush</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Flushes the underlying output channel used by the terminal.</div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">Well known instances</h6></div></div>
@@ -180,8 +180,8 @@
 ?incoming_channel:<a href="?package=lwt&amp;module=Lwt_io&amp;type=input_channel">Lwt_io.input_channel</a> -&gt;
 ?outgoing_fd:<a href="?package=lwt&amp;module=Lwt_unix&amp;type=file_descr">Lwt_unix.file_descr</a> -&gt;
 ?outgoing_channel:<a href="?package=lwt&amp;module=Lwt_io&amp;type=output_channel">Lwt_io.output_channel</a> -&gt; <a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info">Modifies file descriptors/channels of a terminal. Unspecified
-      arguments are kept unchanged.<br/>      Note: before modifying a terminal you should ensure that no
-      operation is pending on it.</div></div>
+      arguments are kept unchanged.<p>      Note: before modifying a terminal you should ensure that no
+      operation is pending on it.</p></div></div>
 <pre><span class="VALget_size"><span class="keyword">val</span> get_size</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; <a href="?package=lambda-term&amp;module=LTerm_geom&amp;type=size">LTerm_geom.size</a> <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
 <pre><span class="VALset_size"><span class="keyword">val</span> set_size</span> : <code class="type"><a href="?package=lambda-term&amp;module=LTerm&amp;type=t">t</a> -&gt; <a href="?package=lambda-term&amp;module=LTerm_geom&amp;type=size">LTerm_geom.size</a> -&gt; unit <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre>
 </div>

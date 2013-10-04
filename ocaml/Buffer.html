@@ -1,7 +1,7 @@
-<div class="ocaml_toplevel_module"><div class="info">Extensible string buffers.<br/>   This module implements string buffers that automatically expand
+<div class="ocaml_toplevel_module"><div class="info">Extensible string buffers.<p>   This module implements string buffers that automatically expand
    as necessary.  It provides accumulative concatenation of strings
    in quasi-linear time (instead of quadratic time when strings are
-   concatenated pairwise).</div>
+   concatenated pairwise).</p></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> t</span> </pre><div class="info"><div class="info">The abstract type of buffers.</div></div>
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -&gt; <a href="?package=ocaml&amp;module=Buffer&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create n</code> returns a fresh buffer, initially empty.
    The <code class="code">n</code> parameter is the initial size of the internal string
@@ -23,9 +23,9 @@ current contents of the buffer <code class="code">b</code> starting at offset <c
 buffer itself is unaffected.</div></div>
 <pre><span class="VALblit"><span class="keyword">val</span> blit</span> : <code class="type"><a href="?package=ocaml&amp;module=Buffer&amp;type=t">t</a> -&gt; int -&gt; string -&gt; int -&gt; int -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">Buffer.blit src srcoff dst dstoff len</code> copies <code class="code">len</code> characters from
    the current contents of the buffer <code class="code">src</code>, starting at offset <code class="code">srcoff</code>
-   to string <code class="code">dst</code>, starting at character <code class="code">dstoff</code>.<br/>   Raise <code class="code">Invalid_argument</code> if <code class="code">srcoff</code> and <code class="code">len</code> do not designate a valid
+   to string <code class="code">dst</code>, starting at character <code class="code">dstoff</code>.<p>   Raise <code class="code">Invalid_argument</code> if <code class="code">srcoff</code> and <code class="code">len</code> do not designate a valid
    substring of <code class="code">src</code>, or if <code class="code">dstoff</code> and <code class="code">len</code> do not designate a valid
-   substring of <code class="code">dst</code>. <b>Since</b> 3.11.2</div></div>
+   substring of <code class="code">dst</code>.</p> <b>Since</b> 3.11.2</div></div>
 <pre><span class="VALnth"><span class="keyword">val</span> nth</span> : <code class="type"><a href="?package=ocaml&amp;module=Buffer&amp;type=t">t</a> -&gt; int -&gt; char</code></pre><div class="info"><div class="info">get the n-th character of the buffer. Raise <code class="code">Invalid_argument</code> if
 index out of bounds</div></div>
 <pre><span class="VALlength"><span class="keyword">val</span> length</span> : <code class="type"><a href="?package=ocaml&amp;module=Buffer&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info">Return the number of characters currently contained in the buffer.</div></div>

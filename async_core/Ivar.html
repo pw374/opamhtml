@@ -8,8 +8,8 @@
 <pre><span class="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">'a <a href="?package=async_core&amp;module=Ivar&amp;type=t">t</a> -&gt; 'a <a href="?package=async_core&amp;module=Ivar&amp;type=t">t</a> -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">equal t t'</code> is physical equality of <code class="code">t</code> and <code class="code">t'</code>.</div></div>
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">unit -&gt; 'a <a href="?package=async_core&amp;module=Ivar&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create ()</code> returns an empty ivar.</div></div>
 <pre><span class="VALfill"><span class="keyword">val</span> fill</span> : <code class="type">'a <a href="?package=async_core&amp;module=Ivar&amp;type=t">t</a> -&gt; 'a -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">fill t v</code> fills <code class="code">t</code> with value <code class="code">v</code> if <code class="code">t</code> was empty.  If <code class="code">t</code> was full, fill raises
-    an exception.<br/>    It is guaranteed that immediately after calling <code class="code">fill t</code>,
-    <code class="code">is_some (Deferred.peek (read t))</code>.</div></div>
+    an exception.<p>    It is guaranteed that immediately after calling <code class="code">fill t</code>,
+    <code class="code">is_some (Deferred.peek (read t))</code>.</p></div></div>
 <pre><span class="VALfill_if_empty"><span class="keyword">val</span> fill_if_empty</span> : <code class="type">'a <a href="?package=async_core&amp;module=Ivar&amp;type=t">t</a> -&gt; 'a -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">fill_if_empty t v</code> fills <code class="code">t</code> with <code class="code">v</code> if <code class="code">t</code> is currently empty.  If <code class="code">t</code> is full,
     then <code class="code">fill_if_empty</code> does nothing.</div></div>
 <pre><span class="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">'a <a href="?package=async_core&amp;module=Ivar&amp;type=t">t</a> -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">is_empty t</code> returns true if <code class="code">t</code> is empty</div></div>
@@ -47,8 +47,8 @@
 <div class="info"><div class="info"><code class="code">equal t t'</code> is physical equality of <code class="code">t</code> and <code class="code">t'</code>.</div></div>
 <div class="info"><div class="info"><code class="code">create ()</code> returns an empty ivar.</div></div>
 <div class="info"><div class="info"><code class="code">fill t v</code> fills <code class="code">t</code> with value <code class="code">v</code> if <code class="code">t</code> was empty.  If <code class="code">t</code> was full, fill raises
-    an exception.<br/>    It is guaranteed that immediately after calling <code class="code">fill t</code>,
-    <code class="code">is_some (Deferred.peek (read t))</code>.</div></div>
+    an exception.<p>    It is guaranteed that immediately after calling <code class="code">fill t</code>,
+    <code class="code">is_some (Deferred.peek (read t))</code>.</p></div></div>
 <div class="info"><div class="info"><code class="code">fill_if_empty t v</code> fills <code class="code">t</code> with <code class="code">v</code> if <code class="code">t</code> is currently empty.  If <code class="code">t</code> is full,
     then <code class="code">fill_if_empty</code> does nothing.</div></div>
 <div class="info"><div class="info"><code class="code">is_empty t</code> returns true if <code class="code">t</code> is empty</div></div>

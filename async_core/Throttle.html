@@ -1,14 +1,14 @@
-<div class="ocaml_toplevel_module"><div class="info">Throttles to limit the number of concurrent computations.<br/>    A throttle is essentially a pipe to which one can feed jobs.<br/>    A throttle schedules asynchronous jobs so that at any point in time no more than
+<div class="ocaml_toplevel_module"><div class="info">Throttles to limit the number of concurrent computations.<p>    A throttle is essentially a pipe to which one can feed jobs.</p><p>    A throttle schedules asynchronous jobs so that at any point in time no more than
     <code class="code">max_concurrent_jobs</code> jobs are running.  A job <code class="code">f</code> is considered to be running from
     the time <code class="code">f ()</code> is executed until the deferred returned by <code class="code">f ()</code> becomes determined,
-    or <code class="code">f ()</code> raises.  The throttle intiates jobs first-come first-served.<br/>    One can use <code class="code">create_with</code> to create a throttle with &quot;resources&quot; that one would
+    or <code class="code">f ()</code> raises.  The throttle intiates jobs first-come first-served.</p><p>    One can use <code class="code">create_with</code> to create a throttle with &quot;resources&quot; that one would
     like to make available to concurrent jobs and to guarantee that different jobs
-    access different resources.<br/>    A throttle is killed if one of its jobs throws an exception, and the throttle has
+    access different resources.</p><p>    A throttle is killed if one of its jobs throws an exception, and the throttle has
     <code class="code">continue_on_error = false</code>.  A throttle can also be explicitly <code class="code">kill</code>ed.  If a
     throttle is killed, then all jobs in it that haven't yet started are aborted,
     i.e. they will not start and will become determined with <code class="code">`Aborted</code>.  Jobs that had
     already started will continue, and return <code class="code">`Ok</code> or <code class="code">`Raised</code> as usual when they
-    finish.  Jobs enqueued into a killed throttle will be immediately aborted.</div>
+    finish.  Jobs enqueued into a killed throttle will be immediately aborted.</p></div>
 <div class="ocaml_module sig" name="T2"><pre><span class="keyword">module</span> <a href="?package=async_core&amp;module=Throttle.T2">T2</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="info"><div class="info">We use a phantom type to distinguish between throttles, which have
     <code class="code">max_concurrent_jobs &gt;= 1</code>, and sequencers, which have <code class="code">max_concurrent_jobs = 1</code>.  All
     operations are available on both.  We make the distinction because it is sometimes
@@ -21,8 +21,8 @@
 <pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">'a </code>t</span> = <code class="type">('a, [ `throttle ]) <a href="?package=async_core&amp;module=Throttle.T2&amp;type=t">T2.t</a></code></pre>
 <div class="ocaml_include ident" path="?package=core&amp;module=Std.Invariant.S1" items="[]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core&amp;module=Std.Invariant.S1">Core.Std.Invariant.S1</a></code> with type t := 'a <a href="?package=async_core&amp;module=Throttle&amp;type=t">t</a></code></pre></div>
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">continue_on_error:bool -&gt; max_concurrent_jobs:int -&gt; unit <a href="?package=async_core&amp;module=Throttle&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create ~continue_on_error ~max_concurrent_jobs</code> returns a throttle that will run up
-    to <code class="code">max_concurrent_jobs</code> concurrently.<br/>    If some job raises an exception, then the throttle will be killed, unless
-    <code class="code">continue_on_error</code> is true.</div></div>
+    to <code class="code">max_concurrent_jobs</code> concurrently.<p>    If some job raises an exception, then the throttle will be killed, unless
+    <code class="code">continue_on_error</code> is true.</p></div></div>
 <pre><span class="VALcreate_with"><span class="keyword">val</span> create_with</span> : <code class="type">continue_on_error:bool -&gt; 'a list -&gt; 'a <a href="?package=async_core&amp;module=Throttle&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create_with ~continue_on_error job_resources</code> returns a throttle that will run up to
     <code class="code">List.length job_resources</code> concurrently, and will ensure that all running jobs are
     supplied distinct elements of <code class="code">job_resources</code>.</div></div>
@@ -46,7 +46,7 @@
     <code class="code">max_concurrent_jobs t</code> running, and hence an <code class="code">enqueue</code>d job would start
     immediately.</div></div>
 <pre><span class="VALkill"><span class="keyword">val</span> kill</span> : <code class="type">'a <a href="?package=async_core&amp;module=Throttle&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">kill t</code> kills <code class="code">t</code>, which aborts all enqeued jobs that haven't started and all jobs
-    enqueued in the future.  <code class="code">kill</code> also initiates the <code class="code">at_kill</code> clean functions.<br/>    If <code class="code">t</code> has already been killed, then calling <code class="code">kill t</code> has no effect.</div></div>
+    enqueued in the future.  <code class="code">kill</code> also initiates the <code class="code">at_kill</code> clean functions.<p>    If <code class="code">t</code> has already been killed, then calling <code class="code">kill t</code> has no effect.</p></div></div>
 <pre><span class="VALis_dead"><span class="keyword">val</span> is_dead</span> : <code class="type">'a <a href="?package=async_core&amp;module=Throttle&amp;type=t">t</a> -&gt; bool</code></pre><div class="info"><div class="info"><code class="code">is_dead t</code> returns <code class="code">true</code> if <code class="code">t</code> was killed, either by <code class="code">kill</code> or by an unhandled
     exception in a job.</div></div>
 <pre><span class="VALat_kill"><span class="keyword">val</span> at_kill</span> : <code class="type">'a <a href="?package=async_core&amp;module=Throttle&amp;type=t">t</a> -&gt; ('a -&gt; unit <a href="?package=async_core&amp;module=Deferred&amp;type=t">Deferred.t</a>) -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">at_kill t clean</code> runs <code class="code">clean</code> on each resource when <code class="code">t</code> is killed, either by <code class="code">kill</code>
@@ -64,8 +64,8 @@
 <div class="info"><div class="info">default is <code class="code">false</code></div></div></div></div>
 <pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type">('a -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a>) -&gt; 'a <a href="?package=async_core&amp;module=Throttle&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
 <div class="info"><div class="info"><code class="code">create ~continue_on_error ~max_concurrent_jobs</code> returns a throttle that will run up
-    to <code class="code">max_concurrent_jobs</code> concurrently.<br/>    If some job raises an exception, then the throttle will be killed, unless
-    <code class="code">continue_on_error</code> is true.</div></div>
+    to <code class="code">max_concurrent_jobs</code> concurrently.<p>    If some job raises an exception, then the throttle will be killed, unless
+    <code class="code">continue_on_error</code> is true.</p></div></div>
 <div class="info"><div class="info"><code class="code">create_with ~continue_on_error job_resources</code> returns a throttle that will run up to
     <code class="code">List.length job_resources</code> concurrently, and will ensure that all running jobs are
     supplied distinct elements of <code class="code">job_resources</code>.</div></div>
@@ -88,7 +88,7 @@
     <code class="code">max_concurrent_jobs t</code> running, and hence an <code class="code">enqueue</code>d job would start
     immediately.</div></div>
 <div class="info"><div class="info"><code class="code">kill t</code> kills <code class="code">t</code>, which aborts all enqeued jobs that haven't started and all jobs
-    enqueued in the future.  <code class="code">kill</code> also initiates the <code class="code">at_kill</code> clean functions.<br/>    If <code class="code">t</code> has already been killed, then calling <code class="code">kill t</code> has no effect.</div></div>
+    enqueued in the future.  <code class="code">kill</code> also initiates the <code class="code">at_kill</code> clean functions.<p>    If <code class="code">t</code> has already been killed, then calling <code class="code">kill t</code> has no effect.</p></div></div>
 <div class="info"><div class="info"><code class="code">is_dead t</code> returns <code class="code">true</code> if <code class="code">t</code> was killed, either by <code class="code">kill</code> or by an unhandled
     exception in a job.</div></div>
 <div class="info"><div class="info"><code class="code">at_kill t clean</code> runs <code class="code">clean</code> on each resource when <code class="code">t</code> is killed, either by <code class="code">kill</code>

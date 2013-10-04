@@ -50,7 +50,7 @@
 <pre><span class="VALto_short_string"><span class="keyword">val</span> to_short_string</span> : <code class="type"><a href="?package=core&amp;module=Span&amp;type=t">t</a> -&gt; string</code></pre><div class="info"><div class="info"><code class="code">to_short_string t</code> pretty-prints approximate time span using no more than
     five characters if the span is positive, and six if the span is negative.
     Examples
-    <ul><li><code class="code">&quot;10ms&quot;</code> = 10 milliseconds</li><li><code class="code">&quot;4s&quot;</code> = 4 seconds</li><li><code class="code">&quot;5m&quot;</code> = 5 minutes</li><li><code class="code">&quot;4h&quot;</code> = 4 hours</li></ul><br/>    only the most significant denomination is shown.</div></div>
+    <ul><li><code class="code">&quot;10ms&quot;</code> = 10 milliseconds</li><li><code class="code">&quot;4s&quot;</code> = 4 seconds</li><li><code class="code">&quot;5m&quot;</code> = 5 minutes</li><li><code class="code">&quot;4h&quot;</code> = 4 hours</li></ul><p>    only the most significant denomination is shown.</p></div></div>
 <pre><span class="VALrandomize"><span class="keyword">val</span> randomize</span> : <code class="type"><a href="?package=core&amp;module=Span&amp;type=t">t</a> -&gt; percent:float -&gt; <a href="?package=core&amp;module=Span&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">randomize t ~percent</code> returns a span +/- percent * original span.  Percent must be
     between 0 and 1, and must be positive.</div></div>
 <div class="ocaml_module sig" name="Stable"><pre><span class="keyword">module</span> <a href="?package=core&amp;module=Span.Stable">Stable</a> : <code class="type"><code class="code">sig</code> .. <code class="code">end</code></code></pre><div class="ocaml_module_content">
@@ -85,7 +85,7 @@
 <div class="info"><div class="info"><code class="code">to_short_string t</code> pretty-prints approximate time span using no more than
     five characters if the span is positive, and six if the span is negative.
     Examples
-    <ul><li><code class="code">&quot;10ms&quot;</code> = 10 milliseconds</li><li><code class="code">&quot;4s&quot;</code> = 4 seconds</li><li><code class="code">&quot;5m&quot;</code> = 5 minutes</li><li><code class="code">&quot;4h&quot;</code> = 4 hours</li></ul><br/>    only the most significant denomination is shown.</div></div>
+    <ul><li><code class="code">&quot;10ms&quot;</code> = 10 milliseconds</li><li><code class="code">&quot;4s&quot;</code> = 4 seconds</li><li><code class="code">&quot;5m&quot;</code> = 5 minutes</li><li><code class="code">&quot;4h&quot;</code> = 4 hours</li></ul><p>    only the most significant denomination is shown.</p></div></div>
 <div class="info"><div class="info"><code class="code">randomize t ~percent</code> returns a span +/- percent * original span.  Percent must be
     between 0 and 1, and must be positive.</div></div>
 </div>

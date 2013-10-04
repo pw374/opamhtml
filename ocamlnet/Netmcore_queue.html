@@ -8,16 +8,16 @@
 <pre><span class="VALpush"><span class="keyword">val</span> push</span> : <code class="type">'e -&gt; ('e, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_queue&amp;type=squeue">squeue</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">push x q</code>: Pushes a copy of <code class="code">x</code> to the end of the queue <code class="code">q</code></div></div>
 <pre><span class="VALpop_p"><span class="keyword">val</span> pop_p</span> : <code class="type">('e, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_queue&amp;type=squeue">squeue</a> -&gt; ('e -&gt; 'a) -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">pop_p q f</code>: Takes the first element <code class="code">x</code> from the queue, removes it
       there, and calls <code class="code">f x</code>. During the execution of <code class="code">f</code> the value <code class="code">x</code>
-      is pinned and cannot be garbage-collected.<br/>      Raises <code class="code">Empty</code> if the queue is empty.</div></div>
+      is pinned and cannot be garbage-collected.<p>      Raises <code class="code">Empty</code> if the queue is empty.</p></div></div>
 <pre><span class="VALpop_c"><span class="keyword">val</span> pop_c</span> : <code class="type">('e, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_queue&amp;type=squeue">squeue</a> -&gt; 'e</code></pre><div class="info"><div class="info"><code class="code">pop_c q</code>: Takes the first element <code class="code">x</code> from the queue, removes it
-      there, and returns a copy of <code class="code">x</code> in normal memory.<br/>      Raises <code class="code">Empty</code> if the queue is empty.</div></div>
+      there, and returns a copy of <code class="code">x</code> in normal memory.<p>      Raises <code class="code">Empty</code> if the queue is empty.</p></div></div>
 <pre><span class="VALtop_p"><span class="keyword">val</span> top_p</span> : <code class="type">('e, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_queue&amp;type=squeue">squeue</a> -&gt; ('e -&gt; 'a) -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">pop_p q f</code>: Takes the first element <code class="code">x</code> of the queue, 
       and calls <code class="code">f x</code>, without removing <code class="code">x</code> from the queue. 
       During the execution of <code class="code">f</code> the value <code class="code">x</code>
-      is pinned and cannot be garbage-collected.<br/>      Raises <code class="code">Empty</code> if the queue is empty.</div></div>
+      is pinned and cannot be garbage-collected.<p>      Raises <code class="code">Empty</code> if the queue is empty.</p></div></div>
 <pre><span class="VALtop_c"><span class="keyword">val</span> top_c</span> : <code class="type">('e, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_queue&amp;type=squeue">squeue</a> -&gt; 'e</code></pre><div class="info"><div class="info"><code class="code">pop_p q f</code>: Takes the first element <code class="code">x</code> of the queue, 
       and calls <code class="code">f x</code>, without removing <code class="code">x</code> from the queue. 
-      Returns a copy of <code class="code">x</code> in normal memory.<br/>      Raises <code class="code">Empty</code> if the queue is empty.</div></div>
+      Returns a copy of <code class="code">x</code> in normal memory.<p>      Raises <code class="code">Empty</code> if the queue is empty.</p></div></div>
 <pre><span class="VALclear"><span class="keyword">val</span> clear</span> : <code class="type">('e, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_queue&amp;type=squeue">squeue</a> -&gt; unit</code></pre><div class="info"><div class="info">Removes all elements from the queue</div></div>
 <pre><span class="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">('e, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_queue&amp;type=squeue">squeue</a> -&gt; bool</code></pre><div class="info"><div class="info">Tests whether the queue is empty</div></div>
 <pre><span class="VALlength"><span class="keyword">val</span> length</span> : <code class="type">('e, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_queue&amp;type=squeue">squeue</a> -&gt; int</code></pre><div class="info"><div class="info">Returns the number of elements in the queue (O(1))</div></div>
@@ -26,9 +26,9 @@
       at the time of calling <code class="code">iter</code> as the list to iterate over. The
       queue is not locked during the iteration, and hence elements can be
       popped from the queue and pushed to the queue in parallel. The
-      iteration does not take these modifications into account, though.<br/>      The elements <code class="code">x</code> are pinned during the execution of <code class="code">f</code> and will
+      iteration does not take these modifications into account, though.<p>      The elements <code class="code">x</code> are pinned during the execution of <code class="code">f</code> and will
       not be garbage-collected, even if a parallel <code class="code">pop</code> removes them from
-      the queue.</div></div>
+      the queue.</p></div></div>
 <pre><span class="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -&gt; 'e -&gt; 'a) -&gt; 'a -&gt; ('e, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_queue&amp;type=squeue">squeue</a> -&gt; 'a</code></pre><div class="info"><div class="info"><code class="code">fold f accu q</code></div></div>
 <pre><span class="VALheader"><span class="keyword">val</span> header</span> : <code class="type">('e, 'h) <a href="?package=ocamlnet&amp;module=Netmcore_queue&amp;type=squeue">squeue</a> -&gt; 'h</code></pre><div class="info"><div class="info">Returns the header</div></div>
 <pre><span class="VALheap"><span class="keyword">val</span> heap</span> : <code class="type">('a, 'b) <a href="?package=ocamlnet&amp;module=Netmcore_queue&amp;type=squeue">squeue</a> -&gt; <a href="?package=ocaml&amp;module=Obj&amp;type=t">Obj.t</a> <a href="?package=ocamlnet&amp;module=Netmcore_heap&amp;type=heap">Netmcore_heap.heap</a></code></pre><div class="info"><div class="info">Returns the underlying heap</div></div>

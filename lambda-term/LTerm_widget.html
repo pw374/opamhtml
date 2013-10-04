@@ -7,9 +7,9 @@
 <div class="info"><div class="info"><h6 id="6_TITLE">Base class</h6></div></div>
 <div class="ocaml_class sig" name="t"><pre><span class="TYPEt"><span class="keyword">class</span> <a href="?package=lambda-term&amp;module=LTerm_widget&amp;class=t">t</a></span> : <code class="type">string -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">The base class. The parameter is the initial resource class. The
     resource class is the first part of all resource keys used by the
-    widget.<br/>    For examples, buttons use the resources
+    widget.<p>    For examples, buttons use the resources
     <code class="code">&quot;button.focused.foreground&quot;</code>, <code class="code">&quot;button.unfocused.bold&quot;</code>, ... so
-    their resource class is <code class="code">&quot;button&quot;</code>.</div></div><div class="ocaml_class_content"><pre><span class="METHODchildren"><span class="keyword">method</span> children</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_widget&amp;type=t">t</a> list</code></pre>
+    their resource class is <code class="code">&quot;button&quot;</code>.</p></div></div><div class="ocaml_class_content"><pre><span class="METHODchildren"><span class="keyword">method</span> children</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_widget&amp;type=t">t</a> list</code></pre>
 <div class="info"><div class="info">The children of the widget.</div></div>
 <pre><span class="METHODparent"><span class="keyword">method</span> parent</span> : <code class="code"><a href="?package=lambda-term&amp;module=LTerm_widget&amp;type=t">t</a> option</code></pre>
 <div class="info"><div class="info">The parent of the widget, if any.</div></div>
@@ -104,7 +104,7 @@
 ?load_resources:bool -&gt; ?resources_file:string -&gt; #<a href="?package=lambda-term&amp;module=LTerm_widget&amp;class=t">t</a> -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a> -&gt; 'a <a href="?package=lwt&amp;module=Lwt&amp;type=t">Lwt.t</a></code></pre><div class="info"><div class="info"><code class="code">run term ?save_state widget w</code> runs on the given terminal using
       <code class="code">widget</code> as main widget. It returns when <code class="code">w</code> terminates. If
       <code class="code">save_state</code> is <code class="code">true</code> (the default) then the state of the
-      terminal is saved and restored when <code class="code">w</code> terminates.<br/>      If <code class="code">load_resources</code> is <code class="code">true</code> (the default) then
+      terminal is saved and restored when <code class="code">w</code> terminates.<p>      If <code class="code">load_resources</code> is <code class="code">true</code> (the default) then
       <code class="code">resources_file</code> (which default to &quot;.lambda-termrc&quot; in the home
-      directory) is loaded and the result is set to <code class="code">w</code>.</div></div>
+      directory) is loaded and the result is set to <code class="code">w</code>.</p></div></div>
 </div>

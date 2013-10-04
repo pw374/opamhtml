@@ -5,9 +5,9 @@
 'a <a href="?package=ocamlnet&amp;module=Netshm_data&amp;type=data_manager">Netshm_data.data_manager</a> -&gt;
 'b <a href="?package=ocamlnet&amp;module=Netshm_data&amp;type=data_manager">Netshm_data.data_manager</a> -&gt;
 <a href="?package=ocamlnet&amp;module=Netshm&amp;type=locking_method">Netshm.locking_method</a> -&gt; <a href="?package=ocamlnet&amp;module=Netshm&amp;type=shm_descr">Netshm.shm_descr</a> -&gt; ('a, 'b) <a href="?package=ocamlnet&amp;module=Netshm_hashtbl&amp;type=t">t</a></code></pre><div class="info"><div class="info">Manages a shared memory object as a hash table like <code class="code">Netshm.manage</code>,
- and additionally represent arbitrary O'Caml values.<br/> It is essential that the same data managers are passed as at the time
- when the hash table was initialized.<br/> For example, to get a hash table from <code class="code">int</code> to <code class="code">string</code>, use
- <pre class="codepre"><code class="code"> manage Netshm_data.int_manager Netshm_data.string_manager lm sd </code></pre></div></div>
+ and additionally represent arbitrary O'Caml values.<p> It is essential that the same data managers are passed as at the time
+ when the hash table was initialized.</p><p> For example, to get a hash table from <code class="code">int</code> to <code class="code">string</code>, use
+ </p><code class="code"> manage Netshm_data.int_manager Netshm_data.string_manager lm sd </code></div></div>
 <pre><span class="VALadd"><span class="keyword">val</span> add</span> : <code class="type">('a, 'b) <a href="?package=ocamlnet&amp;module=Netshm_hashtbl&amp;type=t">t</a> -&gt; 'a -&gt; 'b -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">add tbl key value</code>: Adds the binding of <code class="code">key</code> to <code class="code">value</code> to the
  table. Previous bindings are not removed, but simply hidden.</div></div>
 <pre><span class="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a, 'b) <a href="?package=ocamlnet&amp;module=Netshm_hashtbl&amp;type=t">t</a> -&gt; 'a -&gt; 'b</code></pre><div class="info"><div class="info"><code class="code">find tbl key</code>: Finds the current binding of <code class="code">key</code> in <code class="code">tbl</code> or
@@ -29,11 +29,11 @@
  The order in which the bindings are passed to <code class="code">f</code> is unspecified.
  However, if the table contains several bindings for the same key,
  they are passed to <code class="code">f</code> in reverse order of introduction, that is,
- the most recent binding is passed first. <br/> While the iteration is in progress, the table is locked.
- That means you cannot modify it during the iteration.</div></div>
+ the most recent binding is passed first. <p> While the iteration is in progress, the table is locked.
+ That means you cannot modify it during the iteration.</p></div></div>
 <pre><span class="VALiter_keys"><span class="keyword">val</span> iter_keys</span> : <code class="type">('a -&gt; unit) -&gt; ('a, 'b) <a href="?package=ocamlnet&amp;module=Netshm_hashtbl&amp;type=t">t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">iter_keys f tbl</code> applies <code class="code">f</code> to all keys in table <code class="code">tbl</code>. If there
- are several bindings for a key, <code class="code">f</code> is only called once.<br/> While the iteration is in progress, the table is locked.
- That means you cannot modify it during the iteration.</div></div>
+ are several bindings for a key, <code class="code">f</code> is only called once.<p> While the iteration is in progress, the table is locked.
+ That means you cannot modify it during the iteration.</p></div></div>
 <pre><span class="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -&gt; 'b -&gt; 'c -&gt; 'c) -&gt; ('a, 'b) <a href="?package=ocamlnet&amp;module=Netshm_hashtbl&amp;type=t">t</a> -&gt; 'c -&gt; 'c</code></pre><div class="info"><div class="info"><code class="code">fold f tbl init</code> computes
  <code class="code">(f kN dN ... (f k1 d1 init)...)</code>,
  where <code class="code">k1 ... kN</code> are the keys of all bindings in <code class="code">tbl</code>,
@@ -42,8 +42,8 @@
  The order in which the bindings are passed to <code class="code">f</code> is unspecified.
  However, if the table contains several bindings for the same key,
  they are passed to <code class="code">f</code> in reverse order of introduction, that is,
- the most recent binding is passed first. <br/> While the iteration is in progress, the table is locked.
- That means you cannot modify it during the iteration.</div></div>
+ the most recent binding is passed first. <p> While the iteration is in progress, the table is locked.
+ That means you cannot modify it during the iteration.</p></div></div>
 <pre><span class="VALlength"><span class="keyword">val</span> length</span> : <code class="type">('a, 'b) <a href="?package=ocamlnet&amp;module=Netshm_hashtbl&amp;type=t">t</a> -&gt; int</code></pre><div class="info"><div class="info"><code class="code">length tbl</code> returns the number of bindings in <code class="code">tbl</code>.
  Multiple bindings are counted multiply, so <code class="code">length</code>
  gives the number of times <code class="code">iter</code> calls its first argument.</div></div>

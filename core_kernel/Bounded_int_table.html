@@ -1,25 +1,25 @@
 <div class="ocaml_toplevel_module"><div class="info">A <code class="code">Bounded_int_table</code> is a table whose keys can be mapped to integers in a fixed
     range, 0 ... num_keys-1, where <code class="code">num_keys</code> is specified at table-creation time.  The
     purpose of <code class="code">Bounded_int_table</code> is to be faster than <code class="code">Hashtbl</code> in situations where one
-    is willing to pay a space cost for the speed.<br/>    <code class="code">Bounded_int_table</code> presents a subset of the <code class="code">Hashtbl</code> interface.  The key type can be
+    is willing to pay a space cost for the speed.<p>    <code class="code">Bounded_int_table</code> presents a subset of the <code class="code">Hashtbl</code> interface.  The key type can be
     any type, but table creation requires a <code class="code">key_to_int</code> function, which will be used
     to extract the integer of all keys.  If multiple keys map to the same integer, then
     only one of them can be in the table at a time.  Any operation that supplies a key
     whose corresponding integer is outside the allowed range for the table will cause an
-    exception.<br/>    A <code class="code">Bounded_int_table</code> is implemented using two fixed size arrays of size <code class="code">num_keys</code>,
+    exception.</p><p>    A <code class="code">Bounded_int_table</code> is implemented using two fixed size arrays of size <code class="code">num_keys</code>,
     which is supplied at table-creation time.  The space used does not depend on the
     <code class="code">length</code> of the table but rather only on <code class="code">num_keys</code>.  Operations that deal with a
     single element (find, mem, add, remove, set) take constant time, and perform one or
     two array operations.  Operations that deal with all of the keys defined in the table
     (data, fold, iter, iter_vals, keys, to_alist) take time proportional to the <code class="code">length</code>
-    of the table, not <code class="code">num_keys</code>.</div>
+    of the table, not <code class="code">num_keys</code>.</p></div>
 <pre><span class="TYPEt"><span class="keyword">type</span> <code class="type">('key, 'data) </code>t</span> </pre>
 <pre><span class="TYPEtable"><span class="keyword">type</span> <code class="type">('a, 'b) </code>table</span> = <code class="type">('a, 'b) <a href="?package=core_kernel&amp;module=Bounded_int_table&amp;type=t">t</a></code></pre>
 <div class="ocaml_include ident" path="?package=core_kernel&amp;module=Equal.S2" items="[]"><pre><span class="keyword">include</span> <code class="type"><code class="code"><a href="?package=core_kernel&amp;module=Equal.S2">Equal.S2</a></code> with type t := ('a, 'b) <a href="?package=core_kernel&amp;module=Bounded_int_table&amp;type=t">t</a></code></pre></div>
 <pre><span class="VALinvariant"><span class="keyword">val</span> invariant</span> : <code class="type">('a, 'b) <a href="?package=core_kernel&amp;module=Bounded_int_table&amp;type=t">t</a> -&gt; unit</code></pre>
 <pre><span class="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">?sexp_of_key:('key -&gt; <a href="?package=core_kernel&amp;module=Std_internal.Sexp&amp;type=t">Std_internal.Sexp.t</a>) -&gt;
 num_keys:int -&gt; key_to_int:('key -&gt; int) -&gt; unit -&gt; ('key, 'data) <a href="?package=core_kernel&amp;module=Bounded_int_table&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create ~num_keys ~key_to_int</code> returns a table where the keys can map to 0
-    .. num_keys-1, according to <code class="code">key_to_int</code>.  It is an error if <code class="code">num_keys &lt; 0</code>.<br/>    <code class="code">sexp_of_key</code>, if supplied, will be used to display keys in error messages.</div></div>
+    .. num_keys-1, according to <code class="code">key_to_int</code>.  It is an error if <code class="code">num_keys &lt; 0</code>.<p>    <code class="code">sexp_of_key</code>, if supplied, will be used to display keys in error messages.</p></div></div>
 <pre><span class="VALkeys"><span class="keyword">val</span> keys</span> : <code class="type">('key, 'a) <a href="?package=core_kernel&amp;module=Bounded_int_table&amp;type=t">t</a> -&gt; 'key list</code></pre><div class="info"><div class="info">Standard hashtbl functions.</div></div>
 <pre><span class="VALdata"><span class="keyword">val</span> data</span> : <code class="type">('a, 'data) <a href="?package=core_kernel&amp;module=Bounded_int_table&amp;type=t">t</a> -&gt; 'data list</code></pre>
 <pre><span class="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('key, 'data) <a href="?package=core_kernel&amp;module=Bounded_int_table&amp;type=t">t</a> -&gt; 'key -&gt; 'data option</code></pre>
@@ -69,7 +69,7 @@ f:(key:'key -&gt; data:'data1 -&gt; 'data2 option) -&gt; ('key, 'data2) <a href=
 <pre><span class="VALsexp_of_t"><span class="keyword">val</span> sexp_of_t</span> : <code class="type">('key -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a>) -&gt;
 ('data -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a>) -&gt; ('key, 'data) <a href="?package=core_kernel&amp;module=Bounded_int_table&amp;type=t">t</a> -&gt; <a href="?package=sexplib&amp;module=Sexp&amp;type=t">Sexplib.Sexp.t</a></code></pre>
 <div class="info"><div class="info"><code class="code">create ~num_keys ~key_to_int</code> returns a table where the keys can map to 0
-    .. num_keys-1, according to <code class="code">key_to_int</code>.  It is an error if <code class="code">num_keys &lt; 0</code>.<br/>    <code class="code">sexp_of_key</code>, if supplied, will be used to display keys in error messages.</div></div>
+    .. num_keys-1, according to <code class="code">key_to_int</code>.  It is an error if <code class="code">num_keys &lt; 0</code>.<p>    <code class="code">sexp_of_key</code>, if supplied, will be used to display keys in error messages.</p></div></div>
 <div class="info"><div class="info">Standard hashtbl functions.</div></div>
 <div class="info"><div class="info">Serialization of a bounded int table using <code class="code">bin_io</code> or <code class="code">sexp</code> preserves <code class="code">num_keys</code>,
       but only takes space proportional to the <code class="code">length</code> of the table.</div></div>

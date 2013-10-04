@@ -7,16 +7,16 @@
  become newline characters.</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=out_obj_channel">Netchannels.out_obj_channel</a></pre></div>
 
 <pre><span class="METHODoutput_eor"><span class="keyword">method</span> output_eor</span> : <code class="code">unit -&gt; unit</code></pre>
-<div class="info"><div class="info">Finishes the current record. <br/> The record model is as follows: At the beginning of the channel,
+<div class="info"><div class="info">Finishes the current record. <p> The record model is as follows: At the beginning of the channel,
  or after <code class="code">output_eor</code>, a new record can be potentially started.
  However, the record counts only as existing when either at least
  one byte is output, or the record is explicitly ended with a
- <code class="code">output_eor</code> call.<br/> This rule allows it to represent channels containing no records.
+ <code class="code">output_eor</code> call.</p><p> This rule allows it to represent channels containing no records.
  There is an ambiguity at the end of the channel, however: It is
  possible that there are characters between the last EOR and the
  EOF. This could also be represented by printing another EOR just
- before EOF. The preferred representation is the latter.<br/> This model correlates to the usual rules for line-structured
- files, so think EOR = EOL.</div></div></div></div>
+ before EOF. The preferred representation is the latter.</p><p> This model correlates to the usual rules for line-structured
+ files, so think EOR = EOL.</p></div></div></div></div>
 <div class="ocaml_class sig" name="in_record_channel"><pre><span class="TYPEin_record_channel"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;class=in_record_channel">in_record_channel</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">An <code class="code">in_record_channel</code> can be used to read files with record
  structure. This is purely abstract, as Unix does not support such
  files natively, so this kind of channel is usually mapped to a flat
@@ -26,23 +26,23 @@
 <pre><span class="METHODinput_eor"><span class="keyword">method</span> input_eor</span> : <code class="code">unit -&gt; unit</code></pre>
 <div class="info"><div class="info">Skips over the remaining data of the current record and the
  record boundary to the next record. Raises <code class="code">End_of_file</code> when
- the current record is the &quot;EOF&quot; record (see below for explanations).<br/> A record channel can be read as follows: After opening the channel,
+ the current record is the &quot;EOF&quot; record (see below for explanations).<p> A record channel can be read as follows: After opening the channel,
  one can read the contents of the first record with the <code class="code">input</code>
  method. The end of the record is indicated by an <code class="code">End_of_file</code>
  exception. By calling <code class="code">input_eor</code>, the next record is opened
- and can be read.<br/> After the last real record, there is always a special 
+ and can be read.</p><p> After the last real record, there is always a special 
  &quot;EOF&quot; record which is empty, and must be ignored by applications
  processing records. This means, after opening an empty channel,
  the current record is this &quot;EOF&quot; record, and <code class="code">input_eor</code> raises
  <code class="code">End_of_file</code>. After reading a non-empty channel, one can
  do <code class="code">input_eor</code> after the last regular record, and the following
- <code class="code">input_eor</code> raises <code class="code">End_of_file</code>.</div></div></div></div>
+ <code class="code">input_eor</code> raises <code class="code">End_of_file</code>.</p></div></div></div></div>
 <pre><span class="TYPElocal_receiver"><span class="keyword">type</span> local_receiver</span> = <code class="type">[ `File_structure of <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=out_obj_channel">Netchannels.out_obj_channel</a>
 | `Record_structure of <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=out_record_channel">out_record_channel</a> ]</code></pre><div class="info"><div class="info">The <code class="code">local_receiver</code> is the object that gets the data received
- over the data connection.<br/> Page structure is not supported.</div></div>
+ over the data connection.<p> Page structure is not supported.</p></div></div>
 <pre><span class="TYPElocal_sender"><span class="keyword">type</span> local_sender</span> = <code class="type">[ `File_structure of <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=in_obj_channel">Netchannels.in_obj_channel</a>
 | `Record_structure of <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=in_record_channel">in_record_channel</a> ]</code></pre><div class="info"><div class="info">The <code class="code">local_sender</code> is the object that provides the data sent
- over the data connection.<br/> Page structure is not supported.</div></div>
+ over the data connection.<p> Page structure is not supported.</p></div></div>
 <pre><span class="TYPEtransmission_mode"><span class="keyword">type</span> transmission_mode</span> = <code class="type">[ `Block_mode | `Stream_mode ]</code></pre><div class="info"><div class="info">The transmission mode as described in RFC 959. 
  Compressed mode is not supported.</div></div>
 <pre><span class="TYPEdescr_state"><span class="keyword">type</span> descr_state</span> = <code class="type">[ `Clean | `Down | `Transfer_in_progress ]</code></pre><div class="info"><div class="info">Describes the state of the socket used for data transfers.
@@ -57,23 +57,23 @@
 | `EBCDIC of <a href="?package=ocamlnet&amp;module=Netconversion&amp;type=encoding">Netconversion.encoding</a> ]</code></pre><div class="info"><div class="info">Possible representation of text data:
  <code class="code">`ASCII</code> means an ASCII-compatible encoding where the newline
  character is represented by CR/LF. <code class="code">`ASCII_unix</code> is the same
- but newline is only LF. <code class="code">`EBCDIC</code> is an EBCDIC variant.<br/> The argument specifies the exact variant to be used, e.g.
- <code class="code">`ASCII `Enc_iso88591</code> or <code class="code">`EBCDIC `Enc_cp1047</code>.<br/> It is illegal to use <code class="code">`ASCII</code> or <code class="code">`ASCII_unix</code> with an ASCII-
+ but newline is only LF. <code class="code">`EBCDIC</code> is an EBCDIC variant.<p> The argument specifies the exact variant to be used, e.g.
+ <code class="code">`ASCII `Enc_iso88591</code> or <code class="code">`EBCDIC `Enc_cp1047</code>.</p><p> It is illegal to use <code class="code">`ASCII</code> or <code class="code">`ASCII_unix</code> with an ASCII-
  incompatible encoding, as well as combining  <code class="code">`EBCDIC</code> with a
  non-EBCDIC encoding. Wrong conversions would be the result of
- this.</div></div>
+ this.</p></div></div>
 <div class="info"><div class="info"><h1 id="1_TITLE">Data Stream Converters</h1></div></div>
 <div class="ocaml_class ident" name="write_out_record_channel" path="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;class=out_record_channel"><pre><span class="TYPEwrite_out_record_channel"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;class=write_out_record_channel">write_out_record_channel</a></span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=text_data_repr">text_data_repr</a> -&gt; <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=out_obj_channel">Netchannels.out_obj_channel</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;class=out_record_channel">out_record_channel</a></pre><div class="info"><div class="info">Provides an <code class="code">out_record_channel</code> that represents EOR as 
  newline character.<div class="parameters"><div class="param_info"><code class="code">repr</code> : Determines the newline character to use</div></div></div></div></div>
 <div class="ocaml_class ident" name="read_in_record_channel" path="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;class=in_record_channel"><pre><span class="TYPEread_in_record_channel"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;class=read_in_record_channel">read_in_record_channel</a></span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=text_data_repr">text_data_repr</a> -&gt; <a href="?package=ocamlnet&amp;module=Netchannels&amp;type=in_obj_channel">Netchannels.in_obj_channel</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;class=in_record_channel">in_record_channel</a></pre><div class="info"><div class="info">Provides an <code class="code">in_record_channel</code> that takes newline characters as
- EOR representation.<br/> In this implementation, <code class="code">input_line</code> can be used to read the full
+ EOR representation.<p> In this implementation, <code class="code">input_line</code> can be used to read the full
  contents of a record (=line). However, <code class="code">input_line</code> does not
- switch to the next record.<div class="parameters"><div class="param_info"><code class="code">repr</code> : Determines the newline character to use</div></div></div></div></div>
+ switch to the next record.</p><div class="parameters"><div class="param_info"><code class="code">repr</code> : Determines the newline character to use</div></div></div></div></div>
 <div class="ocaml_class ident" name="data_converter" path="?package=ocamlnet&amp;module=Netchannels&amp;class=io_obj_channel"><pre><span class="TYPEdata_converter"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;class=data_converter">data_converter</a></span> : <code class="type"><a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=text_data_repr">text_data_repr</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=text_data_repr">text_data_repr</a> -&gt; </code><a href="?package=ocamlnet&amp;module=Netchannels&amp;class=io_obj_channel">Netchannels.io_obj_channel</a></pre><div class="info"><div class="info">Creates a data conversion pipe converting <code class="code">fromrepr</code> to
- <code class="code">torepr</code>.<br/> For simplicity, in an <code class="code">`ASCII</code> input stream the CR characters are
+ <code class="code">torepr</code>.<p> For simplicity, in an <code class="code">`ASCII</code> input stream the CR characters are
  discarded, and the LF characters are taken as newline characters.
  In an output <code class="code">`ASCII</code> stream, the CR/LF sequence is correctly
- created for newline characters.</div></div></div>
+ created for newline characters.</p></div></div></div>
 <div class="info"><div class="info"><h1 id="1_TITLE">Engines</h1></div></div>
 <div class="ocaml_class sig" name="ftp_data_engine"><pre><span class="TYPEftp_data_engine"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;class=ftp_data_engine">ftp_data_engine</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">The common type of FTP data engines</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine"> <pre><span class="keyword">inherit</span> <code class="type"/><code class="type">[unit] </code><a href="?package=ocamlnet&amp;module=Uq_engines&amp;class=engine">Uq_engines.engine</a></pre></div>
 
@@ -83,15 +83,15 @@
 <pre><span class="METHODdescr_state"><span class="keyword">method</span> descr_state</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=descr_state">descr_state</a></code></pre>
 <div class="info"><div class="info">The socket state</div></div></div></div>
 <div class="ocaml_class sig" name="ftp_data_receiver"><pre><span class="TYPEftp_data_receiver"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;class=ftp_data_receiver">ftp_data_receiver</a></span> : <code class="type">unit -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=local_receiver">local_receiver</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=transmission_mode">transmission_mode</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">This engine receives data on a FTP data connection, and forwards
- them to a local receiver. The socket must already be open.<br/> It is ensured that <code class="code">local_receiver</code> is always closed after operation
- (whether successful or not). The socket <code class="code">descr</code> remains open.</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;class=ftp_data_engine"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;class=ftp_data_engine">ftp_data_engine</a></pre></div>
+ them to a local receiver. The socket must already be open.<p> It is ensured that <code class="code">local_receiver</code> is always closed after operation
+ (whether successful or not). The socket <code class="code">descr</code> remains open.</p></div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;class=ftp_data_engine"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;class=ftp_data_engine">ftp_data_engine</a></pre></div>
 
 <pre><span class="METHODlocal_receiver"><span class="keyword">method</span> local_receiver</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=local_receiver">local_receiver</a></code></pre>
 <div class="info"><div class="info">The local receiver. It is closed when the logical EOF is found in the
  data connection</div></div></div></div>
 <div class="ocaml_class sig" name="ftp_data_sender"><pre><span class="TYPEftp_data_sender"><span class="keyword">class</span> <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;class=ftp_data_sender">ftp_data_sender</a></span> : <code class="type">unit -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=local_sender">local_sender</a> -&gt; <a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=transmission_mode">transmission_mode</a> -&gt; <a href="?package=ocamlnet&amp;module=Unixqueue&amp;type=event_system">Unixqueue.event_system</a> -&gt; </code><code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">This engine sends data over a FTP data connection coming from
- a local sender. The socket must already be open.<br/> It is ensured that <code class="code">local_sender</code> is always closed after operation
- (whether successful or not). The socket <code class="code">descr</code> remains open.</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;class=ftp_data_engine"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;class=ftp_data_engine">ftp_data_engine</a></pre></div>
+ a local sender. The socket must already be open.<p> It is ensured that <code class="code">local_sender</code> is always closed after operation
+ (whether successful or not). The socket <code class="code">descr</code> remains open.</p></div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;class=ftp_data_engine"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;class=ftp_data_engine">ftp_data_engine</a></pre></div>
 
 <pre><span class="METHODlocal_sender"><span class="keyword">method</span> local_sender</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Ftp_data_endpoint&amp;type=local_sender">local_sender</a></code></pre>
 <div class="info"><div class="info">The local sender. It is closed after usage.</div></div></div></div>

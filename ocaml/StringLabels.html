@@ -3,8 +3,8 @@
 <pre><span class="VALget"><span class="keyword">val</span> get</span> : <code class="type">string -&gt; int -&gt; char</code></pre><div class="info"><div class="info"><code class="code">String.get s n</code> returns character number <code class="code">n</code> in string <code class="code">s</code>.
    The first character is character number 0.
    The last character is character number <code class="code">String.length s - 1</code>.
-   You can also write <code class="code">s.[n]</code> instead of <code class="code">String.get s n</code>.<br/>   Raise <code class="code">Invalid_argument &quot;index out of bounds&quot;</code>
-   if <code class="code">n</code> is outside the range 0 to <code class="code">(String.length s - 1)</code>.</div></div>
+   You can also write <code class="code">s.[n]</code> instead of <code class="code">String.get s n</code>.<p>   Raise <code class="code">Invalid_argument &quot;index out of bounds&quot;</code>
+   if <code class="code">n</code> is outside the range 0 to <code class="code">(String.length s - 1)</code>.</p></div></div>
 <pre><span class="VALset"><span class="keyword">val</span> set</span> : <code class="type">string -&gt; int -&gt; char -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">String.set s n c</code> modifies string <code class="code">s</code> in place,
    replacing the character number <code class="code">n</code> by <code class="code">c</code>.
    You can also write <code class="code">s.[n] &lt;- c</code> instead of <code class="code">String.set s n c</code>.

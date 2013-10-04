@@ -5,9 +5,9 @@
 <pre><span class="VALserve"><span class="keyword">val</span> serve</span> : <code class="type">auth:(<a href="?package=async_extra&amp;module=Import.Socket.Address.Inet&amp;type=t">Import.Socket.Address.Inet.t</a> -&gt; bool) -&gt;
 port:int -&gt; <a href="?package=async_extra&amp;module=Tcp.Server&amp;type=inet">Tcp.Server.inet</a> <a href="?package=async_extra&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre><div class="info"><div class="info"><code class="code">serve ~port ()</code> must be called before clients will be able to connect.  Sets up a
       bound tcp socket on port that will be used to serve files to clients.  The unit
-      Deferred will be filled when the server is ready to receive clients.<br/>      The <code class="code">auth</code> function will be called once for every client connection.  If it returns
+      Deferred will be filled when the server is ready to receive clients.<p>      The <code class="code">auth</code> function will be called once for every client connection.  If it returns
       false the client will be disconnected immediately.  Further details of <code class="code">auth</code> can be
-      found in the documentation for <code class="code">Rpc.serve</code>.</div></div>
+      found in the documentation for <code class="code">Rpc.serve</code>.</p></div></div>
 <pre><span class="VALopen_file"><span class="keyword">val</span> open_file</span> : <code class="type">?append:bool -&gt; ?dos_format:bool -&gt; string -&gt; <a href="?package=async_extra&amp;module=Tcp_file.Server.File&amp;type=t">File.t</a> <a href="?package=async_extra&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre><div class="info"><div class="info"><code class="code">open_file filename</code> open a file for writing.  The filename given should
       be a real path on the server, and will create a real file there</div></div>
 <pre><span class="VALserve_existing_static_file"><span class="keyword">val</span> serve_existing_static_file</span> : <code class="type">string -&gt; unit <a href="?package=async_extra&amp;module=Import.Deferred&amp;type=t">Import.Deferred.t</a></code></pre><div class="info"><div class="info"><code class="code">serve_existing_static_file filename</code> adds <code class="code">filename</code> to the list of files

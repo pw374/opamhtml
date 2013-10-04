@@ -1,8 +1,8 @@
-<div class="ocaml_toplevel_module"><div class="info">Compliant simple CSV writter.<br/> This library is designed to deal with proper CSV (no quotes allowed in the
+<div class="ocaml_toplevel_module"><div class="info">Compliant simple CSV writter.<p> This library is designed to deal with proper CSV (no quotes allowed in the
  middle of the fields...). It is fast and flexible: by splitting most
  writing functions in two parts one that gives the length of the string to
  write and another that writes the result in a subpart of another string we
- avoid unnecessary string creations.</div>
+ avoid unnecessary string creations.</p></div>
 <pre><span class="VALoutput_lines"><span class="keyword">val</span> output_lines</span> : <code class="type">?quote:char -&gt;
 ?sep:char -&gt; <a href="?package=ocaml&amp;module=Pervasives&amp;type=out_channel">Pervasives.out_channel</a> -&gt; string list list -&gt; unit</code></pre><div class="info"><div class="info">Prints a valid csv file to a given channel (note that line are ended
     &quot;\r\n&quot;)</div></div>

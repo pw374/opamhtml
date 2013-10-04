@@ -1,4 +1,4 @@
-<div class="ocaml_toplevel_module"><div class="info">FastCGI connector.<br/> <b>Remark:</b> This connector does not allow requests to be multiplexed
+<div class="ocaml_toplevel_module"><div class="info">FastCGI connector.<p> <b>Remark:</b> This connector does not allow requests to be multiplexed
  (and let it know to the web server via FCGI_MPXS_CONNS=0).
  Multiplexing requests is seldom done by
   <a href="http://www.fastcgi.com">FastCGI modules</a> and is even sometimes
@@ -7,21 +7,21 @@
  threads while this library use a single thread to process all
  requests coming on a given connection.  If the need is felt (speak
  out!), a multithreaded connector can be built on the side of this
- one.</div>
+ one.</p></div>
 <div class="ocaml_class sig" name="cgi"><pre><span class="TYPEcgi"><span class="keyword">class type</span> <a href="?package=ocamlnet&amp;module=Netcgi_fcgi&amp;class=cgi">cgi</a></span> : <code class="code">object</code> .. <code class="code">end</code></pre><div class="info"><div class="info">The usual  <a href="#Netcgi.cgi">Netcgi.cgi</a> class with FCGI specific methods.</div></div><div class="ocaml_class_content"><div class="ocaml_class ident" name="_inherit_field" path="?package=ocamlnet&amp;module=Netcgi&amp;class=cgi"> <pre><span class="keyword">inherit</span> <code class="type"/><a href="?package=ocamlnet&amp;module=Netcgi&amp;class=cgi">Netcgi.cgi</a></pre></div>
 
 <pre><span class="METHODrole"><span class="keyword">method</span> role</span> : <code class="code">[ `Authorizer | `Filter | `Responder ]</code></pre>
 <div class="info"><div class="info">A FastCGI application can fulfill each of the following three
-	roles:<br/>	- <code class="code">`Responder</code>: This is the usual role.  In this case the
+	roles:<p>	- <code class="code">`Responder</code>: This is the usual role.  In this case the
 	application is expected to act like a CGI program: It receives
 	all the information associated with an HTTP request and
-	generates an HTTP response.<br/>	- <code class="code">`Authorizer</code>: An Authorizer FastCGI application receives
+	generates an HTTP response.</p><p>	- <code class="code">`Authorizer</code>: An Authorizer FastCGI application receives
         all the information associated with an HTTP request and
-        generates an authorized/unauthorized decision.<br/>	- <code class="code">`Filter</code>: A Filter FastCGI application receives all the
+        generates an authorized/unauthorized decision.</p><p>	- <code class="code">`Filter</code>: A Filter FastCGI application receives all the
         information associated with an HTTP request, plus an extra
         stream of data from a file stored on the Web server, and
         generates a &quot;filtered&quot; version of the data stream as an HTTP
-        response.</div></div>
+        response.</p></div></div>
 <pre><span class="METHODdata"><span class="keyword">method</span> data</span> : <code class="code"><a href="?package=ocamlnet&amp;module=Netchannels&amp;type=in_obj_channel">Netchannels.in_obj_channel</a></code></pre>
 <div class="info"><div class="info">This the the channel on which the filter data is available.
 	All methods of the object raise  <a href="#Netchannels.Closed_channel">Netchannels.Closed_channel</a>
@@ -50,9 +50,9 @@
       scripts (launched independently of the web server and possibly
       on a different machine), set <code class="code">sockaddr</code> to the address the web
       server needs to connect to to talk to the script (this address
-      must also be specified in the wen server config file).</div><div class="param_info"><code class="code">port</code> : alternative way to specify <code class="code">sockaddr</code> for localhost<br/>      Your application should be ready handle SIGUSR1, used to
+      must also be specified in the wen server config file).</div><div class="param_info"><code class="code">port</code> : alternative way to specify <code class="code">sockaddr</code> for localhost<p>      Your application should be ready handle SIGUSR1, used to
       resquest a &quot;graceful&quot; process shutdown, and SIGTERM to request a
-      quick shutdown.</div></div></div></div>
+      quick shutdown.</p></div></div></div></div>
 <pre><span class="VALhandle_request"><span class="keyword">val</span> handle_request</span> : <code class="type"><a href="?package=ocamlnet&amp;module=Netcgi&amp;type=config">Netcgi.config</a> -&gt;
 <a href="?package=ocamlnet&amp;module=Netcgi&amp;type=output_type">Netcgi.output_type</a> -&gt;
 <a href="?package=ocamlnet&amp;module=Netcgi&amp;type=arg_store">Netcgi.arg_store</a> -&gt;
@@ -61,8 +61,8 @@
 max_conns:int -&gt;
 log:(string -&gt; unit) option -&gt; <a href="?package=ocaml&amp;module=Unix&amp;type=file_descr">Unix.file_descr</a> -&gt; <a href="?package=ocamlnet&amp;module=Netcgi&amp;type=connection_directive">Netcgi.connection_directive</a></code></pre><div class="info"><div class="info"><code class="code">handle_request config output_type arg_store eh f ~max_conns
         ~log fd</code>: This is a lower-level interface that processes
-        exactly one request arriving on the existing connection <code class="code">fd</code>.<br/>        <code class="code">max_conns</code> is passed to the FCGI client and indicates how many
-        connections this server can process in parallel.<br/>        <code class="code">log</code> is the error logger function or <code class="code">None</code>, in which case
-        errors are passed through to the FCGI client.<br/>        The other arguments are just like for <code class="code">run</code>.<br/>        The return value indicates whether the connection can be kept
-        open or must be closed.</div></div>
+        exactly one request arriving on the existing connection <code class="code">fd</code>.<p>        <code class="code">max_conns</code> is passed to the FCGI client and indicates how many
+        connections this server can process in parallel.</p><p>        <code class="code">log</code> is the error logger function or <code class="code">None</code>, in which case
+        errors are passed through to the FCGI client.</p><p>        The other arguments are just like for <code class="code">run</code>.</p><p>        The return value indicates whether the connection can be kept
+        open or must be closed.</p></div></div>
 </div>

@@ -9,13 +9,13 @@
 ?clipboard:<a href="?package=zed&amp;module=Zed_edit&amp;type=clipboard">clipboard</a> -&gt;
 ?match_word:(<a href="?package=zed&amp;module=Zed_rope&amp;type=t">Zed_rope.t</a> -&gt; int -&gt; int option) -&gt;
 ?locale:string option <a href="?package=react&amp;module=React&amp;type=signal">React.signal</a> -&gt; ?undo_size:int -&gt; unit -&gt; 'a <a href="?package=zed&amp;module=Zed_edit&amp;type=t">t</a></code></pre><div class="info"><div class="info"><code class="code">create ?editable ?move ?clipboard ()</code> creates a new edition
-      engine in the initial state.<br/>      <code class="code">editable</code> is used to determine whether the text at given
+      engine in the initial state.<p>      <code class="code">editable</code> is used to determine whether the text at given
       position is editable or not. It takes as argument the position
-      and the length of the text to remove.<br/>      <code class="code">move</code> is unused.<br/>      <code class="code">clipboard</code> is the clipboard to use for this engine. If none is
-      defined, a new one using a reference is created.<br/>      <code class="code">match_word</code> is used to recognize words. It must returns the end
-      of the matched word if any.<br/>      <code class="code">locale</code> is the locale of this buffer. It is used for case
-      mapping.<br/>      <code class="code">undo_size</code> is the size of the undo buffer. It is the number of
-      state zed will remember. It defaults to <code class="code">1000</code>.</div></div>
+      and the length of the text to remove.</p><p>      <code class="code">move</code> is unused.</p><p>      <code class="code">clipboard</code> is the clipboard to use for this engine. If none is
+      defined, a new one using a reference is created.</p><p>      <code class="code">match_word</code> is used to recognize words. It must returns the end
+      of the matched word if any.</p><p>      <code class="code">locale</code> is the locale of this buffer. It is used for case
+      mapping.</p><p>      <code class="code">undo_size</code> is the size of the undo buffer. It is the number of
+      state zed will remember. It defaults to <code class="code">1000</code>.</p></div></div>
 <pre><span class="VALmatch_by_regexp"><span class="keyword">val</span> match_by_regexp</span> : <code class="type"><a href="?package=zed&amp;module=Zed_re&amp;type=t">Zed_re.t</a> -&gt; <a href="?package=zed&amp;module=Zed_rope&amp;type=t">Zed_rope.t</a> -&gt; int -&gt; int option</code></pre><div class="info"><div class="info"><code class="code">match_by_regexp re</code> creates a word-matching function using a
       regular expression.</div></div>
 <div class="info"><div class="info"><h6 id="6_TITLE">State</h6></div></div>
@@ -101,10 +101,10 @@
       position, it removes everything until the beginning of the
       text.</div></div>
 <pre><span class="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">'a <a href="?package=zed&amp;module=Zed_edit&amp;type=context">context</a> -&gt; int -&gt; unit</code></pre><div class="info"><div class="info">Alias for  <a href="#remove_next">remove_next</a></div></div>
-<pre><span class="VALreplace"><span class="keyword">val</span> replace</span> : <code class="type">'a <a href="?package=zed&amp;module=Zed_edit&amp;type=context">context</a> -&gt; int -&gt; <a href="?package=zed&amp;module=Zed_rope&amp;type=t">Zed_rope.t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">replace ctx n rope</code> does the same as:<br/>      <pre class="codepre"><code class="code">
+<pre><span class="VALreplace"><span class="keyword">val</span> replace</span> : <code class="type">'a <a href="?package=zed&amp;module=Zed_edit&amp;type=context">context</a> -&gt; int -&gt; <a href="?package=zed&amp;module=Zed_rope&amp;type=t">Zed_rope.t</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">replace ctx n rope</code> does the same as:<p>      </p><code class="code">
         remove ctx n;
         insert_no_erase ctx rope
-      </code></pre><br/>      but in one atomic operation.</div></div>
+      </code><p>      but in one atomic operation.</p></div></div>
 <pre><span class="VALnewline"><span class="keyword">val</span> newline</span> : <code class="type">'a <a href="?package=zed&amp;module=Zed_edit&amp;type=context">context</a> -&gt; unit</code></pre><div class="info"><div class="info">Insert a newline character.</div></div>
 <pre><span class="VALnext_char"><span class="keyword">val</span> next_char</span> : <code class="type">'a <a href="?package=zed&amp;module=Zed_edit&amp;type=context">context</a> -&gt; unit</code></pre><div class="info"><div class="info"><code class="code">next_char ctx</code> moves the cursor to the next character. It does
       nothing if the cursor is at the end of the text.</div></div>
@@ -169,7 +169,7 @@
 <pre><span class="VALaction_of_name"><span class="keyword">val</span> action_of_name</span> : <code class="type">string -&gt; <a href="?package=zed&amp;module=Zed_edit&amp;type=action">action</a></code></pre><div class="info"><div class="info"><code class="code">action_of_name str</code> converts the given action name into an
       action. Action name are the same as function name but with '_'
       replaced by '-'. It raises <code class="code">Not_found</code> if the name does not
-      correspond to an action.<br/>      <code class="code">Insert ch</code> is represented by &quot;insert(&lt;char&gt;)&quot; where <code class="code">&lt;char&gt;</code> is:<br/>      - a literal ascii character, such as &quot;a&quot;, &quot;b&quot;, ...<ul><li>a unicode character, written &quot;U+&lt; code &gt;&quot;, such as &quot;U+0041&quot;
+      correspond to an action.<p>      <code class="code">Insert ch</code> is represented by &quot;insert(&lt;char&gt;)&quot; where <code class="code">&lt;char&gt;</code> is:</p><p>      - a literal ascii character, such as &quot;a&quot;, &quot;b&quot;, ...</p><ul><li>a unicode character, written &quot;U+&lt; code &gt;&quot;, such as &quot;U+0041&quot;
   </li></ul></div></div>
 <pre><span class="VALname_of_action"><span class="keyword">val</span> name_of_action</span> : <code class="type"><a href="?package=zed&amp;module=Zed_edit&amp;type=action">action</a> -&gt; string</code></pre><div class="info"><div class="info"><code class="code">name_of_action act</code> returns the name of the given action.</div></div>
 </div>
